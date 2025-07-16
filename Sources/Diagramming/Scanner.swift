@@ -89,6 +89,13 @@ public struct StringScanner {
         return true
     }
 
+    public mutating func scanCharacter() -> Character? {
+        guard !atEnd else { return nil }
+        let char = peek()
+        advance()
+        return char
+    }
+    
     public mutating func scanInteger() -> Int? {
         let startIndex = currentIndex
         guard acceptInteger() else { return nil }
