@@ -13,25 +13,16 @@ public struct BezierPath {
     public enum PathElement: CustomStringConvertible {
         case moveTo(Vector2D)
         case lineTo(Vector2D)
+        case curveTo(end: Vector2D, control1: Vector2D, control2: Vector2D)
+        // TODO: Swap the arguments
         case quadCurveTo(control: Vector2D, end: Vector2D)
         case closePath
-        
-        /// Get the end point of this path element (if applicable)
-        func REMOVE_getEndPoint() -> Vector2D? {
-            switch self {
-            case .moveTo(let point), .lineTo(let point):
-                return point
-            case .quadCurveTo(_, let end):
-                return end
-            case .closePath:
-                return nil
-            }
-        }
         
         public var commandCharacter: Character {
             switch self {
             case .moveTo: "M"
             case .lineTo: "L"
+            case .curveTo: "C"
             case .quadCurveTo: "Q"
             case .closePath: "Z"
             }
@@ -40,6 +31,7 @@ public struct BezierPath {
             switch self {
             case .moveTo(let point): "M\(point.x),\(point.y)"
             case .lineTo(let point): "L\(point.x),\(point.y)"
+            case .curveTo(let end, let control1, let control2): "Q\(end.x),\(end.y) \(control1.x),\(control1.y) \(control2.x),\(control2.y)"
             case .quadCurveTo(let control, let end): "Q\(control.x),\(control.y),\(end.x),\(end.y)"
             case .closePath: "Z"
             }
@@ -168,75 +160,60 @@ public struct BezierPath {
     }
     
     /// Add a cubic Bezier curve (converted from quadratic)
-    public mutating func addCubicCurve(to endPoint: Vector2D, control1: Vector2D, control2: Vector2D) {
+    public mutating func addCurve(to endPoint: Vector2D, control1: Vector2D, control2: Vector2D) {
         if currentPoint == nil {
             move(to: Vector2D(0, 0))
         }
-        
-        // Convert cubic to quadratic by using the midpoint of control points
-        let quadControl = control1.lerp(to: control2, t: 0.5)
-        addQuadCurve(to: endPoint, control: quadControl)
+        elements.append(.curveTo(end: endPoint, control1: control1, control2: control2))
+        currentPoint = endPoint
     }
     
-    /// Add a circle using quadratic Bezier curves
+    /// Add a circle.
+    ///
+    /// The circle is approximated using cubic bezier curves.
+    ///
     public mutating func addCircle(center: Vector2D, radius: Double) {
-        let magic = radius * 0.828 // sqrt(2) - 1 for quadratic approximation
-        
-        // Start at bottom of circle
-        let bottom = center + Vector2D(0, -radius)
-        let right = center + Vector2D(radius, 0)
-        let top = center + Vector2D(0, radius)
-        let left = center + Vector2D(-radius, 0)
-        
+        // https://spencermortensen.com/articles/bezier-BALL/
+        // P0=(0,a), P1=(b,c), P2=(c,b), P3=(a,0)
+        let a = 1.00005519
+        let b = 0.55342686
+        let p1 = Vector2D(b, 0) * radius
+        let p2 = Vector2D(0, b) * radius
+
+        let bottom = center + (Vector2D(0, a) * radius)
+        let right = center + (Vector2D(a, 0) * radius)
+        let top = center + (Vector2D(0, -a) * radius)
+        let left = center + (Vector2D(-a, 0) * radius)
         move(to: bottom)
-        
-        // Bottom to right quadrant
-        addQuadCurve(to: right, control: center + Vector2D(magic, -magic))
-        
-        // Right to top quadrant
-        addQuadCurve(to: top, control: center + Vector2D(magic, magic))
-        
-        // Top to left quadrant
-        addQuadCurve(to: left, control: center + Vector2D(-magic, magic))
-        
-        // Left to bottom quadrant
-        addQuadCurve(to: bottom, control: center + Vector2D(-magic, -magic))
-        
+        addCurve(to: right, control1: bottom + p1, control2: right + p2)
+        addCurve(to: top, control1: right - p2, control2: top + p1)
+        addCurve(to: left, control1: top - p1, control2: left - p2)
+        addCurve(to: bottom, control1: left + p2, control2: bottom - p1)
         closeSubpath()
     }
-    
-    /// Add an ellipse using quadratic Bezier curves
+
+    /// Add an ellipse.
+    ///
+    /// The ellispe is approximated using cubic bezier curves.
+    ///
     public mutating func addEllipse(center: Vector2D, radiusX: Double, radiusY: Double) {
-        // Use 4 quadratic curves to approximate an ellipse
-        // Similar to circle but with different X and Y radii
-        
-        // Magic number for quadratic ellipse approximation
-        let magicX = radiusX * 0.828 // sqrt(2) - 1 for quadratic approximation
-        let magicY = radiusY * 0.828
-        
-        // Start at bottom of ellipse
-        let bottom = center + Vector2D(0, -radiusY)
-        let right = center + Vector2D(radiusX, 0)
-        let top = center + Vector2D(0, radiusY)
-        let left = center + Vector2D(-radiusX, 0)
-        
+        let a = 1.00005519
+        let b = 0.55342686
+        let p1 = Vector2D(b, 0) * radiusX
+        let p2 = Vector2D(0, b) * radiusY
+
+        let bottom = center + (Vector2D(0, a) * radiusY)
+        let right = center + (Vector2D(a, 0) * radiusX)
+        let top = center + (Vector2D(0, -a) * radiusY)
+        let left = center + (Vector2D(-a, 0) * radiusX)
         move(to: bottom)
-        
-        // Bottom to right quadrant
-        addQuadCurve(to: right, control: center + Vector2D(magicX, -magicY))
-        
-        // Right to top quadrant
-        addQuadCurve(to: top, control: center + Vector2D(magicX, magicY))
-        
-        // Top to left quadrant
-        addQuadCurve(to: left, control: center + Vector2D(-magicX, magicY))
-        
-        // Left to bottom quadrant
-        addQuadCurve(to: bottom, control: center + Vector2D(-magicX, -magicY))
-        
+        addCurve(to: right, control1: bottom + p1, control2: right + p2)
+        addCurve(to: top, control1: right - p2, control2: top + p1)
+        addCurve(to: left, control1: top - p1, control2: left - p2)
+        addCurve(to: bottom, control1: left + p2, control2: bottom - p1)
         closeSubpath()
     }
-    
+
     /// Add another bezier path to this one
     public mutating func addPath(_ other: BezierPath) {
         for element in other.elements {
@@ -245,6 +222,8 @@ public struct BezierPath {
                 move(to: point)
             case .lineTo(let point):
                 addLine(to: point)
+            case .curveTo(let end, let control1, let control2):
+                addCurve(to: end, control1: control1, control2: control2)
             case .quadCurveTo(let control, let end):
                 addQuadCurve(to: end, control: control)
             case .closePath:
@@ -281,6 +260,10 @@ public struct BezierPath {
                     points.append(point)
                     currentPos = point
                 }
+                
+            case .curveTo(_, _, _):
+                // FIXME: Implement this
+                fatalError("Tessellation of curve-to not implemented")
                 
             case .quadCurveTo(let control, let end):
                 if let current = currentPos {
@@ -426,7 +409,12 @@ public struct BezierPath {
                 
             case .lineTo(let point):
                 result.addLine(to: transform.apply(to: point))
-                
+
+            case .curveTo(let end, let control1, let control2):
+                result.addCurve(to: transform.apply(to: end),
+                                control1: transform.apply(to: control1),
+                                control2: transform.apply(to: control2))
+
             case .quadCurveTo(let control, let end):
                 result.addQuadCurve(to: transform.apply(to: end),
                                     control: transform.apply(to: control))
@@ -439,4 +427,20 @@ public struct BezierPath {
         return result
     }
 
+    /// Convert bezier path to a collection of bezier curves as used by Godot game engine.
+    ///
+    /// Godot curve is specified by position, in-control point and out-control point where the
+    /// control points are relative to the curve point position.
+    ///
+    /// Move-to path elements break the path into multiple curves.
+    ///
+    func godotCurves() -> [[GodotCurvePoint]] {
+        fatalError("Not implemented")
+    }
+}
+
+struct GodotCurvePoint {
+    let position: Vector2D
+    let inControl: Vector2D
+    let outControl: Vector2D
 }

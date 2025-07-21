@@ -50,7 +50,7 @@ public class SVGUse: SVGElement {
     public var transform: SVGTransform?
     
     // Attributes-based initializer
-    override init(attributes: [String: String]) {
+    override init(attributes: [String: String] = [:]) {
         super.init(attributes: attributes)
         if let value = attributes["x"] {
             self.x = stringToSVGLength(value)
@@ -92,7 +92,7 @@ public class SVGSymbol: SVGElement {
     public var _children: [SVGElement]
     
     // Attributes-based initializer
-    override init(attributes: [String: String]) {
+    override init(attributes: [String: String] = [:]) {
         self._children = []
         super.init(attributes: attributes)
         if let value = attributes["width"] {

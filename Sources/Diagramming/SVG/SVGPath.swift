@@ -114,8 +114,8 @@ public class SVGPath: SVGShape {
 
     public var d: String? {
         get {
-            // TODO: Implement this
-            fatalError("Path to string not implemented")
+            guard !components.isEmpty else { return nil }
+            return components.map { $0.rawValue }.joined(separator: " ")
         }
         set {
             if let newValue {
@@ -147,6 +147,8 @@ public class SVGPath: SVGShape {
                 return .moveTo(x: point.x, y: point.y)
             case .lineTo(let point):
                 return .lineTo(x: point.x, y: point.y)
+            case .curveTo(let end, let control1, let control2):
+                return .curveTo(x1: control1.x, y1: control1.y, x2: control2.x, y2: control2.y, x: end.x, y: end.y)
             case .quadCurveTo(let control, let end):
                 return .quadraticCurveTo(x1: control.x, y1: control.y, x: end.x, y: end.y)
             case .closePath:
