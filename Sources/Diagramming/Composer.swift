@@ -56,6 +56,19 @@ public class SVGDiagramComposer {
         elements.append(use)
     }
 
+    public func insertConnector(_ connector: Connector, id: String) {
+        let paths = connector.paths()
+        let group = SVGGroup()
+        group.id = "connector-\(id)"
+        for path in paths {
+            let svgPath = SVGPath(path)
+            svgPath.fill = "none"
+            svgPath.stroke = "black"
+            group.addChild(svgPath)
+        }
+        elements.append(group)
+    }
+    
     public func compose() -> SVGImage {
         let image = SVGImage()
         for symbol in symbols.values {
