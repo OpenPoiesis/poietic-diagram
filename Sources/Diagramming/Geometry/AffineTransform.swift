@@ -25,14 +25,17 @@ public struct AffineTransform: Equatable, Sendable {
     public let ty: Double
     
     /// The identity transform
+    ///
     public static let identity = AffineTransform(a: 1, b: 0, c: 0, d: 1, tx: 0, ty: 0)
     
     /// Creates an identity transform
+    ///
     public init() {
         self = .identity
     }
     
     /// Creates a transform with the specified matrix components
+    ///
     public init(a: Double, b: Double, c: Double, d: Double, tx: Double, ty: Double) {
         self.a = a
         self.b = b
@@ -43,6 +46,7 @@ public struct AffineTransform: Equatable, Sendable {
     }
     
     /// Creates a translation transform
+    ///
     public init(translation: Vector2D) {
         self.a = 1
         self.b = 0
@@ -53,6 +57,7 @@ public struct AffineTransform: Equatable, Sendable {
     }
     
     /// Creates a scaling transform
+    ///
     public init(scale: Vector2D) {
         self.a = scale.x
         self.b = 0
@@ -63,6 +68,7 @@ public struct AffineTransform: Equatable, Sendable {
     }
     
     /// Creates a rotation transform
+    ///
     /// - Parameter angle: Rotation angle in radians
     public init(angle: Double) {
         let cosA = _cos(angle)
@@ -93,6 +99,7 @@ public struct AffineTransform: Equatable, Sendable {
     
     /// Returns the inverse transform, or nil if the transform is not invertible
     /// Uses simple 2x2 matrix inversion algorithm
+    ///
     public func inverted() -> AffineTransform? {
         let determinant = a * d - b * c
         
@@ -111,6 +118,7 @@ public struct AffineTransform: Equatable, Sendable {
     }
     
     /// Applies the transform to a point
+    ///
     public func apply(to point: Vector2D) -> Vector2D {
         return Vector2D(
             a * point.x + c * point.y + tx,
@@ -119,6 +127,7 @@ public struct AffineTransform: Equatable, Sendable {
     }
     
     /// Translation component as a vector
+    ///
     public var origin: Vector2D { Vector2D(tx, ty) }
     
     /// Scale factors extracted from the matrix
@@ -136,17 +145,21 @@ public struct AffineTransform: Equatable, Sendable {
     // MARK: - Transform Creation
     
     /// Returns a new transform that applies a translation after this transform
+    /// 
     public func translated(_ offset: Vector2D) -> AffineTransform {
         return concatenating(AffineTransform(translation: offset))
     }
     
     /// Returns a new transform that applies a scale after this transform
+    ///
     public func scaled(_ scale: Vector2D) -> AffineTransform {
         return concatenating(AffineTransform(scale: scale))
     }
     
     /// Returns a new transform that applies a rotation after this transform
+    ///
     /// - Parameter angle: Rotation angle in radians
+    ///
     public func rotated(_ angle: Double) -> AffineTransform {
         return concatenating(AffineTransform(angle: angle))
     }

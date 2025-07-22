@@ -39,6 +39,8 @@ extension Vector2D {
     }
 }
 
+/// Structure representing a 2D rectangle.
+///
 public struct Rect2D {
     public var origin: Vector2D
     public var size: Vector2D

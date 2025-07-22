@@ -16,8 +16,8 @@ public class Connector {
     public var shapeStyle: ShapeStyle
     
 
-    public init(originPoint: Vector2D = Vector2D(0, 0),
-                targetPoint: Vector2D = Vector2D(0, 0),
+    public init(originPoint: Vector2D = .zero,
+                targetPoint: Vector2D = .zero,
                 midpoints: [Vector2D] = [],
                 size: Double = 10.0,
                 style: ConnectorStyle = .thin(ThinConnectorStyle()),

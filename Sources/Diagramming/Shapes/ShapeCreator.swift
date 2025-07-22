@@ -220,9 +220,7 @@ public class ShapeGeometry {
                                              target: clippedTarget,
                                              midpoints: midpoints)
         case .curved:
-            mainLine = Self.createCurvedLine(origin: clippedOrigin,
-                                             target: clippedTarget,
-                                             midpoints: midpoints)
+            mainLine = BezierPath(curveThrough: [clippedOrigin] + midpoints + [clippedTarget])
         case .orthogonal:
             mainLine = Self.createOrthogonalLine(origin: clippedOrigin,
                                                  target: clippedTarget,

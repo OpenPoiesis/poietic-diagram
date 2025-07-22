@@ -9,7 +9,7 @@ public struct BezierPath {
     public var elements: [PathElement]
     public private(set) var currentPoint: Vector2D?
     private var startPoint: Vector2D?
-
+    
     public enum PathElement: CustomStringConvertible {
         case moveTo(Vector2D)
         case lineTo(Vector2D)
@@ -37,7 +37,7 @@ public struct BezierPath {
             }
         }
     }
-
+    
     /// Create an empty path.
     public init() {
         self.elements = []
@@ -72,7 +72,7 @@ public struct BezierPath {
     public var isEmpty: Bool {
         return elements.isEmpty
     }
-
+    
     /// A box that encapsulates the whole path.
     ///
     /// - Note: The bounding box is computed by tessellation of the path.
@@ -102,7 +102,7 @@ public struct BezierPath {
             return false
         }
     }
-
+    
     public func asString() -> String {
         elements.map { $0.description }.joined(separator: " ")
     }
@@ -179,7 +179,7 @@ public struct BezierPath {
         let b = 0.55342686
         let p1 = Vector2D(b, 0) * radius
         let p2 = Vector2D(0, b) * radius
-
+        
         let bottom = center + (Vector2D(0, a) * radius)
         let right = center + (Vector2D(a, 0) * radius)
         let top = center + (Vector2D(0, -a) * radius)
@@ -191,7 +191,7 @@ public struct BezierPath {
         addCurve(to: bottom, control1: left + p2, control2: bottom - p1)
         closeSubpath()
     }
-
+    
     /// Add an ellipse.
     ///
     /// The ellispe is approximated using cubic bezier curves.
@@ -201,7 +201,7 @@ public struct BezierPath {
         let b = 0.55342686
         let p1 = Vector2D(b, 0) * radiusX
         let p2 = Vector2D(0, b) * radiusY
-
+        
         let bottom = center + (Vector2D(0, a) * radiusY)
         let right = center + (Vector2D(a, 0) * radiusX)
         let top = center + (Vector2D(0, -a) * radiusY)
@@ -213,7 +213,7 @@ public struct BezierPath {
         addCurve(to: bottom, control1: left + p2, control2: bottom - p1)
         closeSubpath()
     }
-
+    
     /// Add another bezier path to this one
     public mutating func addPath(_ other: BezierPath) {
         for element in other.elements {
@@ -391,9 +391,9 @@ public struct BezierPath {
         let mt = 1.0 - t
         let mt2 = mt * mt
         
-        return start * mt2 +
-               control * (2.0 * mt * t) +
-               end * t2
+        return start * mt2
+                + control * (2.0 * mt * t)
+                + end * t2
     }
     
     
@@ -409,12 +409,12 @@ public struct BezierPath {
                 
             case .lineTo(let point):
                 result.addLine(to: transform.apply(to: point))
-
+                
             case .curveTo(let end, let control1, let control2):
                 result.addCurve(to: transform.apply(to: end),
                                 control1: transform.apply(to: control1),
                                 control2: transform.apply(to: control2))
-
+                
             case .quadCurveTo(let control, let end):
                 result.addQuadCurve(to: transform.apply(to: end),
                                     control: transform.apply(to: control))
@@ -426,21 +426,6 @@ public struct BezierPath {
         
         return result
     }
-
-    /// Convert bezier path to a collection of bezier curves as used by Godot game engine.
-    ///
-    /// Godot curve is specified by position, in-control point and out-control point where the
-    /// control points are relative to the curve point position.
-    ///
-    /// Move-to path elements break the path into multiple curves.
-    ///
-    func godotCurves() -> [[GodotCurvePoint]] {
-        fatalError("Not implemented")
-    }
-}
-
-struct GodotCurvePoint {
-    let position: Vector2D
-    let inControl: Vector2D
-    let outControl: Vector2D
+    
+    
 }
