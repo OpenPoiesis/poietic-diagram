@@ -5,13 +5,29 @@
 //  Created by Stefan Urbanek on 23/07/2025.
 //
 
-/// Connector drawn as filled polygons
+/// Style configuration for fat (filled polygon) connectors.
+///
+/// Defines the visual properties for connectors drawn as single filled polygon shapes
+/// with integrated arrowheads. The entire connector including arrowheads is rendered
+/// as one continuous filled path.
+///
 public struct FatConnectorStyle {
+    /// The arrowhead type at the target endpoint.
     public var headType: FatArrowheadType
+    
+    /// The arrowhead type at the origin endpoint.
     public var tailType: FatArrowheadType
+    
+    /// The size of the arrowhead at the target endpoint in points.
     public var headSize: Double
+    
+    /// The size of the arrowhead at the origin endpoint in points.
     public var tailSize: Double
+    
+    /// The width of the connector body in points.
     public var width: Double
+    
+    /// How line segments are joined at corners in the polygon.
     public var joinType: JoinType
     
     public init(headType: FatArrowheadType = .regular,
@@ -29,8 +45,16 @@ public struct FatConnectorStyle {
     }
 }
 
+/// A fat arrowhead represented as a polygon with connection offset.
+///
+/// Contains the polygon points for the arrowhead and the offset distance
+/// from the intended endpoint to where the connector body should connect.
+///
 public struct FatArrowhead {
+    /// The polygon points defining the arrowhead geometry.
     public let polygon: [Vector2D]
+    
+    /// Distance from intended endpoint to actual connector body connection point in points.
     public let offset: Double
     
     public init(polygon: [Vector2D], offset: Double) {

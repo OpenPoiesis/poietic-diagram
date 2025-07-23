@@ -5,11 +5,25 @@
 //  Created by Stefan Urbanek on 23/07/2025.
 //
 
+/// Style configuration for thin (stroke-based) connectors.
+///
+/// Defines the visual properties for connectors drawn as stroked paths with separate arrowhead elements.
+/// Supports different arrowhead types at both ends and various line drawing styles.
+///
 public struct ThinConnectorStyle {
+    /// The arrowhead type at the target endpoint.
     public var headType: ThinArrowheadType
+    
+    /// The arrowhead type at the origin endpoint.
     public var tailType: ThinArrowheadType
+    
+    /// The size of the arrowhead at the target endpoint in points.
     public var headSize: Double
+    
+    /// The size of the arrowhead at the origin endpoint in points.
     public var tailSize: Double
+    
+    /// The line drawing style for the connector body.
     public var lineType: LineType
     
     public init(headType: ThinArrowheadType = .stick,
@@ -25,9 +39,16 @@ public struct ThinConnectorStyle {
     }
 }
 
+/// A thin arrowhead represented as a stroke path with connection offset.
+///
+/// Contains the Bezier path for drawing the arrowhead and the offset distance
+/// from the intended endpoint to where the connector line should actually connect.
+///
 public struct Arrowhead {
+    /// The Bezier path defining the arrowhead geometry.
     public let path: BezierPath
-    /// Distance from intended endpoint to actual line connection point
+    
+    /// Distance from intended endpoint to actual line connection point in points.
     public let offset: Double
     
     public init(path: BezierPath, offset: Double) {

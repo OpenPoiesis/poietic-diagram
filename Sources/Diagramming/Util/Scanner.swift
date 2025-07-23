@@ -7,22 +7,59 @@
 
 import Foundation
 
+/// String utility for simple character or common token type parsing.
+///
+/// StringScanner offers string parsing capabilities for implementing simple parsers and tokenisers.
+/// It provides methods for:
+///
+/// - Character-by-character advancement and peeking: ``peek(offset:)``
+/// - Whitespace skipping: ``skipWhitespace()``
+/// - Pattern matching and acceptance ``accept(_:)``, ``accept(_:)-mtvr``
+/// - Number parsing (integers and doubles with scientific notation): ``scanDouble()``, ``scanInteger()``.
+/// - Identifier scanning (alphanumeric with underscores): ``scanIdentifier()``
+/// - Text extraction up to specified characters or character sets: ``scanUpToCharacter(_:)``, ``scanUpToCharacter(from:)``
+///
+/// All parsing methods are non-destructive - they either succeed and advance the position,
+/// or fail and leave the position unchanged.
+///
+/// Example usage:
+/// ```swift
+/// var scanner = StringScanner("hello 123 world")
+/// scanner.scanIdentifier() // Returns "hello"
+/// scanner.skipWhitespace()
+/// scanner.scanInteger()     // Returns 123
+/// ```
+///
 public struct StringScanner {
+    /// The source string being scanned.
     public let source: String
+    
+    /// The current position within the source string.
     @usableFromInline
     var currentIndex: String.Index
+    
+    /// The end position of the source string.
     @usableFromInline
     var endIndex: String.Index
 
-    /// Flag whether the reader is at the end of the source string.
+    /// Returns true if the scanner has reached the end of the source string.
     ///
     public var atEnd: Bool { currentIndex >= endIndex }
 
+    /// Creates a new StringScanner for the given source string.
+    ///
+    /// - Parameter string: The string to scan
+    ///
     public init(_ string: String) {
         self.source = string
         self.currentIndex = source.startIndex
         self.endIndex = source.endIndex
     }
+    /// Returns the character at the current position plus the given offset without advancing.
+    ///
+    /// - Parameter offset: The offset from the current position (default: 0)
+    /// - Returns: The character at the specified position, or nil if beyond the string bounds
+    ///
     @inlinable
     public func peek(offset: Int = 0) -> Character? {
         guard !atEnd else {
@@ -34,17 +71,28 @@ public struct StringScanner {
         return source[peekIndex]
     }
     
+    /// Advances the scanner position by one character.
+    ///
+    /// Does nothing if already at the end of the string.
+    ///
     @inlinable
     public mutating func advance() {
         currentIndex = source.index(after: currentIndex)
     }
 
+    /// Advances the scanner position past any whitespace and newline characters.
+    ///
     public mutating func skipWhitespace() {
         while let char = peek(), char.isWhitespace || char.isNewline {
             advance()
         }
     }
     
+    /// Attempts to match and consume the specified character.
+    ///
+    /// - Parameter character: The character to match
+    /// - Returns: true if the character was matched and consumed, false otherwise
+    ///
     @discardableResult
     public mutating func accept(_ character: Character) -> Bool {
         if peek() == character {
@@ -56,6 +104,11 @@ public struct StringScanner {
         }
     }
     
+    /// Attempts to match and consume the specified string.
+    ///
+    /// - Parameter string: The string to match
+    /// - Returns: true if the string was matched and consumed, false otherwise
+    ///
     @discardableResult
     public mutating func accept(_ string: String) -> Bool {
         let savedIndex = self.currentIndex
@@ -68,6 +121,10 @@ public struct StringScanner {
         return true
     }
     
+    /// Attempts to match and consume an integer (with optional minus sign).
+    ///
+    /// - Returns: true if an integer was matched and consumed, false otherwise
+    ///
     public mutating func acceptInteger() -> Bool {
         let startIndex = currentIndex
         
@@ -89,6 +146,10 @@ public struct StringScanner {
         return true
     }
 
+    /// Scans and returns the next character, advancing the position.
+    ///
+    /// - Returns: The next character, or nil if at the end of the string
+    ///
     public mutating func scanCharacter() -> Character? {
         guard !atEnd else { return nil }
         let char = peek()
@@ -96,12 +157,24 @@ public struct StringScanner {
         return char
     }
     
+    /// Scans and returns an integer value.
+    ///
+    /// Supports negative integers with leading minus sign.
+    ///
+    /// - Returns: The parsed integer value, or nil if no valid integer found
+    ///
     public mutating func scanInteger() -> Int? {
         let startIndex = currentIndex
         guard acceptInteger() else { return nil }
         return Int(source[startIndex..<currentIndex])
     }
     
+    /// Attempts to match and consume a double value.
+    ///
+    /// Supports decimal notation (123.456) and scientific notation (1.23e-4, 1.23E+5).
+    ///
+    /// - Returns: true if a double was matched and consumed, false otherwise
+    ///
     public mutating func acceptDouble() -> Bool {
         let startIndex = currentIndex
 
@@ -128,6 +201,12 @@ public struct StringScanner {
         return true
     }
 
+    /// Scans and returns a double value.
+    ///
+    /// Supports decimal notation (123.456) and scientific notation (1.23e-4, 1.23E+5).
+    ///
+    /// - Returns: The parsed double value, or nil if no valid double found
+    ///
     public mutating func scanDouble() -> Double? {
         let startIndex = currentIndex
         guard acceptDouble() else { return nil }

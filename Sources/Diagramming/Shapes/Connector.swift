@@ -5,18 +5,49 @@
 //  Created by Stefan Urbanek on 21/07/2025.
 //
 
+/// Style variants for connectors.
+///
+/// Defines whether a connector should be drawn as thin stroked paths or fat filled polygons.
+///
 public enum ConnectorStyle {
+    /// Thin connector drawn as stroked paths with separate arrowhead elements.
     case thin(ThinConnectorStyle)
+    
+    /// Fat connector drawn as a single filled polygon with integrated arrowheads.
     case fat(FatConnectorStyle)
 }
 
-/// Base class for all connector types
+/// A connector between two points with optional intermediate waypoints.
+///
+/// Connectors visually represent relationships or flows between diagram elements.
+/// They can be rendered as either thin stroked paths or fat filled polygons,
+/// with configurable arrowheads at either or both endpoints.
+///
+/// The connector supports:
+///
+/// - Direct connections between origin and target points
+/// - Routing through intermediate midpoints
+/// - Different visual styles (thin stroke vs fat polygon)
+/// - Configurable arrowheads with various types and sizes
+/// - Visual styling through ShapeStyle properties
+///
 public class Connector {
+    /// The starting point of the connector.
     public var originPoint: Vector2D
+    
+    /// The ending point of the connector.
     public var targetPoint: Vector2D
+    
+    /// Optional intermediate waypoints the connector routes through.
     public var midpoints: [Vector2D]
+    
+    /// The base size used for arrowheads and other size-dependent elements.
     public var size: Double
+    
+    /// The connector style (thin or fat) with associated configuration.
     public var style: ConnectorStyle
+    
+    /// Visual styling properties for colours and line width.
     public var shapeStyle: ShapeStyle
     
 

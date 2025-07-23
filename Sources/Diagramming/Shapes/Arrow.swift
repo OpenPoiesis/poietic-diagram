@@ -5,6 +5,11 @@
 //  Created by Stefan Urbanek on 23/07/2025.
 //
 
+/// Arrowhead style for thin (stroke-based) connectors.
+///
+/// Each arrowhead type provides different visual representations for connector endpoints.
+/// The arrowheads are drawn as separate stroke paths and can have different sizes at head and tail.
+///
 public enum ThinArrowheadType: CaseIterable {
     /// No arrow-head
     case none
@@ -25,7 +30,12 @@ public enum ThinArrowheadType: CaseIterable {
     /// Ball centred at the endpoint
     case ballCenter
 
-    /// Offset of the point where the arrow line touches the head from the arrow endpoint.
+    /// Returns the offset distance from the arrow endpoint to where the line should connect to the arrowhead.
+    ///
+    /// Returns the offset distance from the arrow endpoint to where the line should connect to the arrowhead.
+    ///
+    /// - Parameter size: The size of the arrowhead
+    /// - Returns: The offset distance in points
     ///
     public func touchPointOffset(_ size: Double) -> Double {
         switch self {
@@ -39,10 +49,23 @@ public enum ThinArrowheadType: CaseIterable {
     }
 }
 
+/// Arrowhead styles for fat (filled polygon) connectors.
+///
+/// These arrowheads are integrated into the main connector polygon rather than being separate elements.
+/// Used for filled connector styles where the entire connector is drawn as a single filled shape.
+///
 public enum FatArrowheadType: CaseIterable {
+    /// No arrowhead.
     case none
+    
+    /// Standard triangular arrowhead integrated into the filled connector polygon.
     case regular
     
+    /// Returns the offset distance from the arrow endpoint to where the connector body should connect.
+    ///
+    /// - Parameter size: The size of the arrowhead
+    /// - Returns: The offset distance in points
+    ///
     public func touchPointOffset(_ size: Double) -> Double {
         switch self {
         case .none:
