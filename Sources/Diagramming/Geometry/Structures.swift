@@ -30,6 +30,17 @@ extension Vector2D {
         return self / len
     }
     
+    /// Returns the normal (perpendicular) vector, rotated 90° counterclockwise.
+    /// The result is not normalised by default (preserves original length).
+    public var normal: Vector2D {
+        return Vector2D(-y, x) // Standard 2D normal (⊥)
+    }
+
+    /// Returns the normalised (unit-length) perpendicular vector.
+    public var normalizedNormal: Vector2D {
+        return normal.normalized
+    }
+
     /// Dot product with another vector
     public func dot(_ other: Vector2D) -> Double {
         return (self * other).sum()

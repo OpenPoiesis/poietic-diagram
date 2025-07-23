@@ -40,18 +40,21 @@ public class Connector {
     public func paths() -> [BezierPath] {
         switch style {
         case .thin(let style):
-            let paths = ShapeGeometry.createThinArrow(
+            let paths = Geometry.createThinConnector(
                 origin: originPoint,
                 target: targetPoint,
                 midpoints: midpoints,
-                headType: style.headType,
-                tailType: style.tailType,
-                lineType: style.lineType,
-                size: size
+                style: style
             )
             return paths
         case .fat(let style):
-            fatalError("Fat connector paths not implemented")
+            let path = Geometry.createFatArrow(
+                origin: originPoint,
+                target: targetPoint,
+                style: style,
+                midpoints: midpoints
+            )
+            return [path]
         }
     }
     
@@ -71,13 +74,19 @@ public enum ConnectorStyle {
 public struct ThinConnectorStyle {
     public var headType: ThinArrowheadType
     public var tailType: ThinArrowheadType
+    public var headSize: Double
+    public var tailSize: Double
     public var lineType: LineType
     
     public init(headType: ThinArrowheadType = .stick,
                 tailType: ThinArrowheadType = .none,
+                headSize: Double = 10.0,
+                tailSize: Double? = nil,
                 lineType: LineType = .straight) {
         self.headType = headType
         self.tailType = tailType
+        self.headSize = headSize
+        self.tailSize = tailSize ?? headSize
         self.lineType = lineType
     }
 }
@@ -85,13 +94,22 @@ public struct ThinConnectorStyle {
 public struct FatConnectorStyle {
     public var headType: FatArrowheadType
     public var tailType: FatArrowheadType
+    public var headSize: Double
+    public var tailSize: Double
     public var width: Double
+    public var joinType: JoinType
     
     public init(headType: FatArrowheadType = .regular,
                 tailType: FatArrowheadType = .none,
-                width: Double = 7.0) {
+                headSize: Double = 10.0,
+                tailSize: Double? = nil,
+                width: Double = 7.0,
+                joinType: JoinType = .miter) {
         self.headType = headType
         self.tailType = tailType
+        self.headSize = headSize
+        self.tailSize = tailSize ?? headSize
         self.width = width
+        self.joinType = joinType
     }
 }

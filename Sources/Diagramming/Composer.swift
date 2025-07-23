@@ -63,7 +63,7 @@ public class SVGDiagramComposer {
         for path in paths {
             let svgPath = SVGPath(path)
             svgPath.fill = "none"
-            svgPath.stroke = "black"
+            svgPath.stroke = connector.shapeStyle.lineColor
             group.addChild(svgPath)
         }
         elements.append(group)

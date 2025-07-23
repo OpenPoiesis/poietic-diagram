@@ -145,7 +145,7 @@ public struct AffineTransform: Equatable, Sendable {
     // MARK: - Transform Creation
     
     /// Returns a new transform that applies a translation after this transform
-    /// 
+    ///
     public func translated(_ offset: Vector2D) -> AffineTransform {
         return concatenating(AffineTransform(translation: offset))
     }
