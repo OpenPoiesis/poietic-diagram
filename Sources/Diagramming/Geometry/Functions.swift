@@ -8,8 +8,37 @@
 import Foundation
 
 /// Namespace for geometry functions
-extension Geometry {
-    
+enum Geometry {
+   
+    /// Create a poly-line from ``start`` to ``end`` that goes through midpoints.
+    ///
+    /// The poly-line alternates between horizontal and vertical orientation.
+    ///
+    public static func orthogonalPolyline(from start: Vector2D,
+                                          to end: Vector2D,
+                                          through midpoints: [Vector2D]) -> BezierPath {
+        let points = midpoints + [end]
+        var isHorizontal: Bool = true
+        var current = start
+        var path = BezierPath()
+        path.move(to: start)
+        
+        for nextPoint in points {
+            if isHorizontal {
+                path.addLine(to: Vector2D(nextPoint.x, current.y))
+                path.addLine(to: Vector2D(nextPoint.x, nextPoint.y))
+            }
+            else {
+                path.addLine(to: Vector2D(current.x, nextPoint.y))
+                path.addLine(to: Vector2D(nextPoint.x, nextPoint.y))
+                current = nextPoint
+            }
+            isHorizontal = !isHorizontal
+        }
+        
+        return path
+    }
+
     public static func offsetPolyline(_ points: [Vector2D], offset: Double, joinType: JoinType, miterLimit: Double = 2.0) -> [Vector2D] {
         guard points.count >= 2 else { return [] }
         

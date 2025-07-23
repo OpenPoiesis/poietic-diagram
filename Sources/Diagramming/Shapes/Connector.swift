@@ -5,6 +5,10 @@
 //  Created by Stefan Urbanek on 21/07/2025.
 //
 
+public enum ConnectorStyle {
+    case thin(ThinConnectorStyle)
+    case fat(FatConnectorStyle)
+}
 
 /// Base class for all connector types
 public class Connector {
@@ -37,79 +41,38 @@ public class Connector {
     
     /// Bezier paths forming the connector.
     ///
+    /// Use the paths to draw the connector.
+    ///
     public func paths() -> [BezierPath] {
         switch style {
         case .thin(let style):
-            let paths = Geometry.createThinConnector(
-                origin: originPoint,
-                target: targetPoint,
-                midpoints: midpoints,
-                style: style
-            )
-            return paths
+            return thinConnectorPaths(style: style)
         case .fat(let style):
-            let path = Geometry.createFatArrow(
-                origin: originPoint,
-                target: targetPoint,
-                style: style,
-                midpoints: midpoints
-            )
-            return [path]
+            return [fatConnectorPath(style: style)]
         }
+        
     }
     
-    /// Get the selection outline polygons
+    /// Get directions for the origin and target arrowheads, considering the midpoints if present.
+    ///
+    public func arrowhadDirections() -> (origin: Vector2D, target: Vector2D) {
+        let targetDir: Vector2D
+        let originDir: Vector2D
+        
+        if let first = midpoints.first, let last = midpoints.last {
+            targetDir = (targetPoint - last).normalized
+            originDir = (originPoint - first).normalized
+        }
+        else {
+            targetDir = (targetPoint - originPoint).normalized
+            originDir = (originPoint - targetPoint).normalized
+        }
+        return (origin: originDir, target: targetDir)
+    }
+
+    /// Get the selection outline polygons.
+    ///
     public func getSelectionOutline(width: Double = 4.0) -> [[Vector2D]] {
-        // To be overridden by subclasses
-        return []
-    }
-}
-
-
-public enum ConnectorStyle {
-    case thin(ThinConnectorStyle)
-    case fat(FatConnectorStyle)
-}
-
-public struct ThinConnectorStyle {
-    public var headType: ThinArrowheadType
-    public var tailType: ThinArrowheadType
-    public var headSize: Double
-    public var tailSize: Double
-    public var lineType: LineType
-    
-    public init(headType: ThinArrowheadType = .stick,
-                tailType: ThinArrowheadType = .none,
-                headSize: Double = 10.0,
-                tailSize: Double? = nil,
-                lineType: LineType = .straight) {
-        self.headType = headType
-        self.tailType = tailType
-        self.headSize = headSize
-        self.tailSize = tailSize ?? headSize
-        self.lineType = lineType
-    }
-}
-/// Connector drawn as filled polygons
-public struct FatConnectorStyle {
-    public var headType: FatArrowheadType
-    public var tailType: FatArrowheadType
-    public var headSize: Double
-    public var tailSize: Double
-    public var width: Double
-    public var joinType: JoinType
-    
-    public init(headType: FatArrowheadType = .regular,
-                tailType: FatArrowheadType = .none,
-                headSize: Double = 10.0,
-                tailSize: Double? = nil,
-                width: Double = 7.0,
-                joinType: JoinType = .miter) {
-        self.headType = headType
-        self.tailType = tailType
-        self.headSize = headSize
-        self.tailSize = tailSize ?? headSize
-        self.width = width
-        self.joinType = joinType
+        fatalError("\(#function) not implemented")
     }
 }

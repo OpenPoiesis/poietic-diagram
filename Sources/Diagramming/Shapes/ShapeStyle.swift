@@ -20,3 +20,18 @@ public struct ShapeStyle: Equatable {
         self.fillColor = fillColor
     }
 }
+
+public enum LineType: CaseIterable {
+    case straight
+    case curved
+    case orthogonal
+}
+
+public enum JoinType: CaseIterable {
+    // Sharp corners
+    case miter
+    // Rounded corners
+    case round
+    // Cut-off corners
+    case bevel
+}
