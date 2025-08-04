@@ -5,12 +5,12 @@
 //  Created by Stefan Urbanek on 12/06/2025.
 //
 
-public struct BezierPath: Sendable {
+public struct BezierPath: Sendable, Codable {
     public var elements: [PathElement]
     public private(set) var currentPoint: Vector2D?
     private var startPoint: Vector2D?
     
-    public enum PathElement: CustomStringConvertible, Sendable {
+    public enum PathElement: CustomStringConvertible, Sendable, Codable {
         case moveTo(Vector2D)
         case lineTo(Vector2D)
         case curveTo(end: Vector2D, control1: Vector2D, control2: Vector2D)
@@ -123,7 +123,7 @@ public struct BezierPath: Sendable {
     /// - Returns: true if the path contains only straight line segments, false if it contains any curves
     ///
     /// - SeeAlso: ``asStrictPolygon()``
-    /// 
+    ///
     public func isPolygon() -> Bool {
         return elements.allSatisfy { element in
             switch element {

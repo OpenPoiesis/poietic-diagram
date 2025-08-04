@@ -54,7 +54,7 @@ extension Vector2D {
 
 /// Structure representing a 2D rectangle.
 ///
-public struct Rect2D: Equatable, Sendable {
+public struct Rect2D: Equatable, Sendable, Codable {
     public var origin: Vector2D
     public var size: Vector2D
     
@@ -105,6 +105,31 @@ public struct Rect2D: Equatable, Sendable {
     
     public func translated(_ offset: Vector2D) -> Rect2D {
         return Rect2D(origin: origin + offset, size: self.size)
+    }
+    
+    // MARK: - Codable
+    
+    private enum CodingKeys: String, CodingKey {
+        case x, y, width, height
+    }
+    
+    public init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        let x = try container.decode(Double.self, forKey: .x)
+        let y = try container.decode(Double.self, forKey: .y)
+        let width = try container.decode(Double.self, forKey: .width)
+        let height = try container.decode(Double.self, forKey: .height)
+        
+        self.origin = Vector2D(x, y)
+        self.size = Vector2D(width, height)
+    }
+    
+    public func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encode(origin.x, forKey: .x)
+        try container.encode(origin.y, forKey: .y)
+        try container.encode(size.x, forKey: .width)
+        try container.encode(size.y, forKey: .height)
     }
 }
 

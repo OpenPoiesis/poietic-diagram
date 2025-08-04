@@ -6,7 +6,7 @@
 //
 
 
-public enum CollisionShape: Equatable, Sendable {
+public enum CollisionShape: Equatable, Sendable, Codable {
     case circle(Double)
     case ellipse(Double, Double)
     case rectangle(Vector2D)

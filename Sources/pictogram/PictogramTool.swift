@@ -274,9 +274,17 @@ extension PictogramTool {
     struct Extract: ParsableCommand {
         static let configuration
         = CommandConfiguration(abstract: "Extract pictogram")
-        
+       
+        @Option(name: [.customLong("output"), .customShort("o")], help: "Output path. Default or '-' is standard output.")
+        var outputPath: String = "-"
+
+        @Argument(help: "SVG file with Pictogram structure")
+        var inputFile: String
+
         mutating func run() throws {
-            print("Hello!")
+            // 1. Read the SVG file -> SVGImage
+            // 2. Extract Pictogram from the SVGImage
+            // 3. Write Pictogram as JSON to outputPath or print to stdout 
         }
     }
 }

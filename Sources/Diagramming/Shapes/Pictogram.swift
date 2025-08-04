@@ -13,7 +13,7 @@ struct Magnet {
 ///
 /// - ToDo: Make coordinates to be lower-left corner.
 ///
-public final class Pictogram: Sendable {
+public final class Pictogram: Sendable, Codable {
     /// Name by which pictogram is referenced to.
     ///
     public let name: String
@@ -45,7 +45,7 @@ public final class Pictogram: Sendable {
     /// Box into which the whole pictogram fits.
     ///
     /// The box is relative to the ``origin``.
-    /// 
+    ///
     public let boundingBox: Rect2D
 
     /// Shape to test collision with mouse pointer, gesture pointer or another pictogram.
