@@ -10,7 +10,7 @@
 /// Each arrowhead type provides different visual representations for connector endpoints.
 /// The arrowheads are drawn as separate stroke paths and can have different sizes at head and tail.
 ///
-public enum ThinArrowheadType: CaseIterable {
+public enum ThinArrowheadType: CaseIterable, Sendable, Equatable {
     /// No arrow-head
     case none
     /// Simple stick arrowhead
@@ -54,7 +54,7 @@ public enum ThinArrowheadType: CaseIterable {
 /// These arrowheads are integrated into the main connector polygon rather than being separate elements.
 /// Used for filled connector styles where the entire connector is drawn as a single filled shape.
 ///
-public enum FatArrowheadType: CaseIterable {
+public enum FatArrowheadType: CaseIterable, Sendable {
     /// No arrowhead.
     case none
     

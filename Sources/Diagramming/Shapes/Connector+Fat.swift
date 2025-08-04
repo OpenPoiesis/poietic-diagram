@@ -11,7 +11,7 @@
 /// with integrated arrowheads. The entire connector including arrowheads is rendered
 /// as one continuous filled path.
 ///
-public struct FatConnectorStyle {
+public struct FatConnectorStyle: Sendable {
     /// The arrowhead type at the target endpoint.
     public var headType: FatArrowheadType
     

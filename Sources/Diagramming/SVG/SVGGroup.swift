@@ -7,23 +7,19 @@
 
 
 /// Group element ('g')
-public class SVGGroup: SVGElement {
-    public var transform: SVGTransform?
+public class SVGGroup: SVGGraphicElement {
     
     public var _children: [SVGElement]
     
-    public init(children: [SVGElement] = []) {
+    public init(parent: SVGElement? = nil, children: [SVGElement] = []) {
         self._children = children
-        super.init()
+        super.init(parent: parent)
     }
     
     // Attributes-based initializer
-    override init(attributes: [String: String]) {
+    override init(parent: SVGElement? = nil, attributes: [String: String]) {
         self._children = []
-        super.init(attributes: attributes)
-        if let string = attributes["transform"] {
-            self.transform = SVGTransform(string)
-        }
+        super.init(parent: parent, attributes: attributes)
     }
 
     public override func children() -> [SVGElement] {
@@ -32,26 +28,24 @@ public class SVGGroup: SVGElement {
     
     public func addChild(_ child: SVGElement) {
         self._children.append(child)
+        child.parent = self
     }
 
     override var rawAttributes: [String:String] {
-        var attributes: [String:String] = super.rawAttributes
-        if let transform { attributes["transform"] = transform.rawValue }
-        return attributes
+        return super.rawAttributes
     }
 }
 
-public class SVGUse: SVGElement {
+public class SVGUse: SVGGraphicElement {
     public var x: Double?
     public var y: Double?
     public var width: Double?
     public var height: Double?
     public var href: String?
-    public var transform: SVGTransform?
     
     // Attributes-based initializer
-    override init(attributes: [String: String] = [:]) {
-        super.init(attributes: attributes)
+    public override init(parent: SVGElement? = nil, attributes: [String: String] = [:]) {
+        super.init(parent: parent, attributes: attributes)
         if let value = attributes["x"] {
             self.x = stringToSVGLength(value)
         }
@@ -65,10 +59,6 @@ public class SVGUse: SVGElement {
             self.height = stringToSVGLength(value)
         }
         self.href = attributes["href"] ?? attributes["xlink:href"]
-        
-        if let transformString = attributes["transform"] {
-            self.transform = SVGTransform(transformString)
-        }
     }
     
     override var rawAttributes: [String:String] {
@@ -78,7 +68,6 @@ public class SVGUse: SVGElement {
         if let width { attributes["width"] = String(width) }
         if let height { attributes["height"] = String(height) }
         if let href { attributes["href"] = href }
-        if let transform { attributes["transform"] = transform.rawValue }
         return attributes
     }
 }
@@ -92,9 +81,9 @@ public class SVGSymbol: SVGElement {
     public var _children: [SVGElement]
     
     // Attributes-based initializer
-    override init(attributes: [String: String] = [:]) {
+    public override init(parent: SVGElement? = nil, attributes: [String: String] = [:]) {
         self._children = []
-        super.init(attributes: attributes)
+        super.init(parent: parent, attributes: attributes)
         if let value = attributes["width"] {
             self.width = stringToSVGLength(value)
         }
@@ -113,6 +102,7 @@ public class SVGSymbol: SVGElement {
 
     public func addChild(_ child: SVGElement) {
         self._children.append(child)
+        child.parent = self
     }
 
     override var rawAttributes: [String:String] {

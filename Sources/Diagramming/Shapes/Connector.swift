@@ -9,7 +9,7 @@
 ///
 /// Defines whether a connector should be drawn as thin stroked paths or fat filled polygons.
 ///
-public enum ConnectorStyle {
+public enum ConnectorStyle: Sendable {
     /// Thin connector drawn as stroked paths with separate arrowhead elements.
     case thin(ThinConnectorStyle)
     
@@ -32,6 +32,8 @@ public enum ConnectorStyle {
 /// - Visual styling through ShapeStyle properties
 ///
 public class Connector {
+    public var id: Diagram.ElementID? = nil
+    
     /// The starting point of the connector.
     public var originPoint: Vector2D
     
@@ -41,9 +43,6 @@ public class Connector {
     /// Optional intermediate waypoints the connector routes through.
     public var midpoints: [Vector2D]
     
-    /// The base size used for arrowheads and other size-dependent elements.
-    public var size: Double
-    
     /// The connector style (thin or fat) with associated configuration.
     public var style: ConnectorStyle
     
@@ -51,20 +50,36 @@ public class Connector {
     public var shapeStyle: ShapeStyle
     
 
-    public init(originPoint: Vector2D = .zero,
+    public init(id: Diagram.ElementID? = nil,
+                originPoint: Vector2D = .zero,
                 targetPoint: Vector2D = .zero,
                 midpoints: [Vector2D] = [],
-                size: Double = 10.0,
                 style: ConnectorStyle = .thin(ThinConnectorStyle()),
                 shapeStyle: ShapeStyle = ShapeStyle()) {
+        self.id = id
         self.originPoint = originPoint
         self.targetPoint = targetPoint
         self.midpoints = midpoints
-        self.size = size
         self.style = style
         self.shapeStyle = shapeStyle
     }
-    
+   
+    // TODO: This is ported from Godot Poietic Playground
+    public func update(originShape: CollisionShape, originPosition: Vector2D, targetShape: CollisionShape, targetPosition: Vector2D) {
+        
+        let (originSegment, targetSegment) = endpointSegments()
+        let originIntersects = Geometry.shapeTouchPoint(from: originSegment.start,
+                                                        shape: originShape,
+                                                        shapePosition: originPosition)
+        let targetIntersects = Geometry.shapeTouchPoint(from: targetSegment.start,
+                                                        shape: targetShape,
+                                                        shapePosition: targetPosition)
+        
+        self.originPoint = originIntersects
+        self.targetPoint = targetIntersects
+        
+        
+    }
     public func setEndpoints(origin: Vector2D, target: Vector2D) {
         self.originPoint = origin
         self.targetPoint = target
@@ -84,6 +99,43 @@ public class Connector {
         
     }
     
+    /// Get line segments pointing to the connector's endpoints.
+    ///
+    /// Both segments end at respective endpoint. If the connector has midpoints, then the segments
+    /// originate in first midpoint for connector origin and last midpoint for connector target.
+    /// If the connector does not have midpoints, then the origin segment originates in target
+    /// and vice versa.
+    ///
+    public func endpointSegments() -> (origin: LineSegment, target: LineSegment) {
+        let originSegment: LineSegment
+        let targetSegment: LineSegment
+
+        if let first = midpoints.first, let last = midpoints.last {
+            originSegment = LineSegment(from: first, to: originPoint)
+            targetSegment = LineSegment(from: last, to: targetPoint)
+        }
+        else {
+            originSegment = LineSegment(from: targetPoint, to: originPoint)
+            targetSegment = LineSegment(from: originPoint, to: targetPoint)
+        }
+        return (origin: originSegment, target: targetSegment)
+    }
+
+    public func adjacentSegmentPoints(origin: Vector2D, target: Vector2D, midpoints: [Vector2D]) -> (origin: Vector2D, target: Vector2D) {
+        let originAdj: Vector2D
+        let targetAdj: Vector2D
+
+        if let first = midpoints.first, let last = midpoints.last {
+            targetAdj = first
+            originAdj = last
+        }
+        else {
+            targetAdj = origin
+            originAdj = target
+        }
+        return (origin: originAdj, target: targetAdj)
+    }
+
     /// Get directions for the origin and target arrowheads, considering the midpoints if present.
     ///
     public func arrowhadDirections() -> (origin: Vector2D, target: Vector2D) {

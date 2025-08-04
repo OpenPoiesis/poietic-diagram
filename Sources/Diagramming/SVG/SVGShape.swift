@@ -44,7 +44,7 @@ public func stringToSVGPoints(_ string: String, dpi: Double = DefaultSVGLengthDP
 }
 
 // Base class for shape elements
-public class SVGShape: SVGElement {
+public class SVGGeometryElement: SVGGraphicElement {
     public var elementName: String { "shape" }
 
     public var fill: String?
@@ -52,19 +52,15 @@ public class SVGShape: SVGElement {
     public var strokeWidth: Double
     public var strokeLineCap: String?
     public var strokeLineJoin: String?
-    public var transform: SVGTransform?
     
-    override init(attributes: [String: String] = [:]) {
+    public override init(parent: SVGElement? = nil, attributes: [String: String] = [:]) {
         self.fill = attributes["fill"]
         self.stroke = attributes["stroke"]
         self.strokeWidth = SVGAttributeToLength(attributes["stroke-width"], default: 1.0)
         self.strokeLineCap = attributes["stroke-linecap"]
         self.strokeLineJoin = attributes["stroke-linejoin"]
         
-        if let string = attributes["transform"] {
-            self.transform = SVGTransform(string)
-        }
-        super.init(attributes: attributes)
+        super.init(parent: parent, attributes: attributes)
     }
 
     override var rawAttributes: [String:String] {
@@ -74,24 +70,23 @@ public class SVGShape: SVGElement {
         attributes["stroke-width"] = String(strokeWidth)
         if let strokeLineCap { attributes["stroke-linecap"] = String(strokeLineCap) }
         if let strokeLineJoin { attributes["stroke-linejoin"] = String(strokeLineJoin) }
-        if let transform { attributes["transform"] = transform.rawValue }
         return attributes
     }
 }
 
 // Specific shape elements
-public class SVGCircle: SVGShape {
+public class SVGCircle: SVGGeometryElement {
     public override var elementName: String { "circle" }
 
     public var cx: Double
     public var cy: Double
     public var r: Double
     
-    override init(attributes: [String: String] = [:]) {
+    override init(parent: SVGElement? = nil, attributes: [String: String] = [:]) {
         self.cx = SVGAttributeToLength(attributes["cx"])
         self.cy = SVGAttributeToLength(attributes["cy"])
         self.r = SVGAttributeToLength(attributes["r"])
-        super.init(attributes: attributes)
+        super.init(parent: parent, attributes: attributes)
     }
 
     override var rawAttributes: [String:String] {
@@ -103,7 +98,7 @@ public class SVGCircle: SVGShape {
     }
 }
 
-public class SVGEllipse: SVGShape {
+public class SVGEllipse: SVGGeometryElement {
     public override var elementName: String { "ellipse" }
 
     public var cx: Double
@@ -111,12 +106,12 @@ public class SVGEllipse: SVGShape {
     public var rx: Double
     public var ry: Double
     
-    override init(attributes: [String: String] = [:]) {
+    override init(parent: SVGElement? = nil, attributes: [String: String] = [:]) {
         self.cx = SVGAttributeToLength(attributes["cx"])
         self.cy = SVGAttributeToLength(attributes["cy"])
         self.rx = SVGAttributeToLength(attributes["rx"])
         self.ry = SVGAttributeToLength(attributes["ry"])
-        super.init(attributes: attributes)
+        super.init(parent: parent, attributes: attributes)
     }
 
     override var rawAttributes: [String:String] {
@@ -129,7 +124,7 @@ public class SVGEllipse: SVGShape {
     }
 }
 
-public class SVGLine: SVGShape {
+public class SVGLine: SVGGeometryElement {
     public override var elementName: String { "line" }
 
     public var x1: Double
@@ -137,12 +132,12 @@ public class SVGLine: SVGShape {
     public var x2: Double
     public var y2: Double
 
-    override init(attributes: [String: String] = [:]) {
+    override init(parent: SVGElement? = nil, attributes: [String: String] = [:]) {
         self.x1 = SVGAttributeToLength(attributes["x1"])
         self.y1 = SVGAttributeToLength(attributes["y1"])
         self.x2 = SVGAttributeToLength(attributes["x2"])
         self.y2 = SVGAttributeToLength(attributes["y2"])
-        super.init(attributes: attributes)
+        super.init(parent: parent, attributes: attributes)
     }
 
     override var rawAttributes: [String:String] {
@@ -155,13 +150,13 @@ public class SVGLine: SVGShape {
     }
 }
 
-public class SVGPolygon: SVGShape {
+public class SVGPolygon: SVGGeometryElement {
     public override var elementName: String { "polygon" }
 
     public var points: [Vector2D] = []
     
-    override init(attributes: [String: String] = [:]) {
-        super.init(attributes: attributes)
+    override init(parent: SVGElement? = nil, attributes: [String: String] = [:]) {
+        super.init(parent: parent, attributes: attributes)
         if let string = attributes["points"], let points = stringToSVGPoints(string) {
             self.points = points
         }
@@ -176,13 +171,13 @@ public class SVGPolygon: SVGShape {
     }
 }
 
-public class SVGPolyline: SVGShape {
+public class SVGPolyline: SVGGeometryElement {
     public override var elementName: String { "polyline" }
 
     public var points: [Vector2D] = []
     
-    override init(attributes: [String: String] = [:]) {
-        super.init(attributes: attributes)
+    override init(parent: SVGElement? = nil, attributes: [String: String] = [:]) {
+        super.init(parent: parent, attributes: attributes)
         if let string = attributes["points"], let points = stringToSVGPoints(string) {
             self.points = points
         }
@@ -197,7 +192,7 @@ public class SVGPolyline: SVGShape {
     }
 }
 
-public class SVGRectangle: SVGShape {
+public class SVGRectangle: SVGGeometryElement {
     public override var elementName: String { "rect" }
 
     public var x: Double
@@ -207,14 +202,14 @@ public class SVGRectangle: SVGShape {
     public var rx: Double
     public var ry: Double
 
-    override init(attributes: [String: String] = [:]) {
+    override init(parent: SVGElement? = nil, attributes: [String: String] = [:]) {
         self.x = SVGAttributeToLength(attributes["x"])
         self.y = SVGAttributeToLength(attributes["y"])
         self.width = SVGAttributeToLength(attributes["width"])
         self.height = SVGAttributeToLength(attributes["height"])
         self.rx = SVGAttributeToLength(attributes["rx"])
         self.ry = SVGAttributeToLength(attributes["ry"])
-        super.init(attributes: attributes)
+        super.init(parent: parent, attributes: attributes)
     }
 
     override var rawAttributes: [String:String] {

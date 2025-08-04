@@ -275,4 +275,27 @@ public struct StringScanner {
         return String(source[startIndex..<currentIndex])
     }
 
+    /// Scan two comma-separated floating point number (double) values as a 2D vector.
+    public mutating func scanPoint() -> Vector2D? {
+        let savedIndex = self.currentIndex
+
+        self.skipWhitespace()
+        guard let x = scanDouble() else {
+            self.currentIndex = savedIndex
+            return nil
+        }
+
+        self.skipWhitespace()
+        guard accept(",") else {
+            self.currentIndex = savedIndex
+            return nil
+        }
+        self.skipWhitespace()
+
+        guard let y = scanDouble() else {
+            self.currentIndex = savedIndex
+            return nil
+        }
+        return Vector2D(x, y)
+    }
 }

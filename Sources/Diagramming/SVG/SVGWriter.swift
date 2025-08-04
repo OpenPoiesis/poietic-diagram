@@ -70,7 +70,7 @@ public class SVGWriter {
 //            return "desc"
 //        case is SVGMetadata:
 //            return "metadata"
-        case let shape as SVGShape:
+        case let shape as SVGGeometryElement:
             return shape.elementName
         default:
             return "unknown"

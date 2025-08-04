@@ -10,7 +10,7 @@
 /// Defines the visual properties for connectors drawn as stroked paths with separate arrowhead elements.
 /// Supports different arrowhead types at both ends and various line drawing styles.
 ///
-public struct ThinConnectorStyle {
+public struct ThinConnectorStyle: Sendable {
     /// The arrowhead type at the target endpoint.
     public var headType: ThinArrowheadType
     
@@ -44,7 +44,7 @@ public struct ThinConnectorStyle {
 /// Contains the Bezier path for drawing the arrowhead and the offset distance
 /// from the intended endpoint to where the connector line should actually connect.
 ///
-public struct Arrowhead {
+public struct Arrowhead: Sendable {
     /// The Bezier path defining the arrowhead geometry.
     public let path: BezierPath
     

@@ -16,9 +16,9 @@ public class SVGImage: SVGElement {
     public var _children: [SVGElement]
     
     // Attributes-based initializer
-    override init(attributes: [String: String]=[:]) {
+    public override init(parent: SVGElement? = nil, attributes: [String: String]=[:]) {
         self._children = []
-        super.init(attributes: attributes)
+        super.init(parent: parent, attributes: attributes)
         self.width = SVGAttributeToLength(attributes["width"])
         self.height = SVGAttributeToLength(attributes["height"])
         if let string = attributes["viewBox"] {
@@ -31,6 +31,7 @@ public class SVGImage: SVGElement {
     }
     public func addChild(_ child: SVGElement) {
         self._children.append(child)
+        child.parent = self
     }
 
     override var rawAttributes: [String:String] {

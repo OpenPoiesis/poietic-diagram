@@ -6,7 +6,7 @@
 //
 
 
-public class SVGPath: SVGShape {
+public class SVGPath: SVGGeometryElement {
     public enum Component {
         // Move commands
         case moveTo(x: Double, y: Double)
@@ -132,15 +132,15 @@ public class SVGPath: SVGShape {
     public override var elementName: String { "path" }
 
     // Attributes-based initializer
-    override init(attributes: [String: String]) {
-        super.init(attributes: attributes)
+    public override init(parent: SVGElement? = nil, attributes: [String: String]) {
+        super.init(parent: parent, attributes: attributes)
         if let pathString = attributes["d"] {
             var scanner = StringScanner(pathString)
             components = scanner.scanSVGPathComponents() ?? []
         }
     }
 
-    init(_ bezier: BezierPath) {
+    public init(_ bezier: BezierPath) {
         let components: [Component] = bezier.elements.map {
             switch $0 {
             case .moveTo(let point):
@@ -156,7 +156,7 @@ public class SVGPath: SVGShape {
             }
         }
         self.components = components
-        super.init()
+        super.init(parent: nil)
     }
 
     override var rawAttributes: [String:String] {
@@ -165,5 +165,163 @@ public class SVGPath: SVGShape {
             attributes["d"] = self.d
         }
         return attributes
+    }
+    
+    /// Convert this SVG path to a BezierPath
+    ///
+    /// This method converts SVG path components to BezierPath elements, handling coordinate
+    /// transformations and converting SVG-specific commands to their BezierPath equivalents.
+    /// Relative commands are converted to absolute coordinates by tracking the current position.
+    ///
+    /// - Returns: A BezierPath representing this SVG path
+    ///
+    public func toBezierPath() -> BezierPath {
+        var bezierPath = BezierPath()
+        var currentPoint = Vector2D(0, 0)
+        var subpathStart = Vector2D(0, 0)
+        var lastControlPoint: Vector2D?
+        
+        for component in components {
+            switch component {
+            case .moveTo(let x, let y):
+                let point = Vector2D(x, y)
+                bezierPath.move(to: point)
+                currentPoint = point
+                subpathStart = point
+                lastControlPoint = nil
+                
+            case .moveToRelative(let dx, let dy):
+                let point = currentPoint + Vector2D(dx, dy)
+                bezierPath.move(to: point)
+                currentPoint = point
+                subpathStart = point
+                lastControlPoint = nil
+                
+            case .lineTo(let x, let y):
+                let point = Vector2D(x, y)
+                bezierPath.addLine(to: point)
+                currentPoint = point
+                lastControlPoint = nil
+                
+            case .lineToRelative(let dx, let dy):
+                let point = currentPoint + Vector2D(dx, dy)
+                bezierPath.addLine(to: point)
+                currentPoint = point
+                lastControlPoint = nil
+                
+            case .horizontalLineTo(let x):
+                let point = Vector2D(x, currentPoint.y)
+                bezierPath.addLine(to: point)
+                currentPoint = point
+                lastControlPoint = nil
+                
+            case .horizontalLineToRelative(let dx):
+                let point = currentPoint + Vector2D(dx, 0)
+                bezierPath.addLine(to: point)
+                currentPoint = point
+                lastControlPoint = nil
+                
+            case .verticalLineTo(let y):
+                let point = Vector2D(currentPoint.x, y)
+                bezierPath.addLine(to: point)
+                currentPoint = point
+                lastControlPoint = nil
+                
+            case .verticalLineToRelative(let dy):
+                let point = currentPoint + Vector2D(0, dy)
+                bezierPath.addLine(to: point)
+                currentPoint = point
+                lastControlPoint = nil
+                
+            case .curveTo(let x1, let y1, let x2, let y2, let x, let y):
+                let control1 = Vector2D(x1, y1)
+                let control2 = Vector2D(x2, y2)
+                let endPoint = Vector2D(x, y)
+                bezierPath.addCurve(to: endPoint, control1: control1, control2: control2)
+                currentPoint = endPoint
+                lastControlPoint = control2
+                
+            case .curveToRelative(let dx1, let dy1, let dx2, let dy2, let dx, let dy):
+                let control1 = currentPoint + Vector2D(dx1, dy1)
+                let control2 = currentPoint + Vector2D(dx2, dy2)
+                let endPoint = currentPoint + Vector2D(dx, dy)
+                bezierPath.addCurve(to: endPoint, control1: control1, control2: control2)
+                currentPoint = endPoint
+                lastControlPoint = control2
+                
+            case .smoothCurveTo(let x2, let y2, let x, let y):
+                let control2 = Vector2D(x2, y2)
+                let endPoint = Vector2D(x, y)
+                // First control point is reflection of last control point
+                let control1 = lastControlPoint != nil ? 
+                    currentPoint + (currentPoint - lastControlPoint!) : currentPoint
+                bezierPath.addCurve(to: endPoint, control1: control1, control2: control2)
+                currentPoint = endPoint
+                lastControlPoint = control2
+                
+            case .smoothCurveToRelative(let dx2, let dy2, let dx, let dy):
+                let control2 = currentPoint + Vector2D(dx2, dy2)
+                let endPoint = currentPoint + Vector2D(dx, dy)
+                // First control point is reflection of last control point
+                let control1 = lastControlPoint != nil ? 
+                    currentPoint + (currentPoint - lastControlPoint!) : currentPoint
+                bezierPath.addCurve(to: endPoint, control1: control1, control2: control2)
+                currentPoint = endPoint
+                lastControlPoint = control2
+                
+            case .quadraticCurveTo(let x1, let y1, let x, let y):
+                let control = Vector2D(x1, y1)
+                let endPoint = Vector2D(x, y)
+                bezierPath.addQuadCurve(to: endPoint, control: control)
+                currentPoint = endPoint
+                lastControlPoint = control
+                
+            case .quadraticCurveToRelative(let dx1, let dy1, let dx, let dy):
+                let control = currentPoint + Vector2D(dx1, dy1)
+                let endPoint = currentPoint + Vector2D(dx, dy)
+                bezierPath.addQuadCurve(to: endPoint, control: control)
+                currentPoint = endPoint
+                lastControlPoint = control
+                
+            case .smoothQuadraticCurveTo(let x, let y):
+                let endPoint = Vector2D(x, y)
+                // Control point is reflection of last control point
+                let control = lastControlPoint != nil ? 
+                    currentPoint + (currentPoint - lastControlPoint!) : currentPoint
+                bezierPath.addQuadCurve(to: endPoint, control: control)
+                currentPoint = endPoint
+                lastControlPoint = control
+                
+            case .smoothQuadraticCurveToRelative(let dx, let dy):
+                let endPoint = currentPoint + Vector2D(dx, dy)
+                // Control point is reflection of last control point
+                let control = lastControlPoint != nil ? 
+                    currentPoint + (currentPoint - lastControlPoint!) : currentPoint
+                bezierPath.addQuadCurve(to: endPoint, control: control)
+                currentPoint = endPoint
+                lastControlPoint = control
+                
+            case .arcTo(_, _, _, _, _, let x, let y):
+                // For now, convert arcs to lines (proper arc-to-bezier conversion is complex)
+                let endPoint = Vector2D(x, y)
+                bezierPath.addLine(to: endPoint)
+                currentPoint = endPoint
+                lastControlPoint = nil
+                
+            case .arcToRelative(_, _, _, _, _, let dx, let dy):
+                // For now, convert arcs to lines (proper arc-to-bezier conversion is complex)
+                let endPoint = currentPoint + Vector2D(dx, dy)
+                bezierPath.addLine(to: endPoint)
+                currentPoint = endPoint
+                lastControlPoint = nil
+                
+            case .closePath:
+                bezierPath.closeSubpath()
+                currentPoint = subpathStart
+                lastControlPoint = nil
+            }
+        }
+        
+        return bezierPath
     }
 }

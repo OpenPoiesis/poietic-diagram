@@ -823,4 +823,304 @@ struct ScannerTests {
         
         #expect(scanner.atEnd == true)
     }
+    
+    // MARK: - scanPoint Tests
+    
+    @Test("Scan point - basic comma separated")
+    func testScanPointBasic() {
+        var scanner = StringScanner("10.5,20.3")
+        let result = scanner.scanPoint()
+        #expect(result?.x == 10.5)
+        #expect(result?.y == 20.3)
+        #expect(scanner.atEnd == true)
+    }
+    
+    @Test("Scan point - with spaces")
+    func testScanPointWithSpaces() {
+        var scanner = StringScanner("  100 , 200  ")
+        let result = scanner.scanPoint()
+        #expect(result?.x == 100.0)
+        #expect(result?.y == 200.0)
+        #expect(scanner.atEnd == true)
+    }
+    
+    @Test("Scan point - negative coordinates")
+    func testScanPointNegative() {
+        var scanner = StringScanner("-5.5,-10.2")
+        let result = scanner.scanPoint()
+        #expect(result?.x == -5.5)
+        #expect(result?.y == -10.2)
+        #expect(scanner.atEnd == true)
+    }
+    
+    @Test("Scan point - missing comma")
+    func testScanPointMissingComma() {
+        var scanner = StringScanner("10 20")
+        let result = scanner.scanPoint()
+        #expect(result == nil)
+        #expect(scanner.peek() == "1") // Position should be restored
+    }
+    
+    @Test("Scan point - invalid y coordinate")
+    func testScanPointInvalidY() {
+        var scanner = StringScanner("10,abc")
+        let result = scanner.scanPoint()
+        #expect(result == nil)
+        #expect(scanner.peek() == "1") // Position should be restored
+    }
+    
+    // MARK: - scanBezierPathElements Tests
+    
+    @Test("Scan bezier path elements - simple moveTo and lineTo")
+    func testScanBezierPathElementsSimple() {
+        var scanner = StringScanner("M10,20 L30,40 Z")
+        let result = scanner.scanBezierPathElements()
+        #expect(result?.count == 3)
+        
+        if let elements = result {
+            if case .moveTo(let point) = elements[0] {
+                #expect(point.x == 10.0)
+                #expect(point.y == 20.0)
+            } else {
+                #expect(Bool(false), "First element should be moveTo")
+            }
+            
+            if case .lineTo(let point) = elements[1] {
+                #expect(point.x == 30.0)
+                #expect(point.y == 40.0)
+            } else {
+                #expect(Bool(false), "Second element should be lineTo")
+            }
+            
+            if case .closePath = elements[2] {
+                // Success
+            } else {
+                #expect(Bool(false), "Third element should be closePath")
+            }
+        }
+    }
+    
+    @Test("Scan bezier path elements - quadratic curve")
+    func testScanBezierPathElementsQuadCurve() {
+        var scanner = StringScanner("M100,200 Q150,100 200,200")
+        let result = scanner.scanBezierPathElements()
+        #expect(result?.count == 2)
+        
+        if let elements = result {
+            if case .moveTo(let point) = elements[0] {
+                #expect(point.x == 100.0)
+                #expect(point.y == 200.0)
+            } else {
+                #expect(Bool(false), "First element should be moveTo")
+            }
+            
+            if case .quadCurveTo(let control, let end) = elements[1] {
+                #expect(control.x == 150.0)
+                #expect(control.y == 100.0)
+                #expect(end.x == 200.0)
+                #expect(end.y == 200.0)
+            } else {
+                #expect(Bool(false), "Second element should be quadCurveTo")
+            }
+        }
+    }
+    
+    @Test("Scan bezier path elements - compact format")
+    func testScanBezierPathElementsCompact() {
+        var scanner = StringScanner("M10,20L30,40Q50,10,70,40Z")
+        let result = scanner.scanBezierPathElements()
+        #expect(result?.count == 4)
+        
+        if let elements = result {
+            if case .moveTo(let point) = elements[0] {
+                #expect(point.x == 10.0)
+                #expect(point.y == 20.0)
+            } else {
+                #expect(Bool(false), "First element should be moveTo")
+            }
+            
+            if case .lineTo(let point) = elements[1] {
+                #expect(point.x == 30.0)
+                #expect(point.y == 40.0)
+            } else {
+                #expect(Bool(false), "Second element should be lineTo")
+            }
+            
+            if case .quadCurveTo(let control, let end) = elements[2] {
+                #expect(control.x == 50.0)
+                #expect(control.y == 10.0)
+                #expect(end.x == 70.0)
+                #expect(end.y == 40.0)
+            } else {
+                #expect(Bool(false), "Third element should be quadCurveTo")
+            }
+            
+            if case .closePath = elements[3] {
+                // Success
+            } else {
+                #expect(Bool(false), "Fourth element should be closePath")
+            }
+        }
+    }
+    
+    @Test("Scan bezier path elements - relative commands")
+    func testScanBezierPathElementsRelative() {
+        var scanner = StringScanner("m10,20 l30,40 q50,10,70,40 z")
+        let result = scanner.scanBezierPathElements()
+        #expect(result?.count == 4)
+        
+        // Note: Our implementation treats relative as absolute for now
+        if let elements = result {
+            if case .moveTo(let point) = elements[0] {
+                #expect(point.x == 10.0)
+                #expect(point.y == 20.0)
+            } else {
+                #expect(Bool(false), "First element should be moveTo")
+            }
+        }
+    }
+    
+    @Test("Scan bezier path elements - invalid command")
+    func testScanBezierPathElementsInvalidCommand() {
+        var scanner = StringScanner("M10,20 X30,40")
+        let result = scanner.scanBezierPathElements()
+        #expect(result == nil)
+        #expect(scanner.peek() == "M") // Position should be restored
+    }
+    
+    @Test("Scan bezier path elements - empty string")
+    func testScanBezierPathElementsEmpty() {
+        var scanner = StringScanner("")
+        let result = scanner.scanBezierPathElements()
+        #expect(result?.isEmpty == true)
+    }
+    
+    @Test("Scan bezier path elements - whitespace handling")
+    func testScanBezierPathElementsWhitespace() {
+        var scanner = StringScanner("  M  10,20   L  30,40   Z  ")
+        let result = scanner.scanBezierPathElements()
+        #expect(result?.count == 3)
+        
+        if let elements = result {
+            if case .moveTo(let point) = elements[0] {
+                #expect(point.x == 10.0)
+                #expect(point.y == 20.0)
+            } else {
+                #expect(Bool(false), "First element should be moveTo")
+            }
+        }
+    }
+    
+    // MARK: - SVGPath toBezierPath Tests
+    
+    @Test("SVGPath toBezierPath - simple path")
+    func testSVGPathToBezierPathSimple() {
+        let svgPath = SVGPath(attributes: ["d": "M 10 20 L 30 40 Z"])
+        let bezierPath = svgPath.toBezierPath()
+        
+        #expect(bezierPath.elements.count == 3)
+        
+        if case .moveTo(let point) = bezierPath.elements[0] {
+            #expect(point.x == 10.0)
+            #expect(point.y == 20.0)
+        } else {
+            #expect(Bool(false), "First element should be moveTo")
+        }
+        
+        if case .lineTo(let point) = bezierPath.elements[1] {
+            #expect(point.x == 30.0)
+            #expect(point.y == 40.0)
+        } else {
+            #expect(Bool(false), "Second element should be lineTo")
+        }
+        
+        if case .closePath = bezierPath.elements[2] {
+            // Success
+        } else {
+            #expect(Bool(false), "Third element should be closePath")
+        }
+    }
+    
+    @Test("SVGPath toBezierPath - relative commands")
+    func testSVGPathToBezierPathRelative() {
+        let svgPath = SVGPath(attributes: ["d": "M 10 20 l 30 40"])
+        let bezierPath = svgPath.toBezierPath()
+        
+        #expect(bezierPath.elements.count == 2)
+        
+        if case .moveTo(let point) = bezierPath.elements[0] {
+            #expect(point.x == 10.0)
+            #expect(point.y == 20.0)
+        } else {
+            #expect(Bool(false), "First element should be moveTo")
+        }
+        
+        if case .lineTo(let point) = bezierPath.elements[1] {
+            #expect(point.x == 40.0) // 10 + 30
+            #expect(point.y == 60.0) // 20 + 40
+        } else {
+            #expect(Bool(false), "Second element should be lineTo")
+        }
+    }
+    
+    @Test("SVGPath toBezierPath - quadratic curve")
+    func testSVGPathToBezierPathQuadCurve() {
+        let svgPath = SVGPath(attributes: ["d": "M 100 200 Q 150 100 200 200"])
+        let bezierPath = svgPath.toBezierPath()
+        
+        #expect(bezierPath.elements.count == 2)
+        
+        if case .moveTo(let point) = bezierPath.elements[0] {
+            #expect(point.x == 100.0)
+            #expect(point.y == 200.0)
+        } else {
+            #expect(Bool(false), "First element should be moveTo")
+        }
+        
+        if case .quadCurveTo(let control, let end) = bezierPath.elements[1] {
+            #expect(control.x == 150.0)
+            #expect(control.y == 100.0)
+            #expect(end.x == 200.0)
+            #expect(end.y == 200.0)
+        } else {
+            #expect(Bool(false), "Second element should be quadCurveTo")
+        }
+    }
+    
+    @Test("SVGPath toBezierPath - horizontal and vertical lines")
+    func testSVGPathToBezierPathHorizontalVertical() {
+        let svgPath = SVGPath(attributes: ["d": "M 10 20 H 50 V 80"])
+        let bezierPath = svgPath.toBezierPath()
+        
+        #expect(bezierPath.elements.count == 3)
+        
+        if case .moveTo(let point) = bezierPath.elements[0] {
+            #expect(point.x == 10.0)
+            #expect(point.y == 20.0)
+        } else {
+            #expect(Bool(false), "First element should be moveTo")
+        }
+        
+        if case .lineTo(let point) = bezierPath.elements[1] {
+            #expect(point.x == 50.0)
+            #expect(point.y == 20.0) // Y should remain the same
+        } else {
+            #expect(Bool(false), "Second element should be lineTo")
+        }
+        
+        if case .lineTo(let point) = bezierPath.elements[2] {
+            #expect(point.x == 50.0) // X should remain the same
+            #expect(point.y == 80.0)
+        } else {
+            #expect(Bool(false), "Third element should be lineTo")
+        }
+    }
+    
+    @Test("SVGPath toBezierPath - empty path")
+    func testSVGPathToBezierPathEmpty() {
+        let svgPath = SVGPath(attributes: [:])
+        let bezierPath = svgPath.toBezierPath()
+        
+        #expect(bezierPath.elements.isEmpty)
+    }
 }

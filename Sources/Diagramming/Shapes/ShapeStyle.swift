@@ -11,7 +11,7 @@
 /// Defines appearance characteristics including stroke width, stroke colour, and fill colour.
 /// Used by connectors and other drawable elements to control their visual presentation.
 ///
-public struct ShapeStyle: Equatable {
+public struct ShapeStyle: Equatable, Sendable {
     // TODO: Make colours optional, where nil = default
     
     /// The width of the stroke/outline in points.
@@ -36,7 +36,7 @@ public struct ShapeStyle: Equatable {
 ///
 /// Controls how lines are drawn between connector endpoints and through midpoints.
 ///
-public enum LineType: CaseIterable {
+public enum LineType: CaseIterable, Sendable {
     /// Direct straight line connections between points.
     case straight
     
@@ -51,7 +51,7 @@ public enum LineType: CaseIterable {
 ///
 /// Used in fat connectors to control the appearance of polygon joins where line segments meet.
 ///
-public enum JoinType: CaseIterable {
+public enum JoinType: CaseIterable, Sendable {
     /// Sharp corners that create pointed joins.
     case miter
     

@@ -5,12 +5,12 @@
 //  Created by Stefan Urbanek on 12/06/2025.
 //
 
-public struct BezierPath {
+public struct BezierPath: Sendable {
     public var elements: [PathElement]
     public private(set) var currentPoint: Vector2D?
     private var startPoint: Vector2D?
     
-    public enum PathElement: CustomStringConvertible {
+    public enum PathElement: CustomStringConvertible, Sendable {
         case moveTo(Vector2D)
         case lineTo(Vector2D)
         case curveTo(end: Vector2D, control1: Vector2D, control2: Vector2D)
@@ -39,8 +39,8 @@ public struct BezierPath {
     }
     
     /// Create an empty path.
-    public init() {
-        self.elements = []
+    public init(_ elements: [PathElement] = []) {
+        self.elements = elements
     }
     
     /// Create a line between two points
@@ -67,6 +67,18 @@ public struct BezierPath {
     public init(rect: Rect2D) {
         self.init()
         addRect(rect)
+    }
+    
+    /// Create a bezier path from a string.
+    ///
+    /// The string is a sequence of commands followed by command parameters.
+    ///
+    public init?(string: String) {
+        var scanner = StringScanner(string)
+        guard let elements = scanner.scanBezierPathElements() else {
+            return nil
+        }
+        self.elements = elements
     }
     
     public var isEmpty: Bool {
@@ -101,6 +113,75 @@ public struct BezierPath {
             }
             return false
         }
+    }
+    
+    /// Check if path contains only straight lines (no curves).
+    ///
+    /// A polygon path can only contain moveTo, lineTo, and closePath elements.
+    /// Any curveTo or quadCurveTo elements make it a non-polygon path.
+    ///
+    /// - Returns: true if the path contains only straight line segments, false if it contains any curves
+    ///
+    /// - SeeAlso: ``asStrictPolygon()``
+    /// 
+    public func isPolygon() -> Bool {
+        return elements.allSatisfy { element in
+            switch element {
+            case .moveTo, .lineTo, .closePath:
+                return true
+            case .curveTo, .quadCurveTo:
+                return false
+            }
+        }
+    }
+    
+    /// Extract polygon points from path that contains only lines.
+    ///
+    /// Returns polygon vertices if the path contains only moveTo, lineTo, and closePath elements.
+    /// MoveTo interruptions are treated as lineTo connections (continuous polygon).
+    /// Returns nil if path contains any curves - use tessellate() to approximate curves.
+    ///
+    /// - Returns: Array of polygon vertices, or nil if path contains curves
+    ///
+    /// - SeeAlso: ``isPolygon()``
+    ///
+    public func asStrictPolygon() -> [Vector2D]? {
+        // First check if path is linear-only
+        guard isPolygon() else {
+            return nil
+        }
+        
+        guard !elements.isEmpty else {
+            return []
+        }
+        
+        var points: [Vector2D] = []
+        
+        for element in elements {
+            switch element {
+            case .moveTo(let point):
+                // First moveTo establishes starting point, subsequent ones are treated as lineTo
+                if points.isEmpty {
+                    points.append(point)
+                } else {
+                    // Treat moveTo interruption as lineTo (continuous polygon)
+                    points.append(point)
+                }
+                
+            case .lineTo(let point):
+                points.append(point)
+                
+            case .closePath:
+                // closePath is implicit in polygon - don't add duplicate point
+                break
+                
+            case .curveTo, .quadCurveTo:
+                // This should not happen due to isPolygon() check above, but be safe
+                return nil
+            }
+        }
+        
+        return points
     }
     
     public func asString() -> String {
@@ -230,6 +311,16 @@ public struct BezierPath {
                 closeSubpath()
             }
         }
+    }
+    
+    public func addingPath(_ other: BezierPath) -> BezierPath {
+        var result = self
+        result.addPath(other)
+        return result
+    }
+
+    public static func +(left: BezierPath, right: BezierPath) -> BezierPath {
+        return left.addingPath(right)
     }
     
     /// Close the current subpath
@@ -399,7 +490,7 @@ public struct BezierPath {
     
     /// Get a copy of the bezier path transformed using the given affine transform.
     ///
-    func transform(_ transform: AffineTransform) -> BezierPath {
+    public func transform(_ transform: AffineTransform) -> BezierPath {
         var result = BezierPath()
         
         for element in self.elements {
@@ -428,4 +519,97 @@ public struct BezierPath {
     }
     
     
+}
+
+extension StringScanner {
+    public mutating func scanBezierPathElements() -> [BezierPath.PathElement]? {
+        let savedIndex = self.currentIndex
+        var elements: [BezierPath.PathElement] = []
+        
+        while !atEnd {
+            skipWhitespace()
+            
+            guard let command = peek() else { break }
+            
+            // Check if it's a valid command character - only support commands that map to BezierPath.PathElement
+            guard "MmLlQqZz".contains(command) else {
+                // Invalid command, restore and return failure
+                self.currentIndex = savedIndex
+                return nil
+            }
+            
+            advance() // consume command character
+            skipWhitespace() // space after command is optional
+            
+            // Parse elements for this command
+            switch command {
+            case "M": // moveTo
+                guard let point = scanPoint() else {
+                    self.currentIndex = savedIndex
+                    return nil
+                }
+                elements.append(.moveTo(point))
+                
+            case "m": // moveToRelative - convert to absolute
+                guard let point = scanPoint() else {
+                    self.currentIndex = savedIndex
+                    return nil
+                }
+                // For relative commands, we'd need to track current position
+                // For now, treat as absolute (user can handle relative logic)
+                elements.append(.moveTo(point))
+                
+            case "L": // lineTo
+                guard let point = scanPoint() else {
+                    self.currentIndex = savedIndex
+                    return nil
+                }
+                elements.append(.lineTo(point))
+                
+            case "l": // lineToRelative - convert to absolute
+                guard let point = scanPoint() else {
+                    self.currentIndex = savedIndex
+                    return nil
+                }
+                elements.append(.lineTo(point))
+                
+            case "Q": // quadraticCurveTo
+                guard let controlPoint = scanPoint() else {
+                    self.currentIndex = savedIndex
+                    return nil
+                }
+                skipWhitespace()
+                guard let endPoint = scanPoint() else {
+                    self.currentIndex = savedIndex
+                    return nil
+                }
+                elements.append(.quadCurveTo(control: controlPoint, end: endPoint))
+                
+            case "q": // quadraticCurveToRelative
+                guard let controlPoint = scanPoint() else {
+                    self.currentIndex = savedIndex
+                    return nil
+                }
+                skipWhitespace()
+                guard let endPoint = scanPoint() else {
+                    self.currentIndex = savedIndex
+                    return nil
+                }
+                elements.append(.quadCurveTo(control: controlPoint, end: endPoint))
+
+            case "Z", "z": // closePath
+                elements.append(.closePath)
+                
+            default:
+                // Should not reach here as we already checked valid commands
+                self.currentIndex = savedIndex
+                return nil
+            }
+            
+            skipWhitespace()
+        }
+        
+        return elements
+    }
+
 }

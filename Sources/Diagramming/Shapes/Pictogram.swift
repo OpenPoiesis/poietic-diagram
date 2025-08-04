@@ -9,33 +9,11 @@ struct Magnet {
     public let position: Vector2D
 }
 
-public enum CollisionShape {
-    case circle(Double)
-    case rectangle(Vector2D)
-    case convexPolygon([Vector2D])
-    
-    public var size: Vector2D {
-        switch self {
-        case .circle(let radius): return Vector2D(radius * 2, radius * 2)
-        case .rectangle(let size): return size
-        case .convexPolygon(let points):
-            let (minX, minY, maxX, maxY) = points.reduce( (0.0, 0.0, 0.0, 0.0) ) {
-                (result, point) in
-                (min(result.0, point.x),
-                 min(result.1, point.y),
-                 max(result.2, point.x),
-                 max(result.3, point.y))
-            }
-            return Vector2D(maxX - minX, maxY - minY)
-        }
-    }
-}
-
 /// Pictogram is a visual representation of a design object.
 ///
 /// - ToDo: Make coordinates to be lower-left corner.
 ///
-public class Pictogram {
+public final class Pictogram: Sendable {
     /// Name by which pictogram is referenced to.
     ///
     public let name: String
@@ -57,15 +35,26 @@ public class Pictogram {
     ///
     /// - SeeAlso: ``origin``
     public let maskShape: CollisionShape
-    /// Origin of the pictogram's mask shape and collision shape.
+    
+    /// Coordinate origin of the pictogram and its masks.
+    ///
+    /// The ``path``, ``maskShape`` and ``collisionShape``  are relative to the ``origin``.
+    ///
     public let origin: Vector2D
     
     /// Box into which the whole pictogram fits.
+    ///
+    /// The box is relative to the ``origin``.
+    /// 
     public let boundingBox: Rect2D
 
     /// Shape to test collision with mouse pointer, gesture pointer or another pictogram.
     ///
-    /// - SeeAlso: ``origin``
+    /// Collision shape is also used as a boundary for clipping connectors to or from the pictogram.
+    ///
+    /// By default, the collision shape is the same as the mask shape.
+    ///
+    /// - SeeAlso: ``origin``, ``maskShape``.
     ///
     public let collisionShape: CollisionShape
     

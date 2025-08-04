@@ -54,7 +54,7 @@ extension Vector2D {
 
 /// Structure representing a 2D rectangle.
 ///
-public struct Rect2D {
+public struct Rect2D: Equatable, Sendable {
     public var origin: Vector2D
     public var size: Vector2D
     
@@ -102,10 +102,14 @@ public struct Rect2D {
             size: Vector2D(newMaxX - newMinX, newMaxY - newMinY)
         )
     }
+    
+    public func translated(_ offset: Vector2D) -> Rect2D {
+        return Rect2D(origin: origin + offset, size: self.size)
+    }
 }
 
 
-public struct LineSegment {
+public struct LineSegment: Equatable, Sendable {
     public var start: Vector2D
     public var end: Vector2D
     
@@ -115,6 +119,12 @@ public struct LineSegment {
         self.end = end
     }
 
+    public init(fromX: Vector2D.Scalar, fromY: Vector2D.Scalar,
+                toX: Vector2D.Scalar, toY: Vector2D.Scalar) {
+        self.start = Vector2D(fromX, fromY)
+        self.end = Vector2D(toX, toY)
+    }
+    
     public var length: Double {
         (start - end).length
     }
@@ -129,7 +139,7 @@ public struct LineSegment {
     /// Finds the center of the line segment (e.g., for placing labels or splitting).
     ///
     public var midpoint: Vector2D {
-        return (start + end) * 0.5
+        return (start + end) / 2
     }
 
     /// Normal Vector (Perpendicular)
