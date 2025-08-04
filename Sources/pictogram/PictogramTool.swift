@@ -32,6 +32,33 @@ func readSVGImage(fromURL: URL) throws -> SVGImage {
     return image
 }
 
+enum SVGPictogramError: Error {
+    /// Path element was not found in the image.
+    case noPictogramPathFound
+    
+    /// Path element has no path components.
+    case emptyPictogramPath
+
+    /// No shape element found in the image.
+    case noShapeFound
+    
+    /// Element is of different type than expected.
+    ///
+    /// For example a collision shape element is expected to be a group element.
+    case elementTypeMismatch(id: String, expected: String)
+    
+    /// Structure of an element is not as expected.
+    ///
+    /// For example: group element for a path must contain only one item and it must be a path.
+    case invalidStructure(id: String, details: String)
+    
+    /// Shape element is of unsupported type or a shape path contains curves.
+    case invalidShape
+    
+    
+}
+
+
 /// Converts SVGPath into a BezierPath while applying all transforms of the svgPath element
 func convertSVGPath(_ svgPath: SVGPath) -> BezierPath {
     // 1. Get a consolidated transform of the svg path parameter
@@ -50,26 +77,34 @@ func convertSVGPath(_ svgPath: SVGPath) -> BezierPath {
     return transformedPath
 }
 
-func extractPictogramPath(image: SVGImage, id: String = "path") -> BezierPath? {
+func extractPictogramPath(image: SVGImage, id: String = "path") throws -> BezierPath {
     // 1. Find an element with given ID
     guard let element = image.first(where: { $0.id == id }) else {
-        return nil
+        throw SVGPictogramError.noPictogramPathFound
     }
     
-    // 2. Make sure the element is a group element, otherwise return nil.
+    // 2. Make sure the element is a group element, otherwise throw error.
     guard let group = element as? SVGGroup else {
-        return nil
+        throw SVGPictogramError.elementTypeMismatch(id: id, expected: "group")
     }
     
-    // 3. Make sure the element contains one child which is a path element, otherwise return nil.
+    // 3. Make sure the element contains one child which is a path element, otherwise throw error.
     let children = group.children()
-    guard children.count == 1,
-          let pathElement = children.first as? SVGPath else {
-        return nil
+    guard children.count == 1 else {
+        throw SVGPictogramError.invalidStructure(id: id, details: "Group must contain exactly one element")
+    }
+    
+    guard let pathElement = children.first as? SVGPath else {
+        throw SVGPictogramError.invalidStructure(id: id, details: "Group must contain exactly one path element")
     }
     
     // 4. Convert the child, which is the path element, using convertSVGPath()
     let bezierPath = convertSVGPath(pathElement)
+    
+    // Check if path is empty
+    if bezierPath.isEmpty {
+        throw SVGPictogramError.emptyPictogramPath
+    }
     
     // 5. Return the path.
     return bezierPath
@@ -82,30 +117,34 @@ func extractPictogramPath(image: SVGImage, id: String = "path") -> BezierPath? {
 ///
 /// - Parameter image: The SVG image to search
 /// - Parameter id: The ID of the group element to find
-/// - Returns: Tuple containing CollisionShape and its center point with transforms applied, or nil if extraction fails
+/// - Returns: Tuple containing CollisionShape and its center point with transforms applied
+/// - Throws: SVGPictogramError if extraction fails
 ///
-func extractPictogramShape(image: SVGImage, id: String = "shape") -> (shape: CollisionShape, center: Vector2D)? {
+func extractPictogramShape(image: SVGImage, id: String = "shape") throws -> (shape: CollisionShape, center: Vector2D) {
     // 1. Find an element with given ID
     guard let element = image.first(where: { $0.id == id }) else {
-        return nil
+        throw SVGPictogramError.noShapeFound
     }
     
-    // 2. Make sure the element is a group element, otherwise return nil.
+    // 2. Make sure the element is a group element, otherwise throw error.
     guard let group = element as? SVGGroup else {
-        return nil
+        throw SVGPictogramError.elementTypeMismatch(id: id, expected: "group")
     }
     
     // 3. Make sure the element contains one child which is one of the valid collision shape types:
     //    circle, rectangle, ellipse, polygon, or path which is a strict polygon (no curves)
     let children = group.children()
-    guard children.count == 1,
-          let child = children.first else {
-        return nil
+    guard children.count == 1 else {
+        throw SVGPictogramError.invalidStructure(id: id, details: "Group must contain exactly one element")
+    }
+    
+    guard let child = children.first else {
+        throw SVGPictogramError.invalidStructure(id: id, details: "Group must contain exactly one shape element")
     }
     
     // Get cumulative transform for the child
     guard let graphicChild = child as? SVGGraphicElement else {
-        return nil
+        throw SVGPictogramError.invalidShape
     }
 
     let transform = graphicChild.cumulativeTransform().asAffineTransform()
@@ -134,14 +173,14 @@ func extractPictogramShape(image: SVGImage, id: String = "shape") -> (shape: Col
     case let polygon as SVGPolygon:
         let points = polygon.points.map { transform.apply(to: $0) }
         guard let center = Geometry.centroid(points: points) else {
-            return nil // Invalid polygon with no points
+            throw SVGPictogramError.invalidShape // Invalid polygon with no points
         }
         return (shape: .polygon(points), center: center)
         
     case let polyline as SVGPolyline:
         let points = polyline.points.map { transform.apply(to: $0) }
         guard let center = Geometry.centroid(points: points) else {
-            return nil // Invalid polyline with no points
+            throw SVGPictogramError.invalidShape // Invalid polyline with no points
         }
         return (shape: .polygon(points), center: center) // Treat polyline as polygon
         
@@ -149,15 +188,15 @@ func extractPictogramShape(image: SVGImage, id: String = "shape") -> (shape: Col
         // Convert SVG path to BezierPath and check if it's a strict polygon
         let bezierPath = convertSVGPath(path)
         guard let points = bezierPath.asStrictPolygon() else {
-            return nil // Path contains curves
+            throw SVGPictogramError.invalidShape // Path contains curves
         }
         guard let center = Geometry.centroid(points: points) else {
-            return nil // Invalid path with no points
+            throw SVGPictogramError.invalidShape // Invalid path with no points
         }
         return (shape: .polygon(points), center: center) // Points are already transformed by convertSVGPath
         
     default:
-        return nil // Unsupported shape type
+        throw SVGPictogramError.invalidShape // Unsupported shape type
     }
 }
 
@@ -200,6 +239,35 @@ func extractOrigin(image: SVGImage, id: String = "origin") -> Vector2D? {
     
     // 4. Element is neither a circle nor a valid group
     return nil
+}
+
+
+func extractPictogram(image: SVGImage, name: String) throws -> Pictogram {
+    // Extract pictogram from a SVG image
+    
+    // 1. Extract pictogram path - required.
+    let path = try extractPictogramPath(image: image)
+    
+    // 2. Extract pictogram shape and its center - required.
+    let shapeResult = try extractPictogramShape(image: image)
+    let collisionShape = shapeResult.shape
+    let shapeCenter = shapeResult.center
+    
+    // 3. Optionally extract origin. If origin is not present, then use shape center as origin.
+    let origin = extractOrigin(image: image) ?? shapeCenter
+    
+    // 4. Compute bounding box of the path.
+    let boundingBox = path.boundingBox! // Force unwrap - guaranteed to work after successful path extraction
+    
+    // 5. Create a pictogram object, make the collision and mask shapes the same.
+    let pictogram = Pictogram(name,
+                              path: path,
+                              maskShape: collisionShape,
+                              origin: origin,
+                              boundingBox: boundingBox,
+                              collisionShape: collisionShape)
+    
+    return pictogram
 }
 
 extension PictogramTool {
