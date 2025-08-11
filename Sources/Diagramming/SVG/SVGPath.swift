@@ -175,7 +175,7 @@ public class SVGPath: SVGGeometryElement {
     ///
     /// - Returns: A BezierPath representing this SVG path
     ///
-    public func toBezierPath() -> BezierPath {
+    public override func toBezierPath() -> BezierPath {
         var bezierPath = BezierPath()
         var currentPoint = Vector2D(0, 0)
         var subpathStart = Vector2D(0, 0)

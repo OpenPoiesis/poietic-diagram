@@ -46,7 +46,7 @@ public func stringToSVGPoints(_ string: String, dpi: Double = DefaultSVGLengthDP
 // Base class for shape elements
 public class SVGGeometryElement: SVGGraphicElement {
     public var elementName: String { "shape" }
-
+    
     public var fill: String?
     public var stroke: String?
     public var strokeWidth: Double
@@ -62,7 +62,7 @@ public class SVGGeometryElement: SVGGraphicElement {
         
         super.init(parent: parent, attributes: attributes)
     }
-
+    
     override var rawAttributes: [String:String] {
         var attributes: [String:String] = super.rawAttributes
         if let fill { attributes["fill"] = fill }
@@ -82,7 +82,7 @@ public class SVGCircle: SVGGeometryElement {
     public var cy: Double
     public var r: Double
     
-    override init(parent: SVGElement? = nil, attributes: [String: String] = [:]) {
+    public override init(parent: SVGElement? = nil, attributes: [String: String] = [:]) {
         self.cx = SVGAttributeToLength(attributes["cx"])
         self.cy = SVGAttributeToLength(attributes["cy"])
         self.r = SVGAttributeToLength(attributes["r"])
@@ -96,24 +96,28 @@ public class SVGCircle: SVGGeometryElement {
         attributes["r"] = String(r)
         return attributes
     }
+    
+    public override func toBezierPath() -> BezierPath {
+        return BezierPath(circle: Vector2D(cx, cy), radius: r)
+    }
 }
 
 public class SVGEllipse: SVGGeometryElement {
     public override var elementName: String { "ellipse" }
-
+    
     public var cx: Double
     public var cy: Double
     public var rx: Double
     public var ry: Double
     
-    override init(parent: SVGElement? = nil, attributes: [String: String] = [:]) {
+    public override init(parent: SVGElement? = nil, attributes: [String: String] = [:]) {
         self.cx = SVGAttributeToLength(attributes["cx"])
         self.cy = SVGAttributeToLength(attributes["cy"])
         self.rx = SVGAttributeToLength(attributes["rx"])
         self.ry = SVGAttributeToLength(attributes["ry"])
         super.init(parent: parent, attributes: attributes)
     }
-
+    
     override var rawAttributes: [String:String] {
         var attributes: [String:String] = super.rawAttributes
         attributes["cx"] = String(cx)
@@ -122,16 +126,20 @@ public class SVGEllipse: SVGGeometryElement {
         attributes["ry"] = String(ry)
         return attributes
     }
+    
+    public override func toBezierPath() -> BezierPath {
+        return BezierPath(ellipse: Vector2D(cx, cy), radiusX: rx, radiusY: ry)
+    }
 }
 
 public class SVGLine: SVGGeometryElement {
     public override var elementName: String { "line" }
-
+    
     public var x1: Double
     public var y1: Double
     public var x2: Double
     public var y2: Double
-
+    
     override init(parent: SVGElement? = nil, attributes: [String: String] = [:]) {
         self.x1 = SVGAttributeToLength(attributes["x1"])
         self.y1 = SVGAttributeToLength(attributes["y1"])
@@ -139,7 +147,7 @@ public class SVGLine: SVGGeometryElement {
         self.y2 = SVGAttributeToLength(attributes["y2"])
         super.init(parent: parent, attributes: attributes)
     }
-
+    
     override var rawAttributes: [String:String] {
         var attributes: [String:String] = super.rawAttributes
         attributes["x1"] = String(x1)
@@ -148,26 +156,36 @@ public class SVGLine: SVGGeometryElement {
         attributes["y2"] = String(y2)
         return attributes
     }
+    public override func toBezierPath() -> BezierPath {
+        return BezierPath(line: Vector2D(x1, y1), to: Vector2D(x2, y2))
+    }
 }
 
 public class SVGPolygon: SVGGeometryElement {
     public override var elementName: String { "polygon" }
-
+    
     public var points: [Vector2D] = []
     
-    override init(parent: SVGElement? = nil, attributes: [String: String] = [:]) {
+    public override init(parent: SVGElement? = nil, attributes: [String: String] = [:]) {
         super.init(parent: parent, attributes: attributes)
         if let string = attributes["points"], let points = stringToSVGPoints(string) {
             self.points = points
         }
     }
-
+    
     override var rawAttributes: [String:String] {
         var attributes: [String:String] = super.rawAttributes
         if !points.isEmpty {
             attributes["points"] = points.map { $0.rawSVGValue }.joined(separator: " ")
         }
         return attributes
+    }
+    
+    public override func toBezierPath() -> BezierPath {
+        var path = BezierPath()
+        path.addLines(between: points)
+        path.closeSubpath()
+        return path
     }
 }
 
@@ -190,19 +208,24 @@ public class SVGPolyline: SVGGeometryElement {
         }
         return attributes
     }
+    public override func toBezierPath() -> BezierPath {
+        var path = BezierPath()
+        path.addLines(between: points)
+        return path
+    }
 }
 
 public class SVGRectangle: SVGGeometryElement {
     public override var elementName: String { "rect" }
-
+    
     public var x: Double
     public var y: Double
     public var width: Double
     public var height: Double
     public var rx: Double
     public var ry: Double
-
-    override init(parent: SVGElement? = nil, attributes: [String: String] = [:]) {
+    
+    public override init(parent: SVGElement? = nil, attributes: [String: String] = [:]) {
         self.x = SVGAttributeToLength(attributes["x"])
         self.y = SVGAttributeToLength(attributes["y"])
         self.width = SVGAttributeToLength(attributes["width"])
@@ -211,7 +234,7 @@ public class SVGRectangle: SVGGeometryElement {
         self.ry = SVGAttributeToLength(attributes["ry"])
         super.init(parent: parent, attributes: attributes)
     }
-
+    
     override var rawAttributes: [String:String] {
         var attributes: [String:String] = super.rawAttributes
         attributes["x"] = String(x)
@@ -222,4 +245,10 @@ public class SVGRectangle: SVGGeometryElement {
         attributes["ry"] = String(ry)
         return attributes
     }
+    
+    public override func toBezierPath() -> BezierPath {
+        let path = BezierPath(rect: Rect2D(x: x, y:y, width: width, height: height))
+        return path
+    }
+
 }

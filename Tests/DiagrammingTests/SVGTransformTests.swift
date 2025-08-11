@@ -9,13 +9,13 @@ struct SVGTransformTests {
     
     @Test("Parse empty transform")
     func testParseEmptyTransform() {
-        let transform = SVGTransform(string: "")
+        let transform = SVGTransformList(string: "")
         #expect(transform.components.isEmpty)
     }
     
     @Test("Parse translate with two parameters")
     func testParseTranslateTwoParams() {
-        let transform = SVGTransform(string: "translate(10, 20)")
+        let transform = SVGTransformList(string: "translate(10, 20)")
         #expect(transform.components.count == 1)
         
         if case .translate(let tx, let ty) = transform.components[0] {
@@ -28,7 +28,7 @@ struct SVGTransformTests {
     
     @Test("Parse translate with one parameter")
     func testParseTranslateOneParam() throws {
-        let transform = SVGTransform(string: "translate(15)")
+        let transform = SVGTransformList(string: "translate(15)")
         try #require(transform.components.count == 1)
         
         if case .translate(let tx, let ty) = transform.components[0] {
@@ -41,7 +41,7 @@ struct SVGTransformTests {
     
     @Test("Parse rotate without center")
     func testParseRotateWithoutCenter() throws {
-        let transform = SVGTransform(string: "rotate(45)")
+        let transform = SVGTransformList(string: "rotate(45)")
         try #require(transform.components.count == 1)
         
         if case .rotate(let angle, let cx, let cy) = transform.components[0] {
@@ -55,7 +55,7 @@ struct SVGTransformTests {
     
     @Test("Parse rotate with center")
     func testParseRotateWithCenter() throws {
-        let transform = SVGTransform(string: "rotate(90, 50, 100)")
+        let transform = SVGTransformList(string: "rotate(90, 50, 100)")
         try #require(transform.components.count == 1)
         
         if case .rotate(let angle, let cx, let cy) = transform.components[0] {
@@ -69,7 +69,7 @@ struct SVGTransformTests {
     
     @Test("Parse scale with two parameters")
     func testParseScaleTwoParams() throws {
-        let transform = SVGTransform(string: "scale(2, 3)")
+        let transform = SVGTransformList(string: "scale(2, 3)")
         try #require(transform.components.count == 1)
         
         if case .scale(let sx, let sy) = transform.components[0] {
@@ -82,7 +82,7 @@ struct SVGTransformTests {
     
     @Test("Parse scale with one parameter")
     func testParseScaleOneParam() {
-        let transform = SVGTransform(string: "scale(1.5)")
+        let transform = SVGTransformList(string: "scale(1.5)")
         #expect(transform.components.count == 1)
         
         if case .scale(let sx, let sy) = transform.components[0] {
@@ -95,7 +95,7 @@ struct SVGTransformTests {
     
     @Test("Parse matrix transform")
     func testParseMatrix() {
-        let transform = SVGTransform(string: "matrix(1, 0, 0, 1, 30, 40)")
+        let transform = SVGTransformList(string: "matrix(1, 0, 0, 1, 30, 40)")
         #expect(transform.components.count == 1)
         
         if case .matrix(let a, let b, let c, let d, let e, let f) = transform.components[0] {
@@ -112,7 +112,7 @@ struct SVGTransformTests {
     
     @Test("Parse skewX transform")
     func testParseSkewX() {
-        let transform = SVGTransform(string: "skewX(30)")
+        let transform = SVGTransformList(string: "skewX(30)")
         #expect(transform.components.count == 1)
         
         if case .skewX(let angle) = transform.components[0] {
@@ -124,7 +124,7 @@ struct SVGTransformTests {
     
     @Test("Parse skewY transform")
     func testParseSkewY() {
-        let transform = SVGTransform(string: "skewY(45)")
+        let transform = SVGTransformList(string: "skewY(45)")
         #expect(transform.components.count == 1)
         
         if case .skewY(let angle) = transform.components[0] {
@@ -138,7 +138,7 @@ struct SVGTransformTests {
     
     @Test("Parse multiple transforms")
     func testParseMultipleTransforms() {
-        let transform = SVGTransform(string: "translate(10, 20) rotate(45) scale(2)")
+        let transform = SVGTransformList(string: "translate(10, 20) rotate(45) scale(2)")
         #expect(transform.components.count == 3)
         
         if case .translate(let tx, let ty) = transform.components[0] {
@@ -168,7 +168,7 @@ struct SVGTransformTests {
     
     @Test("Parse with extra whitespace")
     func testParseWithExtraWhitespace() {
-        let transform = SVGTransform(string: "  translate( 10 , 20 )  rotate( 45 )  ")
+        let transform = SVGTransformList(string: "  translate( 10 , 20 )  rotate( 45 )  ")
         #expect(transform.components.count == 2)
         
         if case .translate(let tx, let ty) = transform.components[0] {
@@ -187,7 +187,7 @@ struct SVGTransformTests {
     
     @Test("Parse with space separators")
     func testParseWithSpaceSeparators() {
-        let transform = SVGTransform(string: "translate(10 20) matrix(1 0 0 1 30 40)")
+        let transform = SVGTransformList(string: "translate(10 20) matrix(1 0 0 1 30 40)")
         #expect(transform.components.count == 2)
         
         if case .translate(let tx, let ty) = transform.components[0] {
@@ -213,7 +213,7 @@ struct SVGTransformTests {
     
     @Test("Parse case insensitive function names")
     func testParseCaseInsensitive() {
-        let transform = SVGTransform(string: "TRANSLATE(10, 20) Rotate(45) SkewX(30)")
+        let transform = SVGTransformList(string: "TRANSLATE(10, 20) Rotate(45) SkewX(30)")
         #expect(transform.components.count == 3)
         
         if case .translate(let tx, let ty) = transform.components[0] {
@@ -240,7 +240,7 @@ struct SVGTransformTests {
     
     @Test("Parse with negative numbers")
     func testParseWithNegativeNumbers() {
-        let transform = SVGTransform(string: "translate(-10, -20) rotate(-45)")
+        let transform = SVGTransformList(string: "translate(-10, -20) rotate(-45)")
         #expect(transform.components.count == 2)
         
         if case .translate(let tx, let ty) = transform.components[0] {
@@ -259,7 +259,7 @@ struct SVGTransformTests {
     
     @Test("Parse with decimal numbers")
     func testParseWithDecimalNumbers() {
-        let transform = SVGTransform(string: "translate(10.5, 20.25) scale(1.5, 2.75)")
+        let transform = SVGTransformList(string: "translate(10.5, 20.25) scale(1.5, 2.75)")
         #expect(transform.components.count == 2)
         
         if case .translate(let tx, let ty) = transform.components[0] {
@@ -279,7 +279,7 @@ struct SVGTransformTests {
     
     @Test("Parse with scientific notation")
     func testParseWithScientificNotation() {
-        let transform = SVGTransform(string: "translate(1e2, 2.5e1)")
+        let transform = SVGTransformList(string: "translate(1e2, 2.5e1)")
         #expect(transform.components.count == 1)
         
         if case .translate(let tx, let ty) = transform.components[0] {
@@ -294,19 +294,19 @@ struct SVGTransformTests {
     
     @Test("Parse invalid function name")
     func testParseInvalidFunctionName() {
-        let transform = SVGTransform(string: "invalidFunction(10, 20)")
+        let transform = SVGTransformList(string: "invalidFunction(10, 20)")
         #expect(transform.components.isEmpty)
     }
     
     @Test("Parse malformed syntax")
     func testParseMalformedSyntax() {
-        let transform = SVGTransform(string: "translate(10, 20 rotate(45)")
+        let transform = SVGTransformList(string: "translate(10, 20 rotate(45)")
         #expect(transform.components.isEmpty)
     }
     
     @Test("Parse insufficient parameters")
     func testParseInsufficientParameters() {
-        let transform = SVGTransform(string: "matrix(1, 0, 0)")
+        let transform = SVGTransformList(string: "matrix(1, 0, 0)")
         #expect(transform.components.isEmpty)
     }
     
@@ -315,7 +315,7 @@ struct SVGTransformTests {
     @Test("Parse complex real-world transform")
     func testParseComplexRealWorldTransform() {
         let transformString = "translate(100, 50) rotate(30, 50, 50) scale(1.2, 0.8) skewX(15)"
-        let transform = SVGTransform(string: transformString)
+        let transform = SVGTransformList(string: transformString)
         #expect(transform.components.count == 4)
         
         if case .translate(let tx, let ty) = transform.components[0] {
@@ -349,7 +349,7 @@ struct SVGTransformTests {
     
     @Test("Parse typical CSS transform")
     func testParseTypicalCSSTransform() {
-        let transform = SVGTransform(string: "translate(50px, 100px) rotate(45deg)")
+        let transform = SVGTransformList(string: "translate(50px, 100px) rotate(45deg)")
         // Should fail to parse because px and deg are not valid numbers in SVG transforms
         #expect(transform.components.count == 0)
     }

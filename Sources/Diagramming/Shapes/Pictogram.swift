@@ -58,7 +58,23 @@ public final class Pictogram: Sendable, Codable {
     ///
     public let collisionShape: CollisionShape
     
+    /// Size of the pictogram derived from the path.
+    ///
+    /// If the path is empty, the size is zero.
+    ///
+    public var size: Vector2D {
+        path.boundingBox?.size ?? .zero
+    }
+    
 //    public let magnets: [Magnet]
+    private enum CodingKeys: String, CodingKey {
+        case name
+        case path
+        case maskShape = "mask_shape"
+        case origin
+        case boundingBox = "bounding_box"
+        case collisionShape = "collision_shape"
+    }
 
     // let decorations
     // let textAnnotations

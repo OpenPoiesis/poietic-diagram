@@ -28,6 +28,12 @@ public struct SVGViewBox {
     var width: Double
     var height: Double
 
+    public init(_ rect: Rect2D) {
+        self.minX = rect.minX
+        self.minY = rect.minY
+        self.width = rect.width
+        self.height = rect.height
+    }
     init?(string: String) {
         var scanner = StringScanner(string)
         

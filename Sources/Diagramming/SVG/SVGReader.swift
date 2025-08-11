@@ -79,6 +79,7 @@ public class SVGReader: NSObject {
         case "rect":
             return SVGRectangle(parent: parent, attributes: attributes)
         default:
+            // TODO: Add clipPath
             throw SVGReaderError.unsupportedElement("Unsupported SVG element: \(name)")
         }
     }

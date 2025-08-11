@@ -98,7 +98,7 @@ public class SVGElement {
     }
     
     /// Returns all ancestor elements from immediate parent to root
-    public func getAncestors() -> [SVGElement] {
+    public func ancestors() -> [SVGElement] {
         var ancestors: [SVGElement] = []
         var current = self.parent
         while let parent = current {
@@ -123,12 +123,12 @@ public class SVGElement {
 
 /// Abstract base class for SVG elements that can have transforms (groups, shapes, use elements)
 public class SVGGraphicElement: SVGElement {
-    public var transform: SVGTransform?
+    public var transform: SVGTransformList?
     
     public override init(parent: SVGElement? = nil, attributes: [String: String] = [:]) {
         super.init(parent: parent, attributes: attributes)
         if let transformString = attributes["transform"] {
-            self.transform = SVGTransform(transformString)
+            self.transform = SVGTransformList(transformString)
         }
     }
     
@@ -140,28 +140,56 @@ public class SVGGraphicElement: SVGElement {
     
     /// Returns the cumulative transform combining all ancestor transforms and this element's transform
     /// according to SVG specification order (ancestor to descendant, left to right within each element)
-    public func cumulativeTransform() -> SVGTransform {
-        var allComponents: [SVGTransform.Component] = []
+    public func cumulativeTransform() -> SVGTransformList {
+        var result = SVGTransformList()
         
         // Collect all ancestor elements with transforms, from root to this element
-        let ancestors = getAncestors().reversed() // Root first, then down to parent
+        let ancestors = ancestors().reversed() // Root first, then down to parent
         
         // Add transform components from ancestors first (root to parent)
         for ancestor in ancestors {
-            if let graphicAncestor = ancestor as? SVGGraphicElement,
-               let ancestorTransform = graphicAncestor.transform {
-                allComponents.append(contentsOf: ancestorTransform.components)
+            if let ancestor = ancestor as? SVGGraphicElement,
+               let transform = ancestor.transform {
+                result.append(contentsOf: transform)
             }
         }
         
         // Finally, add this element's transform components
-        if let selfTransform = self.transform {
-            allComponents.append(contentsOf: selfTransform.components)
+        if let transform = self.transform {
+            result.append(contentsOf: transform)
         }
         
-        // Create new SVGTransform with combined components
-        var result = SVGTransform("")
-        result.components = allComponents
         return result
+    }
+
+    /// Get affine transform from the element's local coordinate system to the coordinate
+    /// system of the nearest viewport element (root SVG element).
+    ///
+    /// Includes all transformations applied to the element and its ancestors up to the viewport.
+    ///
+    public func currentAffineTransform() -> AffineTransform {
+        var result = AffineTransform()
+
+        // Get ancestors from root to the parent (that is why it is reversed).
+        let ancestors = self.ancestors().reversed()
+        
+        for ancestor in ancestors {
+            guard let ancestor = ancestor as? SVGGraphicElement,
+                  let transform = ancestor.transform else {
+                continue
+            }
+            
+            result = result.concatenating(transform.asAffineTransform())
+        }
+        
+        if let transform = self.transform {
+            result = result.concatenating(transform.asAffineTransform())
+        }
+        
+        return result
+    }
+
+    public func toBezierPath() -> BezierPath {
+        fatalError("\(#function) of \(type(of: self)) is not implemented")
     }
 }

@@ -18,6 +18,11 @@ public struct BezierPath: Sendable, Codable {
         case quadCurveTo(control: Vector2D, end: Vector2D)
         case closePath
         
+        private enum CodingKeys: String, CodingKey {
+            case command
+            case parameters
+        }
+        
         public var commandCharacter: Character {
             switch self {
             case .moveTo: "M"
@@ -27,15 +32,100 @@ public struct BezierPath: Sendable, Codable {
             case .closePath: "Z"
             }
         }
+        
+        public var parameters: [Double] {
+            switch self {
+            case .moveTo(let point): [point.x, point.y]
+            case .lineTo(let point): [point.x, point.y]
+            case .curveTo(let end, let control1, let control2): [end.x, end.y, control1.x, control1.y, control2.x, control2.y]
+            case .quadCurveTo(let control, let end): [control.x, control.y, end.x, end.y]
+            case .closePath: []
+            }
+
+        }
+        
         public var description: String {
             switch self {
             case .moveTo(let point): "M\(point.x),\(point.y)"
             case .lineTo(let point): "L\(point.x),\(point.y)"
-            case .curveTo(let end, let control1, let control2): "Q\(end.x),\(end.y) \(control1.x),\(control1.y) \(control2.x),\(control2.y)"
+            case .curveTo(let end, let control1, let control2): "C\(end.x),\(end.y) \(control1.x),\(control1.y) \(control2.x),\(control2.y)"
             case .quadCurveTo(let control, let end): "Q\(control.x),\(control.y),\(end.x),\(end.y)"
             case .closePath: "Z"
             }
         }
+        
+        public init(from decoder: Decoder) throws {
+            let container = try decoder.container(keyedBy: CodingKeys.self)
+            let command = try container.decode(String.self, forKey: .command)
+            let params = try container.decodeIfPresent([Double].self, forKey: .parameters) ?? []
+
+            switch command {
+            case "M":
+                guard params.count == 2 else {
+                    throw DecodingError.typeMismatch(
+                        [Double].self,
+                        DecodingError.Context(codingPath: decoder.codingPath,
+                                              debugDescription: "Move-to expects exactly 2 parameters")
+                    )
+                }
+                self = .moveTo(Vector2D(params[0], params[1]))
+            case "L":
+                guard params.count == 2 else {
+                    throw DecodingError.typeMismatch(
+                        [Double].self,
+                        DecodingError.Context(codingPath: decoder.codingPath,
+                                              debugDescription: "Line-to expects exactly 2 parameters")
+                    )
+                }
+                self = .lineTo(Vector2D(params[0], params[1]))
+            case "C":
+                guard params.count == 6 else {
+                    throw DecodingError.typeMismatch(
+                        [Double].self,
+                        DecodingError.Context(codingPath: decoder.codingPath,
+                                              debugDescription: "Curve-to expects exactly 6 parameters")
+                    )
+                }
+                self = .curveTo(end: Vector2D(params[0], params[1]),
+                                control1: Vector2D(params[2], params[3]),
+                                control2: Vector2D(params[4], params[5]))
+            case "Q":
+                guard params.count == 4 else {
+                    throw DecodingError.typeMismatch(
+                        [Double].self,
+                        DecodingError.Context(codingPath: decoder.codingPath,
+                                              debugDescription: "Quad-curve expects exactly 4 parameters")
+                    )
+                }
+                self = .quadCurveTo(control: Vector2D(params[0], params[1]),
+                                    end: Vector2D(params[2], params[3]))
+            case "Z":
+                guard params.count == 0 else {
+                    throw DecodingError.typeMismatch(
+                        [Double].self,
+                        DecodingError.Context(codingPath: decoder.codingPath,
+                                              debugDescription: "Close path expects no parameters")
+                    )
+                }
+                self = .closePath
+            default:
+                throw DecodingError.typeMismatch(
+                    String.self,
+                    DecodingError.Context(codingPath: decoder.codingPath,
+                                          debugDescription: "Invalid path command '\(command)'")
+                )
+            }
+        }
+        
+        public func encode(to encoder: Encoder) throws {
+            var container = encoder.container(keyedBy: CodingKeys.self)
+            try container.encode(String(self.commandCharacter), forKey: .command)
+            if !self.parameters.isEmpty {
+                try container.encode(self.parameters, forKey: .parameters)
+            }
+        }
+
+        
     }
     
     /// Create an empty path.
@@ -63,6 +153,11 @@ public struct BezierPath: Sendable, Codable {
         addCircle(center: center, radius: radius)
     }
     
+    public init(ellipse center: Vector2D, radiusX: Double, radiusY: Double) {
+        self.init()
+        addEllipse(center: center, radiusX: radiusX, radiusY: radiusY)
+    }
+
     /// Create a rectangle
     public init(rect: Rect2D) {
         self.init()
@@ -78,9 +173,22 @@ public struct BezierPath: Sendable, Codable {
         guard let elements = scanner.scanBezierPathElements() else {
             return nil
         }
-        self.elements = elements
+        self.elements = []
+        self.addElements(elements)
     }
     
+    public init(from decoder: Decoder) throws {
+        let container = try decoder.singleValueContainer()
+        let elements = try container.decode([PathElement].self)
+        self.elements = []
+        self.addElements(elements)
+    }
+    
+    public func encode(to encoder: Encoder) throws {
+        var container = encoder.singleValueContainer()
+        try container.encode(elements)
+    }
+
     public var isEmpty: Bool {
         return elements.isEmpty
     }
@@ -295,9 +403,9 @@ public struct BezierPath: Sendable, Codable {
         closeSubpath()
     }
     
-    /// Add another bezier path to this one
-    public mutating func addPath(_ other: BezierPath) {
-        for element in other.elements {
+    
+    public mutating func addElements(_ elements: [PathElement]) {
+        for element in elements {
             switch element {
             case .moveTo(let point):
                 move(to: point)
@@ -312,6 +420,11 @@ public struct BezierPath: Sendable, Codable {
             }
         }
     }
+
+    /// Add another bezier path to this one
+    public mutating func addPath(_ other: BezierPath) {
+        self.addElements(other.elements)
+    }
     
     public func addingPath(_ other: BezierPath) -> BezierPath {
         var result = self
@@ -322,7 +435,11 @@ public struct BezierPath: Sendable, Codable {
     public static func +(left: BezierPath, right: BezierPath) -> BezierPath {
         return left.addingPath(right)
     }
-    
+
+    public static func +=(left: inout BezierPath, right: BezierPath) {
+        left.addPath(right)
+    }
+
     /// Close the current subpath
     public mutating func closeSubpath() {
         elements.append(.closePath)
@@ -352,9 +469,22 @@ public struct BezierPath: Sendable, Codable {
                     currentPos = point
                 }
                 
-            case .curveTo(_, _, _):
-                // FIXME: Implement this
-                fatalError("Tessellation of curve-to not implemented")
+            case .curveTo(let end, let control1, let control2):
+                if let current = currentPos {
+                    let curvePoints = tessellateCubicCurve(
+                        start: current,
+                        control1: control1,
+                        control2: control2,
+                        end: end,
+                        maxStages: maxStages,
+                        toleranceDegrees: toleranceDegrees
+                    )
+                    // Skip the first point as it's the current position
+                    if curvePoints.count > 1 {
+                        points.append(contentsOf: curvePoints.dropFirst())
+                    }
+                    currentPos = end
+                }
                 
             case .quadCurveTo(let control, let end):
                 if let current = currentPos {
@@ -427,6 +557,119 @@ public struct BezierPath: Sendable, Codable {
         }
         
         return points
+    }
+    
+    private func tessellateCubicCurve(start: Vector2D,
+                                      control1: Vector2D,
+                                      control2: Vector2D,
+                                      end: Vector2D,
+                                      maxStages: Int,
+                                      toleranceDegrees: Double) -> [Vector2D] {
+        
+        var segments = [(start: Vector2D, control1: Vector2D, control2: Vector2D, end: Vector2D)]()
+        segments.append((start, control1, control2, end))
+        
+        let toleranceRadians = toleranceDegrees * .pi / 180.0
+        
+        for _ in 0..<maxStages {
+            var newSegments: [(start: Vector2D, control1: Vector2D, control2: Vector2D, end: Vector2D)] = []
+            var needsSubdivision = false
+            
+            for segment in segments {
+                if shouldSubdivideCubic(segment, toleranceRadians: toleranceRadians) {
+                    let (left, right) = subdivideCubicCurve(segment)
+                    newSegments.append(left)
+                    newSegments.append(right)
+                    needsSubdivision = true
+                } else {
+                    newSegments.append(segment)
+                }
+            }
+            
+            segments = newSegments
+            if !needsSubdivision {
+                break
+            }
+        }
+        
+        // Collect all points: start of first segment, then all end points
+        var points = [start]
+        for segment in segments {
+            points.append(segment.end)
+        }
+        
+        return points
+    }
+    
+    private func shouldSubdivideCubic(
+        _ segment: (start: Vector2D, control1: Vector2D, control2: Vector2D, end: Vector2D),
+        toleranceRadians: Double
+    ) -> Bool {
+        // Calculate midpoint of curve
+        let t = 0.5
+        let curveMidpoint = evaluateCubicCurve(
+            start: segment.start,
+            control1: segment.control1,
+            control2: segment.control2,
+            end: segment.end,
+            t: t
+        )
+        
+        // Calculate midpoint of line segment
+        let lineMidpoint = segment.start.lerp(to: segment.end, t: 0.5)
+        
+        // Calculate distance
+        let distance = curveMidpoint.distance(to: lineMidpoint)
+        
+        // Simple flatness test: if curve deviates from line by more than 0.5 units, subdivide
+        return distance > 0.5
+    }
+    
+    private func subdivideCubicCurve(
+        _ segment: (start: Vector2D, control1: Vector2D, control2: Vector2D, end: Vector2D)
+    ) -> (left: (start: Vector2D, control1: Vector2D, control2: Vector2D, end: Vector2D),
+          right: (start: Vector2D, control1: Vector2D, control2: Vector2D, end: Vector2D)) {
+        
+        // De Casteljau's algorithm for cubic subdivision at t=0.5
+        let p0 = segment.start
+        let p1 = segment.control1
+        let p2 = segment.control2
+        let p3 = segment.end
+        
+        // First level
+        let q0 = p0.lerp(to: p1, t: 0.5)
+        let q1 = p1.lerp(to: p2, t: 0.5)
+        let q2 = p2.lerp(to: p3, t: 0.5)
+        
+        // Second level
+        let r0 = q0.lerp(to: q1, t: 0.5)
+        let r1 = q1.lerp(to: q2, t: 0.5)
+        
+        // Third level (final subdivision point)
+        let s = r0.lerp(to: r1, t: 0.5)
+        
+        let left = (start: p0, control1: q0, control2: r0, end: s)
+        let right = (start: s, control1: r1, control2: q2, end: p3)
+        
+        return (left, right)
+    }
+    
+    private func evaluateCubicCurve(start: Vector2D,
+                                    control1: Vector2D,
+                                    control2: Vector2D,
+                                    end: Vector2D,
+                                    t: Double) -> Vector2D
+    {
+        let t2 = t * t
+        let t3 = t2 * t
+        let mt = 1.0 - t
+        let mt2 = mt * mt
+        let mt3 = mt2 * mt
+        
+        return start * mt3
+                + control1 * (3.0 * mt2 * t)
+                + control2 * (3.0 * mt * t2)
+                + end * t3
     }
     
     private func shouldSubdivideQuadratic(

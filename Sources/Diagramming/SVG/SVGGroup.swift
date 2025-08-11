@@ -34,6 +34,17 @@ public class SVGGroup: SVGGraphicElement {
     override var rawAttributes: [String:String] {
         return super.rawAttributes
     }
+    
+    public override func toBezierPath() -> BezierPath {
+        var path = BezierPath()
+        for child in _children {
+            guard let child = child as? SVGGraphicElement else {
+                continue
+            }
+            path += child.toBezierPath()
+        }
+        return path
+    }
 }
 
 public class SVGUse: SVGGraphicElement {
