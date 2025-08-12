@@ -9,6 +9,28 @@
 import Foundation
 import Diagramming
 
+enum ToolError: Error {
+    case unableToReadFile(String)
+    case unableToReadPictogram(String, String?)
+    case pictogramError(String)
+    
+    var description: String {
+        switch self {
+        case .unableToReadFile(let file):
+            return "Unable to read file '\(file)'"
+        case .unableToReadPictogram(let location, let details):
+            if let details {
+                return "Unable to read pictogram '\(location)': \(details)"
+            }
+            else {
+                return "Unable to read file '\(location)'"
+            }
+        case .pictogramError(let message):
+            return "Pictogram error: \(message)"
+        }
+    }
+}
+
 @main
 struct PictogramTool: ParsableCommand {
     static let configuration = CommandConfiguration(
@@ -16,6 +38,7 @@ struct PictogramTool: ParsableCommand {
         abstract: "Tool to manipulate pictograms for Diagramming and Poietic tools",
         subcommands: [
             Extract.self,
+            Collect.self,
             Image.self,
             Catalog.self,
         ]

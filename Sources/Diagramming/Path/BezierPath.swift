@@ -132,7 +132,7 @@ public struct BezierPath: Sendable, Codable {
     public init(_ elements: [PathElement] = []) {
         self.elements = elements
     }
-    
+        
     /// Create a line between two points
     public init(line start: Vector2D, to end: Vector2D) {
         self.init()
@@ -164,9 +164,20 @@ public struct BezierPath: Sendable, Codable {
         addRect(rect)
     }
     
-    /// Create a bezier path from a string.
+    /// Create a path from a string.
     ///
-    /// The string is a sequence of commands followed by command parameters.
+    /// The string is a sequence of path operations followed by operation parameters.
+    /// Operation is specified as a single character, parameters are comma separated numbers.
+    ///
+    /// Operations:
+    ///
+    /// - `M` – move to _x, y_. See ``move(to:)``.
+    /// - `L` – line to _x, y_. See ``addLine(to:)``.
+    /// - `Q` – quadratic curve with control point _cx, cy_ to endpoint _x, y_. See ``addQuadCurve(to:control:)``.
+    /// - `C` – cubic curve with control point _x1, y1_, _x2, y2_ to endpoint _x, y_. See ``addCurve(to:control1:control2:)``.
+    /// - `Z` – close path. See ``closeSubpath()``.
+    ///
+    /// Example: `M 10, 10 L 20, 20`
     ///
     public init?(string: String) {
         var scanner = StringScanner(string)
@@ -772,17 +783,9 @@ extension StringScanner {
         while !atEnd {
             skipWhitespace()
             
-            guard let command = peek() else { break }
+            guard let command = scanCharacter() else { break }
             
-            // Check if it's a valid command character - only support commands that map to BezierPath.PathElement
-            guard "MmLlQqZz".contains(command) else {
-                // Invalid command, restore and return failure
-                self.currentIndex = savedIndex
-                return nil
-            }
-            
-            advance() // consume command character
-            skipWhitespace() // space after command is optional
+            skipWhitespace()
             
             // Parse elements for this command
             switch command {
@@ -793,23 +796,7 @@ extension StringScanner {
                 }
                 elements.append(.moveTo(point))
                 
-            case "m": // moveToRelative - convert to absolute
-                guard let point = scanPoint() else {
-                    self.currentIndex = savedIndex
-                    return nil
-                }
-                // For relative commands, we'd need to track current position
-                // For now, treat as absolute (user can handle relative logic)
-                elements.append(.moveTo(point))
-                
             case "L": // lineTo
-                guard let point = scanPoint() else {
-                    self.currentIndex = savedIndex
-                    return nil
-                }
-                elements.append(.lineTo(point))
-                
-            case "l": // lineToRelative - convert to absolute
                 guard let point = scanPoint() else {
                     self.currentIndex = savedIndex
                     return nil
@@ -822,29 +809,39 @@ extension StringScanner {
                     return nil
                 }
                 skipWhitespace()
-                guard let endPoint = scanPoint() else {
-                    self.currentIndex = savedIndex
-                    return nil
-                }
-                elements.append(.quadCurveTo(control: controlPoint, end: endPoint))
-                
-            case "q": // quadraticCurveToRelative
-                guard let controlPoint = scanPoint() else {
-                    self.currentIndex = savedIndex
-                    return nil
-                }
+                accept(",")
                 skipWhitespace()
                 guard let endPoint = scanPoint() else {
                     self.currentIndex = savedIndex
                     return nil
                 }
                 elements.append(.quadCurveTo(control: controlPoint, end: endPoint))
+                
+            case "C": // curveTo (cubic bezier)
+                guard let control1Point = scanPoint() else {
+                    self.currentIndex = savedIndex
+                    return nil
+                }
+                skipWhitespace()
+                accept(",")
+                skipWhitespace()
+                guard let control2Point = scanPoint() else {
+                    self.currentIndex = savedIndex
+                    return nil
+                }
+                skipWhitespace()
+                accept(",")
+                skipWhitespace()
+                guard let endPoint = scanPoint() else {
+                    self.currentIndex = savedIndex
+                    return nil
+                }
+                elements.append(.curveTo(end: endPoint, control1: control1Point, control2: control2Point))
 
-            case "Z", "z": // closePath
+            case "Z": // closePath
                 elements.append(.closePath)
                 
             default:
-                // Should not reach here as we already checked valid commands
                 self.currentIndex = savedIndex
                 return nil
             }

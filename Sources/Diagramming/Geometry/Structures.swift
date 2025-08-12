@@ -7,6 +7,11 @@
 
 import Foundation
 
+extension Double {
+    /// Epsilon for double precision floating point according to IEEE 754 - 2008.
+    public static let standardEpsilon = 2.22e-16
+}
+
 public typealias Vector2D = SIMD2<Double>
 
 extension Vector2D {
@@ -49,6 +54,13 @@ extension Vector2D {
     /// Linear interpolation between two points
     public func lerp(to other: Vector2D, t: Double) -> Vector2D {
         return self + (other - self) * t
+    }
+    
+    public func cross(_ other: Vector2D) -> Double {
+        (self.x * other.y) - (y * other.x)
+    }
+    public var prettyDescription: String {
+        "(\(self.x), \(self.y))"
     }
 }
 
@@ -187,6 +199,36 @@ public struct LineSegment: Equatable, Sendable {
         let ub = ((p2.x - p1.x) * (p1.y - p3.y) - (p2.y - p1.y) * (p1.x - p3.x)) / denom
 
         return (ua >= 0 && ua <= 1) && (ub >= 0 && ub <= 1)
+    }
+    
+    public func intersection(rayFrom: Vector2D, direction rayDirection: Vector2D) -> Vector2D? {
+        // Use the standard line-line intersection algorithm
+        // Ray: P1 + t * D1 where P1 = rayFrom, D1 = rayDirection, t >= 0
+        // Segment: P2 + s * D2 where P2 = start, D2 = end - start, 0 <= s <= 1
+        
+        let p1 = rayFrom
+        let d1 = rayDirection
+        let p2 = start
+        let d2 = end - start
+        
+        // Check if ray and segment are parallel using cross product
+        let denominator = d1.cross(d2)
+        guard abs(denominator) >= Double.standardEpsilon else {
+            return nil // Parallel lines
+        }
+        
+        // Solve for parameters using cross products
+        let dp = p2 - p1
+        let t = dp.cross(d2) / denominator  // Parameter for ray
+        let s = dp.cross(d1) / denominator  // Parameter for segment
+        
+        // Check constraints: ray forward (t >= 0), segment within bounds (0 <= s <= 1)
+        guard t >= 0.0 && s >= 0.0 && s <= 1.0 else {
+            return nil
+        }
+        
+        // Return intersection point
+        return p1 + t * d1
     }
 
     /// Computes the intersection point between two line segments (if it exists).

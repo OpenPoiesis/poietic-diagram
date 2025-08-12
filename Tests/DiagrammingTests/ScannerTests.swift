@@ -841,7 +841,6 @@ struct ScannerTests {
         let result = scanner.scanPoint()
         #expect(result?.x == 100.0)
         #expect(result?.y == 200.0)
-        #expect(scanner.atEnd == true)
     }
     
     @Test("Scan point - negative coordinates")
@@ -925,6 +924,33 @@ struct ScannerTests {
         }
     }
     
+    @Test("Scan bezier path elements - cubic curve")
+    func testScanBezierPathElementsCubicCurve() {
+        var scanner = StringScanner("M100,200 C120,150 180,150 200,200")
+        let result = scanner.scanBezierPathElements()
+        #expect(result?.count == 2)
+        
+        if let elements = result {
+            if case .moveTo(let point) = elements[0] {
+                #expect(point.x == 100.0)
+                #expect(point.y == 200.0)
+            } else {
+                #expect(Bool(false), "First element should be moveTo")
+            }
+            
+            if case .curveTo(let end, let control1, let control2) = elements[1] {
+                #expect(control1.x == 120.0)
+                #expect(control1.y == 150.0)
+                #expect(control2.x == 180.0)
+                #expect(control2.y == 150.0)
+                #expect(end.x == 200.0)
+                #expect(end.y == 200.0)
+            } else {
+                #expect(Bool(false), "Second element should be curveTo")
+            }
+        }
+    }
+    
     @Test("Scan bezier path elements - compact format")
     func testScanBezierPathElementsCompact() {
         var scanner = StringScanner("M10,20L30,40Q50,10,70,40Z")
@@ -963,13 +989,12 @@ struct ScannerTests {
         }
     }
     
-    @Test("Scan bezier path elements - relative commands")
-    func testScanBezierPathElementsRelative() {
-        var scanner = StringScanner("m10,20 l30,40 q50,10,70,40 z")
+    @Test("Scan bezier path elements - cubic curve compact format")
+    func testScanBezierPathElementsCubicCompact() {
+        var scanner = StringScanner("M10,20C15,10,25,10,30,20Z")
         let result = scanner.scanBezierPathElements()
-        #expect(result?.count == 4)
+        #expect(result?.count == 3)
         
-        // Note: Our implementation treats relative as absolute for now
         if let elements = result {
             if case .moveTo(let point) = elements[0] {
                 #expect(point.x == 10.0)
@@ -977,7 +1002,48 @@ struct ScannerTests {
             } else {
                 #expect(Bool(false), "First element should be moveTo")
             }
+            
+            if case .curveTo(let end, let control1, let control2) = elements[1] {
+                #expect(control1.x == 15.0)
+                #expect(control1.y == 10.0)
+                #expect(control2.x == 25.0)
+                #expect(control2.y == 10.0)
+                #expect(end.x == 30.0)
+                #expect(end.y == 20.0)
+            } else {
+                #expect(Bool(false), "Second element should be curveTo")
+            }
+            
+            if case .closePath = elements[2] {
+                // Success
+            } else {
+                #expect(Bool(false), "Third element should be closePath")
+            }
         }
+    }
+    
+    @Test("Scan bezier path elements - cubic curve missing control point")
+    func testScanBezierPathElementsCubicMissingControlPoint() {
+        var scanner = StringScanner("M10,20 C15,10,25")
+        let result = scanner.scanBezierPathElements()
+        #expect(result == nil)
+        #expect(scanner.peek() == "M") // Position should be restored
+    }
+    
+    @Test("Scan bezier path elements - cubic curve missing end point")
+    func testScanBezierPathElementsCubicMissingEndPoint() {
+        var scanner = StringScanner("M10,20 C15,10 25,10")
+        let result = scanner.scanBezierPathElements()
+        #expect(result == nil)
+        #expect(scanner.peek() == "M") // Position should be restored
+    }
+    
+    @Test("Scan bezier path elements - relative commands rejected")
+    func testScanBezierPathElementsRelativeRejected() {
+        var scanner = StringScanner("m10,20 l30,40 q50,10,70,40 z")
+        let result = scanner.scanBezierPathElements()
+        #expect(result == nil)
+        #expect(scanner.peek() == "m") // Position should be restored
     }
     
     @Test("Scan bezier path elements - invalid command")

@@ -8,9 +8,9 @@
 import Foundation
 import Diagramming
 
-enum SVGPictogramError: Error {
+enum SVGPictogramError: Error, CustomStringConvertible {
     /// Path element was not found in the image.
-    case noPictogramPathFound
+    case noPictogramElementFound
     
     /// Path element has no path components.
     case emptyPictogramPath
@@ -31,6 +31,23 @@ enum SVGPictogramError: Error {
     /// Shape element is of unsupported type or a shape path contains curves.
     case invalidShape
     
+    var description: String {
+        switch self {
+        case .elementTypeMismatch(let id, let expected):
+            "Element with id '\(id)' is expected to be of type '\(expected)'"
+        case .noPictogramElementFound:
+            "No graphic element for pictogram found"
+        case .noShapeFound:
+            "No element for the pictogram collision/mask shape found"
+        case .emptyPictogramPath:
+            "Pictogram path is empty or there is no pictogram graphic element"
+        case .invalidShape:
+            "Invalid shape type, expected: circle, rect, polyline, polygon, path (polyline only)"
+        case .invalidStructure(let id, let details):
+            "Invalid element structure in id '\(id)', details: \(details)"
+        }
+    }
+
 }
 
 extension PictogramTool {
@@ -44,30 +61,30 @@ extension PictogramTool {
         @Option(name: [.customLong("output"), .customShort("o")], help: "Output path. Default or '-' is standard output.")
         var outputPath: String = "-"
 
+        @Flag(name: [.customLong("pretty")], help: "Pretty format output")
+        var pretty: Bool = false
+
         @Argument(help: "SVG file with Pictogram structure")
         var inputFile: String
 
         mutating func run() throws {
-            // 1. Read the SVG file -> SVGImage
             let inputURL = URL(fileURLWithPath: inputFile)
             let svgImage = try readSVGImage(fromURL: inputURL)
             
-            // 2. Extract Pictogram from the SVGImage
             let pictogramName = name ?? inputURL.deletingPathExtension().lastPathComponent
             let pictogram = try extractPictogram(image: svgImage, name: pictogramName)
             
-            // 3. Write Pictogram as JSON to outputPath or print to stdout
             let encoder = JSONEncoder()
-            encoder.outputFormatting = [.prettyPrinted, .sortedKeys]
+            if pretty {
+                encoder.outputFormatting = [.prettyPrinted, .sortedKeys]
+            }
             let jsonData = try encoder.encode(pictogram)
             
             if outputPath == "-" {
-                // Print to stdout
                 if let jsonString = String(data: jsonData, encoding: .utf8) {
                     print(jsonString)
                 }
             } else {
-                // Write to file
                 let outputURL = URL(fileURLWithPath: outputPath)
                 try jsonData.write(to: outputURL)
             }
@@ -85,7 +102,7 @@ func convertSVGPath(_ element: SVGGeometryElement) -> BezierPath {
 
 func extractPictogramPath(image: SVGImage, id: String = "pictogram") throws -> BezierPath {
     guard let first = image.first(where: { $0.id == id }) else {
-        throw SVGPictogramError.noPictogramPathFound
+        throw SVGPictogramError.noPictogramElementFound
     }
     
     guard let element = first as? SVGGraphicElement else {
@@ -110,7 +127,7 @@ func extractPictogramPathOld(image: SVGImage, id: String = "pictogram") throws -
     var result = BezierPath()
 
     guard let element = image.first(where: { $0.id == id }) else {
-        throw SVGPictogramError.noPictogramPathFound
+        throw SVGPictogramError.noPictogramElementFound
     }
     
     guard let group = element as? SVGGroup else {
@@ -144,7 +161,7 @@ func extractPictogramPathOld(image: SVGImage, id: String = "pictogram") throws -
 /// - Returns: Tuple containing CollisionShape and its center point with transforms applied
 /// - Throws: SVGPictogramError if extraction fails
 ///
-func extractPictogramShape(image: SVGImage, id: String = "shape") throws -> (shape: CollisionShape, center: Vector2D) {
+func extractPictogramShape(image: SVGImage, id: String = "shape") throws -> CollisionShape {
     // 1. Find an element with given ID
     guard let element = image.first(where: { $0.id == id }) else {
         throw SVGPictogramError.noShapeFound
@@ -178,47 +195,37 @@ func extractPictogramShape(image: SVGImage, id: String = "shape") throws -> (sha
     //    otherwise return nil. Make sure cumulative transform is applied to the final shape.
     switch child {
     case let circle as SVGCircle:
-        let r = circle.r * scale.x // Use scale.x for uniform scaling
+        let r = circle.r * scale.x
         let center = transform.apply(to: Vector2D(circle.cx, circle.cy))
-        return (shape: .circle(r), center: center)
+        return CollisionShape(position: center, shape: .circle(r))
         
     case let ellipse as SVGEllipse:
         let rx = ellipse.rx * scale.x
         let ry = ellipse.ry * scale.y
         let center = transform.apply(to: Vector2D(ellipse.cx, ellipse.cy))
-        return (shape: .ellipse(rx, ry), center: center)
+        return CollisionShape(position: center, shape: .rectangle(Vector2D(rx, ry) * 2))
         
     case let rectangle as SVGRectangle:
         let width = rectangle.width * scale.x
         let height = rectangle.height * scale.y
         let center = transform.apply(to: Vector2D(rectangle.x + rectangle.width/2, rectangle.y + rectangle.height/2))
-        return (shape: .rectangle(Vector2D(width, height)), center: center)
+        return CollisionShape(position: center, shape: .rectangle(Vector2D(width, height)))
         
     case let polygon as SVGPolygon:
         let points = polygon.points.map { transform.apply(to: $0) }
-        guard let center = Geometry.centroid(points: points) else {
-            throw SVGPictogramError.invalidShape // Invalid polygon with no points
-        }
-        return (shape: .polygon(points), center: center)
+        // Points already contain a position, relative to the coordinate system of the original pictogram
+        return CollisionShape(position: .zero, shape: .polygon(points))
         
     case let polyline as SVGPolyline:
         let points = polyline.points.map { transform.apply(to: $0) }
-        guard let center = Geometry.centroid(points: points) else {
-            throw SVGPictogramError.invalidShape // Invalid polyline with no points
-        }
-        return (shape: .polygon(points), center: center) // Treat polyline as polygon
-        
+        return CollisionShape(position: .zero, shape: .polygon(points))
+
     case let path as SVGPath:
-        // Convert SVG path to BezierPath and check if it's a strict polygon
         let bezierPath = convertSVGPath(path)
         guard let points = bezierPath.asStrictPolygon() else {
             throw SVGPictogramError.invalidShape // Path contains curves
         }
-        guard let center = Geometry.centroid(points: points) else {
-            throw SVGPictogramError.invalidShape // Invalid path with no points
-        }
-        return (shape: .polygon(points), center: center) // Points are already transformed by convertSVGPath
-        
+        return CollisionShape(position: .zero, shape: .polygon(points))
     default:
         throw SVGPictogramError.invalidShape // Unsupported shape type
     }
@@ -280,12 +287,11 @@ func extractPictogram(image: SVGImage, name: String) throws -> Pictogram {
     let path = try extractPictogramPath(image: image)
     
     // 2. Extract pictogram shape and its center - required.
-    let shapeResult = try extractPictogramShape(image: image)
-    let collisionShape = shapeResult.shape
-    let shapeCenter = shapeResult.center
+    let shape = try extractPictogramShape(image: image)
     
     // 3. Optionally extract origin. If origin is not present, then use shape center as origin.
-    let origin = extractOrigin(image: image) ?? shapeCenter
+    let origin = extractOrigin(image: image) ?? shape.center
+    // TODO: For polygon use centroid as default origin
     
     // 4. Compute bounding box of the path.
     let boundingBox = path.boundingBox! // Force unwrap - guaranteed to work after successful path extraction
@@ -293,10 +299,10 @@ func extractPictogram(image: SVGImage, name: String) throws -> Pictogram {
     // 5. Create a pictogram object, make the collision and mask shapes the same.
     let pictogram = Pictogram(name,
                               path: path,
-                              maskShape: collisionShape,
+                              maskShape: shape,
                               origin: origin,
                               boundingBox: boundingBox,
-                              collisionShape: collisionShape)
+                              collisionShape: shape)
     
     return pictogram
 }

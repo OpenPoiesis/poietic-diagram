@@ -47,7 +47,7 @@ public final class Pictogram: Sendable, Codable {
     /// The box is relative to the ``origin``.
     ///
     public let boundingBox: Rect2D
-
+    
     /// Shape to test collision with mouse pointer, gesture pointer or another pictogram.
     ///
     /// Collision shape is also used as a boundary for clipping connectors to or from the pictogram.
@@ -66,7 +66,7 @@ public final class Pictogram: Sendable, Codable {
         path.boundingBox?.size ?? .zero
     }
     
-//    public let magnets: [Magnet]
+    //    public let magnets: [Magnet]
     private enum CodingKeys: String, CodingKey {
         case name
         case path
@@ -75,7 +75,7 @@ public final class Pictogram: Sendable, Codable {
         case boundingBox = "bounding_box"
         case collisionShape = "collision_shape"
     }
-
+    
     // let decorations
     // let textAnnotations
     public init(_ name: String,
@@ -92,5 +92,17 @@ public final class Pictogram: Sendable, Codable {
         self.collisionShape = collisionShape ?? maskShape
     }
     
+    /// Get a scaled version of the pictogram
+    public func scaled(_ scale: Double) -> Pictogram {
+        let trans = AffineTransform(scale: Vector2D(scale, scale))
+        return Pictogram(
+            name,
+            path: path.transform(trans),
+            maskShape: maskShape.scaled(scale),
+            origin: origin * scale,
+            boundingBox: Rect2D(origin:boundingBox.origin * scale, size: boundingBox.size * scale),
+            collisionShape: collisionShape.scaled(scale)
+        )
+    }
 }
 

@@ -135,314 +135,188 @@ public enum Geometry {
     
     /// Find intersection points of a line segment with a collision shape.
     ///
-    /// Returns all intersection points where the line segment crosses the boundary of the shape.
-    /// The shape is positioned at the given shapePosition offset.
-    ///
-    /// - Parameter segment: The line segment to test for intersections
-    /// - Parameter shape: The collision shape to intersect with
-    /// - Parameter shapePosition: The position offset of the shape
-    /// - Returns: Array of intersection points, empty if no intersections found
-    ///
-    public static func intersectLineWithShape(segment: LineSegment,
-                                              shape: CollisionShape,
-                                              shapePosition: Vector2D
-    ) -> [Vector2D] {
-        switch shape {
+    public static func rayIntersects(shape: CollisionShape,
+                                     from rayOrigin: Vector2D,
+                                     direction rayDirection: Vector2D) -> Vector2D? {
+        switch shape.shape {
         case .circle(let radius):
-            return intersectLineWithCircle(segment: segment, center: shapePosition, radius: radius)
-        
-        case .ellipse(let rx, let ry):
-            // For now, approximate ellipse with circle using average radius
-            let avgRadius = (rx + ry) / 2
-            return intersectLineWithCircle(segment: segment, center: shapePosition, radius: avgRadius)
-        
+            return rayIntersects(circleAt: shape.position, radius: radius,
+                                 from: rayOrigin, direction: rayDirection)
+            
         case .rectangle(let size):
-            return intersectLineWithRectangle(segment: segment, 
-                                              center: shapePosition, 
-                                              size: size)
-        
+            let rect = Rect2D(origin: shape.position - size/2, size: size)
+            return rayIntersects(rectangle: rect,
+                                 from: rayOrigin, direction: rayDirection)
         case .polygon(let points):
-            return intersectLineWithPolygon(segment: segment, 
-                                            polygonPoints: points.map { $0 + shapePosition })
+            return rayIntersects(polygonPoints: points,
+                                 from: rayOrigin, direction: rayDirection)
         }
     }
     
-    /// Find intersection points of a line segment with a circle.
-    ///
-    /// - Parameter segment: The line segment to test
-    /// - Parameter center: The center point of the circle  
-    /// - Parameter radius: The radius of the circle
-    /// - Returns: Array of intersection points (0, 1, or 2 points)
-    ///
-    private static func intersectLineWithCircle(segment: LineSegment, 
-                                                center: Vector2D, 
-                                                radius: Double) -> [Vector2D] {
-        let d = segment.end - segment.start
-        let f = segment.start - center
-        
-        let a = d.dot(d)
-        let b = 2 * f.dot(d)
-        let c = f.dot(f) - radius * radius
-        
-        let discriminant = b * b - 4 * a * c
-        
-        guard discriminant >= 0 else { return [] }
-        
-        let sqrtDiscriminant = discriminant.squareRoot()
-        let t1 = (-b - sqrtDiscriminant) / (2 * a)
-        let t2 = (-b + sqrtDiscriminant) / (2 * a)
-        
-        var intersections: [Vector2D] = []
-        
-        if t1 >= 0 && t1 <= 1 {
-            intersections.append(segment.point(at: t1))
-        }
-        
-        if t2 >= 0 && t2 <= 1 && abs(t2 - t1) > 1e-10 {
-            intersections.append(segment.point(at: t2))
-        }
-        
-        return intersections
-    }
     
-    /// Find intersection points of a line segment with a rectangle.
+    /// Find intersection point of a ray with a polygon boundary.
     ///
-    /// - Parameter segment: The line segment to test
-    /// - Parameter center: The center point of the rectangle
-    /// - Parameter size: The size (width, height) of the rectangle
-    /// - Returns: Array of intersection points
+    /// Tests intersection with polygon edges, returning the closest intersection point.
+    /// Uses the LineSegment.intersection(rayFrom:direction:) method for each polygon edge.
     ///
-    private static func intersectLineWithRectangle(segment: LineSegment,
-                                                   center: Vector2D,
-                                                   size: Vector2D) -> [Vector2D] {
-        var intersections: [Vector2D] = []
+    /// - Parameter polygonPoints: The polygon vertices
+    /// - Parameter from: The ray origin point
+    /// - Parameter direction: The ray direction vector (does not need to be normalized)
+    /// - Returns: The closest intersection point on the polygon boundary, or nil if no intersection found
+    ///
+    static func rayIntersects(polygonPoints: [Vector2D],
+                              from rayOrigin: Vector2D,
+                              direction rayDirection: Vector2D) -> Vector2D? {
+        guard polygonPoints.count >= 3 else { return nil }
         
-        let halfSize = size / 2
-        let minCorn = center - halfSize
-        let maxCorn = center + halfSize
-
-        let bottom = LineSegment(fromX: minCorn.x, fromY: minCorn.y, toX: maxCorn.x, toY: minCorn.y)
-        let right = LineSegment(fromX: maxCorn.x, fromY: minCorn.y, toX: maxCorn.x, toY: maxCorn.y)
-        let top = LineSegment(fromX: maxCorn.x, fromY: maxCorn.y, toX: minCorn.x, toY: maxCorn.y)
-        let left = LineSegment(fromX: minCorn.x, fromY: maxCorn.y, toX: minCorn.x, toY: minCorn.y)
-
-        if let point = segment.intersection(with: bottom) {
-            intersections.append(point)
-        }
-        if let point = segment.intersection(with: right) {
-            intersections.append(point)
-        }
-        if let point = segment.intersection(with: top) {
-            intersections.append(point)
-        }
-        if let point = segment.intersection(with: left) {
-            intersections.append(point)
-        }
-
-        return intersections
-    }
-    
-    /// Find intersection points of a line segment with a polygon.
-    ///
-    /// - Parameter segment: The line segment to test
-    /// - Parameter polygonPoints: The vertices of the polygon (already positioned)
-    /// - Returns: Array of intersection points
-    ///
-    private static func intersectLineWithPolygon(segment: LineSegment,
-                                                 polygonPoints: [Vector2D]) -> [Vector2D] {
-        guard polygonPoints.count >= 3 else { return [] }
+        var closestIntersection: Vector2D? = nil
+        var closestDistance = Double.infinity
         
-        var intersections: [Vector2D] = []
-        
+        // Test intersection with each polygon edge
         for i in 0..<polygonPoints.count {
             let nextIndex = (i + 1) % polygonPoints.count
             let edge = LineSegment(from: polygonPoints[i], to: polygonPoints[nextIndex])
             
-            if let intersection = segment.intersection(with: edge) {
-                intersections.append(intersection)
+            guard let intersection = edge.intersection(rayFrom: rayOrigin, direction: rayDirection) else {
+                continue
+            }
+            let distance = rayOrigin.distance(to: intersection)
+            
+            if distance < closestDistance {
+                closestIntersection = intersection
+                closestDistance = distance
             }
         }
         
-        return intersections
+        return closestIntersection
     }
     
-    /// Find the touch point where a ray from an origin point through a shape center intersects the shape boundary.
-    ///
-    /// The ray originates at the `from` point and passes through the `shapePosition` (shape center).
-    /// If the origin point is inside the shape, returns the exit point where the ray leaves the shape.
-    /// If no intersection is found, returns the shape center as fallback.
-    ///
-    /// - Parameter from: The origin point of the ray
-    /// - Parameter shape: The collision shape to find touch point on
-    /// - Parameter shapePosition: The center position of the shape (ray passes through this point)
-    /// - Returns: The touch point on the shape boundary
-    ///
-    public static func shapeTouchPoint(from: Vector2D,
-                                       shape: CollisionShape,  
-                                       shapePosition: Vector2D) -> Vector2D {
-        switch shape {
-        case .circle(let radius):
-            return touchPointCircle(from: from, center: shapePosition, radius: radius)
-            
-        case .ellipse(let rx, let ry):
-            return touchPointEllipse(from: from, center: shapePosition, rx: rx, ry: ry)
-            
-        case .rectangle(let size):
-            return touchPointRectangle(from: from, center: shapePosition, size: size)
-            
-        case .polygon(let points):
-            return touchPointPolygon(from: from, center: shapePosition, points: points)
-        }
-    }
-    
-    /// Find touch point on a circle boundary.
-    ///
-    /// Uses direct geometric calculation - much more efficient than quadratic formula approach.
-    ///
-    /// - Parameter from: The ray origin point  
-    /// - Parameter center: The center of the circle
-    /// - Parameter radius: The radius of the circle
-    /// - Returns: The touch point on the circle boundary
-    ///
-    private static func touchPointCircle(from: Vector2D, 
-                                         center: Vector2D, 
-                                         radius: Double) -> Vector2D {
-        let direction = -(center - from).normalized
-        return center + direction * radius
-    }
-    
-    /// Find touch point on an ellipse boundary.
-    ///
-    /// Uses parametric ellipse equation to find intersection with ray from origin through center.
-    ///
-    /// - Parameter from: The ray origin point
-    /// - Parameter center: The center of the ellipse
-    /// - Parameter rx: The x-radius (horizontal radius) of the ellipse
-    /// - Parameter ry: The y-radius (vertical radius) of the ellipse
-    /// - Returns: The touch point on the ellipse boundary
-    ///
-    private static func touchPointEllipse(from: Vector2D,
-                                          center: Vector2D,
-                                          rx: Double,
-                                          ry: Double) -> Vector2D {
-        let direction = -(center - from).normalized
+    public static func rayIntersects(circleAt center: Vector2D,
+                                     radius: Double,
+                                     from rayOrigin: Vector2D,
+                                     direction rayDirection: Vector2D) -> Vector2D? {
+        // Check for invalid inputs
+        guard radius > 0 else { return nil }
         
-        // For an ellipse centered at origin with equation x²/rx² + y²/ry² = 1
-        // and a ray in direction (dx, dy), the intersection point is:
-        // t = 1 / sqrt((dx/rx)² + (dy/ry)²)
-        // where t is the parameter along the direction vector
+        let co = rayOrigin - center
+        let a = rayDirection.dot(rayDirection)
         
-        let dx = direction.x
-        let dy = direction.y
+        // Check for zero direction vector
+        guard a > 0 else { return nil }
         
-        let t = 1.0 / sqrt((dx * dx) / (rx * rx) + (dy * dy) / (ry * ry))
+        let b = 2 * rayDirection.dot(co)
+        let c = co.dot(co) - radius * radius
         
-        return center + direction * t
-    }
-    
-    /// Find touch point on a rectangle boundary.
-    ///
-    /// Determines which edge the ray hits based on direction and calculates intersection directly.
-    ///
-    /// - Parameter from: The ray origin point
-    /// - Parameter center: The center of the rectangle  
-    /// - Parameter size: The size (width, height) of the rectangle
-    /// - Returns: The touch point on the rectangle boundary
-    ///
-    private static func touchPointRectangle(from: Vector2D,
-                                            center: Vector2D,
-                                            size: Vector2D) -> Vector2D {
-        let direction = (from - center).normalized
-        let halfSize = size / 2
+        let discriminant = b * b - 4 * a * c
         
-        // Calculate t values for intersection with each axis-aligned boundary
-        let tX: Double
-        if direction.x != 0 {
-            switch direction.x.sign {
-            case .plus: tX = halfSize.x / direction.x
-            case .minus: tX = -halfSize.x / direction.x
-            }
-        } else {
-            tX = Double.infinity
+        // No intersection if discriminant is negative
+        guard discriminant >= 0 else {
+            return nil
         }
         
-        let tY: Double
-        if direction.y != 0 {
-            switch direction.y.sign {
-            case .plus: tY = halfSize.y / direction.y
-            case .minus: tY = -halfSize.y / direction.y
-            }
-        } else {
-            tY = Double.infinity
-        }
+        let sqrtDiscriminant = discriminant.squareRoot()
+        let denominator = 2 * a
         
-        // Use the smaller t value (closer intersection)
-        let t = min(abs(tX), abs(tY))
+        // Compute the two possible t values
+        let t1 = (-b - sqrtDiscriminant) / denominator
+        let t2 = (-b + sqrtDiscriminant) / denominator
         
-        if abs(tX) < abs(tY) {
-            // Hit vertical edge (left or right)
-            let edgeX: Double
-            if direction.x > 0 {
-                edgeX = center.x + halfSize.x
+        // Determine the smallest positive t (or smallest non-negative for ray starting on boundary)
+        let t: Double
+        if t1 >= 0 && t2 >= 0 {
+            // Both intersections ahead, prefer the one that's not at origin
+            let epsilon = 1e-10
+            if abs(t1) < epsilon && t2 > epsilon {
+                t = t2  // t1 is at ray origin, use t2 
+            } else if abs(t2) < epsilon && t1 > epsilon {
+                t = t1  // t2 is at ray origin, use t1
             } else {
-                edgeX = center.x - halfSize.x
+                t = min(t1, t2)  // Use closest
             }
-            return Vector2D(edgeX, center.y + direction.y * t)
+        } else if t1 >= 0 {
+            t = t1
+        } else if t2 >= 0 {
+            t = t2
         } else {
-            // Hit horizontal edge (top or bottom)
-            let edgeY: Double
-            if direction.y > 0 {
-                edgeY = center.y + halfSize.y
-            } else {
-                edgeY = center.y - halfSize.y
-            }
-            return Vector2D(center.x + direction.x * t, edgeY)
+            // Both intersections are behind the ray origin
+            return nil
         }
+        
+        // Calculate the intersection point
+        let intersectionPoint = rayOrigin + t * rayDirection
+        return intersectionPoint
     }
     
-    /// Find touch point on a polygon boundary.
-    ///
-    /// Tests intersection with polygon edges, returning the first exit point found.
-    ///
-    /// - Parameter from: The ray origin point
-    /// - Parameter center: The center of the polygon (for positioning)
-    /// - Parameter points: The polygon vertices (relative to center)
-    /// - Returns: The touch point on the polygon boundary
-    ///
-    private static func touchPointPolygon(from: Vector2D,
-                                          center: Vector2D, 
-                                          points: [Vector2D]) -> Vector2D {
-        guard points.count >= 3 else { return center }
+    public static func rayIntersects(rectangle rect: Rect2D,
+                                     from rayOrigin: Vector2D,
+                                     direction rayDirection: Vector2D) -> Vector2D? {
+        // Check for zero direction vector
+        if abs(rayDirection.x) < Double.standardEpsilon && abs(rayDirection.y) < Double.standardEpsilon {
+            return nil
+        }
         
-        // Position polygon points in world space
-        let worldPoints = points.map { $0 + center }
+        // Calculate t values for intersection with x-aligned planes
+        var tMin: Double
+        var tMax: Double
         
-        // Create ray as a very long line segment
-        let rayDirection = (center - from).normalized
-        let rayEnd = center + rayDirection * 10000 // Arbitrarily long ray
-        let ray = LineSegment(from: from, to: rayEnd)
-        
-        var closestIntersection: Vector2D?
-        var closestDistance = Double.infinity
-        
-        // Test intersection with each polygon edge
-        for i in 0..<worldPoints.count {
-            let nextIndex = (i + 1) % worldPoints.count
-            let edge = LineSegment(from: worldPoints[i], to: worldPoints[nextIndex])
+        if abs(rayDirection.x) < Double.standardEpsilon {
+            // Ray is parallel to x-aligned planes
+            if rayOrigin.x < rect.minX || rayOrigin.x > rect.maxX {
+                return nil // Ray misses rectangle entirely
+            }
+            tMin = -Double.infinity
+            tMax = Double.infinity
+        } else {
+            let invDirX = 1.0 / rayDirection.x
+            tMin = (rect.minX - rayOrigin.x) * invDirX
+            tMax = (rect.maxX - rayOrigin.x) * invDirX
             
-            if let intersection = ray.intersection(with: edge) {
-                let distance = from.distance(to: intersection)
-                
-                // Only consider intersections that are beyond the center (exit points)
-                let distanceToCenter = from.distance(to: center)
-                if distance >= distanceToCenter && distance < closestDistance {
-                    closestIntersection = intersection
-                    closestDistance = distance
-                }
+            if invDirX < 0 {
+                swap(&tMin, &tMax)
             }
         }
         
-        return closestIntersection ?? center
+        // Calculate t values for intersection with y-aligned planes
+        var tyMin: Double
+        var tyMax: Double
+        
+        if abs(rayDirection.y) < Double.standardEpsilon {
+            // Ray is parallel to y-aligned planes
+            if rayOrigin.y < rect.minY || rayOrigin.y > rect.maxY {
+                return nil // Ray misses rectangle entirely
+            }
+            tyMin = -Double.infinity
+            tyMax = Double.infinity
+        } else {
+            let invDirY = 1.0 / rayDirection.y
+            tyMin = (rect.minY - rayOrigin.y) * invDirY
+            tyMax = (rect.maxY - rayOrigin.y) * invDirY
+            
+            if invDirY < 0 {
+                swap(&tyMin, &tyMax)
+            }
+        }
+        
+        // Find the earliest time where the ray enters and latest time where it exits the rectangle
+        let tEnter = max(tMin, tyMin)
+        let tExit = min(tMax, tyMax)
+        
+        // If the ray misses the rectangle entirely or exits before entering
+        if tEnter > tExit || tExit < 0 {
+            return nil
+        }
+        
+        // If the intersection is behind the ray origin, use tExit instead
+        let t = tEnter >= 0 ? tEnter : tExit
+        
+        // If both intersections are behind the ray origin
+        if t < 0 {
+            return nil
+        }
+        
+        // Calculate the intersection point
+        let intersection = rayOrigin + rayDirection * t
+        return intersection
     }
     
     /// Calculate the centroid (arithmetic mean) of a set of points.

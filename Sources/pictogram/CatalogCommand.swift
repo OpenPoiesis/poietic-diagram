@@ -65,20 +65,26 @@ func createCatalog(_ pictograms: [Pictogram], columns: Int = 3, padding: Double 
     for picto in pictograms {
         let origin = Vector2D(x: (tileSize.x + padding) * Double(column),
                               y: (tileSize.y + padding) * Double(row))
-        let group = pictogramToSVGGroup(picto, includeNameInID: true)
-        
+        let element = picto.toSVGElement()
+        (element as? SVGGeometryElement)?.strokeWidth = 2.0
+        let debug = picto.toDebugSVGElement()
+
         let center = (tileSize / 2)
         
         let bbox = picto.path.boundingBox!
         let offset = center - bbox.center
         
-        group.id = "pictogram-tile-\(picto.name)"
-        group.transform = SVGTransformList([
+        element.id = "pictogram-\(picto.name)"
+
+        let transform = SVGTransformList([
             .translate(tx: origin.x, ty: origin.y),
-//            .translate(tx: center.x-picto.origin.x, ty: center.y-picto.origin.y),
             .translate(tx: offset.x, ty: offset.y),
         ])
-        image.addChild(group)
+        
+        element.transform = transform
+        debug.transform = transform
+        image.addChild(debug)
+        image.addChild(element)
         
         let tbox = SVGRectangle()
         tbox.x = origin.x

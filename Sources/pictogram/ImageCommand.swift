@@ -8,6 +8,9 @@
 import Foundation
 import Diagramming
 
+// TODO: Rename to Preview
+// TODO: Accept pictogram collection
+
 extension PictogramTool {
     struct Image: ParsableCommand {
         static let configuration
@@ -68,8 +71,7 @@ func pictogramToSVGGroup(_ pictogram: Pictogram, includeNameInID: Bool = false) 
     
     let path = SVGPath(pictogram.path)
     let box = pictogram.path.boundingBox!
-    path.fill = "none"
-    path.stroke = "black"
+    path.setStyle(fill: "none", stroke: "black")
     
     let group = SVGGroup()
     group.id = "pictogram" + idSuffix
@@ -78,13 +80,8 @@ func pictogramToSVGGroup(_ pictogram: Pictogram, includeNameInID: Bool = false) 
     image.addChild(group)
     
     // Origin
-    let origin = SVGCircle()
-    origin.id = "origin" + idSuffix
-    origin.cx = pictogram.origin.x
-    origin.cy = pictogram.origin.y
-    origin.fill = "salmon"
-    origin.stroke = "red"
-    origin.r = 2
+    let origin = SVGCircle(id: "origin" + idSuffix, center: pictogram.origin, radius: 2.0)
+    origin.setStyle(fill: "salmon", stroke: "red")
     image.addChild(origin)
 
     // Debug
@@ -92,41 +89,10 @@ func pictogramToSVGGroup(_ pictogram: Pictogram, includeNameInID: Bool = false) 
     let debug = SVGGroup()
     debug.id = "debug" + idSuffix
     
-    let bbox = SVGRectangle()
-    bbox.x = box.origin.x
-    bbox.y = box.origin.y
-    bbox.width = box.width
-    bbox.height = box.height
-    bbox.fill = "none"
-    bbox.stroke = "yellow"
+    let bbox = SVGRectangle(rect: box)
+    bbox.setStyle(fill: "none", stroke: "yellow")
     debug.addChild(bbox)
     image.addChild(debug)
     
     return image
 }
-
-func shapeToSVG(_ shape: CollisionShape) -> SVGGraphicElement {
-    switch shape {
-    case let .circle(radius):
-        let element = SVGCircle()
-        element.r = radius
-        return element
-    case let .ellipse(cx, cy):
-        let element = SVGEllipse()
-        element.cx = cx
-        element.cy = cy
-        return element
-    case let .rectangle(size):
-        let element = SVGRectangle()
-        element.x = -(size.x) / 2.0
-        element.y = -(size.y) / 2.0
-        element.width = size.x
-        element.height = size.y
-        return element
-    case let .polygon(points):
-        let element = SVGPolygon()
-        element.points = points
-        return element
-    }
-}
-

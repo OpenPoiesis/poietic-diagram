@@ -65,21 +65,21 @@ public class Connector {
     }
    
     // TODO: This is ported from Godot Poietic Playground
-    public func update(originShape: CollisionShape, originPosition: Vector2D, targetShape: CollisionShape, targetPosition: Vector2D) {
-        
+    public func update(originShape: CollisionShape,
+                       originPosition: Vector2D,
+                       targetShape: CollisionShape,
+                       targetPosition: Vector2D) {
         let (originSegment, targetSegment) = endpointSegments()
-        let originIntersects = Geometry.shapeTouchPoint(from: originSegment.start,
-                                                        shape: originShape,
-                                                        shapePosition: originPosition)
-        let targetIntersects = Geometry.shapeTouchPoint(from: targetSegment.start,
-                                                        shape: targetShape,
-                                                        shapePosition: targetPosition)
-        
-        self.originPoint = originIntersects
-        self.targetPoint = targetIntersects
-        
-        
+        let originTouch = originShape.rayIntersects(position: originPosition,
+                                                    from: originSegment.start,
+                                                    direction: originSegment.direction)
+        let targetTouch = targetShape.rayIntersects(position: targetPosition,
+                                                    from: targetSegment.start,
+                                                    direction: targetSegment.direction)
+        self.originPoint = originTouch ?? .zero // originPosition
+        self.targetPoint = targetTouch ?? .zero // targetPosition
     }
+
     public func setEndpoints(origin: Vector2D, target: Vector2D) {
         self.originPoint = origin
         self.targetPoint = target

@@ -72,6 +72,12 @@ public class SVGGeometryElement: SVGGraphicElement {
         if let strokeLineJoin { attributes["stroke-linejoin"] = String(strokeLineJoin) }
         return attributes
     }
+    
+    public func setStyle(fill: String? = nil, stroke: String? = nil, strokeWidth: Double? = nil) {
+        self.fill = fill
+        self.stroke = stroke
+        self.strokeWidth = strokeWidth ?? 1.0
+    }
 }
 
 // Specific shape elements
@@ -82,6 +88,13 @@ public class SVGCircle: SVGGeometryElement {
     public var cy: Double
     public var r: Double
     
+    public init(id: String? = nil, center: Vector2D, radius: Double) {
+        self.cx = center.x
+        self.cy = center.y
+        self.r = radius
+        super.init()
+        self.id = id
+    }
     public override init(parent: SVGElement? = nil, attributes: [String: String] = [:]) {
         self.cx = SVGAttributeToLength(attributes["cx"])
         self.cy = SVGAttributeToLength(attributes["cy"])
@@ -224,6 +237,17 @@ public class SVGRectangle: SVGGeometryElement {
     public var height: Double
     public var rx: Double
     public var ry: Double
+    
+    public init(id: String?=nil, rect: Rect2D) {
+        self.x = rect.origin.x
+        self.y = rect.origin.y
+        self.width = rect.width
+        self.height = rect.height
+        self.rx = 0.0
+        self.ry = 0.0
+        super.init()
+        self.id = id
+    }
     
     public override init(parent: SVGElement? = nil, attributes: [String: String] = [:]) {
         self.x = SVGAttributeToLength(attributes["x"])
