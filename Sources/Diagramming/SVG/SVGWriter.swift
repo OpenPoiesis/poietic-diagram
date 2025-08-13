@@ -46,6 +46,12 @@ public class SVGWriter {
 //            xmlElement.stringValue = textContent
 //        }
         
+        // Handle text content for SVGText elements
+        if let textElement = svgElement as? SVGText,
+           let textContent = textElement.textContent, !textContent.isEmpty {
+            xmlElement.stringValue = textContent
+        }
+        
         // Add children recursively
         for child in svgElement.children() {
             xmlElement.addChild(buildXMLElement(child))
@@ -70,6 +76,8 @@ public class SVGWriter {
 //            return "desc"
 //        case is SVGMetadata:
 //            return "metadata"
+        case is SVGText:
+            return "text"
         case let shape as SVGGeometryElement:
             return shape.elementName
         default:

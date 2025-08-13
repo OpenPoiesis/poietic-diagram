@@ -78,6 +78,8 @@ public class SVGReader: NSObject {
             return SVGPolyline(parent: parent, attributes: attributes)
         case "rect":
             return SVGRectangle(parent: parent, attributes: attributes)
+        case "text":
+            return SVGText(parent: parent, attributes: attributes)
         default:
             // TODO: Add clipPath
             throw SVGReaderError.unsupportedElement("Unsupported SVG element: \(name)")
@@ -125,6 +127,18 @@ extension SVGReader: XMLParserDelegate {
         if !elementStack.isEmpty {
             elementStack.removeLast()
             currentElement = elementStack.last
+        }
+    }
+    
+    public func parser(_ parser: XMLParser, foundCharacters string: String) {
+        guard let element = currentElement as? SVGText else {
+            return
+        }
+        
+        if element.textContent == nil {
+            element.textContent = string
+        } else {
+            element.textContent! += string
         }
     }
     
