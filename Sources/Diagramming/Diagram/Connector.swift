@@ -155,7 +155,8 @@ public class Connector {
 
     /// Get the selection outline polygons.
     ///
-    public func getSelectionOutline(width: Double = 4.0) -> [[Vector2D]] {
+    public func selectionOutline(width: Double = 4.0) -> BezierPath {
+        // FIXME: [IMPORTANT] This is required so we can replace the Godot rendering
         fatalError("\(#function) not implemented")
     }
 }

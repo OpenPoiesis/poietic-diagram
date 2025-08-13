@@ -8,13 +8,13 @@
 import Foundation
 import Diagramming
 
-// TODO: Rename to Preview
 // TODO: Accept pictogram collection
 
 extension PictogramTool {
-    struct Image: ParsableCommand {
+    struct Preview: ParsableCommand {
         static let configuration
-        = CommandConfiguration(abstract: "Create an image from a pictogram")
+        = CommandConfiguration(commandName: "preview",
+                               abstract: "Create an image from a pictogram")
        
         @Option(name: [.customLong("output"), .customShort("o")], help: "Output path. Default or '-' is standard output.")
         var outputPath: String = "-"

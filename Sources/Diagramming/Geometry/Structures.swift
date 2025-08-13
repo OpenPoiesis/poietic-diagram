@@ -64,10 +64,31 @@ extension Vector2D {
     }
 }
 
-/// Structure representing a 2D rectangle.
+/// A 2D rectangle represented by an origin point and size dimensions.
+///
+/// `Rect2D` provides a comprehensive set of operations for working with 2D rectangular regions,
+/// including containment testing, union operations, and coordinate access. The rectangle is
+/// defined using an origin point (bottom-left corner) and size vector (width, height).
+///
+/// The rectangle uses a standard 2D coordinate system where:
+/// - Origin represents the bottom-left corner
+/// - Positive x extends to the right
+/// - Positive y extends upward
+/// - Size components represent width (x) and height (y)
+///
+/// Usage example:
+///
+/// ```swift
+/// let rect = Rect2D(x: 10, y: 20, width: 100, height: 50)
+/// let center = rect.center  // Vector2D(60, 45)
+/// let contains = rect.contains(Vector2D(50, 30))  // true
+/// ```
 ///
 public struct Rect2D: Equatable, Sendable, Codable {
+    /// The bottom-left corner position of the rectangle.
     public var origin: Vector2D
+    
+    /// The width and height dimensions of the rectangle as a vector (width=x, height=y).
     public var size: Vector2D
     
     public init(origin: Vector2D = Vector2D.zero, size: Vector2D = Vector2D.zero) {
@@ -75,25 +96,51 @@ public struct Rect2D: Equatable, Sendable, Codable {
         self.size = size
     }
     
+    /// Creates a rectangle with explicit x, y coordinates and width, height dimensions.
+    ///
+    /// - Parameters:
+    ///   - x: The x-coordinate of the bottom-left corner
+    ///   - y: The y-coordinate of the bottom-left corner
+    ///   - width: The width of the rectangle
+    ///   - height: The height of the rectangle
     public init(x: Double, y: Double, width: Double, height: Double) {
         self.origin = Vector2D(x, y)
         self.size = Vector2D(width, height)
     }
     
+    /// The center point of the rectangle.
     public var center: Vector2D {
         return origin + size / 2.0
     }
     
+    /// The minimum x-coordinate (left edge) of the rectangle.
     public var minX: Double { origin.x }
+    
+    /// The minimum y-coordinate (bottom edge) of the rectangle.
     public var minY: Double { origin.y }
+    
+    /// The maximum x-coordinate (right edge) of the rectangle.
     public var maxX: Double { origin.x + size.x }
+    
+    /// The maximum y-coordinate (top edge) of the rectangle.
     public var maxY: Double { origin.y + size.y }
+    
+    /// The width of the rectangle (equivalent to size.x).
     public var width: Double {size.x }
+    
+    /// The height of the rectangle (equivalent to size.y).
     public var height: Double { size.y }
     
+    /// The bottom-left corner of the rectangle (same as origin).
     public var bottomLeft: Vector2D { origin }
+    
+    /// The bottom-right corner of the rectangle.
     public var bottomRight: Vector2D { Vector2D(maxX, minY) }
+    
+    /// The top-left corner of the rectangle.
     public var topLeft: Vector2D { Vector2D(minX, maxY) }
+    
+    /// The top-right corner of the rectangle.
     public var topRight: Vector2D { Vector2D(maxX, maxY) }
     
     /// Check if point is inside rectangle.
@@ -115,6 +162,10 @@ public struct Rect2D: Equatable, Sendable, Codable {
         )
     }
     
+    /// Returns a new rectangle translated by the given offset vector.
+    ///
+    /// - Parameter offset: The vector by which to translate the rectangle
+    /// - Returns: A new rectangle with the same size but moved by the offset
     public func translated(_ offset: Vector2D) -> Rect2D {
         return Rect2D(origin: origin + offset, size: self.size)
     }
@@ -146,8 +197,40 @@ public struct Rect2D: Equatable, Sendable, Codable {
 }
 
 
+/// A line segment defined by two endpoints in 2D space.
+///
+/// `LineSegment` provides a comprehensive set of geometric operations for working with straight
+/// line segments, including intersection testing, geometric calculations, and transformations.
+/// The segment is defined by its start and end points, with various computed properties for
+/// common geometric operations.
+///
+/// ## Usage Example
+/// ```swift
+/// let segment = LineSegment(from: Vector2D(0, 0), to: Vector2D(10, 10))
+/// let length = segment.length           // 14.14...
+/// let midpoint = segment.midpoint       // Vector2D(5, 5)
+/// let direction = segment.direction     // Vector2D(0.707, 0.707)
+/// ```
+///
+/// ## Key Features
+/// - Length and direction calculations
+/// - Midpoint and parametric point evaluation
+/// - Line-line and line-ray intersection testing
+/// - Parallel offset and extension operations
+/// - Normal vector computation for perpendicular operations
+///
+/// ## Geometric Operations
+/// The structure supports various geometric transformations including:
+/// - Intersection with other line segments or rays
+/// - Parallel offset for creating margins or outlines
+/// - Extension beyond endpoints
+/// - Angle calculations between segments
+///
 public struct LineSegment: Equatable, Sendable {
+    /// The starting point of the line segment.
     public var start: Vector2D
+    
+    /// The ending point of the line segment.
     public var end: Vector2D
     
     /// Creates a line segment between two points
@@ -156,12 +239,20 @@ public struct LineSegment: Equatable, Sendable {
         self.end = end
     }
 
+    /// Creates a line segment using individual coordinate components.
+    ///
+    /// - Parameters:
+    ///   - fromX: The x-coordinate of the start point
+    ///   - fromY: The y-coordinate of the start point
+    ///   - toX: The x-coordinate of the end point
+    ///   - toY: The y-coordinate of the end point
     public init(fromX: Vector2D.Scalar, fromY: Vector2D.Scalar,
                 toX: Vector2D.Scalar, toY: Vector2D.Scalar) {
         self.start = Vector2D(fromX, fromY)
         self.end = Vector2D(toX, toY)
     }
     
+    /// The Euclidean length of the line segment.
     public var length: Double {
         (start - end).length
     }
@@ -186,6 +277,10 @@ public struct LineSegment: Equatable, Sendable {
         let dir = direction
         return Vector2D(-dir.y, dir.x)
     }
+    /// Determines if this line segment intersects with another line segment.
+    ///
+    /// - Parameter other: The other line segment to test intersection with
+    /// - Returns: `true` if the segments intersect, `false` if they are parallel, collinear, or do not intersect
     public func intersects(_ other: LineSegment) -> Bool {
         let p1 = start
         let p2 = end
@@ -201,6 +296,12 @@ public struct LineSegment: Equatable, Sendable {
         return (ua >= 0 && ua <= 1) && (ub >= 0 && ub <= 1)
     }
     
+    /// Computes the intersection point between this line segment and a ray.
+    ///
+    /// - Parameters:
+    ///   - rayFrom: The starting point of the ray
+    ///   - rayDirection: The direction vector of the ray (does not need to be normalized)
+    /// - Returns: The intersection point if it exists, or `nil` if there is no intersection
     public func intersection(rayFrom: Vector2D, direction rayDirection: Vector2D) -> Vector2D? {
         // Use the standard line-line intersection algorithm
         // Ray: P1 + t * D1 where P1 = rayFrom, D1 = rayDirection, t >= 0
@@ -271,9 +372,11 @@ public struct LineSegment: Equatable, Sendable {
         return start.lerp(to: end, t: clamped)
     }
 
-    /// Reversed Line Segment
+    /// Returns a new line segment with start and end points swapped.
     ///
-    /// Creates a parallel line at a given distance (e.g., for generating outlines or margins).
+    /// This creates a line segment with the same geometry but opposite direction.
+    ///
+    /// - Returns: A new line segment from the original end point to the original start point
     public func reversed() -> LineSegment {
         return LineSegment(from: end, to: start)
     }

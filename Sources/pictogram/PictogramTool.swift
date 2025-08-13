@@ -39,7 +39,7 @@ struct PictogramTool: ParsableCommand {
         subcommands: [
             Extract.self,
             Collect.self,
-            Image.self,
+            Preview.self,
             Catalog.self,
         ]
     )
