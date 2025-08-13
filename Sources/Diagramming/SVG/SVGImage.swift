@@ -36,6 +36,8 @@ public class SVGImage: SVGElement {
 
     override var rawAttributes: [String:String] {
         var attributes: [String:String] = super.rawAttributes
+        attributes["xmlns"] = "http://www.w3.org/2000/svg"
+        attributes["xmlns:svg"] = "http://www.w3.org/2000/svg"
         if let width { attributes["width"] = String(width) }
         if let height { attributes["height"] = String(height) }
         if let viewBox { attributes["viewBox"] = viewBox.rawValue }

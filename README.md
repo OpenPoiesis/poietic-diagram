@@ -17,6 +17,10 @@ Main features:
 
 **IMPORTANT: This is a prototype**
 
+Example output diagram:
+
+![Example Stock-and-Flow diagram generated with poietic-tool](Documentation/example-output-diagram.svg)
+
 ## Pictogram Creation
 
 The package contains a tool called `pictogram`, which can be used to:
