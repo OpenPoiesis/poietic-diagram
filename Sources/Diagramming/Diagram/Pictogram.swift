@@ -5,10 +5,6 @@
 //  Created by Stefan Urbanek on 01/07/2025.
 //
 
-struct Magnet {
-    public let position: Vector2D
-}
-
 /// Pictogram is a visual representation of a design object.
 ///
 /// - ToDo: Make coordinates to be lower-left corner.

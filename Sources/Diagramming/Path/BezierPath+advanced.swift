@@ -57,6 +57,32 @@ extension BezierPath {
         }
     }
 
+    /// Create a poly-line from ``start`` to ``end`` that goes through midpoints.
+    ///
+    /// The poly-line alternates between horizontal and vertical orientation.
+    ///
+    public init(orthogonalPolylineThrough points: [Vector2D]) {
+        self.init()
+        guard var current = points.first else {
+            return
+        }
+        var isHorizontal: Bool = true
+        move(to: current)
+        
+        for nextPoint in points.dropFirst() {
+            if isHorizontal {
+                addLine(to: Vector2D(nextPoint.x, current.y))
+                addLine(to: Vector2D(nextPoint.x, nextPoint.y))
+            }
+            else {
+                addLine(to: Vector2D(current.x, nextPoint.y))
+                addLine(to: Vector2D(nextPoint.x, nextPoint.y))
+                current = nextPoint
+            }
+            isHorizontal = !isHorizontal
+        }
+    }
+
 }
 
 /// Calculate control points for a segment using Catmull-Rom style interpolation

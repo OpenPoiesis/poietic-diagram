@@ -48,7 +48,7 @@ extension Pictogram {
 }
 
 extension CollisionShape {
-    public func toSVGElement() -> SVGGraphicElement {
+    public func toSVGElement() -> SVGGeometryElement {
         switch shape {
         case let .circle(radius):
             let element = SVGCircle()

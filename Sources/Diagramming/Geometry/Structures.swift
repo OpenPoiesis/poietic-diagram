@@ -396,11 +396,4 @@ public struct LineSegment: Equatable, Sendable {
         let angle2 = atan2(other.direction.y, other.direction.x)
         return (angle2 - angle1).truncatingRemainder(dividingBy: 2 * .pi)
     }
-    
-    /// Returns a new line segment extended by a certain distance at both ends
-    public func extended(by distance: Double) -> LineSegment {
-        let extensionVector = direction * distance
-        return LineSegment(from: start - extensionVector, to: end + extensionVector
-        )
-    }
 }

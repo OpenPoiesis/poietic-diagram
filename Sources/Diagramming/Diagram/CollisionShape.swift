@@ -41,40 +41,6 @@ public struct CollisionShape: Equatable, Codable, Sendable {
             shape: shape.scaled(scale)
         )
     }
-    
-    /// Find the touch point where a ray from an origin point through a shape center
-    /// intersects the shape boundary.
-    ///
-    /// The ray originates at the `from` point and passes through the shape `position` (shape center).
-    /// If the origin point is inside the shape, returns the exit point where the ray leaves the shape.
-    /// If no intersection is found, returns the shape center as fallback.
-    ///
-    /// - Parameters:
-    ///     - position: shape position
-    ///     - from: The origin point of the ray
-    ///
-    /// - Returns: The touch point on the shape boundary when the ray intersects, or the shape
-    ///            center when the ray does not intersect.
-    ///
-    public func rayIntersects(position: Vector2D, from rayOrigin: Vector2D, direction rayDirection: Vector2D) -> Vector2D? {
-        switch shape {
-        case .circle(let radius):
-            return Geometry.rayIntersects(circleAt: position + self.position, radius: radius,
-                                          from: rayOrigin, direction: rayDirection)
-            
-        case .rectangle(let size):
-            let rect = Rect2D(origin: position + self.position - size/2, size: size)
-            return Geometry.rayIntersects(rectangle: rect,
-                                          from: rayOrigin, direction: rayDirection)
-        case .polygon(let points):
-            let translatedPoints = points.map {
-                $0 + self.position + position
-            }
-            return Geometry.rayIntersects(polygonPoints: translatedPoints,
-                                          from: rayOrigin, direction: rayDirection)
-        }
-    }
-
 }
 
 /// Shape of a diagram block used for masks and collisions.
