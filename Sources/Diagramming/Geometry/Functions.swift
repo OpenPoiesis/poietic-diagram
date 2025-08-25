@@ -152,7 +152,7 @@ public enum Geometry {
             return rayIntersection(rectangle: rect,
                                  from: rayOrigin, direction: rayDirection)
         case .polygon(let points):
-            return rayIntersection(polygonPoints: points,
+            return rayIntersection(polygonPoints: points.map { $0 + shape.position },
                                    from: rayOrigin, direction: rayDirection)
         }
     }

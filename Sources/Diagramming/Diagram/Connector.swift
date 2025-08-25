@@ -36,11 +36,11 @@ public enum ConnectorStyle: Sendable {
 /// - Visual styling through ShapeStyle properties
 ///
 public class Connector {
-    public var id: Diagram.ElementKey? = nil
+    public var key: Diagram.ElementKey
     
     /// The starting point of the connector.
-    public var origin: Block
-    public var target: Block
+    public var originPoint: Vector2D
+    public var targetPoint: Vector2D
 //    public var originPoint: Vector2D
     
     /// The ending point of the connector.
@@ -56,44 +56,20 @@ public class Connector {
     public var shapeStyle: ShapeStyle
     
 
-    public init(id: Diagram.ElementKey? = nil,
-                origin: Block,
-                target: Block,
+    public init(key: Diagram.ElementKey,
+                originPoint: Vector2D,
+                targetPoint: Vector2D,
                 midpoints: [Vector2D] = [],
                 style: ConnectorStyle = .thin(ThinConnectorStyle()),
                 shapeStyle: ShapeStyle = ShapeStyle()) {
-        self.id = id
-        self.origin = origin
-        self.target = target
+        self.key = key
+        self.originPoint = originPoint
+        self.targetPoint = targetPoint
         self.midpoints = midpoints
         self.style = style
         self.shapeStyle = shapeStyle
     }
    
-    /// Compute touch points to origin and target blocks.
-    ///
-    /// The touch point is computed as a an intersection of block's collision shape and a
-    /// ray originating from the first adjacent point to the endpoint. If no intersection is found,
-    /// then the endpoint block position is returned for given endpoint.
-    ///
-    public func touchPoints() -> (origin: Vector2D, target: Vector2D) {
-        let adjacent = adjacentEndpoints()
-        let originDirection = (origin.position - adjacent.origin).normalized
-        let targetDirection = (target.position - adjacent.target).normalized
-
-        // TODO: We are re-computing points for polygon shapes on each call here
-        // TODO: We are re-computing collision shape
-        let originTouch = Geometry.rayIntersection(shape: origin.collisionShape.shape,
-                                                   position: origin.collisionShape.position,
-                                                   from: adjacent.origin,
-                                                   direction: originDirection)
-        let targetTouch = Geometry.rayIntersection(shape: target.collisionShape.shape,
-                                                   position: target.collisionShape.position,
-                                                   from: adjacent.target,
-                                                   direction: targetDirection)
-        return (origin: originTouch ?? origin.position, target: targetTouch ?? target.position)
-    }
-
     /// Bezier paths forming the connector.
     ///
     /// Use the paths to draw the connector.
@@ -107,29 +83,18 @@ public class Connector {
         }
         
     }
-    
-    /// Get points that are adjacent to the endpoints of the connector.
-    ///
-    /// Adjacent point to the origin is the first midpoint or the target position if there are
-    /// no midpoints. Analogously, adjacent point to the target is the last midpoint or the
-    /// origin position.
-    ///
-    /// - SeeAlso: ``arrowhadDirections()``
-    ///
-    public func adjacentEndpoints() -> (origin: Vector2D, target: Vector2D) {
-        return (origin: midpoints.first ?? target.position,
-                target: midpoints.last ?? origin.position)
-    }
 
     /// Get directions for the origin and target arrowheads, considering the midpoints if present.
     ///
     /// - SeeAlso: ``adjacentEndpoints()``.
     ///
     public func arrowhadDirections() -> (origin: Vector2D, target: Vector2D) {
-        let adjacent = adjacentEndpoints()
+        
+        let adjacentOrigin = midpoints.first ?? targetPoint
+        let adjacentTarget = midpoints.last ?? originPoint
 
-        return (origin: (origin.position - adjacent.origin).normalized,
-                target: (target.position - adjacent.target).normalized)
+        return (origin: (originPoint - adjacentOrigin).normalized,
+                target: (targetPoint - adjacentTarget).normalized)
     }
 
     /// Get the selection outline polygons.

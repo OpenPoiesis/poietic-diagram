@@ -12,7 +12,7 @@
 /// 
 public class Block {
     /// ID of the diagram block that uniquely identifies the block within the diagram.
-    public var id: Diagram.ElementKey?
+    public var key: Diagram.ElementKey
 
     /// Position of the diagram block in the diagram or parent's coordinates.
     ///
@@ -72,9 +72,9 @@ public class Block {
     
     /// Create a new block.
     ///
-    public init(id: Diagram.ElementKey? = nil, position: Vector2D = .zero, pictogram: Pictogram? = nil,
+    public init(key: Diagram.ElementKey, position: Vector2D = .zero, pictogram: Pictogram? = nil,
                 label: String? = nil, secondaryLabel: String? = nil) {
-        self.id = id
+        self.key = key
         self.position = position
         self.pictogram = pictogram
         self.label = label

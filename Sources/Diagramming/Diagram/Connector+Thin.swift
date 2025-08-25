@@ -140,7 +140,7 @@ extension Connector {
         var paths: [BezierPath] = []
 
         let (originDir, targetDir) = arrowhadDirections()
-        let (originTouch, targetTouch) = touchPoints()
+        let (originTouch, targetTouch) = (originPoint, targetPoint)
 
         // Create arrowheads
         let headArrowhead = Self.createThinArrowhead(at: targetTouch,

@@ -69,7 +69,8 @@ extension Connector {
     public func fatConnectorPath(style: FatConnectorStyle) -> BezierPath {
         
         let (originDir, targetDir) = arrowhadDirections()
-        let (originTouch, targetTouch) = touchPoints()
+        // FIXME: This is just a rename after refactor, use *point
+        let (originTouch, targetTouch) = (originPoint, targetPoint)
         
         // TODO: Make fat arrowhead size two-dimensional. For now, we just use this magic ratio.
         let PleasantMagicScale = 1.5

@@ -78,16 +78,39 @@ public final class Pictogram: Sendable, Codable {
                 path: BezierPath,
                 maskShape: CollisionShape,
                 origin: Vector2D = Vector2D(),
-                boundingBox: Rect2D = Rect2D(),
+                boundingBox: Rect2D? = nil,
                 collisionShape: CollisionShape? = nil) {
         self.name = name
         self.path = path
         self.maskShape = maskShape
         self.origin = origin
-        self.boundingBox = boundingBox
+        self.boundingBox = boundingBox ?? path.boundingBox ?? Rect2D()
         self.collisionShape = collisionShape ?? maskShape
     }
     
+    /// Creates a circle pictogram of given radius centred at the pictogram origin.
+    ///
+    /// The collision shape and the mask are set to the same circle shape.
+    public convenience init(_ name: String, circleWithRadius radius: Double) {
+        self.init(
+            name,
+            path: BezierPath(circle: .zero, radius: radius),
+            maskShape: CollisionShape(position: .zero, shape: .circle(radius))
+        )
+    }
+
+    /// Creates a square pictogram of given size centred at the pictogram origin.
+    ///
+    /// The collision shape and the mask are set to the same square shape.
+    public convenience init(_ name: String, squareOfSize size: Double) {
+        let halfSize = size / 2.0
+        self.init(
+            name,
+            path: BezierPath(rect: Rect2D(x: -halfSize, y: -halfSize, width: size, height: size)),
+            maskShape: CollisionShape(position: .zero, shape: .rectangle(Vector2D(size, size)))
+        )
+    }
+
     /// Get a scaled version of the pictogram
     public func scaled(_ scale: Double) -> Pictogram {
         let trans = AffineTransform(scale: Vector2D(scale, scale))
