@@ -214,18 +214,21 @@ func extractPictogramShape(image: SVGImage, id: String = "shape") throws -> Coll
     case let polygon as SVGPolygon:
         let points = polygon.points.map { transform.apply(to: $0) }
         // Points already contain a position, relative to the coordinate system of the original pictogram
-        return CollisionShape(position: .zero, shape: .polygon(points))
+        let shapeType: ShapeType = Geometry.isConvex(polygon: points) ? .convexPolygon(points) : .concavePolygon(points)
+        return CollisionShape(position: .zero, shape: shapeType)
         
     case let polyline as SVGPolyline:
         let points = polyline.points.map { transform.apply(to: $0) }
-        return CollisionShape(position: .zero, shape: .polygon(points))
+        let shapeType: ShapeType = Geometry.isConvex(polygon: points) ? .convexPolygon(points) : .concavePolygon(points)
+        return CollisionShape(position: .zero, shape: shapeType)
 
     case let path as SVGPath:
         let bezierPath = convertSVGPath(path)
         guard let points = bezierPath.asStrictPolygon() else {
             throw SVGPictogramError.invalidShape // Path contains curves
         }
-        return CollisionShape(position: .zero, shape: .polygon(points))
+        let shapeType: ShapeType = Geometry.isConvex(polygon: points) ? .convexPolygon(points) : .concavePolygon(points)
+        return CollisionShape(position: .zero, shape: shapeType)
     default:
         throw SVGPictogramError.invalidShape // Unsupported shape type
     }

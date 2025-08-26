@@ -7,6 +7,11 @@
 
 import PoieticCore
 
+public protocol DiagramObject {
+    var objectID: ObjectID { get }
+    func containsTouch(at point: Vector2D, radius: Double) -> Bool
+}
+
 public class Diagram {
     var _connectors: [ObjectID:Connector]
     public var connectors: [Connector] { Array(_connectors.values) }
@@ -49,4 +54,12 @@ public class Diagram {
     public func removeBlock(forObject id: ObjectID) -> Block? {
         return _blocks.removeValue(forKey: id)
     }
+    
+    public func objectsAtTouch(_ point: Vector2D, radius: Double=1.0) -> [any DiagramObject] {
+        var result: [any DiagramObject] = []
+        result += _blocks.values.filter { $0.containsTouch(at: point, radius: radius) }
+        result += _connectors.values.filter { $0.containsTouch(at: point, radius: radius) }
+        return result
+    }
+    
 }

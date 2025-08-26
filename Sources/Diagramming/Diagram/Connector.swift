@@ -37,7 +37,7 @@ public enum ConnectorStyle: Sendable {
 /// - Configurable arrowheads with various types and sizes
 /// - Visual styling through ShapeStyle properties
 ///
-public class Connector {
+public class Connector: DiagramObject {
     public var objectID: ObjectID
     
     /// The starting point of the connector.
@@ -105,4 +105,9 @@ public class Connector {
         // FIXME: [IMPORTANT] This is required so we can replace the Godot rendering
         fatalError("\(#function) not implemented")
     }
+    public func containsTouch(at point: Vector2D, radius: Double=1.0) -> Bool {
+        // FIXME: Implement this
+        return false
+    }
+
 }

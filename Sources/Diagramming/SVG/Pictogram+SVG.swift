@@ -63,7 +63,7 @@ extension CollisionShape {
             element.width = size.x
             element.height = size.y
             return element
-        case let .polygon(points):
+        case let .convexPolygon(points), let .concavePolygon(points):
             let element = SVGPolygon()
             element.points = points.map { $0 + position }
             return element

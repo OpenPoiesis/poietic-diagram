@@ -96,6 +96,11 @@ public struct Rect2D: Equatable, Sendable, Codable {
         self.size = size
     }
     
+    public init(center: Vector2D, size: Vector2D) {
+        self.origin = center - size / 2
+        self.size = size
+    }
+    
     /// Creates a rectangle with explicit x, y coordinates and width, height dimensions.
     ///
     /// - Parameters:
@@ -395,5 +400,36 @@ public struct LineSegment: Equatable, Sendable {
         let angle1 = atan2(direction.y, direction.x)
         let angle2 = atan2(other.direction.y, other.direction.x)
         return (angle2 - angle1).truncatingRemainder(dividingBy: 2 * .pi)
+    }
+    
+    /// Computes the shortest distance from a point to this line segment.
+    ///
+    /// The distance is measured perpendicularly from the point to the line segment.
+    /// If the perpendicular from the point doesn't intersect the segment within its bounds,
+    /// the distance to the nearest endpoint is returned instead.
+    ///
+    /// - Parameter point: The point to measure distance from
+    /// - Returns: The shortest distance from the point to the line segment
+    public func distanceToPoint(_ point: Vector2D) -> Double {
+        let segmentVector = end - start
+        let toPointVector = point - start
+        
+        // If segment has zero length, return distance to start point
+        let segmentLengthSquared = segmentVector.dot(segmentVector)
+        guard segmentLengthSquared > Double.standardEpsilon else {
+            return start.distance(to: point)
+        }
+        
+        // Calculate projection parameter t
+        let t = toPointVector.dot(segmentVector) / segmentLengthSquared
+        
+        // Clamp t to [0, 1] to stay within segment bounds
+        let clampedT = max(0, min(1, t))
+        
+        // Find closest point on segment
+        let closestPoint = start + clampedT * segmentVector
+        
+        // Return distance to closest point
+        return point.distance(to: closestPoint)
     }
 }

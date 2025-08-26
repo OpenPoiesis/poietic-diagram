@@ -12,7 +12,7 @@ import PoieticCore
 ///
 /// - SeeAlso: ``Connector``
 /// 
-public class Block {
+public class Block: DiagramObject {
     /// ID of an object which the block represents.
     ///
     public var objectID: ObjectID
@@ -94,4 +94,10 @@ public class Block {
             size: pictogram.boundingBox.size
         )
     }
+    
+    public func containsTouch(at point: Vector2D, radius: Double=1.0) -> Bool {
+        let touch = CollisionShape(position: point, shape: .circle(radius))
+        return touch.collide(with: collisionShape)
+    }
+
 }

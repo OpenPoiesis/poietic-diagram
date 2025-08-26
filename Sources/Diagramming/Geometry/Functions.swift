@@ -131,7 +131,7 @@ public enum Geometry {
             let rect = Rect2D(origin: position - size/2, size: size)
             return rayIntersection(rectangle: rect,
                                  from: rayOrigin, direction: rayDirection)
-        case .polygon(let points):
+        case .convexPolygon(let points), .concavePolygon(let points):
             return rayIntersection(polygonPoints: points.map { $0 + position },
                                    from: rayOrigin, direction: rayDirection)
         }
@@ -151,7 +151,7 @@ public enum Geometry {
             let rect = Rect2D(origin: shape.position - size/2, size: size)
             return rayIntersection(rectangle: rect,
                                  from: rayOrigin, direction: rayDirection)
-        case .polygon(let points):
+        case .convexPolygon(let points), .concavePolygon(let points):
             return rayIntersection(polygonPoints: points.map { $0 + shape.position },
                                    from: rayOrigin, direction: rayDirection)
         }
@@ -381,22 +381,24 @@ public enum Geometry {
         var sign: FloatingPointSign? = nil
         let n = points.count
         var allCollinear = true
+        let segments = toSegments(polygon: points)
 
         // First, check for self-intersections (which make the polygon non-convex)
         for i in 0..<n {
-            let edge1 = LineSegment(from: points[i], to: points[(i + 1) % n])
-            
-            // Check against all non-adjacent edges
-            for j in (i + 2)..<n {
-                // Skip adjacent edges (they share a vertex)
-                if (j + 1) % n == i % n {
+            let seg1 = segments[i]
+
+            // Only check against segments that aren't adjacent
+            for j in (i + 2)..<(n + i - 1) {
+                let seg2 = segments[j % n]
+                
+                // Skip segments that share a vertex
+                if seg1.start == seg2.start || seg1.start == seg2.end ||
+                   seg1.end == seg2.start || seg1.end == seg2.end {
                     continue
                 }
                 
-                let edge2 = LineSegment(from: points[j], to: points[(j + 1) % n])
-                
-                if edge1.intersects(edge2) {
-                    return false // Self-intersection found
+                if seg1.intersects(seg2) {
+                    return false
                 }
             }
         }
@@ -482,4 +484,6 @@ public enum Geometry {
         
         return segments
     }
+    
+    
 }
