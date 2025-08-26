@@ -161,7 +161,7 @@ private func circleConvexPolygonCollision(circleCenter: Vector2D, radius: Double
     for i in 0..<worldPoints.count {
         let nextIndex = (i + 1) % worldPoints.count
         let edge = LineSegment(from: worldPoints[i], to: worldPoints[nextIndex])
-        let distance = edge.distanceToPoint(circleCenter)
+        let distance = edge.distance(to: circleCenter)
         
         if distance <= radius + Double.standardEpsilon {
             return true
@@ -214,7 +214,7 @@ private func circleConcavePolygonCollision(circleCenter: Vector2D, radius: Doubl
     for i in 0..<worldPoints.count {
         let nextIndex = (i + 1) % worldPoints.count
         let edge = LineSegment(from: worldPoints[i], to: worldPoints[nextIndex])
-        let distance = edge.distanceToPoint(circleCenter)
+        let distance = edge.distance(to: circleCenter)
         
         if distance <= radius + Double.standardEpsilon {
             return true

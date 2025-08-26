@@ -410,7 +410,7 @@ public struct LineSegment: Equatable, Sendable {
     ///
     /// - Parameter point: The point to measure distance from
     /// - Returns: The shortest distance from the point to the line segment
-    public func distanceToPoint(_ point: Vector2D) -> Double {
+    public func distance(to point: Vector2D) -> Double {
         let segmentVector = end - start
         let toPointVector = point - start
         

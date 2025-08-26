@@ -452,8 +452,7 @@ public enum Geometry {
     /// - Returns: An array of `LineSegment` objects representing the polygon's edges.
     ///            Returns an empty array if there are fewer than 2 points.
     ///
-    /// ## Complexity
-    /// O(n) where n is the number of vertices.
+    /// - Complexity: O(n) where n is the number of vertices.
     ///
     /// ## Example
     /// ```swift
@@ -466,9 +465,8 @@ public enum Geometry {
     /// // Returns 3 segments forming a closed triangle
     /// ```
     ///
-    /// ## Notes
-    /// - For a valid polygon, the segments will form a continuous closed path.
-    /// - The order of segments follows the order of vertices in the input array.
+    /// - Note: For a valid polygon, the segments will form a continuous closed path.
+    /// - Note: The order of segments follows the order of vertices in the input array.
     public static func toSegments(polygon points: [Vector2D]) -> [LineSegment] {
         guard points.count >= 2 else {
             return []
@@ -485,5 +483,37 @@ public enum Geometry {
         return segments
     }
     
+    /// Convert quadratic Bezier control point to cubic Bezier control points.
+    ///
+    /// Given a quadratic Bezier curve with start point, control point, and end point,
+    /// returns the equivalent cubic Bezier control points.
+    ///
+    /// ## Algorithm
+    /// For quadratic Bezier: P(t) = (1-t)²P₀ + 2t(1-t)P₁ + t²P₂
+    /// Cubic equivalent: control1 = P₀ + ⅔(P₁ - P₀), control2 = P₂ + ⅔(P₁ - P₂)
+    ///
+    /// - Parameters:
+    ///     - start: The starting point of the curve (P₀)
+    ///     - control: The quadratic control point (P₁)
+    ///     - end: The ending point of the curve (P₂)
+    ///
+    /// - Returns: A tuple containing the two cubic control points (control1, control2)
+    ///
+    /// ## Example
+    /// ```swift
+    /// let start = Vector2D(0, 0)
+    /// let control = Vector2D(1, 1)
+    /// let end = Vector2D(2, 0)
+    /// let (control1, control2) = Geometry.quadraticToCubicControls(
+    ///     startPoint: start, 
+    ///     quadControl: control, 
+    ///     endPoint: end
+    /// )
+    /// ```
+    public static func quadraticToCubicControls(start: Vector2D, control: Vector2D, end: Vector2D) -> (control1: Vector2D, control2: Vector2D) {
+        let control1 = start + (control - start) * (2.0/3.0)
+        let control2 = end + (control - end) * (2.0/3.0)
+        return (control1, control2)
+    }
     
 }
