@@ -5,16 +5,15 @@
 //  Created by Stefan Urbanek on 03/08/2025.
 //
 
+import PoieticCore
 
 public class Diagram {
-    public typealias ElementKey = UInt64
-    
-    var _connectors: [ElementKey:Connector]
+    var _connectors: [ObjectID:Connector]
     public var connectors: [Connector] { Array(_connectors.values) }
-    public var connectorKeys: [ElementKey] { Array(_connectors.keys) }
-    var _blocks: [ElementKey:Block]
+    public var connectorKeys: [ObjectID] { Array(_connectors.keys) }
+    var _blocks: [ObjectID:Block]
     public var blocks: [Block] { Array(_blocks.values) }
-    public var blockKeys: [ElementKey] { Array(_blocks.keys) }
+    public var blockKeys: [ObjectID] { Array(_blocks.keys) }
     // var annotations: [Annotation]
     
     public init() {
@@ -22,12 +21,12 @@ public class Diagram {
         _blocks = [:]
     }
     
-    public func block(forKey key: ElementKey) -> Block? {
-        _blocks[key]
+    public func block(forObject id: ObjectID) -> Block? {
+        _blocks[id]
     }
 
-    public func connector(forKey key: ElementKey) -> Connector? {
-        _connectors[key]
+    public func connector(forObject id: ObjectID) -> Connector? {
+        _connectors[id]
     }
 
     /// Inserts a connector into the diagram.
@@ -35,19 +34,19 @@ public class Diagram {
     /// - Precondition: The diagram must contain the origin and target blocks of the connector.
     ///
     public func insertConnector(_ connector: Connector) {
-        _connectors[connector.key] = connector
+        _connectors[connector.objectID] = connector
     }
 
     @discardableResult
-    public func removeConnector(forKey key: ElementKey) -> Connector? {
-        return _connectors.removeValue(forKey: key)
+    public func removeConnector(forObject id: ObjectID) -> Connector? {
+        return _connectors.removeValue(forKey: id)
     }
 
     public func insertBlock(_ block: Block) {
-        _blocks[block.key] = block
+        _blocks[block.objectID] = block
     }
     @discardableResult
-    public func removeBlock(forKey key: ElementKey) -> Block? {
-        return _blocks.removeValue(forKey: key)
+    public func removeBlock(forObject id: ObjectID) -> Block? {
+        return _blocks.removeValue(forKey: id)
     }
 }

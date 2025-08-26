@@ -5,6 +5,8 @@
 //  Created by Stefan Urbanek on 21/07/2025.
 //
 
+import PoieticCore
+
 /// Style variants for connectors.
 ///
 /// Defines whether a connector should be drawn as thin stroked paths or fat filled polygons.
@@ -36,7 +38,7 @@ public enum ConnectorStyle: Sendable {
 /// - Visual styling through ShapeStyle properties
 ///
 public class Connector {
-    public var key: Diagram.ElementKey
+    public var objectID: ObjectID
     
     /// The starting point of the connector.
     public var originPoint: Vector2D
@@ -56,13 +58,13 @@ public class Connector {
     public var shapeStyle: ShapeStyle
     
 
-    public init(key: Diagram.ElementKey,
+    public init(objectID: ObjectID,
                 originPoint: Vector2D,
                 targetPoint: Vector2D,
                 midpoints: [Vector2D] = [],
                 style: ConnectorStyle = .thin(ThinConnectorStyle()),
                 shapeStyle: ShapeStyle = ShapeStyle()) {
-        self.key = key
+        self.objectID = objectID
         self.originPoint = originPoint
         self.targetPoint = targetPoint
         self.midpoints = midpoints

@@ -5,14 +5,17 @@
 //  Created by Stefan Urbanek on 31/07/2025.
 //
 
+import PoieticCore
+
 /// Diagram block – a graphical shape which is usually represented by a pictogram and which
 /// can be connected with other blocks using connectors.
 ///
 /// - SeeAlso: ``Connector``
 /// 
 public class Block {
-    /// ID of the diagram block that uniquely identifies the block within the diagram.
-    public var key: Diagram.ElementKey
+    /// ID of an object which the block represents.
+    ///
+    public var objectID: ObjectID
 
     /// Position of the diagram block in the diagram or parent's coordinates.
     ///
@@ -72,9 +75,9 @@ public class Block {
     
     /// Create a new block.
     ///
-    public init(key: Diagram.ElementKey, position: Vector2D = .zero, pictogram: Pictogram? = nil,
+    public init(objectID: ObjectID, position: Vector2D = .zero, pictogram: Pictogram? = nil,
                 label: String? = nil, secondaryLabel: String? = nil) {
-        self.key = key
+        self.objectID = objectID
         self.position = position
         self.pictogram = pictogram
         self.label = label
