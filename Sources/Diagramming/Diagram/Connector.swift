@@ -38,14 +38,30 @@ public enum ConnectorStyle: Sendable {
 /// - Visual styling through ShapeStyle properties
 ///
 public class Connector: DiagramObject {
+    public var objectID: ObjectID?
+    public var tag: Int?
+    
+    /// ID of the origin object if the origin represents a design object.
+    ///
+    /// It is recommended to set the ID for connectors that are used in interactive
+    /// user interfaces.
+    ///
+    public var originID: ObjectID?
+
+    /// ID of the target object if the target represents a design object.
+    ///
+    /// It is recommended to set the ID for connectors that are used in interactive
+    /// user interfaces.
+    ///
+    public var targetID: ObjectID?
+    
     /// Reasonable offset from the connector line that is used for testing the touch point.
     /// 
     static let TouchOutlineOffset: Double = 10.0
 
-    public var objectID: ObjectID
-    
     // TODO: Consider storing just allPoints where origin is first, and target is last. We construct allPoints quite frequently.
     /// The starting point of the connector.
+    ///
     public var originPoint: Vector2D {
         didSet { _flush() }
     }
@@ -91,13 +107,15 @@ public class Connector: DiagramObject {
         _tessellatedPoints = nil
     }
     
-    public init(objectID: ObjectID,
+    public init(objectID: ObjectID? = nil,
+                tag: Int? = nil,
                 originPoint: Vector2D,
                 targetPoint: Vector2D,
                 midpoints: [Vector2D] = [],
                 style: ConnectorStyle = .thin(ThinConnectorStyle()),
                 shapeStyle: ShapeStyle = ShapeStyle()) {
         self.objectID = objectID
+        self.tag = tag
         self.originPoint = originPoint
         self.targetPoint = targetPoint
         self.midpoints = midpoints
@@ -132,50 +150,12 @@ public class Connector: DiagramObject {
                 target: (targetPoint - adjacentTarget).normalized)
     }
 
-    /// Returns the center wire path of the connector regardless of visual style.
-    ///
-    /// This method returns the logical connection path that represents the center line
-    /// of the connector, without visual styling elements like arrowheads, stroke width,
-    /// or fill polygons. The path follows the connector's line type (straight, curved, 
-    /// or orthogonal) and routes through all midpoints.
-    ///
-    /// This is useful for:
-    /// - Touch detection and hit testing
-    /// - Logical path analysis
-    /// - Computing connector geometry independent of visual presentation
-    ///
-    /// - Returns: A `BezierPath` representing the center wire of the connector
-    ///
-    /// ## Example
-    /// ```swift
-    /// let connector = Connector(...)
-    /// let centerPath = connector.wirePath()
-    /// // centerPath contains the logical connection without visual styling
-    /// ```
-    ///
-    /// - SeeAlso: ``containsTouch(at:radius:)`` for touch detection using the wire path
-    ///
+    @available(*, deprecated, message: "Use DiagramComposer.wire")
     public func wirePath() -> BezierPath {
-        let allPoints = [originPoint] + midpoints + [targetPoint]
-        
-        let lineType: LineType
-        switch style {
-        case .thin(let thinStyle):
-            lineType = thinStyle.lineType
-        case .fat(_):
-            // Fat connectors currently only support straight lines
-            // This can be extended in the future to support other line types
-            lineType = .straight 
-        }
-        
-        switch lineType {
-        case .straight:
-            return BezierPath(polyline: allPoints)
-        case .curved:
-            return BezierPath(curveThrough: allPoints)
-        case .orthogonal:
-            return BezierPath(orthogonalPolylineThrough: allPoints)
-        }
+        return DiagramComposer.wire(connectorStyle: style,
+                                    from: originPoint,
+                                    to: targetPoint,
+                                    midpoints: midpoints)
     }
 
     /// Get the selection outline polygons.

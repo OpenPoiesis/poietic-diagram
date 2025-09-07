@@ -13,9 +13,8 @@ import PoieticCore
 /// - SeeAlso: ``Connector``
 /// 
 public class Block: DiagramObject {
-    /// ID of an object which the block represents.
-    ///
-    public var objectID: ObjectID
+    public var objectID: ObjectID?
+    public var tag: Int?
 
     /// Position of the diagram block in the diagram or parent's coordinates.
     ///
@@ -75,9 +74,15 @@ public class Block: DiagramObject {
     
     /// Create a new block.
     ///
-    public init(objectID: ObjectID, position: Vector2D = .zero, pictogram: Pictogram? = nil,
-                label: String? = nil, secondaryLabel: String? = nil) {
+    public init(objectID: ObjectID? = nil,
+                tag: Int? = nil,
+                position: Vector2D = .zero,
+                pictogram: Pictogram? = nil,
+                label: String? = nil,
+                secondaryLabel: String? = nil)
+    {
         self.objectID = objectID
+        self.tag = tag
         self.position = position
         self.pictogram = pictogram
         self.label = label

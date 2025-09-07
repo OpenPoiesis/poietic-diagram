@@ -30,6 +30,20 @@ public class DiagramStyle {
                 ?? self.connectorStyles[Self.DefaultConnectorStyleName]
                 ?? .defaultThin
     }
+    
+    /// Get a pictogram by name. If there is no pictogram with given name, then returns default
+    /// pictogram.
+    ///
+    public func pictogram(_ name: String) -> Pictogram {
+        return pictograms.pictogram(name) ?? defaultPictogram
+    }
+
+    /// Get connector style by name. If there is no connector style with given name, returns
+    /// default connector style.
+    ///
+    public func connectorStyle(_ name: String) -> ConnectorStyle {
+        return connectorStyles[name] ?? defaultConnectorStyle
+    }
 }
 
 public let StockFlowConnectorStyles: [String:ConnectorStyle] = [
@@ -77,11 +91,10 @@ extension Connector {
                                      towards: target.position)
         return (origin: originTouch, target:targetTouch)
     }
-
-    static func touchPoint(touching shape: CollisionShape,
-                           from startPoint: Vector2D,
-                           towards endPoint: Vector2D) -> Vector2D {
-        
+    // FIXME: Change to (from:touching:at:)
+    public static func touchPoint(touching shape: CollisionShape,
+                                  from startPoint: Vector2D,
+                                  towards endPoint: Vector2D) -> Vector2D {
         let direction = (endPoint - startPoint).normalized
         let touch = Geometry.rayIntersection(shape: shape, from: startPoint, direction: direction)
         return touch ?? endPoint
@@ -89,8 +102,7 @@ extension Connector {
 }
 
 // Makes Design -> Diagram -> Canvas
-// FIXME: Rename to "DiagramComposer"
-public class DiagramPresenter {
+public class DiagramComposer {
     let style: DiagramStyle
     let pictogramAliases: [String:String]
     
@@ -121,16 +133,66 @@ public class DiagramPresenter {
         }
     }
     
-    func connectorStyle(for object: ObjectSnapshot) -> ConnectorStyle {
+    public func connectorStyle(for object: ObjectSnapshot) -> ConnectorStyle {
         if let style = style.connectorStyles[object.type.name] {
             return style
         }
         else {
             return style.defaultConnectorStyle
         }
-
     }
 
+    public func connectorStyle(forType typeName: String) -> ConnectorStyle {
+        if let style = style.connectorStyles[typeName] {
+            return style
+        }
+        else {
+            return style.defaultConnectorStyle
+        }
+    }
+
+    /// Returns the center wire path of a connector regardless of visual style.
+    ///
+    /// This method returns the logical connection path that represents the center line
+    /// of the connector, without visual styling elements like arrowheads, stroke width,
+    /// or fill polygons. The path follows the connector's line type (straight, curved,
+    /// or orthogonal) and routes through all midpoints.
+    ///
+    /// This is useful for:
+    /// - Touch detection and hit testing
+    /// - Logical path analysis
+    /// - Computing connector geometry independent of visual presentation
+    ///
+    /// - Returns: A `BezierPath` representing the center wire of the connector
+    ///
+    public static func wire(connectorStyle: ConnectorStyle,
+                            from originPoint: Vector2D,
+                            to targetPoint: Vector2D,
+                            midpoints: [Vector2D]) -> BezierPath
+    {
+        let allPoints = [originPoint] + midpoints + [targetPoint]
+        
+        let lineType: LineType
+        switch connectorStyle {
+        case .thin(let thinStyle):
+            lineType = thinStyle.lineType
+        case .fat(_):
+            // Fat connectors currently only support straight lines
+            // This can be extended in the future to support other line types
+            lineType = .straight
+        }
+        
+        switch lineType {
+        case .straight:
+            return BezierPath(polyline: allPoints)
+        case .curved:
+            return BezierPath(curveThrough: allPoints)
+        case .orthogonal:
+            return BezierPath(orthogonalPolylineThrough: allPoints)
+        }
+    }
+    
+    
     /// Creates a diagram from objects in the frame.
     ///
     /// The objects with the trait `DiagramBlock` will be used to create ``Block``
@@ -139,6 +201,7 @@ public class DiagramPresenter {
     /// - Precondition: Edges representing diagram connectors must connects nodes that are
     ///   represented by diagram blocks.
     ///
+    @available(*, deprecated, message: "Do not use")
     public func createDiagram(from frame: StableFrame) -> Diagram {
         // TODO: Add incremental diagram update (only changed)
         let diagram = Diagram()
@@ -151,7 +214,7 @@ public class DiagramPresenter {
             diagram.insertBlock(block)
             blocks[node.objectID] = block
         }
-
+        
         let edges = frame.edges(withTrait: .DiagramConnector)
         for edge in edges {
             guard let origin = blocks[edge.origin], let target = blocks[edge.target] else {
@@ -161,11 +224,14 @@ public class DiagramPresenter {
             let connector = createConnector(edge, origin: origin, target: target)
             diagram.insertConnector(connector)
         }
-
+        
         return diagram
     }
     
-    func createBlock(_ node: ObjectSnapshot) -> Block {
+    /// Create a block from object snapshot.
+    ///
+    /// - SeeAlso: ``createConnector(_:origin:target:)``
+    public func createBlock(_ node: ObjectSnapshot) -> Block {
         let block = Block(
             objectID: node.objectID,
             position: node.position ?? .zero,
@@ -173,13 +239,27 @@ public class DiagramPresenter {
             label: node.label,
             secondaryLabel: node.secondaryLabel
         )
-
+        
         return block
     }
+    public func updateBlock(block: Block, node: ObjectSnapshot) {
+        block.objectID = node.objectID
+        block.position = node.position ?? .zero
+        block.pictogram = pictogram(for: node)
+        block.label = node.label
+        block.secondaryLabel = node.secondaryLabel
+    }
 
-    func createConnector(_ edge: EdgeObject, origin: Block, target: Block) -> Connector {
+    /// Create a connector from an edge object between two blocks.
+    ///
+    /// The connector touch points are computed using block's collision shape and edge's endpoints.
+    ///
+    /// - SeeAlso: ``createBlock(_:)``, ``updateConnector(connector:edge:origin:target:)``
+    /// - SeeAlso: ``Connector/touchPoints(origin:target:midpoints:)``
+    ///
+    public func createConnector(_ edge: EdgeObject, origin: Block, target: Block) -> Connector {
         let midpoints: [Point] = (try? edge.object["midpoints"]?.pointArray()) ?? []
-
+        
         let style: ConnectorStyle = connectorStyle(for: edge.object)
         
         let (originTouch, targetTouch) = Connector.touchPoints(origin: origin,
@@ -193,7 +273,34 @@ public class DiagramPresenter {
             midpoints: midpoints,
             style: style
         )
-
+        
         return connector
     }
+    
+    /// Update existing connector from an edge and blocks it connects.
+    ///
+    /// Use this function when one of the blocks has moved to recompute touch points.
+    ///
+    /// - SeeAlso: ``createConnector(_:origin:target:)``
+    ///
+    public func updateConnector(connector: Connector, edge: EdgeObject, origin: Block, target: Block) {
+        let midpoints: [Point] = (try? edge.object["midpoints"]?.pointArray()) ?? []
+        let style: ConnectorStyle = connectorStyle(for: edge.object)
+        let (originTouch, targetTouch) = Connector.touchPoints(origin: origin,
+                                                               target: target,
+                                                               midpoints: midpoints)
+        connector.objectID = edge.key
+        connector.originPoint = originTouch
+        connector.targetPoint = targetTouch
+        connector.midpoints = midpoints
+        connector.style = style
+    }
+    public func updateConnector(connector: Connector, origin: Block, target: Block) {
+        let (originTouch, targetTouch) = Connector.touchPoints(origin: origin,
+                                                               target: target,
+                                                               midpoints: connector.midpoints)
+        connector.originPoint = originTouch
+        connector.targetPoint = targetTouch
+    }
+
 }
