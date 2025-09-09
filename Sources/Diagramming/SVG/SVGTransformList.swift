@@ -123,11 +123,10 @@ public enum SVGTransform {
 }
 
 public struct SVGTransformList {
-
     var items: [SVGTransform] = []
 
-    public init(_ components: [SVGTransform] = []) {
-        self.items = components
+    public init(_ items: [SVGTransform] = []) {
+        self.items = items
     }
     /// Create a transform from a SVG transform string.
     ///

@@ -83,20 +83,28 @@ extension Connector {
     public static func touchPoints(origin: Block,
                                    target: Block,
                                    midpoints: [Vector2D]) -> (origin: Vector2D, target: Vector2D){
-        let originTouch = touchPoint(touching: origin.collisionShape,
+        let originShapePosition = origin.position + origin.collisionShape.position
+        let originTouch = touchPoint(shape: origin.collisionShape.shape,
+                                     position: originShapePosition,
                                      from: midpoints.first ?? target.position,
                                      towards: origin.position)
-        let targetTouch = touchPoint(touching: target.collisionShape,
+        let targetShapePosition = target.position + target.collisionShape.position
+        let targetTouch = touchPoint(shape: target.collisionShape.shape,
+                                     position: targetShapePosition,
                                      from: midpoints.last ?? origin.position,
                                      towards: target.position)
         return (origin: originTouch, target:targetTouch)
     }
     // FIXME: Change to (from:touching:at:)
-    public static func touchPoint(touching shape: CollisionShape,
+    public static func touchPoint(shape: ShapeType,
+                                  position: Vector2D,
                                   from startPoint: Vector2D,
                                   towards endPoint: Vector2D) -> Vector2D {
         let direction = (endPoint - startPoint).normalized
-        let touch = Geometry.rayIntersection(shape: shape, from: startPoint, direction: direction)
+        let touch = Geometry.rayIntersection(shape: shape,
+                                             position: position,
+                                             from: startPoint,
+                                             direction: direction)
         return touch ?? endPoint
     }
 }

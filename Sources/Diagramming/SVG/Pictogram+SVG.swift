@@ -47,6 +47,30 @@ extension Pictogram {
     }
 }
 
+extension ShapeType {
+    public func toSVGElement() -> SVGGeometryElement {
+        switch self {
+        case let .circle(radius):
+            let element = SVGCircle()
+            element.cx = 0.0
+            element.cy = 0.0
+            element.r = radius
+            return element
+        case let .rectangle(size):
+            let element = SVGRectangle()
+            element.x = -size.x / 2.0
+            element.y = -size.y / 2.0
+            element.width = size.x
+            element.height = size.y
+            return element
+        case let .convexPolygon(points), let .concavePolygon(points):
+            let element = SVGPolygon()
+            element.points = points
+            return element
+        }
+    }
+}
+
 extension CollisionShape {
     public func toSVGElement() -> SVGGeometryElement {
         switch shape {

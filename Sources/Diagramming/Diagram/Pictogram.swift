@@ -36,6 +36,9 @@ public final class Pictogram: Sendable, Codable {
     ///
     /// The ``path``, ``maskShape`` and ``collisionShape``  are relative to the ``origin``.
     ///
+    /// When placing a pictogram at a desired position, the origin is to be subtracted from the
+    /// position.
+    ///
     public let origin: Vector2D
     
     /// Box into which the whole pictogram fits.
@@ -74,6 +77,7 @@ public final class Pictogram: Sendable, Codable {
     
     // let decorations
     // let textAnnotations
+    // TODO: Swap mask with collision - derive mask from collision
     public init(_ name: String,
                 path: BezierPath,
                 maskShape: CollisionShape,

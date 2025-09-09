@@ -21,15 +21,13 @@ public class Block: DiagramObject {
     /// When the block is represented by a pictogram, then the ``Pictogram/origin`` is placed at
     /// the block position coordinates.
     ///
-    public var position: Vector2D {
-        didSet { _collisionShape = nil }
-    }
+    public var position: Vector2D
     
     /// Pictogram that is rendered as the diagram block.
     ///
     /// The pictogram's origin is placed at block's ``position``.
     ///
-    public var pictogram: Pictogram?  {
+    public var pictogram: Pictogram? {
         didSet { _collisionShape = nil }
     }
     
@@ -46,22 +44,19 @@ public class Block: DiagramObject {
     ///
     public var secondaryLabel: String?
 
-    public var _collisionShape: CollisionShape?
-
-    /// Get the collision shape of the block.
+    /// Collision shape of the block relative to the block position.
     ///
     /// If the block does not have a pictogram, then a circle shape with radius zero is returned.
     ///
-    /// Position of the collision shape is in the diagram or block's parent coordinates.
-    ///
+    /// - SeeAlso: ``Pictogram/collisionShape``
+    /// 
     public var collisionShape: CollisionShape {
         if let _collisionShape {
             return _collisionShape
         }
-        
         if let pictogram {
             _collisionShape = CollisionShape(
-                position: position + pictogram.collisionShape.position - pictogram.origin,
+                position: pictogram.collisionShape.position - pictogram.origin,
                 shape: pictogram.collisionShape.shape
             )
         }
@@ -71,7 +66,8 @@ public class Block: DiagramObject {
         }
         return _collisionShape!
     }
-    
+    public var _collisionShape: CollisionShape?
+
     /// Create a new block.
     ///
     public init(objectID: ObjectID? = nil,
@@ -87,10 +83,12 @@ public class Block: DiagramObject {
         self.pictogram = pictogram
         self.label = label
         self.secondaryLabel = secondaryLabel
+
     }
 
     /// Box that encapsulates the pictogram in the diagram coordinates.
     public var pictogramBoundingBox: Rect2D {
+        // TODO: Make this relative to block, or make absolute and relative
         guard let pictogram else {
             return Rect2D(origin: position, size: .zero)
         }
@@ -101,7 +99,8 @@ public class Block: DiagramObject {
     }
     
     public func containsTouch(at point: Vector2D, radius: Double=1.0) -> Bool {
-        let touch = CollisionShape(position: point, shape: .circle(radius))
+        let relativePoint = point - position
+        let touch = CollisionShape(position: relativePoint, shape: .circle(radius))
         return touch.collide(with: collisionShape)
     }
 

@@ -141,7 +141,8 @@ public struct Rect2D: Equatable, Sendable, Codable {
     
     /// The bottom-right corner of the rectangle.
     public var bottomRight: Vector2D { Vector2D(maxX, minY) }
-    
+    let DefaultHandleSize: Double = 10.0
+
     /// The top-left corner of the rectangle.
     public var topLeft: Vector2D { Vector2D(minX, maxY) }
     

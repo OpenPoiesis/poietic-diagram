@@ -25,8 +25,8 @@ public struct CollisionShape: Equatable, Codable, Sendable {
             
         case .circle(_): position
         case .rectangle(_): position
-        case .convexPolygon(let points),
-                .concavePolygon(let points): Geometry.centroid(points: points) ?? .zero
+        case .convexPolygon(let points), .concavePolygon(let points):
+            Geometry.centroid(points: points) ?? .zero
         }
     }
     
@@ -111,6 +111,24 @@ public struct CollisionShape: Equatable, Codable, Sendable {
         case (.concavePolygon(let points1), .concavePolygon(let points2)):
             return concaveConcavePolygonCollision(position1: self.position, points1: points1,
                                                   position2: other.position, points2: points2)
+        }
+    }
+    
+    /// Convert the shape to a bezier path.
+    ///
+    public func toPath() -> BezierPath {
+        switch shape {
+        case let .circle(radius):
+            return BezierPath(circle: position, radius: radius)
+        case let .rectangle(size):
+            let rect = Rect2D(center: position, size: size)
+            return BezierPath(rect: rect)
+        case let .convexPolygon(points), let .concavePolygon(points):
+            var path = BezierPath(polyline: points)
+            if !path.isClosed {
+                path.closeSubpath()
+            }
+            return path
         }
     }
 }
@@ -467,7 +485,7 @@ public enum ShapeType: Equatable, Sendable, Codable {
     case convexPolygon([Vector2D])
     case concavePolygon([Vector2D])
 
-    var typeName: String {
+    public var typeName: String {
         switch self {
         case .circle(_): "circle"
         case .rectangle(_): "rectangle"

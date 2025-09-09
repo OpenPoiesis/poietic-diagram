@@ -131,32 +131,12 @@ public enum Geometry {
             let rect = Rect2D(origin: position - size/2, size: size)
             return rayIntersection(rectangle: rect,
                                  from: rayOrigin, direction: rayDirection)
-        case .convexPolygon(let points), .concavePolygon(let points):
+        case .convexPolygon(let points),
+                .concavePolygon(let points):
             return rayIntersection(polygonPoints: points.map { $0 + position },
                                    from: rayOrigin, direction: rayDirection)
         }
     }
-
-    /// Find intersection points of a line segment with a collision shape.
-    ///
-    public static func rayIntersection(shape: CollisionShape,
-                                       from rayOrigin: Vector2D,
-                                       direction rayDirection: Vector2D) -> Vector2D? {
-        switch shape.shape {
-        case .circle(let radius):
-            return rayIntersection(circleAt: shape.position, radius: radius,
-                                 from: rayOrigin, direction: rayDirection)
-            
-        case .rectangle(let size):
-            let rect = Rect2D(origin: shape.position - size/2, size: size)
-            return rayIntersection(rectangle: rect,
-                                 from: rayOrigin, direction: rayDirection)
-        case .convexPolygon(let points), .concavePolygon(let points):
-            return rayIntersection(polygonPoints: points.map { $0 + shape.position },
-                                   from: rayOrigin, direction: rayDirection)
-        }
-    }
-    
     
     /// Find intersection point of a ray with a polygon boundary.
     ///
