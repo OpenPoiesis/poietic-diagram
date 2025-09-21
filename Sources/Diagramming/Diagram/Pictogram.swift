@@ -5,9 +5,14 @@
 //  Created by Stefan Urbanek on 01/07/2025.
 //
 
-/// Pictogram is a visual representation of a design object.
+/// Visual representation of an object in a diagram.
 ///
-/// - ToDo: Make coordinates to be lower-left corner.
+/// The pictogram is described by its curves and additional metadata:
+/// - ``path``: Bezier curves used to draw the pictogram.
+/// - ``mask``: Visual mask, typically to provide space around the pictogram or to use for
+///   drawing a selection outline.
+/// - ``collisionShape``: Simplified shape used for detecting touch points of connectors
+///   and to detect touches in an user interface.
 ///
 public final class Pictogram: Sendable, Codable {
     /// Name by which pictogram is referenced to.
@@ -20,15 +25,10 @@ public final class Pictogram: Sendable, Codable {
     /// a circular shape, then the shape origin should be at (0, 0). If the path represents a
     /// rectangle, then the object position is the rectangle centre.
     ///
-    /// - Note: The path is always drawn as a line and curve path without any fill.
+    /// - Note: The path is always drawn as a line and curve path without any fill. It is never
+    ///         intended to be presented as filled.
     ///
     public let path: BezierPath
-    
-    // FIXME: Make this `path` and change `path` to `originalPath`
-    public var translatedPath: BezierPath {
-        let translation = AffineTransform(translation: -self.origin)
-        return self.path.transform(translation)
-    }
     
     /// Visual mask of the pictogram.
     ///
@@ -36,27 +36,32 @@ public final class Pictogram: Sendable, Codable {
     /// similar visual indication.
     ///
     /// - Note: The bezier path representing the mask is assumed to be a closed path or composed
-    ///   of closed sub-paths.
+    ///   of closed sub-paths. It is always presented as filled.
     ///
-    /// - SeeAlso: ``origin``, ``collisionShape``
+    /// - SeeAlso: ``collisionShape``
     ///
     public let mask: BezierPath
     
-    /// Coordinate origin of the pictogram and its masks.
+    /// Box into which the all pictogram curves fit.
     ///
-    /// The ``path``, ``maskShape`` and ``collisionShape``  are relative to the ``origin``.
+    /// Bounding box for mask might differ, usually is larger. See ``maskBoundingBox``.
     ///
-    /// When placing a pictogram at a desired position, the origin is to be subtracted from the
-    /// position.
+    /// If the path is empty, then the bounding box is a zero-sized rectangle.
     ///
-    public let origin: Vector2D
-    
-    /// Box into which the whole pictogram fits.
+    public var pathBoundingBox: Rect2D {
+        path.boundingBox ?? Rect2D()
+    }
+
+    /// Box into which the pictogram mask fits.
     ///
-    /// The box is relative to the ``origin``.
+    /// Bounding box for curves might differ and is usually smaller. See ``pathBoundingBox``.
     ///
-    public let boundingBox: Rect2D
-    
+    /// If the mask is empty, then the bounding box is a zero-sized rectangle.
+    ///
+    public var maskBoundingBox: Rect2D {
+        mask.boundingBox ?? Rect2D()
+    }
+
     /// Shape to test collision with mouse pointer, gesture pointer or another pictogram.
     ///
     /// Collision shape is also used as a boundary for clipping connectors to or from the pictogram.
@@ -67,21 +72,11 @@ public final class Pictogram: Sendable, Codable {
     ///
     public let collisionShape: CollisionShape
     
-    /// Size of the pictogram derived from the path.
-    ///
-    /// If the path is empty, the size is zero.
-    ///
-    public var size: Vector2D {
-        path.boundingBox?.size ?? .zero
-    }
-    
     //    public let magnets: [Magnet]
     private enum CodingKeys: String, CodingKey {
         case name
         case path
         case mask
-        case origin
-        case boundingBox = "bounding_box"
         case collisionShape = "collision_shape"
     }
     
@@ -91,13 +86,9 @@ public final class Pictogram: Sendable, Codable {
     public init(_ name: String,
                 path: BezierPath,
                 collisionShape: CollisionShape,
-                mask: BezierPath? = nil,
-                origin: Vector2D = Vector2D(),
-                boundingBox: Rect2D? = nil) {
+                mask: BezierPath? = nil) {
         self.name = name
         self.path = path
-        self.origin = origin
-        self.boundingBox = boundingBox ?? path.boundingBox ?? Rect2D()
         self.collisionShape = collisionShape
         if let mask {
             self.mask = mask
@@ -138,8 +129,6 @@ public final class Pictogram: Sendable, Codable {
             path: path.transform(trans),
             collisionShape: collisionShape.scaled(scale),
             mask: mask.transform(trans),
-            origin: origin * scale,
-            boundingBox: Rect2D(origin:boundingBox.origin * scale, size: boundingBox.size * scale),
         )
     }
 }

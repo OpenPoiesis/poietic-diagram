@@ -42,7 +42,7 @@ public struct CollisionShape: Equatable, Codable, Sendable {
             shape: shape.scaled(scale)
         )
     }
-    
+
     public func collide(with other: CollisionShape) -> Bool {
         switch (self.shape, other.shape) {
         // Simple cases - inline implementation

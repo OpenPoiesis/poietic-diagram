@@ -80,7 +80,7 @@ func pictogramToSVGGroup(_ pictogram: Pictogram, includeNameInID: Bool = false) 
     image.addChild(group)
     
     // Origin
-    let origin = SVGCircle(id: "origin" + idSuffix, center: pictogram.origin, radius: 2.0)
+    let origin = SVGCircle(id: "origin" + idSuffix, center: .zero, radius: 2.0)
     origin.setStyle(fill: "salmon", stroke: "red")
     image.addChild(origin)
 

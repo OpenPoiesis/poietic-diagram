@@ -27,9 +27,7 @@ public class Block: DiagramObject {
     ///
     /// The pictogram's origin is placed at block's ``position``.
     ///
-    public var pictogram: Pictogram? {
-        didSet { _collisionShape = nil }
-    }
+    public var pictogram: Pictogram?
     
     /// Primary label that is displayed underneath the pictogram.
     ///
@@ -51,22 +49,9 @@ public class Block: DiagramObject {
     /// - SeeAlso: ``Pictogram/collisionShape``
     /// 
     public var collisionShape: CollisionShape {
-        if let _collisionShape {
-            return _collisionShape
-        }
-        if let pictogram {
-            _collisionShape = CollisionShape(
-                position: pictogram.collisionShape.position - pictogram.origin,
-                shape: pictogram.collisionShape.shape
-            )
-        }
-        else {
-            _collisionShape = CollisionShape(position: position, shape: .circle(0.0))
-
-        }
-        return _collisionShape!
+        pictogram?.collisionShape
+        ?? CollisionShape(position: position, shape: .circle(0.0))
     }
-    public var _collisionShape: CollisionShape?
 
     /// Create a new block.
     ///
@@ -86,18 +71,6 @@ public class Block: DiagramObject {
 
     }
 
-    /// Box that encapsulates the pictogram in the diagram coordinates.
-    public var pictogramBoundingBox: Rect2D {
-        // TODO: Make this relative to block, or make absolute and relative
-        guard let pictogram else {
-            return Rect2D(origin: position, size: .zero)
-        }
-        return Rect2D(
-            origin: position - pictogram.origin + pictogram.boundingBox.origin,
-            size: pictogram.boundingBox.size
-        )
-    }
-    
     public func containsTouch(at point: Vector2D, radius: Double=1.0) -> Bool {
         let relativePoint = point - position
         let touch = CollisionShape(position: relativePoint, shape: .circle(radius))

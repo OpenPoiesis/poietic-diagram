@@ -6,27 +6,20 @@
 //
 
 
+
 extension Pictogram {
     public func toSVGElement() -> SVGGraphicElement {
         let path = SVGPath(self.path)
-        path.setStyle(fill: "none", stroke: "black")
-        path.transform = SVGTransformList([
-            .translate(tx: -self.origin.x, ty: -self.origin.y),
-        ])
+        path.setStyle(fill: "none", stroke: "black", strokeWidth: 2)
         return path
     }
         
     public func toDebugSVGElement() -> SVGGraphicElement {
         let result = SVGGroup()
         result.id = "debug-\(name)"
-        let bbox = SVGRectangle(id: "debug-bbox-\(name)",
-                                rect: self.boundingBox)
-        bbox.setStyle(fill: "none", stroke: "LimeGreen")
-        result.addChild(bbox)
-        
         let mask = SVGPath(self.mask)
         mask.id = "debug-mask-\(name)"
-        mask.setStyle(fill: "yellow", stroke: "orange")
+        mask.setStyle(fill: "LightSkyBlue", stroke: "blue")
         mask.transform = SVGTransformList([
 //            .translate(tx: -self.origin.x, ty: -self.origin.y),
         ])
@@ -35,7 +28,7 @@ extension Pictogram {
         let collision = self.collisionShape.toSVGElement()
         collision.id = "debug-collision-\(name)"
         if let collision = collision as? SVGGeometryElement {
-            collision.setStyle(fill: "lightsalmon", stroke: "red")
+            collision.setStyle(fill: "LightCyan", stroke: "red")
         }
         collision.transform = SVGTransformList([
 //            .translate(tx: origin.x, ty: origin.y),
@@ -44,12 +37,17 @@ extension Pictogram {
         result.addChild(collision)
 
         // Origin
-        let origin = SVGCircle(id: "debug-origin-\(name)",
-                               center: self.origin,
-                               radius: 4.0)
-        origin.setStyle(fill: "yellow", stroke: "red")
+        let origin = SVGPath(attributes: [
+            "d": "M-10,-10 L10,10 M10,-10 L-10,10"
+        ])
+        origin.setStyle(fill: "none", stroke: "red")
         result.addChild(origin)
 
+        let bbox = SVGRectangle(id: "debug-bbox-\(name)",
+                                rect: self.pathBoundingBox)
+        bbox.setStyle(fill: "none", stroke: "LimeGreen")
+        result.addChild(bbox)
+        
         return result
 
     }

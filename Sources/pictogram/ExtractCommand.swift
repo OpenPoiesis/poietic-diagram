@@ -280,30 +280,35 @@ func extractOrigin(image: SVGImage, id: String = "origin") -> Vector2D? {
 
 func extractPictogram(image: SVGImage, name: String) throws -> Pictogram {
     // Extract pictogram from a SVG image
-    
     // 1. Extract pictogram path - required.
-    let path = try extractPictogramPath(image: image)
+    let extractedPath = try extractPictogramPath(image: image)
     
     // 2. Extract pictogram shape and its center - required.
-    let collision = try extractPictogramCollision(image: image)
+    let extractedCollision = try extractPictogramCollision(image: image)
 
     // 2. Extract pictogram shape and its center - required.
-    let mask = extractPictogramMask(image: image)
+    let extractedMask = extractPictogramMask(image: image)
 
     // 3. Optionally extract origin. If origin is not present, then use shape center as origin.
-    let origin = extractOrigin(image: image) ?? collision.center
-    // TODO: For polygon use centroid as default origin
-    
-    // 4. Compute bounding box of the path.
-    let boundingBox = path.boundingBox! // Force unwrap - guaranteed to work after successful path extraction
+    let origin = extractOrigin(image: image) ?? extractedCollision.center
+    let transform = AffineTransform(translation: -origin)
+
+    let path = extractedPath.transform(transform)
+    let collision = CollisionShape(position: extractedCollision.position - origin,
+                                   shape: extractedCollision.shape)
+    let mask: BezierPath?
+    if let extractedMask {
+        mask = extractedMask.transform(transform)
+    }
+    else {
+        mask = nil
+    }
     
     // 5. Create a pictogram object, make the collision and mask shapes the same.
     let pictogram = Pictogram(name,
                               path: path,
                               collisionShape: collision,
-                              mask: mask,
-                              origin: origin,
-                              boundingBox: boundingBox)
+                              mask: mask)
                               
     
     return pictogram
