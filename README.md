@@ -21,6 +21,35 @@ Example output diagram:
 
 ![Example Stock-and-Flow diagram generated with poietic-tool](Documentation/example-output-diagram.svg)
 
+## Tool
+
+The package comes with an utility `pictogram` that is used to extract pictograms from SVG files and
+to build pictogram collections.
+
+Installation:
+
+```
+./install
+```
+
+Use:
+```
+OVERVIEW: Tool to manipulate pictograms for Diagramming and Poietic tools
+
+USAGE: pictogram <subcommand>
+
+OPTIONS:
+  -h, --help              Show help information.
+
+SUBCOMMANDS:
+  extract                 Extract pictogram
+  collect                 Create a pictogram collection
+  preview                 Create an image from a pictogram
+  catalog                 Create a catalog preview of pictograms
+
+  See 'pictogram help <subcommand>' for detailed help.
+```
+
 ## Pictogram Creation
 
 The package contains a tool called `pictogram`, which can be used to:
@@ -50,24 +79,28 @@ swift run pictogram --help
 Pictogram is described by:
 
 - Bezier path
+- Mask shape
 - Collision shape
-- Mask shape (usually the same as the collision shape)
 - Origin point
 - Bounding box
 
-The pictogram can be defined in a SVG file where the structure must follow the following
-requirements:
+The SVG must contain elements (groups) with the following IDs:
 
-- Pictogram path is stored in an element with ID `pictogram` (required)
-    - Must contain only direct graphic elements (no `use`, no `text`)
+- `pictogram` (required) - Pictogram path
+    - Can be a `g` group element or any direct graphic element, no `use`, no `text`.
     - All style (fill, line) is ignored
     - Path is considered a wire-frame
-- Pictogram shape is stored in an element with ID `shape` (required)
+- `collision` (required) - Collision shape
     - Must be either a group `g` element or a simple shape element.
     - Allowed shapes: `circle`, `ellipse` (converted to rectangle), `rectangle`,
       `polygon`, `polyline` (treated as polygon), `path` (must contain only line-to elements)
-- Origin point with ID `origin` (optional)
+- `origin` – Origin point
     - Must be a circle element, where the origin will be the circle center
+    - Specifies pictogram origin. If not provided, then center of the collision shape is used.
+- `mask` – Selection outline mask
+    - Can be a `g` group element or any direct graphic element, no `use`, no `text`.
+    - All style (fill, line) is ignored
+    - Path is considered a filled curve
 
 The pictogram is extracted from SVG as follows:
 
@@ -76,11 +109,17 @@ The pictogram is extracted from SVG as follows:
     1. Element is converted to bezier path
     2. All transformations from the root element will be combined and applied to the path
     3. For group elements all paths will be combined into a single path.
-2. Shape is extracted from element with ID `shape`.
-3. Origin point is extracted from element with ID `origin`.
+2. Collision is extracted from element with ID `collision`.
+3. Mask is extracted from element with ID `collision`.
+4. Origin point is extracted from element with ID `origin`.
     - If origin is not present, then center of the shape is used.
     - If the shape is a polygon, then centroid of the polygon is used.
-3. Bounding box is computed from the combined bezier path.
+5. Path, mask and collision shape are offset by the origin.
+
+## See Also:
+
+- [Poietic Assets](https://github.com/OpenPoiesis/poietic-assets) – collection of sources for
+  assets used in the Open Poiesis project
 
 ## Author
 
