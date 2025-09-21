@@ -16,7 +16,7 @@ enum SVGPictogramError: Error, CustomStringConvertible {
     case emptyPictogramPath
 
     /// No shape element found in the image.
-    case noShapeFound
+    case noCollisionShapeFound
     
     /// Element is of different type than expected.
     ///
@@ -37,8 +37,8 @@ enum SVGPictogramError: Error, CustomStringConvertible {
             "Element with id '\(id)' is expected to be of type '\(expected)'"
         case .noPictogramElementFound:
             "No graphic element for pictogram found"
-        case .noShapeFound:
-            "No element for the pictogram collision/mask shape found"
+        case .noCollisionShapeFound:
+            "No element for the pictogram collision shape found"
         case .emptyPictogramPath:
             "Pictogram path is empty or there is no pictogram graphic element"
         case .invalidShape:
@@ -100,13 +100,13 @@ func convertSVGPath(_ element: SVGGeometryElement) -> BezierPath {
     return result
 }
 
-func extractPictogramPath(image: SVGImage, id: String = "pictogram") throws -> BezierPath {
+func extractPictogramPath(image: SVGImage, id: String = "pictogram") throws (SVGPictogramError) -> BezierPath {
     guard let first = image.first(where: { $0.id == id }) else {
-        throw SVGPictogramError.noPictogramElementFound
+        throw .noPictogramElementFound
     }
     
     guard let element = first as? SVGGraphicElement else {
-        throw SVGPictogramError.elementTypeMismatch(id: id, expected: "graphic element")
+        throw .elementTypeMismatch(id: id, expected: "graphic element")
     }
 
     var result = element.renderBezierPath()
@@ -117,35 +117,30 @@ func extractPictogramPath(image: SVGImage, id: String = "pictogram") throws -> B
     }
     
     if result.isEmpty {
-        throw SVGPictogramError.emptyPictogramPath
+        throw .emptyPictogramPath
     }
     
     return result
 }
 
-func extractPictogramPathOld(image: SVGImage, id: String = "pictogram") throws -> BezierPath {
-    var result = BezierPath()
-
-    guard let element = image.first(where: { $0.id == id }) else {
-        throw SVGPictogramError.noPictogramElementFound
+func extractPictogramMask(image: SVGImage, id: String = "mask") -> BezierPath? {
+    guard let first = image.first(where: { $0.id == id }) else {
+        return nil
     }
     
-    guard let group = element as? SVGGroup else {
-        throw SVGPictogramError.elementTypeMismatch(id: id, expected: "group")
+    guard let element = first as? SVGGraphicElement else {
+        return nil
+    }
+
+    var result = element.renderBezierPath()
+    
+    if let parent = element.parent as? SVGGraphicElement{
+        let trans = parent.cumulativeTransform().asAffineTransform()
+        result = result.transform(trans)
     }
     
-    // 3. Make sure the element contains one child which is a path element, otherwise throw error.
-    let children = group.children()
-
-    for child in children {
-        guard let pathElement = child as? SVGGeometryElement else {
-            throw SVGPictogramError.invalidStructure(id: id, details: "Geometry element expected, got: \(type(of: child))")
-        }
-        let path = convertSVGPath(pathElement)
-        result.addPath(path)
-    }
     if result.isEmpty {
-        throw SVGPictogramError.emptyPictogramPath
+        return nil
     }
     
     return result
@@ -161,10 +156,10 @@ func extractPictogramPathOld(image: SVGImage, id: String = "pictogram") throws -
 /// - Returns: Tuple containing CollisionShape and its center point with transforms applied
 /// - Throws: SVGPictogramError if extraction fails
 ///
-func extractPictogramShape(image: SVGImage, id: String = "shape") throws -> CollisionShape {
+func extractPictogramCollision(image: SVGImage, id: String = "collision") throws -> CollisionShape {
     // 1. Find an element with given ID
     guard let element = image.first(where: { $0.id == id }) else {
-        throw SVGPictogramError.noShapeFound
+        throw SVGPictogramError.noCollisionShapeFound
     }
     
     // 2. Make sure the element is a group element, otherwise throw error.
@@ -290,10 +285,13 @@ func extractPictogram(image: SVGImage, name: String) throws -> Pictogram {
     let path = try extractPictogramPath(image: image)
     
     // 2. Extract pictogram shape and its center - required.
-    let shape = try extractPictogramShape(image: image)
-    
+    let collision = try extractPictogramCollision(image: image)
+
+    // 2. Extract pictogram shape and its center - required.
+    let mask = extractPictogramMask(image: image)
+
     // 3. Optionally extract origin. If origin is not present, then use shape center as origin.
-    let origin = extractOrigin(image: image) ?? shape.center
+    let origin = extractOrigin(image: image) ?? collision.center
     // TODO: For polygon use centroid as default origin
     
     // 4. Compute bounding box of the path.
@@ -302,10 +300,11 @@ func extractPictogram(image: SVGImage, name: String) throws -> Pictogram {
     // 5. Create a pictogram object, make the collision and mask shapes the same.
     let pictogram = Pictogram(name,
                               path: path,
-                              maskShape: shape,
+                              collisionShape: collision,
+                              mask: mask,
                               origin: origin,
-                              boundingBox: boundingBox,
-                              collisionShape: shape)
+                              boundingBox: boundingBox)
+                              
     
     return pictogram
 }

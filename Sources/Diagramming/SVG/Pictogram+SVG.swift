@@ -24,6 +24,14 @@ extension Pictogram {
         bbox.setStyle(fill: "none", stroke: "LimeGreen")
         result.addChild(bbox)
         
+        let mask = SVGPath(self.mask)
+        mask.id = "debug-mask-\(name)"
+        mask.setStyle(fill: "yellow", stroke: "orange")
+        mask.transform = SVGTransformList([
+//            .translate(tx: -self.origin.x, ty: -self.origin.y),
+        ])
+        result.addChild(mask)
+
         let collision = self.collisionShape.toSVGElement()
         collision.id = "debug-collision-\(name)"
         if let collision = collision as? SVGGeometryElement {

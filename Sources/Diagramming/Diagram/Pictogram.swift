@@ -24,13 +24,23 @@ public final class Pictogram: Sendable, Codable {
     ///
     public let path: BezierPath
     
+    // FIXME: Make this `path` and change `path` to `originalPath`
+    public var translatedPath: BezierPath {
+        let translation = AffineTransform(translation: -self.origin)
+        return self.path.transform(translation)
+    }
+    
     /// Visual mask of the pictogram.
     ///
     /// Visual mask is used to obscure content below the pictogram, provide highlight shape or
     /// similar visual indication.
     ///
-    /// - SeeAlso: ``origin``
-    public let maskShape: CollisionShape
+    /// - Note: The bezier path representing the mask is assumed to be a closed path or composed
+    ///   of closed sub-paths.
+    ///
+    /// - SeeAlso: ``origin``, ``collisionShape``
+    ///
+    public let mask: BezierPath
     
     /// Coordinate origin of the pictogram and its masks.
     ///
@@ -69,7 +79,7 @@ public final class Pictogram: Sendable, Codable {
     private enum CodingKeys: String, CodingKey {
         case name
         case path
-        case maskShape = "mask_shape"
+        case mask
         case origin
         case boundingBox = "bounding_box"
         case collisionShape = "collision_shape"
@@ -80,16 +90,21 @@ public final class Pictogram: Sendable, Codable {
     // TODO: Swap mask with collision - derive mask from collision
     public init(_ name: String,
                 path: BezierPath,
-                maskShape: CollisionShape,
+                collisionShape: CollisionShape,
+                mask: BezierPath? = nil,
                 origin: Vector2D = Vector2D(),
-                boundingBox: Rect2D? = nil,
-                collisionShape: CollisionShape? = nil) {
+                boundingBox: Rect2D? = nil) {
         self.name = name
         self.path = path
-        self.maskShape = maskShape
         self.origin = origin
         self.boundingBox = boundingBox ?? path.boundingBox ?? Rect2D()
-        self.collisionShape = collisionShape ?? maskShape
+        self.collisionShape = collisionShape
+        if let mask {
+            self.mask = mask
+        }
+        else {
+            self.mask = collisionShape.toPath()
+        }
     }
     
     /// Creates a circle pictogram of given radius centred at the pictogram origin.
@@ -99,7 +114,7 @@ public final class Pictogram: Sendable, Codable {
         self.init(
             name,
             path: BezierPath(circle: .zero, radius: radius),
-            maskShape: CollisionShape(position: .zero, shape: .circle(radius))
+            collisionShape: CollisionShape(position: .zero, shape: .circle(radius))
         )
     }
 
@@ -111,7 +126,7 @@ public final class Pictogram: Sendable, Codable {
         self.init(
             name,
             path: BezierPath(rect: Rect2D(x: -halfSize, y: -halfSize, width: size, height: size)),
-            maskShape: CollisionShape(position: .zero, shape: .rectangle(Vector2D(size, size)))
+            collisionShape: CollisionShape(position: .zero, shape: .rectangle(Vector2D(size, size)))
         )
     }
 
@@ -121,10 +136,10 @@ public final class Pictogram: Sendable, Codable {
         return Pictogram(
             name,
             path: path.transform(trans),
-            maskShape: maskShape.scaled(scale),
+            collisionShape: collisionShape.scaled(scale),
+            mask: mask.transform(trans),
             origin: origin * scale,
             boundingBox: Rect2D(origin:boundingBox.origin * scale, size: boundingBox.size * scale),
-            collisionShape: collisionShape.scaled(scale)
         )
     }
 }

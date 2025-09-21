@@ -138,6 +138,7 @@ extension BezierPath {
         addArc(to: &path, center: center, radius: radius, startAngle: startAngle, endAngle: endAngle)
     }
     
+    // TODO: Move to BezierPath + document
     private func addArc(to path: inout BezierPath, center: Vector2D, radius: Double, startAngle: Double, endAngle: Double) {
         let angleDelta = endAngle - startAngle
         let segments = max(1, Int(abs(angleDelta) / (.pi / 2)) + 1)
