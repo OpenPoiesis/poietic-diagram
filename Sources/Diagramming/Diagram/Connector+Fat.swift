@@ -69,11 +69,14 @@ extension Connector {
     public func fatConnectorPath(style: FatConnectorStyle) -> BezierPath {
         
         let (originDir, targetDir) = arrowhadDirections()
+        // FIXME: This is just a rename after refactor, use *point
+        let (originTouch, targetTouch) = (originPoint, targetPoint)
+        
         // TODO: Make fat arrowhead size two-dimensional. For now, we just use this magic ratio.
         let PleasantMagicScale = 1.5
         
-        let clippedOrigin = originPoint - (originDir * style.tailType.touchPointOffset(style.tailSize * PleasantMagicScale))
-        let clippedTarget = targetPoint - (targetDir * style.headType.touchPointOffset(style.headSize * PleasantMagicScale))
+        let clippedOrigin = originTouch - (originDir * style.tailType.touchPointOffset(style.tailSize * PleasantMagicScale))
+        let clippedTarget = targetTouch - (targetDir * style.headType.touchPointOffset(style.headSize * PleasantMagicScale))
 
         let points =  [clippedOrigin] + midpoints + [clippedTarget]
         let pathThere = Geometry.offsetPolyline(points, offset: style.width, joinType: style.joinType)
@@ -92,7 +95,7 @@ extension Connector {
             path.addLine(to: pathBack[0])
         case .regular:
             Self.appendFatArrowhead(path: &path,
-                                    endpoint: targetPoint,
+                                    endpoint: targetTouch,
                                     direction: targetDir,
                                     connectIn: pathThere.last!,
                                     connectOut: pathBack.first!,
@@ -108,7 +111,7 @@ extension Connector {
             path.addLine(to: pathThere[0])
         case .regular:
             Self.appendFatArrowhead(path: &path,
-                                    endpoint: originPoint,
+                                    endpoint: originTouch,
                                     direction: originDir,
                                     connectIn: pathBack.last!,
                                     connectOut: pathThere.first!,

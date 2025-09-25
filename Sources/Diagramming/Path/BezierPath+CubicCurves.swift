@@ -1,16 +1,18 @@
 //
-//  BezierPath+Godot.swift
+//  BezierPath+CubicCurves.swift
 //  Diagramming
 //
 //  Created by Stefan Urbanek on 22/07/2025.
 //
 
-/// Represents Godot Curve2D point.
+/// Represents a cubic Bezier curve control point.
 ///
-/// Members of the structure correspond to the Curve2D function
-/// `add_point(position: Vector2, in: Vector2 = Vector2(0, 0), out: Vector2 = Vector2(0, 0))`
+/// Contains the position and relative control points for creating smooth cubic Bezier curves.
+/// The control points are relative to the position (not absolute coordinates).
 ///
-public struct GodotCurvePoint {
+/// - SeeAlso: ``BezierPath/toCubicCurves()``
+/// 
+public struct CubicCurvePoint {
     public let position: Vector2D
     public let inControl: Vector2D
     public let outControl: Vector2D
@@ -23,16 +25,18 @@ public struct GodotCurvePoint {
 }
 
 extension BezierPath {
-    /// Convert bezier path to a collection of bezier curves as used by Godot game engine.
+    /// Convert bezier path to a collection of cubic bezier curves.
     ///
-    /// Godot curve is specified by position, in-control point and out-control point where the
+    /// Each curve is specified by position, in-control point and out-control point where the
     /// control points are relative to the curve point position.
     ///
     /// Move-to path elements break the path into multiple curves.
     ///
-    public func godotCurves() -> [[GodotCurvePoint]] {
-        var curves: [[GodotCurvePoint]] = []
-        var points: [GodotCurvePoint] = []
+    /// Example use-case is Godot Curve2D.
+    ///
+    public func toCubicCurves() -> [[CubicCurvePoint]] {
+        var curves: [[CubicCurvePoint]] = []
+        var points: [CubicCurvePoint] = []
         var position: Vector2D = .zero
         
         for element in elements {
@@ -42,40 +46,38 @@ extension BezierPath {
                     curves.append(points)
                     points.removeAll()
                 }
-                points.append(GodotCurvePoint(point, in: .zero, out: .zero))
+                points.append(CubicCurvePoint(point, in: .zero, out: .zero))
                 position = point
 
             case .lineTo(let endPoint):
-                points.append(GodotCurvePoint(endPoint, in: .zero, out: .zero))
+                points.append(CubicCurvePoint(endPoint, in: .zero, out: .zero))
                 position = endPoint
                 
             case .curveTo(let endPoint, let control1, let control2):
                 if let lastPoint = points.popLast() {
-                    points.append(GodotCurvePoint(lastPoint.position,
+                    points.append(CubicCurvePoint(lastPoint.position,
                                                  in: lastPoint.inControl,
                                                  out: control1 - lastPoint.position))
                 }
-                points.append(GodotCurvePoint(endPoint, in: control2 - endPoint, out: .zero))
+                points.append(CubicCurvePoint(endPoint, in: control2 - endPoint, out: .zero))
                 position = endPoint
                 
             case .quadCurveTo(let control, let endPoint):
-                // Convert quadratic to cubic by duplicating the control point
-                // For quadratic Bezier, the control point affects both in and out
+                // Convert quadratic to cubic using the utility function
                 let startPoint = position
-                
-                // Convert quadratic control to cubic controls
-                // Quadratic: P(t) = (1-t)²P₀ + 2t(1-t)P₁ + t²P₂
-                // Cubic equivalent: control1 = P₀ + ⅔(P₁ - P₀), control2 = P₂ + ⅔(P₁ - P₂)
-                let control1 = startPoint + (control - startPoint) * (2.0/3.0)
-                let control2 = endPoint + (control - endPoint) * (2.0/3.0)
+                let (control1, control2) = Geometry.quadraticToCubicControls(
+                    start: startPoint, 
+                    control: control, 
+                    end: endPoint
+                )
                 
                 // Update the out-control of the last point
                 if let lastPoint = points.popLast() {
-                    points.append(GodotCurvePoint(lastPoint.position,
+                    points.append(CubicCurvePoint(lastPoint.position,
                                                  in: lastPoint.inControl,
                                                  out: control1 - lastPoint.position))
                 }
-                points.append(GodotCurvePoint( endPoint, in: control2 - endPoint, out: Vector2D()))
+                points.append(CubicCurvePoint(endPoint, in: control2 - endPoint, out: .zero))
                 position = endPoint
                 
             case .closePath:

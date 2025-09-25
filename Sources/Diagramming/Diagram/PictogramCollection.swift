@@ -7,6 +7,7 @@
 
 
 public class PictogramCollection: Codable {
+    // TODO: Add defaultPictogram
     public var pictograms: [Pictogram]
     
     public init(_ pictograms: [Pictogram] = []) {

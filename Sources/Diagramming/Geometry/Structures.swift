@@ -96,6 +96,11 @@ public struct Rect2D: Equatable, Sendable, Codable {
         self.size = size
     }
     
+    public init(center: Vector2D, size: Vector2D) {
+        self.origin = center - size / 2
+        self.size = size
+    }
+    
     /// Creates a rectangle with explicit x, y coordinates and width, height dimensions.
     ///
     /// - Parameters:
@@ -136,7 +141,8 @@ public struct Rect2D: Equatable, Sendable, Codable {
     
     /// The bottom-right corner of the rectangle.
     public var bottomRight: Vector2D { Vector2D(maxX, minY) }
-    
+    let DefaultHandleSize: Double = 10.0
+
     /// The top-left corner of the rectangle.
     public var topLeft: Vector2D { Vector2D(minX, maxY) }
     
@@ -397,10 +403,34 @@ public struct LineSegment: Equatable, Sendable {
         return (angle2 - angle1).truncatingRemainder(dividingBy: 2 * .pi)
     }
     
-    /// Returns a new line segment extended by a certain distance at both ends
-    public func extended(by distance: Double) -> LineSegment {
-        let extensionVector = direction * distance
-        return LineSegment(from: start - extensionVector, to: end + extensionVector
-        )
+    /// Computes the shortest distance from a point to this line segment.
+    ///
+    /// The distance is measured perpendicularly from the point to the line segment.
+    /// If the perpendicular from the point doesn't intersect the segment within its bounds,
+    /// the distance to the nearest endpoint is returned instead.
+    ///
+    /// - Parameter point: The point to measure distance from
+    /// - Returns: The shortest distance from the point to the line segment
+    public func distance(to point: Vector2D) -> Double {
+        let segmentVector = end - start
+        let toPointVector = point - start
+        
+        // If segment has zero length, return distance to start point
+        let segmentLengthSquared = segmentVector.dot(segmentVector)
+        guard segmentLengthSquared > Double.standardEpsilon else {
+            return start.distance(to: point)
+        }
+        
+        // Calculate projection parameter t
+        let t = toPointVector.dot(segmentVector) / segmentLengthSquared
+        
+        // Clamp t to [0, 1] to stay within segment bounds
+        let clampedT = max(0, min(1, t))
+        
+        // Find closest point on segment
+        let closestPoint = start + clampedT * segmentVector
+        
+        // Return distance to closest point
+        return point.distance(to: closestPoint)
     }
 }

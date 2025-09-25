@@ -10,35 +10,6 @@ import Foundation
 /// Namespace for geometry functions
 public enum Geometry {
    
-    /// Create a poly-line from ``start`` to ``end`` that goes through midpoints.
-    ///
-    /// The poly-line alternates between horizontal and vertical orientation.
-    ///
-    public static func orthogonalPolyline(from start: Vector2D,
-                                          to end: Vector2D,
-                                          through midpoints: [Vector2D]) -> BezierPath {
-        let points = midpoints + [end]
-        var isHorizontal: Bool = true
-        var current = start
-        var path = BezierPath()
-        path.move(to: start)
-        
-        for nextPoint in points {
-            if isHorizontal {
-                path.addLine(to: Vector2D(nextPoint.x, current.y))
-                path.addLine(to: Vector2D(nextPoint.x, nextPoint.y))
-            }
-            else {
-                path.addLine(to: Vector2D(current.x, nextPoint.y))
-                path.addLine(to: Vector2D(nextPoint.x, nextPoint.y))
-                current = nextPoint
-            }
-            isHorizontal = !isHorizontal
-        }
-        
-        return path
-    }
-
     public static func offsetPolyline(_ points: [Vector2D], offset: Double, joinType: JoinType, miterLimit: Double = 2.0) -> [Vector2D] {
         guard points.count >= 2 else { return [] }
         
@@ -133,26 +104,39 @@ public enum Geometry {
         return path
     }
     
-    /// Find intersection points of a line segment with a collision shape.
+    /// Find the touch point where a ray from an origin point through a shape center
+    /// intersects the shape boundary.
     ///
-    public static func rayIntersects(shape: CollisionShape,
-                                     from rayOrigin: Vector2D,
-                                     direction rayDirection: Vector2D) -> Vector2D? {
-        switch shape.shape {
+    /// The ray originates at the `from` point and passes through the shape `position` (shape center).
+    /// If the origin point is inside the shape, returns the exit point where the ray leaves the shape.
+    /// If no intersection is found, returns the shape center as fallback.
+    ///
+    /// - Parameters:
+    ///     - position: shape position
+    ///     - from: The origin point of the ray
+    ///
+    /// - Returns: The touch point on the shape boundary when the ray intersects, or the shape
+    ///            center when the ray does not intersect.
+    ///
+    public static func rayIntersection(shape: ShapeType,
+                                       position: Vector2D,
+                                       from rayOrigin: Vector2D,
+                                       direction rayDirection: Vector2D) -> Vector2D? {
+        switch shape {
         case .circle(let radius):
-            return rayIntersects(circleAt: shape.position, radius: radius,
+            return rayIntersection(circleAt: position, radius: radius,
                                  from: rayOrigin, direction: rayDirection)
             
         case .rectangle(let size):
-            let rect = Rect2D(origin: shape.position - size/2, size: size)
-            return rayIntersects(rectangle: rect,
+            let rect = Rect2D(origin: position - size/2, size: size)
+            return rayIntersection(rectangle: rect,
                                  from: rayOrigin, direction: rayDirection)
-        case .polygon(let points):
-            return rayIntersects(polygonPoints: points,
-                                 from: rayOrigin, direction: rayDirection)
+        case .convexPolygon(let points),
+                .concavePolygon(let points):
+            return rayIntersection(polygonPoints: points.map { $0 + position },
+                                   from: rayOrigin, direction: rayDirection)
         }
     }
-    
     
     /// Find intersection point of a ray with a polygon boundary.
     ///
@@ -164,9 +148,9 @@ public enum Geometry {
     /// - Parameter direction: The ray direction vector (does not need to be normalized)
     /// - Returns: The closest intersection point on the polygon boundary, or nil if no intersection found
     ///
-    static func rayIntersects(polygonPoints: [Vector2D],
-                              from rayOrigin: Vector2D,
-                              direction rayDirection: Vector2D) -> Vector2D? {
+    static func rayIntersection(polygonPoints: [Vector2D],
+                                from rayOrigin: Vector2D,
+                                direction rayDirection: Vector2D) -> Vector2D? {
         guard polygonPoints.count >= 3 else { return nil }
         
         var closestIntersection: Vector2D? = nil
@@ -191,10 +175,10 @@ public enum Geometry {
         return closestIntersection
     }
     
-    public static func rayIntersects(circleAt center: Vector2D,
-                                     radius: Double,
-                                     from rayOrigin: Vector2D,
-                                     direction rayDirection: Vector2D) -> Vector2D? {
+    public static func rayIntersection(circleAt center: Vector2D,
+                                       radius: Double,
+                                       from rayOrigin: Vector2D,
+                                       direction rayDirection: Vector2D) -> Vector2D? {
         // Check for invalid inputs
         guard radius > 0 else { return nil }
         
@@ -247,9 +231,9 @@ public enum Geometry {
         return intersectionPoint
     }
     
-    public static func rayIntersects(rectangle rect: Rect2D,
-                                     from rayOrigin: Vector2D,
-                                     direction rayDirection: Vector2D) -> Vector2D? {
+    public static func rayIntersection(rectangle rect: Rect2D,
+                                       from rayOrigin: Vector2D,
+                                       direction rayDirection: Vector2D) -> Vector2D? {
         // Check for zero direction vector
         if abs(rayDirection.x) < Double.standardEpsilon && abs(rayDirection.y) < Double.standardEpsilon {
             return nil
@@ -335,5 +319,181 @@ public enum Geometry {
         let sum = points.reduce(Vector2D.zero) { $0 + $1 }
         return sum / Double(points.count)
     }
+    
+    /// Determines if a polygon defined by the given vertices is convex.
+    ///
+    /// A polygon is convex if:
+    /// 1. It has no self-intersections
+    /// 2. All interior angles are less than 180 degrees (consistent winding direction)
+    ///
+    /// The algorithm works by:
+    /// 1. Checking for self-intersections between all non-adjacent edges (O(n²))
+    /// 2. Verifying consistent winding direction using cross products (O(n))
+    ///    - Computes edge vectors for consecutive vertex pairs
+    ///    - Calculates cross products between consecutive edge vectors
+    ///    - Ensures all non-zero cross products have the same sign
+    ///
+    /// Degenerate cases return false:
+    /// - Fewer than 3 points (not a polygon)
+    /// - All points collinear (degenerate polygon)
+    /// - Self-intersecting polygons
+    ///
+    /// - Parameter points: Array of 2D vertices defining the polygon in order
+    /// - Returns: `true` if the polygon is convex, `false` otherwise
+    ///
+    /// - Complexity: O(n²) where n is the number of vertices, due to self-intersection checks.
+    ///   For convex polygons (common case), early termination makes it closer to O(n).
+    ///
+    /// ## Example
+    /// ```swift
+    /// let square = [Vector2D(0, 0), Vector2D(1, 0), Vector2D(1, 1), Vector2D(0, 1)]
+    /// let isConvex = Geometry.isConvex(points: square) // true
+    ///
+    /// // Self-intersecting polygon (bowtie shape)
+    /// let bowtie = [Vector2D(0, 0), Vector2D(2, 2), Vector2D(0, 2), Vector2D(2, 0)]
+    /// let isConvex2 = Geometry.isConvex(points: bowtie) // false
+    /// ```
+    public static func isConvex(polygon points: [Vector2D]) -> Bool {
+        guard points.count >= 3 else {
+            return false // A polygon needs at least 3 points
+        }
+        
+        var sign: FloatingPointSign? = nil
+        let n = points.count
+        var allCollinear = true
+        let segments = toSegments(polygon: points)
 
+        // First, check for self-intersections (which make the polygon non-convex)
+        for i in 0..<n {
+            let seg1 = segments[i]
+
+            // Only check against segments that aren't adjacent
+            for j in (i + 2)..<(n + i - 1) {
+                let seg2 = segments[j % n]
+                
+                // Skip segments that share a vertex
+                if seg1.start == seg2.start || seg1.start == seg2.end ||
+                   seg1.end == seg2.start || seg1.end == seg2.end {
+                    continue
+                }
+                
+                if seg1.intersects(seg2) {
+                    return false
+                }
+            }
+        }
+
+        
+        for i in 0..<n {
+            // Get three consecutive vertices (wrapping around)
+            let p1 = points[i]
+            let p2 = points[(i + 1) % n]
+            let p3 = points[(i + 2) % n]
+            
+            // Compute edge vectors
+            let edge1 = p2 - p1
+            let edge2 = p3 - p2
+            
+            // Compute cross product to determine turn direction
+            let crossProduct = edge1.cross(edge2)
+            
+            // Skip near-zero cross products (collinear points)
+            if abs(crossProduct) < Double.standardEpsilon {
+                continue
+            }
+            allCollinear = false
+
+            // Check if this is our first non-zero cross product
+            if let sign {
+                if crossProduct.sign != sign {
+                    return false // Found a turn in the opposite direction
+                }
+            }
+            else {
+                sign = crossProduct.sign
+            }
+        }
+        // If all points are collinear, the polygon is not convex
+        if allCollinear {
+            return false
+        }
+        else {
+            return true // All turns were in the same direction
+        }
+    }
+    
+    /// Converts a polygon's vertices into an array of connected line segments.
+    ///
+    /// This method creates line segments between consecutive vertices of the polygon,
+    /// including a closing segment between the last vertex and the first vertex to
+    /// form a complete closed shape.
+    ///
+    /// - Parameter points: An array of `Vector2D` points representing the polygon's vertices.
+    /// - Returns: An array of `LineSegment` objects representing the polygon's edges.
+    ///            Returns an empty array if there are fewer than 2 points.
+    ///
+    /// - Complexity: O(n) where n is the number of vertices.
+    ///
+    /// ## Example
+    /// ```swift
+    /// let triangle = [
+    ///     Vector2D(0, 0),
+    ///     Vector2D(1, 0),
+    ///     Vector2D(0.5, 1)
+    /// ]
+    /// let segments = Geometry.toSegments(polygon: triangle)
+    /// // Returns 3 segments forming a closed triangle
+    /// ```
+    ///
+    /// - Note: For a valid polygon, the segments will form a continuous closed path.
+    /// - Note: The order of segments follows the order of vertices in the input array.
+    public static func toSegments(polygon points: [Vector2D]) -> [LineSegment] {
+        guard points.count >= 2 else {
+            return []
+        }
+        
+        var segments: [LineSegment] = []
+        
+        // Create segments between consecutive points
+        for i in 0..<points.count {
+            let nextIndex = (i + 1) % points.count
+            segments.append(LineSegment(from: points[i], to: points[nextIndex]))
+        }
+        
+        return segments
+    }
+    
+    /// Convert quadratic Bezier control point to cubic Bezier control points.
+    ///
+    /// Given a quadratic Bezier curve with start point, control point, and end point,
+    /// returns the equivalent cubic Bezier control points.
+    ///
+    /// ## Algorithm
+    /// For quadratic Bezier: P(t) = (1-t)²P₀ + 2t(1-t)P₁ + t²P₂
+    /// Cubic equivalent: control1 = P₀ + ⅔(P₁ - P₀), control2 = P₂ + ⅔(P₁ - P₂)
+    ///
+    /// - Parameters:
+    ///     - start: The starting point of the curve (P₀)
+    ///     - control: The quadratic control point (P₁)
+    ///     - end: The ending point of the curve (P₂)
+    ///
+    /// - Returns: A tuple containing the two cubic control points (control1, control2)
+    ///
+    /// ## Example
+    /// ```swift
+    /// let start = Vector2D(0, 0)
+    /// let control = Vector2D(1, 1)
+    /// let end = Vector2D(2, 0)
+    /// let (control1, control2) = Geometry.quadraticToCubicControls(
+    ///     startPoint: start, 
+    ///     quadControl: control, 
+    ///     endPoint: end
+    /// )
+    /// ```
+    public static func quadraticToCubicControls(start: Vector2D, control: Vector2D, end: Vector2D) -> (control1: Vector2D, control2: Vector2D) {
+        let control1 = start + (control - start) * (2.0/3.0)
+        let control2 = end + (control - end) * (2.0/3.0)
+        return (control1, control2)
+    }
+    
 }

@@ -55,7 +55,7 @@ func createCatalog(_ pictograms: [Pictogram], columns: Int = 3, padding: Double 
     var tileSize = Vector2D()
     
     for picto in pictograms {
-        let size = picto.size
+        let size = picto.maskBoundingBox.size
         tileSize = Vector2D(max(tileSize.x, size.x), max(tileSize.y, size.y))
     }
     
@@ -77,8 +77,7 @@ func createCatalog(_ pictograms: [Pictogram], columns: Int = 3, padding: Double 
         element.id = "pictogram-\(picto.name)"
 
         let transform = SVGTransformList([
-            .translate(tx: origin.x, ty: origin.y),
-            .translate(tx: offset.x, ty: offset.y),
+            .translate(tx: origin.x + offset.x, ty: origin.y + offset.y),
         ])
         
         element.transform = transform

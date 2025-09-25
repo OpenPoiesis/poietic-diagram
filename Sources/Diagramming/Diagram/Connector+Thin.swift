@@ -140,13 +140,15 @@ extension Connector {
         var paths: [BezierPath] = []
 
         let (originDir, targetDir) = arrowhadDirections()
+        let (originTouch, targetTouch) = (originPoint, targetPoint)
+
         // Create arrowheads
-        let headArrowhead = Self.createThinArrowhead(at: targetPoint,
+        let headArrowhead = Self.createThinArrowhead(at: targetTouch,
                                                      direction: targetDir,
                                                      size: style.headSize,
                                                      type: style.headType)
         
-        let tailArrowhead = Self.createThinArrowhead(at: originPoint,
+        let tailArrowhead = Self.createThinArrowhead(at: originTouch,
                                                      direction: originDir,
                                                      size: style.tailSize,
                                                      type: style.tailType)
@@ -159,18 +161,19 @@ extension Connector {
         }
         
         // Calculate clipped endpoints
-        let clippedOrigin = originPoint - (originDir * tailArrowhead.offset)
-        let clippedTarget = targetPoint - (targetDir * headArrowhead.offset)
+        let clippedOrigin = originTouch - (originDir * tailArrowhead.offset)
+        let clippedTarget = targetTouch - (targetDir * headArrowhead.offset)
         
+        let allPoints = [clippedOrigin] + midpoints + [clippedTarget]
         // Create main line
         let path: BezierPath
         switch style.lineType {
         case .straight:
-            path = BezierPath(polyline: [clippedOrigin] + midpoints + [clippedTarget])
+            path = BezierPath(polyline: allPoints)
         case .curved:
-            path = BezierPath(curveThrough: [clippedOrigin] + midpoints + [clippedTarget])
+            path = BezierPath(curveThrough: allPoints)
         case .orthogonal:
-            path = Geometry.orthogonalPolyline(from: clippedOrigin, to: clippedTarget, through: midpoints)
+            path = BezierPath(orthogonalPolylineThrough: allPoints)
         }
         
         paths.append(path)

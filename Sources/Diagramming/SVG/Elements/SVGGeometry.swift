@@ -21,7 +21,6 @@ public extension Vector2D {
     var rawSVGValue: String { "\(x),\(y)" }
 }
 
-
 public struct SVGViewBox {
     var minX: Double
     var minY: Double
@@ -39,17 +38,11 @@ public struct SVGViewBox {
         
         scanner.skipWhitespace()
         guard let minX = scanner.scanDouble() else { return nil }
-        scanner.skipWhitespace()
-        scanner.accept(",")
-        scanner.skipWhitespace()
+        scanner.skipSVGListSeparator()
         guard let minY = scanner.scanDouble() else { return nil }
-        scanner.skipWhitespace()
-        scanner.accept(",")
-        scanner.skipWhitespace()
+        scanner.skipSVGListSeparator()
         guard let width = scanner.scanDouble() else { return nil }
-        scanner.skipWhitespace()
-        scanner.accept(",")
-        scanner.skipWhitespace()
+        scanner.skipSVGListSeparator()
         guard let height = scanner.scanDouble() else { return nil }
         
         self.minX = minX

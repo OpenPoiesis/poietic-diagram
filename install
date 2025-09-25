@@ -1,0 +1,34 @@
+#!/bin/sh
+#
+# Script to install the pictogram tool.
+#
+# The tool is installed to the Swift Package Manager binary directory:
+#
+#     ~/.swiftpm/bin
+#
+# Make sure the directory is in your PATH to use the tool.
+#
+
+SWIFTPM_BIN=.swiftpm/bin
+
+if ! command -v swift >/dev/null 2>&1; then
+    echo "Error: 'swift' command not found. Please install Swift."
+    exit 1
+fi
+
+(swift package experimental-uninstall pictogram 2> /dev/null) || true
+swift package experimental-install -c debug
+
+if ! echo "$PATH" | grep --fixed-strings "$SWIFTPM_BIN" >/dev/null 2>&1; then
+    echo "WARNING: The directory $HOME/$SWIFTPM_BIN does not seem to be in your PATH."
+    echo
+    echo "Add the following to the end of your ~/.zshrc or ~/.bashrc file:"
+    echo
+    echo "    export PATH=~/${SWIFTPM_BIN}:\$PATH"
+    echo
+fi
+
+echo "Get more information about the command and its subcommands:"
+echo
+echo "    pictogram --help"
+echo
