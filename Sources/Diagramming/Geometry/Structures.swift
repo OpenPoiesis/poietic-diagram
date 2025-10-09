@@ -9,9 +9,13 @@ import Foundation
 
 extension Double {
     /// Epsilon for double precision floating point according to IEEE 754 - 2008.
-    public static let standardEpsilon = 2.22e-16
+    public static let standardEpsilon: Double = 2.22e-16
 }
 
+extension Float {
+    /// Epsilon for single precision floating point according to IEEE 754 - 2008.
+    public static let standardEpsilon: Float = 1.19209e-07
+}
 public typealias Vector2D = SIMD2<Double>
 
 extension Vector2D {

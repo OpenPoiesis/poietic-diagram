@@ -210,7 +210,7 @@ public class DiagramComposer {
     ///   represented by diagram blocks.
     ///
     @available(*, deprecated, message: "Do not use")
-    public func createDiagram(from frame: StableFrame) -> Diagram {
+    public func createDiagram(from frame: DesignFrame) -> Diagram {
         // TODO: Add incremental diagram update (only changed)
         let diagram = Diagram()
         
