@@ -245,7 +245,8 @@ public class DiagramComposer {
             position: node.position ?? .zero,
             pictogram: pictogram(for: node),
             label: node.label,
-            secondaryLabel: node.secondaryLabel
+            secondaryLabel: node.secondaryLabel,
+            colorName: node["color"]
         )
         
         return block
@@ -256,6 +257,7 @@ public class DiagramComposer {
         block.pictogram = pictogram(for: node)
         block.label = node.label
         block.secondaryLabel = node.secondaryLabel
+        block.colorName = node["color"]
     }
 
     /// Create a connector from an edge object between two blocks.

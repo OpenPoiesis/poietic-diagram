@@ -52,6 +52,13 @@ public class Block: DiagramObject {
         pictogram?.collisionShape
         ?? CollisionShape(position: position, shape: .circle(0.0))
     }
+    
+    
+    /// Name of a primary colour.
+    ///
+    /// The colour name is from a list of adaptable colour names.
+    ///
+    public var colorName: String?
 
     /// Create a new block.
     ///
@@ -60,7 +67,8 @@ public class Block: DiagramObject {
                 position: Vector2D = .zero,
                 pictogram: Pictogram? = nil,
                 label: String? = nil,
-                secondaryLabel: String? = nil)
+                secondaryLabel: String? = nil,
+                colorName: String? = nil)
     {
         self.objectID = objectID
         self.tag = tag
@@ -68,6 +76,7 @@ public class Block: DiagramObject {
         self.pictogram = pictogram
         self.label = label
         self.secondaryLabel = secondaryLabel
+        self.colorName = colorName
 
     }
 
