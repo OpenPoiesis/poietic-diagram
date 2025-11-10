@@ -15,11 +15,11 @@ Main features:
  [Poietic Playground](https://github.com/openpoiesis/poietic-playground)
  and [Poietic Tool](https://github.com/OpenPoiesis/poietic-tool).
 
-**IMPORTANT: This is a prototype**
-
 Example output diagram:
 
 ![Example Stock-and-Flow diagram generated with poietic-tool](Documentation/example-output-diagram.svg)
+
+**IMPORTANT: This is a prototype. Exploring ergonomics of data structures and interfaces.**
 
 ## Tool
 
@@ -120,6 +120,15 @@ The pictogram is extracted from SVG as follows:
 
 - [Poietic Assets](https://github.com/OpenPoiesis/poietic-assets) – collection of sources for
   assets used in the Open Poiesis project
+
+## Note on LLM Use
+
+To help with prototyping speed, the geometry computation and algorithm parts of this package were
+written with assistance of LLMs. Those parts are still in the queue for further inspection and
+more in-depth review.
+
+Otherwise, use of LLMs to write code for this package is strongly discouraged, with exception of
+drafting unit tests.
 
 ## Author
 
