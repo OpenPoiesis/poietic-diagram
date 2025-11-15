@@ -42,12 +42,38 @@ public struct ConnectorComponent: NEWDiagramObject, Component {
 }
 
 /// Created from ``ConnectorComponent`` + style
+// FIXME: [REFACTORING] Rename to just ConnectorGeometry
 public struct ConnectorGeometryComponent: Component {
+    // TODO: Add dash style for line path
+    // TODO: Add fill flags for head/tail
     public let wirePoints: [Vector2D]
     public let linePath: BezierPath?
     public let fillPath: BezierPath?
     public let tailArrowhead: BezierPath?
     public let headArrowhead: BezierPath?
+    
+    /// Compute bounding box of the whole connector combining bounding boxes of all path properties.
+    ///
+    /// - Returns: Bounding box of all path properties or `nil` if there are no paths or when all
+    ///            of the paths are empty.
+    ///
+    public func boundingBox() -> Rect2D? {
+        var result: Rect2D? = nil
+
+        if let path = linePath, let box = path.boundingBox {
+            result = box
+        }
+        if let path = fillPath, let box = path.boundingBox {
+            result = if let existing = result { existing.union(box) } else { box }
+        }
+        if let path = tailArrowhead, let box = path.boundingBox {
+            result = if let existing = result { existing.union(box) } else { box }
+        }
+        if let path = headArrowhead, let box = path.boundingBox {
+            result = if let existing = result { existing.union(box) } else { box }
+        }
+        return result
+    }
 }
 
 public struct ThinConnector {
@@ -55,6 +81,8 @@ public struct ThinConnector {
     public let body: BezierPath
     public let head: BezierPath
 }
+
+#if false
 
 /// A connector between two points with optional intermediate waypoints.
 ///
@@ -138,7 +166,6 @@ public struct Connector {
         self.glyph = glyph
         self.shapeStyle = shapeStyle
     }
-#if false
     /// Tests if a touch point (with optional radius) intersects with the connector.
     ///
     /// This method determines if a circular touch area intersects with the connector's
@@ -192,5 +219,5 @@ public struct Connector {
         
         return false
     }
-#endif
 }
+#endif

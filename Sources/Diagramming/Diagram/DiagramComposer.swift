@@ -39,42 +39,6 @@ nonisolated(unsafe) public let DefaultStockFlowConnectorGlyphs: [ConnectorGlyph]
     ),
 ]
 
-extension Connector {
-    /// Compute touch points to origin and target blocks.
-    ///
-    /// The touch point is computed as a an intersection of block's collision shape and a
-    /// ray originating from the first adjacent point to the endpoint. If no intersection is found,
-    /// then the endpoint block position is returned for given endpoint.
-    ///
-    public static func touchPoints(origin: Block,
-                                   target: Block,
-                                   midpoints: [Vector2D]) -> (origin: Vector2D, target: Vector2D){
-        let originShapePosition = origin.position + origin.collisionShape.position
-        let originTouch = touchPoint(shape: origin.collisionShape.shape,
-                                     position: originShapePosition,
-                                     from: midpoints.first ?? target.position,
-                                     towards: origin.position)
-        let targetShapePosition = target.position + target.collisionShape.position
-        let targetTouch = touchPoint(shape: target.collisionShape.shape,
-                                     position: targetShapePosition,
-                                     from: midpoints.last ?? origin.position,
-                                     towards: target.position)
-        return (origin: originTouch, target:targetTouch)
-    }
-    // FIXME: Change to (from:touching:at:)
-    public static func touchPoint(shape: ShapeType,
-                                  position: Vector2D,
-                                  from startPoint: Vector2D,
-                                  towards endPoint: Vector2D) -> Vector2D {
-        let direction = (endPoint - startPoint).normalized
-        let touch = Geometry.rayIntersection(shape: shape,
-                                             position: position,
-                                             from: startPoint,
-                                             direction: direction)
-        return touch ?? endPoint
-    }
-}
-
 #if false
 // Makes Design -> Diagram -> Canvas
 public class DiagramComposer {

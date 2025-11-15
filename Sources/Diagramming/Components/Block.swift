@@ -140,5 +140,6 @@ public struct BlockComponent: NEWDiagramObject, Component {
             self.collisionShape = CollisionShape(position: position, shape: .circle(0.0))
         }
         self.visualTypeName = visualTypeName
+        self.accentColorName = accentColorName
     }
 }
