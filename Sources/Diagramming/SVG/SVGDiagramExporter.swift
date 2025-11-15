@@ -83,10 +83,10 @@ public class SVGDiagramExporter {
     public func export(frame: AugmentedFrame, debug: Bool = false) -> SVGImage {
         let image = SVGImage()
         
-        for (id, block) in frame.runtimeFilter(BlockComponent.self) {
+        for (id, block) in frame.runtimeFilter(DiagramBlock.self) {
             composeBlock(id: id, block: block)
         }
-        for (id, geometry) in frame.runtimeFilter(ConnectorGeometryComponent.self) {
+        for (id, geometry) in frame.runtimeFilter(DiagramConnectorGeometry.self) {
             composeConnector(id: id, geometry: geometry)
         }
         
@@ -129,7 +129,7 @@ public class SVGDiagramExporter {
         return symbol
     }
     
-    func composeBlock(id: RuntimeEntityID, block: BlockComponent, debug: Bool=false) {
+    func composeBlock(id: RuntimeEntityID, block: DiagramBlock, debug: Bool=false) {
         guard let pictogram = block.pictogram else { return }
         
         let result = SVGGroup()
@@ -197,7 +197,7 @@ public class SVGDiagramExporter {
         elements.append(result)
     }
     
-    func composeConnector(id: RuntimeEntityID, geometry: ConnectorGeometryComponent) {
+    func composeConnector(id: RuntimeEntityID, geometry: DiagramConnectorGeometry) {
         let group = SVGGroup()
         group.id = connectorIDPrefix + id.description
 

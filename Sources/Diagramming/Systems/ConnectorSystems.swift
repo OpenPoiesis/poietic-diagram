@@ -38,7 +38,7 @@ public struct TraitConnectorCreationSystem: System {
         let glyphName = rules.connectorGlyphName(for: edge.object.type)
         let connectorGlyph = notation.connectorGlyph(glyphName)
 
-        let connector = ConnectorComponent(
+        let connector = DiagramConnector(
             representedObjectID: edge.key,
             originID: .object(edge.origin),
             targetID: .object(edge.target),
@@ -49,7 +49,7 @@ public struct TraitConnectorCreationSystem: System {
     }
 }
 
-/// System that computes connector geometry from ``ConnectorComponent`` and ``BlockComponent``.
+/// System that computes connector geometry from ``ConnectorComponent`` and ``DiagramBlock``.
 ///
 ///
 /// - **Input:** Any runtime object with ``ConnectorComponent`` component. Uses ``DiagramStyle``
@@ -57,7 +57,7 @@ public struct TraitConnectorCreationSystem: System {
 /// - **Output:** ``ConnectorGeometryComponent``.
 /// - **Forgiveness:**
 ///     - Ignores objects where origin or target entities do not exist or if they do not have
-///       ``BlockComponent``.
+///       ``DiagramBlock``.
 ///     - If no ``DiagramStyle`` is found on `Frame` runtime object, then default diagram style
 ///       is used.
 ///
@@ -82,17 +82,17 @@ public struct ConnectorGeometrySystem: System {
     public init() {}
     public func update(_ frame: AugmentedFrame) throws (InternalSystemError) {
         // For all entities with ConnectorComponent:
-        for (runtimeID, connector) in frame.runtimeFilter(ConnectorComponent.self) {
+        for (runtimeID, connector) in frame.runtimeFilter(DiagramConnector.self) {
             try update(frame, runtimeID: runtimeID, connector: connector)
         }
     }
     public func update(_ frame: AugmentedFrame,
                        runtimeID: RuntimeEntityID,
-                       connector: ConnectorComponent)
+                       connector: DiagramConnector)
     throws (InternalSystemError) {
         // Get origin/target blocks
-        guard let originBlock: BlockComponent = frame.component(for: connector.originID),
-              let targetBlock: BlockComponent = frame.component(for: connector.targetID)
+        guard let originBlock: DiagramBlock = frame.component(for: connector.originID),
+              let targetBlock: DiagramBlock = frame.component(for: connector.targetID)
         else { return }
         
         // TODO: Add PreviewPosition component
@@ -113,7 +113,7 @@ public struct ConnectorGeometrySystem: System {
                                          lineType: glyph.lineType)
         let tessellatedWire = wirePath.tessellate()
         
-        let geometry: ConnectorGeometryComponent
+        let geometry: DiagramConnectorGeometry
 
         switch glyph.kind {
         case .fat(let kind):
@@ -126,7 +126,7 @@ public struct ConnectorGeometrySystem: System {
                 kind: kind
             )
             
-            geometry = ConnectorGeometryComponent(
+            geometry = DiagramConnectorGeometry(
                 wirePoints: tessellatedWire,
                 linePath: outline,
                 fillPath: outline,
@@ -145,7 +145,7 @@ public struct ConnectorGeometrySystem: System {
                 kind: kind
             )
 
-            geometry = ConnectorGeometryComponent(
+            geometry = DiagramConnectorGeometry(
                 wirePoints: tessellatedWire,
                 linePath: paths.body,
                 fillPath: nil,

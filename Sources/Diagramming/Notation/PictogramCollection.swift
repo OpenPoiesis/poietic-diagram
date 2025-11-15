@@ -6,6 +6,7 @@
 //
 
 
+// TODO: Deprecate in favour of Notation
 public class PictogramCollection: Codable {
     // TODO: Add defaultPictogram
     public var pictograms: [Pictogram]

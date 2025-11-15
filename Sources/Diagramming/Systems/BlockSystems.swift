@@ -41,7 +41,7 @@ public struct BlockCreationSystem: System {
         let pictogramName = rules.pictogramName(for: object.type)
         let pictogram = notation.pictogram(pictogramName)
 
-        let block = BlockComponent(
+        let block = DiagramBlock(
             representedObjectID: object.objectID,
             position: object.position ?? .zero,
             pictogram: pictogram,
