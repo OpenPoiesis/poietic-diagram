@@ -167,8 +167,6 @@ extension Geometry {
                                           lineType: LineType,
                                           kind: ConnectorGlyph.Thin)
     -> ThinConnector {
-        var paths: [BezierPath] = []
-
         // Arrowhead directions
         let originDir = (originPoint - (midpoints.first ?? targetPoint)).normalized
         let targetDir = (targetPoint - (midpoints.last ?? originPoint)).normalized
@@ -200,7 +198,9 @@ extension Geometry {
             body = BezierPath(orthogonalPolylineThrough: allPoints)
         }
         
-        return ThinConnector(tail: tailArrowhead, body: body, head: headArrowhead)
+        return ThinConnector(tail: tailArrowhead.path,
+                             body: body,
+                             head: headArrowhead.path)
     }
 }
 
@@ -256,7 +256,7 @@ extension Geometry {
             path.addLine(to: point)
         }
 
-        switch style.tailType {
+        switch kind.tailType {
         case .none:
             path.addLine(to: pathThere[0])
         case .regular:

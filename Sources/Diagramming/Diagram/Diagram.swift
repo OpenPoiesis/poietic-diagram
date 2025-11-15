@@ -6,7 +6,7 @@
 //
 
 import PoieticCore
-
+#if false
 public protocol DiagramObject {
     /// ID of an object that the diagram object represents.
     ///
@@ -41,3 +41,4 @@ public struct Diagram: Component {
         blocks.append(block)
     }
 }
+#endif

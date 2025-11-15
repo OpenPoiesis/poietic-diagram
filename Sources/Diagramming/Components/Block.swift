@@ -21,7 +21,7 @@ public struct PreviewDelta: Component {
 ///
 /// - SeeAlso: ``Connector``
 /// 
-public class Block: DiagramObject {
+public class Block {
     public var objectID: ObjectID?
     public var tag: Int?
 

@@ -70,7 +70,7 @@ public struct ThinConnector {
 /// - Configurable arrowheads with various types and sizes
 /// - Visual styling through ShapeStyle properties
 ///
-public struct Connector: DiagramObject {
+public struct Connector {
     public let objectID: ObjectID?
     public let tag: Int?
     
