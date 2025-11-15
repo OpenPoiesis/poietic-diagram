@@ -5,72 +5,38 @@
 //  Created by Stefan Urbanek on 19/08/2025.
 //
 // FIXME: Change order so that head/tail props are together
-import PoieticCore
 
-public class DiagramStyle {
-    static let DefaultPictogramName = "default"
-    static let DefaultConnectorStyleName = "default"
-
-    public let pictograms: PictogramCollection
-    public let defaultPictogram: Pictogram
-    
-    public let connectorStyles: [String:ConnectorStyle]
-    public let defaultConnectorStyle: ConnectorStyle
-
-    public init(pictograms: PictogramCollection? = nil,
-                defaultPictogram: Pictogram? = nil,
-                connectorStyles: [String:ConnectorStyle] = [:],
-                defaultConnectorStyle: ConnectorStyle? = nil) {
-        self.pictograms = pictograms ?? PictogramCollection()
-        self.defaultPictogram = defaultPictogram
-                ?? self.pictograms.pictogram(Self.DefaultPictogramName)
-                ?? Pictogram(Self.DefaultPictogramName, circleWithRadius: 10.0)
-        self.connectorStyles = connectorStyles
-        self.defaultConnectorStyle = defaultConnectorStyle
-                ?? self.connectorStyles[Self.DefaultConnectorStyleName]
-                ?? .defaultThin
-    }
-    
-    /// Get a pictogram by name. If there is no pictogram with given name, then returns default
-    /// pictogram.
-    ///
-    public func pictogram(_ name: String) -> Pictogram {
-        return pictograms.pictogram(name) ?? defaultPictogram
-    }
-
-    /// Get connector style by name. If there is no connector style with given name, returns
-    /// default connector style.
-    ///
-    public func connectorStyle(_ name: String) -> ConnectorStyle {
-        return connectorStyles[name] ?? defaultConnectorStyle
-    }
-}
-
-public let StockFlowConnectorStyles: [String:ConnectorStyle] = [
-    "_default": .thin(ThinConnectorStyle(
-        headType: .none,
-        tailType: .none,
+nonisolated(unsafe) public let DefaultStockFlowConnectorGlyphs: [ConnectorGlyph] = [
+    ConnectorGlyph(
+        name: "default",
+        kind: .thin(ConnectorGlyph.Thin(
+            headType: .none,
+            tailType: .none)),
         headSize: 0.0,
         tailSize: 0.0,
         lineType: .straight
-    )),
+    ),
 
-    "Parameter": .thin(ThinConnectorStyle(
-        headType: .stick,
-        tailType: .ball,
+    ConnectorGlyph(
+        name: "Parameter",
+        kind: .thin(ConnectorGlyph.Thin(
+                headType: .stick,
+                tailType: .ball)),
         headSize: 10.0,
         tailSize: 5.0,
-        lineType: .curved
-    )),
-
-    "Flow": .fat(FatConnectorStyle(
-        headType: .regular,
-        tailType: .none,
+        lineType: .straight
+    ),
+    ConnectorGlyph(
+        name: "Flow",
+        kind: .fat(ConnectorGlyph.Fat(
+                headType: .regular,
+                tailType: .none,
+                width: 10.0,
+                joinType: .round)),
         headSize: 20.0,
         tailSize: 0.0,
-        width: 10.0,
-        joinType: .round
-    ))
+        lineType: .straight
+    ),
 ]
 
 extension Connector {
@@ -109,12 +75,13 @@ extension Connector {
     }
 }
 
+#if false
 // Makes Design -> Diagram -> Canvas
 public class DiagramComposer {
-    let style: DiagramStyle
+    let style: Notation
     let pictogramAliases: [String:String]
     
-    public init(style: DiagramStyle, pictogramAliases: [String:String] = [:]) {
+    public init(style: Notation, pictogramAliases: [String:String] = [:]) {
         self.style = style
         self.pictogramAliases = pictogramAliases
     }
@@ -159,48 +126,6 @@ public class DiagramComposer {
         }
     }
 
-    /// Returns the center wire path of a connector regardless of visual style.
-    ///
-    /// This method returns the logical connection path that represents the center line
-    /// of the connector, without visual styling elements like arrowheads, stroke width,
-    /// or fill polygons. The path follows the connector's line type (straight, curved,
-    /// or orthogonal) and routes through all midpoints.
-    ///
-    /// This is useful for:
-    /// - Touch detection and hit testing
-    /// - Logical path analysis
-    /// - Computing connector geometry independent of visual presentation
-    ///
-    /// - Returns: A `BezierPath` representing the center wire of the connector
-    ///
-    public static func wire(connectorStyle: ConnectorStyle,
-                            from originPoint: Vector2D,
-                            to targetPoint: Vector2D,
-                            midpoints: [Vector2D]) -> BezierPath
-    {
-        let allPoints = [originPoint] + midpoints + [targetPoint]
-        
-        let lineType: LineType
-        switch connectorStyle {
-        case .thin(let thinStyle):
-            lineType = thinStyle.lineType
-        case .fat(_):
-            // Fat connectors currently only support straight lines
-            // This can be extended in the future to support other line types
-            lineType = .straight
-        }
-        
-        switch lineType {
-        case .straight:
-            return BezierPath(polyline: allPoints)
-        case .curved:
-            return BezierPath(curveThrough: allPoints)
-        case .orthogonal:
-            return BezierPath(orthogonalPolylineThrough: allPoints)
-        }
-    }
-    
-    
     /// Creates a diagram from objects in the frame.
     ///
     /// The objects with the trait `DiagramBlock` will be used to create ``Block``
@@ -314,3 +239,4 @@ public class DiagramComposer {
     }
 
 }
+#endif

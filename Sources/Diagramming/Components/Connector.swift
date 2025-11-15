@@ -7,20 +7,53 @@
 
 import PoieticCore
 
-/// Style variants for connectors.
+/// Parameter edge: origin, target, edge[midpoints]
+/// Flow:
+///     origin: origin stock
+///     target: target stock
+///     midpoints: origin edge midpoints + flow position + target edge midpoints
 ///
-/// Defines whether a connector should be drawn as thin stroked paths or fat filled polygons.
-///
-public enum ConnectorStyle: Sendable {
-    /// Thin connector drawn as stroked paths with separate arrowhead elements.
-    case thin(ThinConnectorStyle)
+public struct ConnectorComponent: NEWDiagramObject, Component {
+    internal init(representedObjectID: ObjectID? = nil,
+                  originID: RuntimeEntityID,
+                  targetID: RuntimeEntityID,
+                  glyph: ConnectorGlyph,
+                  midpoints: [Vector2D] = []) {
+        self.representedObjectID = representedObjectID
+        self.originID = originID
+        self.targetID = targetID
+        self.glyph = glyph
+        self.midpoints = midpoints
+    }
     
-    /// Fat connector drawn as a single filled polygon with integrated arrowheads.
-    case fat(FatConnectorStyle)
+    public let representedObjectID: ObjectID?
+    /// Name of connector style.
+    ///
+    /// Refers to a style defined in ``DiagramStyle/connectorStyles``.
+    ///
+    public let glyph: ConnectorGlyph
     
-    public static let defaultThin: ConnectorStyle = .thin(ThinConnectorStyle())
-    public static let defaultFat: ConnectorStyle = .fat(FatConnectorStyle())
+    /// Runtime entity with ``BlockComponent``.
+    public let originID: RuntimeEntityID
+    /// Runtime entity with ``BlockComponent``.
+    public let targetID: RuntimeEntityID
+    
+    public let midpoints: [Vector2D]
+}
 
+/// Created from ``ConnectorComponent`` + style
+public struct ConnectorGeometryComponent: Component {
+    public let wirePoints: [Vector2D]
+    public let linePath: BezierPath?
+    public let fillPath: BezierPath?
+    public let tailArrowhead: BezierPath?
+    public let headArrowhead: BezierPath?
+}
+
+public struct ThinConnector {
+    public let tail: BezierPath
+    public let body: BezierPath
+    public let head: BezierPath
 }
 
 /// A connector between two points with optional intermediate waypoints.
@@ -37,74 +70,57 @@ public enum ConnectorStyle: Sendable {
 /// - Configurable arrowheads with various types and sizes
 /// - Visual styling through ShapeStyle properties
 ///
-public class Connector: DiagramObject {
-    public var objectID: ObjectID?
-    public var tag: Int?
+public struct Connector: DiagramObject {
+    public let objectID: ObjectID?
+    public let tag: Int?
     
     /// ID of the origin object if the origin represents a design object.
     ///
     /// It is recommended to set the ID for connectors that are used in interactive
     /// user interfaces.
     ///
-    public var originID: ObjectID?
-
+    public let originID: ObjectID?
+    
     /// ID of the target object if the target represents a design object.
     ///
     /// It is recommended to set the ID for connectors that are used in interactive
     /// user interfaces.
     ///
-    public var targetID: ObjectID?
+    public let targetID: ObjectID?
     
     /// Reasonable offset from the connector line that is used for testing the touch point.
-    /// 
+    ///
     static let TouchOutlineOffset: Double = 10.0
-
-    // TODO: Consider storing just allPoints where origin is first, and target is last. We construct allPoints quite frequently.
+    
     /// The starting point of the connector.
     ///
-    public var originPoint: Vector2D {
-        didSet { _flush() }
-    }
-    public var targetPoint: Vector2D {
-        didSet { _flush() }
-    }
-//    public var originPoint: Vector2D
+    public let originPoint: Vector2D
+    public let targetPoint: Vector2D
+    //    public var originPoint: Vector2D
     
     /// The ending point of the connector.
-//    public var targetPoint: Vector2D
+    //    public var targetPoint: Vector2D
     
     /// Optional intermediate waypoints the connector routes through.
-    public var midpoints: [Vector2D] {
-        didSet { _flush() }
-    }
+    public let midpoints: [Vector2D]
     
     /// The connector style (thin or fat) with associated configuration.
-    public var style: ConnectorStyle {
-        didSet { _flush() }
-    }
+    public let glyph: ConnectorGlyph
     
     /// Visual styling properties for colours and line width.
-    public var shapeStyle: ShapeStyle
-    
-    // Cached
-    internal var _tessellatedPoints: [Vector2D]?
+    public let shapeStyle: ShapeStyle
     
     /// Points of a poly-line that roughly passes through the connector center. Used for touch
     /// detection
     ///
     var tessellatedWirePoints: [Vector2D] {
-        if _tessellatedPoints == nil {
-            let wire = wirePath()
-            // Tessellate the path to convert curves into line segments for distance testing
-            // Use a reasonable tolerance for touch detection - doesn't need to be pixel-perfect
-            _tessellatedPoints = wire.tessellate(tolerance: 1.0)
-        }
-        return _tessellatedPoints!
-    }
-    
-    /// Called whenever shape-related properties are changed (not visual style).
-    internal func _flush() {
-        _tessellatedPoints = nil
+        let wire = Geometry.wirePath(from: originPoint,
+                                     to: targetPoint,
+                                     through: midpoints,
+                                     lineType: glyph.lineType)
+        // Tessellate the path to convert curves into line segments for distance testing
+        // Use a reasonable tolerance for touch detection - doesn't need to be pixel-perfect
+        return wire.tessellate(tolerance: 1.0)
     }
     
     public init(objectID: ObjectID? = nil,
@@ -112,58 +128,17 @@ public class Connector: DiagramObject {
                 originPoint: Vector2D,
                 targetPoint: Vector2D,
                 midpoints: [Vector2D] = [],
-                style: ConnectorStyle = .thin(ThinConnectorStyle()),
+                glyph: ConnectorGlyph = .defaultThin,
                 shapeStyle: ShapeStyle = ShapeStyle()) {
         self.objectID = objectID
         self.tag = tag
         self.originPoint = originPoint
         self.targetPoint = targetPoint
         self.midpoints = midpoints
-        self.style = style
+        self.glyph = glyph
         self.shapeStyle = shapeStyle
     }
-   
-    /// Bezier paths forming the connector.
-    ///
-    /// Use the paths to draw the connector.
-    ///
-    public func paths() -> [BezierPath] {
-        switch style {
-        case .thin(let style):
-            return thinConnectorPaths(style: style)
-        case .fat(let style):
-            return [fatConnectorPath(style: style)]
-        }
-        
-    }
-
-    /// Get directions for the origin and target arrowheads, considering the midpoints if present.
-    ///
-    /// - SeeAlso: ``adjacentEndpoints()``.
-    ///
-    public func arrowhadDirections() -> (origin: Vector2D, target: Vector2D) {
-        
-        let adjacentOrigin = midpoints.first ?? targetPoint
-        let adjacentTarget = midpoints.last ?? originPoint
-
-        return (origin: (originPoint - adjacentOrigin).normalized,
-                target: (targetPoint - adjacentTarget).normalized)
-    }
-
-    @available(*, deprecated, message: "Use DiagramComposer.wire")
-    public func wirePath() -> BezierPath {
-        return DiagramComposer.wire(connectorStyle: style,
-                                    from: originPoint,
-                                    to: targetPoint,
-                                    midpoints: midpoints)
-    }
-
-    /// Get the selection outline polygons.
-    ///
-    public func selectionOutline(width: Double = 4.0) -> BezierPath {
-        // FIXME: [IMPORTANT] This is required so we can replace the Godot rendering
-        fatalError("\(#function) not implemented")
-    }
+#if false
     /// Tests if a touch point (with optional radius) intersects with the connector.
     ///
     /// This method determines if a circular touch area intersects with the connector's
@@ -189,7 +164,7 @@ public class Connector: DiagramObject {
     /// ```swift
     /// let connector = Connector(...)
     /// let touchPoint = Vector2D(100, 200)
-    /// 
+    ///
     /// if connector.containsTouch(at: touchPoint, radius: 5.0) {
     ///     // Handle connector selection
     /// }
@@ -201,9 +176,9 @@ public class Connector: DiagramObject {
         // Calculate the effective touch radius based on connector style
         let offset: Double
         switch self.style {
-        case .fat(let style): 
+        case .fat(let style):
             offset = (style.width / 2) + Self.TouchOutlineOffset
-        case .thin(_): 
+        case .thin(_):
             offset = Self.TouchOutlineOffset
         }
         
@@ -217,4 +192,5 @@ public class Connector: DiagramObject {
         
         return false
     }
+#endif
 }

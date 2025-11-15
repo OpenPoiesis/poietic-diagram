@@ -7,6 +7,15 @@
 
 import PoieticCore
 
+// TODO: Consider using PreviewDelta
+public struct PreviewPosition: Component {
+    public var position: Vector2D
+}
+
+public struct PreviewDelta: Component {
+    public var positionDelta: Vector2D
+}
+
 /// Diagram block – a graphical shape which is usually represented by a pictogram and which
 /// can be connected with other blocks using connectors.
 ///
@@ -86,4 +95,50 @@ public class Block: DiagramObject {
         return touch.collide(with: collisionShape)
     }
 
+}
+
+public struct BlockPositionComponent: Component {
+    public let position: Vector2D = .zero
+}
+
+public struct BlockComponent: NEWDiagramObject, Component {
+    
+    public let representedObjectID: ObjectID?
+    /// Position of the block within its parent.
+    ///
+    /// Uses same coordinates as the represented object.
+    ///
+    /// The position property is also used to update represented object's position when block is
+    /// moved on a canvas.
+    ///
+    public let position: Vector2D
+    
+    public let pictogram: Pictogram?
+    public let label: String?
+    public let secondaryLabel: String?
+    public let collisionShape: CollisionShape
+    // TODO: Separate to "color tag"
+    public let accentColorName: String?
+    public let visualTypeName: String?
+
+    public init(representedObjectID: ObjectID? = nil,
+                position: Vector2D,
+                pictogram: Pictogram? = nil,
+                label: String? = nil,
+                secondaryLabel: String? = nil,
+                accentColorName: String? = nil,
+                visualTypeName: String? = nil) {
+        self.representedObjectID = representedObjectID
+        self.position = position
+        self.pictogram = pictogram
+        self.label = label
+        self.secondaryLabel = secondaryLabel
+        if let pictogram {
+            self.collisionShape = pictogram.collisionShape
+        }
+        else {
+            self.collisionShape = CollisionShape(position: position, shape: .circle(0.0))
+        }
+        self.visualTypeName = visualTypeName
+    }
 }
