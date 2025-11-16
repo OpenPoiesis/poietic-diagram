@@ -5,11 +5,14 @@ of [OpenPoiesis Project](https://github.com/openpoiesis/).
 
 Main features:
 
-- Pictogram collections with geometry and pictogram layout metadata
-- Connector to shape touch point calculation using collision shapes
-- Connector vector representation (path) calculation
-- Extraction of pictograms from SVG images
-- Export of diagrams into SVG
+- Notation: collection of pictograms and connector glyphs that define visual representation of
+  a design.
+- Pictograms: visual symbol with geometry, collision shape, mask and other layout related metadata.
+- Connector Glyphs: visual description of a connector between two diagram blocks (objects).
+- Connector Geometry: computation of connector touch points, arrow-heads, and routing through
+  mid-points.
+- Export of diagrams into SVG.
+- Extraction of pictograms from SVG images.
 
  Note: Functionality requirements are driven by the needs of the Open Poiesis applications, such as
  [Poietic Playground](https://github.com/openpoiesis/poietic-playground)
@@ -123,9 +126,8 @@ The pictogram is extracted from SVG as follows:
 
 ## Note on LLM Use
 
-To help with prototyping speed, the geometry computation and algorithm parts of this package were
-written with assistance of LLMs. Those parts are still in the queue for further inspection and
-more in-depth review.
+To help with prototyping speed, LLMs were used to assist with parts of the geometry computation.
+Geometry is not a strong side of mine (the author). If you spot any errors, please let me know.
 
 Otherwise, use of LLMs to write code for this package is strongly discouraged, with exception of
 drafting unit tests.
