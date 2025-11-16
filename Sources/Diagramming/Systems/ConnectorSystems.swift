@@ -13,7 +13,7 @@ import PoieticCore
 ///     - Design objects with trait `DiagramConnector`.
 ///     - ``Notation`` component associated with the frame, default notation is used if not found.
 ///     - ``NotationRules`` associated with the frame, empty rules are used if not found.
-/// - **Output:** ``ConnectorComponent``.
+/// - **Output:** ``DiagramConnector``.
 /// - **Forgiveness:**
 ///     - Non-edge objects are ignored.
 ///     - Midpoints default to empty list.
@@ -49,19 +49,19 @@ public struct TraitConnectorCreationSystem: System {
     }
 }
 
-/// System that computes connector geometry from ``ConnectorComponent`` and ``DiagramBlock``.
+/// System that computes connector geometry from ``DiagramConnector`` and ``DiagramBlock``.
 ///
 ///
-/// - **Input:** Any runtime object with ``ConnectorComponent`` component. Uses ``DiagramStyle``
+/// - **Input:** Any runtime object with ``DiagramConnector`` component. Uses ``DiagramStyle``
 ///   component set on `Frame` runtime object.
-/// - **Output:** ``ConnectorGeometryComponent``.
+/// - **Output:** ``DiagramConnectorGeometry``.
 /// - **Forgiveness:**
 ///     - Ignores objects where origin or target entities do not exist or if they do not have
 ///       ``DiagramBlock``.
 ///     - If no ``DiagramStyle`` is found on `Frame` runtime object, then default diagram style
 ///       is used.
 ///
-/// When you create your own ``ConnectorComponent`` system, make sure that it includes
+/// When you create your own ``DiagramConnector`` system, make sure that it includes
 /// ``ConnectorGeometrySystem`` in its dependency list:
 ///
 /// ```swift

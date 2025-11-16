@@ -21,6 +21,7 @@ public struct SVGDiagramStyle {
     public init() { }
 }
 
+// TODO: Change to System
 public class SVGDiagramExporter {
     /// Prefix for `id` attribute of SVG symbols representing a pictogram.
     ///
@@ -193,7 +194,6 @@ public class SVGDiagramExporter {
             result.addChild(text)
         }
 
-        
         elements.append(result)
     }
     
@@ -209,25 +209,25 @@ public class SVGDiagramExporter {
         if let path = geometry.linePath {
             let svgPath = SVGPath(path)
             svgPath.fill = "none"
-            // path.stroke = geometry.shapeStyle.lineColor
+            svgPath.stroke = "black"
             group.addChild(svgPath)
         }
         if let path = geometry.fillPath {
             let svgPath = SVGPath(path)
             svgPath.fill = "none"
-            // path.stroke = geometry.shapeStyle.lineColor
+            svgPath.stroke = "black"
             group.addChild(svgPath)
         }
         if let path = geometry.headArrowhead {
             let svgPath = SVGPath(path)
             svgPath.fill = "none"
-            // path.stroke = geometry.shapeStyle.lineColor
+            svgPath.stroke = "black"
             group.addChild(svgPath)
         }
         if let path = geometry.tailArrowhead {
             let svgPath = SVGPath(path)
             svgPath.fill = "none"
-            // path.stroke = geometry.shapeStyle.lineColor
+            svgPath.stroke = "black"
             group.addChild(svgPath)
         }
 
