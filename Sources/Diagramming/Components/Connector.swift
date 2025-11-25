@@ -64,15 +64,23 @@ public struct DiagramConnector: Component {
 
 /// Created from ``ConnectorComponent`` and blocks by ``ConnectorGeometrySystem``.
 ///
+/// - SeeAlso: ``ConnectorPreview``
+///
+/// - Note: When computing ``DiagramConnectorGeometry`` the ``ConnectorPreview`` and
+///         ``BlockPreview`` components should be considered as an override.
+///
 public struct DiagramConnectorGeometry: Component {
     // TODO: Add dash style for line path
     // TODO: Add fill flags for head/tail
 
+    public let originPoint: Vector2D
+    public let targetPoint: Vector2D
+    
     /// Points of a wire representation of the connector.
     ///
     /// Wire is a tessellated centre line that goes through mid-points.
     ///
-    public let wirePoints: [Vector2D]
+    public let wire: BezierPath
     
     /// Bezier path of the line for a thin connector or outline for a thick connector.
     public let linePath: BezierPath?
@@ -104,6 +112,28 @@ public struct DiagramConnectorGeometry: Component {
             result = if let existing = result { existing.union(box) } else { box }
         }
         return result
+    }
+    
+    /// Simple outline for selection of the connector.
+    ///
+    /// Uses the wire points.
+    ///
+    public func outline(inflatedBy margin: Double = 10.0) -> BezierPath {
+        return wire.inflated(by: margin)
+    }
+}
+
+
+/// Component for user-interaction session of a connector.
+///
+/// This connector should be used as an override for ``DiagramConnector`` when computing ``DiagramConnectorGeometry``.
+///
+/// - Important: The component must be destroyed when the drag or preview operation is concluded.
+///
+public struct ConnectorPreview: Component {
+    public var midpoints: [Vector2D]
+    public init(midpoints: [Vector2D]) {
+        self.midpoints = midpoints
     }
 }
 

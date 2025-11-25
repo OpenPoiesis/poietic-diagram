@@ -7,6 +7,9 @@
 
 import Foundation
 
+// TODO: This extension was created with assistance of a LLM. Needs attention of a human knowledgeable of geometry.
+// TODO: I am slowly giving this attention. Needs more.
+
 extension BezierPath {
     /// Creates a new path that is inflated by the specified margin, creating a rounded outline.
     ///
@@ -60,14 +63,16 @@ extension BezierPath {
         let isClosed = subpath.isClosed || (points.first?.distance(to: points.last!) ?? Double.infinity) < 1e-6
         
         if isClosed {
-            return inflateClosedPolygon(points, margin: margin, joinType: joinType)
+            return Geometry.inflateClosedPolygon(points, margin: margin, joinType: joinType)
         } else {
-            return inflateOpenPath(points, margin: margin, joinType: joinType)
+            return Geometry.inflateOpenPath(points, margin: margin, joinType: joinType)
         }
     }
-    
-    private func inflateClosedPolygon(_ points: [Vector2D], margin: Double, joinType: JoinType) -> BezierPath {
-        // Use the existing offsetPolyline method from Geometry
+}
+
+extension Geometry {
+    // TODO: Consider making public
+    static func inflateClosedPolygon(_ points: [Vector2D], margin: Double, joinType: JoinType) -> BezierPath {
         let offsetPoints = Geometry.offsetPolyline(points, offset: margin * 2, joinType: joinType)
         
         guard !offsetPoints.isEmpty else { return BezierPath() }
@@ -83,7 +88,8 @@ extension BezierPath {
         return result
     }
     
-    private func inflateOpenPath(_ points: [Vector2D], margin: Double, joinType: JoinType) -> BezierPath {
+    // TODO: Consider making public
+    static func inflateOpenPath(_ points: [Vector2D], margin: Double, joinType: JoinType) -> BezierPath {
         guard points.count >= 2 else { return BezierPath() }
         
         // Create offset lines on both sides
@@ -92,36 +98,37 @@ extension BezierPath {
         
         var result = BezierPath()
         
-        // Start at first point of positive offset
         if let firstPoint = positiveOffset.first {
             result.move(to: firstPoint)
         }
         
-        // Add positive offset line
+        // Positive offset line and round cap
+        //
         for i in 1..<positiveOffset.count {
             result.addLine(to: positiveOffset[i])
         }
         
-        // Add rounded end cap
         if let lastPositive = positiveOffset.last, let lastNegative = negativeOffset.last {
-            addRoundedCap(to: &result, from: lastPositive, to: lastNegative, center: points.last!, radius: margin)
+            result.addRoundedCap(from: lastPositive, to: lastNegative, center: points.last!, radius: margin)
         }
         
-        // Add negative offset line (reversed)
+        // Negative offset line (reversed) and round cap
+        //
         for point in negativeOffset.reversed() {
             result.addLine(to: point)
         }
         
-        // Add rounded start cap
         if let firstNegative = negativeOffset.first, let firstPositive = positiveOffset.first {
-            addRoundedCap(to: &result, from: firstNegative, to: firstPositive, center: points.first!, radius: margin)
+            result.addRoundedCap(from: firstNegative, to: firstPositive, center: points.first!, radius: margin)
         }
         
         result.closeSubpath()
         return result
     }
-    
-    private func addRoundedCap(to path: inout BezierPath, from startPoint: Vector2D, to endPoint: Vector2D, center: Vector2D, radius: Double) {
+}
+
+extension BezierPath {
+    internal mutating func addRoundedCap(from startPoint: Vector2D, to endPoint: Vector2D, center: Vector2D, radius: Double) {
         // Calculate the arc to connect the two offset points around the center
         let startAngle = atan2(startPoint.y - center.y, startPoint.x - center.x)
         let endAngle = atan2(endPoint.y - center.y, endPoint.x - center.x)
@@ -135,38 +142,6 @@ extension BezierPath {
         }
         
         // Use proper Bezier curve approximation for the arc
-        addArc(to: &path, center: center, radius: radius, startAngle: startAngle, endAngle: endAngle)
-    }
-    
-    // TODO: Move to BezierPath + document
-    private func addArc(to path: inout BezierPath, center: Vector2D, radius: Double, startAngle: Double, endAngle: Double) {
-        let angleDelta = endAngle - startAngle
-        let segments = max(1, Int(abs(angleDelta) / (.pi / 2)) + 1)
-        
-        for i in 0..<segments {
-            let t1 = Double(i) / Double(segments)
-            let t2 = Double(i + 1) / Double(segments)
-            
-            let angle1 = startAngle + angleDelta * t1
-            let angle2 = startAngle + angleDelta * t2
-            
-            let p1 = center + Vector2D(cos(angle1), sin(angle1)) * radius
-            let p2 = center + Vector2D(cos(angle2), sin(angle2)) * radius
-            
-            // Calculate control points for Bezier approximation of arc segment
-            let segmentAngle = angleDelta / Double(segments)
-            let alpha = 4.0 / 3.0 * tan(segmentAngle / 4.0)
-            let control1 = p1 + Vector2D(-sin(angle1), cos(angle1)) * alpha * radius
-            let control2 = p2 + Vector2D(sin(angle2), -cos(angle2)) * alpha * radius
-            
-            if i == 0 {
-                // First segment - line to start point if not already there
-                let currentPos = path.currentPoint ?? Vector2D.zero
-                if currentPos.distance(to: p1) > 1e-6 {
-                    path.addLine(to: p1)
-                }
-            }
-            path.addCurve(to: p2, control1: control1, control2: control2)
-        }
+        self.addArc(center: center, radius: radius, startAngle: startAngle, endAngle: endAngle)
     }
 }

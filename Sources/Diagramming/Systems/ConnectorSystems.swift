@@ -20,6 +20,7 @@ import PoieticCore
 /// - **Issues collected:** No issues generated.
 ///
 public struct TraitConnectorCreationSystem: System {
+    // TODO: Name is too long.
     public init() { }
 
     public func update(_ frame: AugmentedFrame) throws (InternalSystemError) {
@@ -79,13 +80,15 @@ public struct ConnectorGeometrySystem: System {
         .after(TraitConnectorCreationSystem.self),
         .after(BlockCreationSystem.self)
     ]
+
     public init() {}
+
     public func update(_ frame: AugmentedFrame) throws (InternalSystemError) {
-        // For all entities with ConnectorComponent:
         for (runtimeID, connector) in frame.runtimeFilter(DiagramConnector.self) {
             try update(frame, runtimeID: runtimeID, connector: connector)
         }
     }
+
     public func update(_ frame: AugmentedFrame,
                        runtimeID: RuntimeEntityID,
                        connector: DiagramConnector)
@@ -95,66 +98,76 @@ public struct ConnectorGeometrySystem: System {
               let targetBlock: DiagramBlock = frame.component(for: connector.targetID)
         else { return }
         
-        // TODO: Add PreviewPosition component
-        
-        // Compute touch points
-        let (originTouch, targetTouch) = Geometry.touchPoints(
-            originPosition: originBlock.position,
-            originShape: originBlock.collisionShape,
-            targetPosition: targetBlock.position,
-            targetShape: targetBlock.collisionShape,
-            midpoints: connector.midpoints
-        )
-        let glyph = connector.glyph
+        let originPreview: BlockPreview? = frame.component(for: connector.originID)
+        let targetPreview: BlockPreview? = frame.component(for: connector.targetID)
+        let preview: ConnectorPreview? = frame.component(for: runtimeID)
+        let midpoints = preview?.midpoints ?? connector.midpoints
 
+        let (originTouch, targetTouch) = Geometry.touchPoints(
+            originPosition: originPreview?.position ?? originBlock.position,
+            originShape: originBlock.collisionShape,
+            targetPosition: targetPreview?.position ?? targetBlock.position,
+            targetShape: targetBlock.collisionShape,
+            midpoints: midpoints
+        )
+
+        let geometry = DiagramConnectorGeometry(originTouch: originTouch,
+                                                targetTouch: targetTouch,
+                                                midpoints: midpoints,
+                                                glyph: connector.glyph)
+
+        frame.setComponent(geometry, for: runtimeID)
+    }
+}
+
+extension DiagramConnectorGeometry {
+    public init(originTouch: Vector2D,
+                targetTouch: Vector2D,
+                midpoints: [Vector2D] = [],
+                glyph: ConnectorGlyph)
+    {
         let wirePath = Geometry.wirePath(from: originTouch,
                                          to: targetTouch,
-                                         through: connector.midpoints,
+                                         through: midpoints,
                                          lineType: glyph.lineType)
-        let tessellatedWire = wirePath.tessellate()
         
-        let geometry: DiagramConnectorGeometry
-
         switch glyph.kind {
         case .fat(let kind):
             let outline = Geometry.fatConnectorPath(
                 originPoint: originTouch,
                 targetPoint: targetTouch,
-                midpoints: connector.midpoints,
+                midpoints: midpoints,
                 headSize: glyph.headSize,
                 tailSize: glyph.tailSize,
                 kind: kind
             )
             
-            geometry = DiagramConnectorGeometry(
-                wirePoints: tessellatedWire,
-                linePath: outline,
-                fillPath: outline,
-                tailArrowhead: nil,
-                headArrowhead: nil
-            )
+            self.originPoint = originTouch
+            self.targetPoint = targetTouch
+            self.wire = wirePath
+            self.linePath = outline
+            self.fillPath = outline
+            self.tailArrowhead = nil
+            self.headArrowhead = nil
             
         case .thin(let kind):
             let paths = Geometry.thinConnectorPaths(
                 originPoint: originTouch,
                 targetPoint: targetTouch,
-                midpoints: connector.midpoints,
+                midpoints: midpoints,
                 headSize: glyph.headSize,
                 tailSize: glyph.tailSize,
                 lineType: glyph.lineType,
                 kind: kind
             )
-
-            geometry = DiagramConnectorGeometry(
-                wirePoints: tessellatedWire,
-                linePath: paths.body,
-                fillPath: nil,
-                tailArrowhead: paths.tail,
-                headArrowhead: paths.head
-            )
+            
+            self.originPoint = originTouch
+            self.targetPoint = targetTouch
+            self.wire = wirePath
+            self.linePath = paths.body
+            self.fillPath = nil
+            self.tailArrowhead = paths.tail
+            self.headArrowhead = paths.head
         }
-        
-        frame.setComponent(geometry, for: runtimeID)
     }
 }
-

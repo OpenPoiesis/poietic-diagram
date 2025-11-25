@@ -5,6 +5,8 @@
 //  Created by Stefan Urbanek on 22/07/2025.
 //
 
+import Foundation
+
 extension BezierPath {
     /// Create a curved line through multiple points using Catmull-Rom style interpolation.
     ///
@@ -82,7 +84,36 @@ extension BezierPath {
             isHorizontal = !isHorizontal
         }
     }
-
+    public mutating func addArc(center: Vector2D, radius: Double, startAngle: Double, endAngle: Double) {
+        let angleDelta = endAngle - startAngle
+        let segments = max(1, Int(abs(angleDelta) / (.pi / 2)) + 1)
+        
+        for i in 0..<segments {
+            let t1 = Double(i) / Double(segments)
+            let t2 = Double(i + 1) / Double(segments)
+            
+            let angle1 = startAngle + angleDelta * t1
+            let angle2 = startAngle + angleDelta * t2
+            
+            let p1 = center + Vector2D(cos(angle1), sin(angle1)) * radius
+            let p2 = center + Vector2D(cos(angle2), sin(angle2)) * radius
+            
+            // Calculate control points for Bezier approximation of arc segment
+            let segmentAngle = angleDelta / Double(segments)
+            let alpha = 4.0 / 3.0 * tan(segmentAngle / 4.0)
+            let control1 = p1 + Vector2D(-sin(angle1), cos(angle1)) * alpha * radius
+            let control2 = p2 + Vector2D(sin(angle2), -cos(angle2)) * alpha * radius
+            
+            if i == 0 {
+                // First segment - line to start point if not already there
+                let currentPos = self.currentPoint ?? Vector2D.zero
+                if currentPos.distance(to: p1) > 1e-6 {
+                    self.addLine(to: p1)
+                }
+            }
+            self.addCurve(to: p2, control1: control1, control2: control2)
+        }
+    }
 }
 
 /// Calculate control points for a segment using Catmull-Rom style interpolation
