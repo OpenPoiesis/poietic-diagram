@@ -75,3 +75,23 @@ public enum FatArrowheadType: CaseIterable, Sendable {
         }
     }
 }
+
+/// A thin arrowhead represented as a stroke path with connection offset.
+///
+/// Contains the Bezier path for drawing the arrowhead and the offset distance
+/// from the intended endpoint to where the connector line should actually connect.
+///
+public struct Arrowhead: Sendable {
+    /// The Bezier path defining the arrowhead geometry.
+    public let path: BezierPath
+    
+    /// Distance from intended endpoint to actual line connection point in points.
+    public let offset: Double
+    
+    public init(path: BezierPath, offset: Double) {
+        self.path = path
+        self.offset = offset
+    }
+}
+
+

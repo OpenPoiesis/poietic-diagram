@@ -18,9 +18,15 @@ public struct ShapeStyle: Equatable, Sendable {
     public let lineWidth: Double
     
     /// The colour of the stroke/outline as a string.
+    ///
+    /// It is recommended that the colour name is one of the adaptable colours.
+    ///
     public let lineColor: String
     
     /// The fill colour for closed shapes as a string.
+    ///
+    /// It is recommended that the colour name is one of the adaptable colours.
+    ///
     public let fillColor: String
 
     public init(lineWidth: Double = 1.0,

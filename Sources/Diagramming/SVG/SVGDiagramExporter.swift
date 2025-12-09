@@ -21,6 +21,7 @@ public struct SVGDiagramStyle {
     public init() { }
 }
 
+// TODO: Change to System
 public class SVGDiagramExporter {
     /// Prefix for `id` attribute of SVG symbols representing a pictogram.
     ///
@@ -69,8 +70,8 @@ public class SVGDiagramExporter {
     ///
     /// - SeeAlso: ``export(diagram:debug:)``
     ///
-    public func export(diagram: Diagram, to path: String, debug: Bool=false) throws {
-        let image = export(diagram: diagram)
+    public func export(frame: AugmentedFrame, to path: String, debug: Bool=false) throws {
+        let image = export(frame: frame)
         let writer = SVGWriter()
         try writer.writeToFile(image, path: path)
     }
@@ -80,14 +81,14 @@ public class SVGDiagramExporter {
     /// If the ``debug`` flag is `true`, then debug elements such as collision shapes and masks
     /// are included in the image.
     ///
-    public func export(diagram: Diagram, debug: Bool = false) -> SVGImage {
+    public func export(frame: AugmentedFrame, debug: Bool = false) -> SVGImage {
         let image = SVGImage()
         
-        for block in diagram.blocks {
-            composeBlock(block)
+        for (id, block) in frame.runtimeFilter(DiagramBlock.self) {
+            composeBlock(id: id, block: block)
         }
-        for connector in diagram.connectors {
-            composeConnector(connector)
+        for (id, geometry) in frame.runtimeFilter(DiagramConnectorGeometry.self) {
+            composeConnector(id: id, geometry: geometry)
         }
         
         for symbol in symbols.values {
@@ -129,12 +130,10 @@ public class SVGDiagramExporter {
         return symbol
     }
     
-    func composeBlock(_ block: Block, debug: Bool=false) {
-        let result = SVGGroup()
+    func composeBlock(id: RuntimeEntityID, block: DiagramBlock, debug: Bool=false) {
+        guard let pictogram = block.pictogram else { return }
         
-        guard let pictogram = block.pictogram else {
-            return
-        }
+        let result = SVGGroup()
 
         // DEBUG
         if debug {
@@ -143,7 +142,7 @@ public class SVGDiagramExporter {
             result.addChild(origin)
         
             let debugGroup = debugGroup(pictogram,
-                                        id: "debug-\(block.objectID)",
+                                        id: "debug-\(id.description)",
                                         position: block.position)
             if debugGroup.transform == nil {
                 debugGroup.transform = SVGTransformList()
@@ -165,12 +164,7 @@ public class SVGDiagramExporter {
         use.x = block.position.x
         use.y = block.position.y
         use.href = "#\(pictogramSymbolIDPrefix)\(pictogram.name)"
-        if let id = block.objectID {
-            use.id = "\(blockIDPrefix)\(id)"
-        }
-        else {
-            use.id = "\(blockIDPrefix)-nil"
-        }
+        use.id =  blockIDPrefix + id.description
         
         result.addChild(use)
         
@@ -200,30 +194,43 @@ public class SVGDiagramExporter {
             result.addChild(text)
         }
 
-        
         elements.append(result)
     }
     
-    func composeConnector(_ connector: Connector) {
-        let paths = connector.paths()
+    func composeConnector(id: RuntimeEntityID, geometry: DiagramConnectorGeometry) {
         let group = SVGGroup()
-        if let id = connector.objectID {
-            group.id = "\(connectorIDPrefix)\(id)"
-        }
-        else {
-            group.id = "\(connectorIDPrefix)-nil"
-        }
+        group.id = connectorIDPrefix + id.description
 
-        for path in paths {
-            if let box = path.boundingBox {
-                self.extendBoundingBox(box)
-            }
-
+        if let box = geometry.boundingBox() {
+            self.extendBoundingBox(box)
+        }
+        // TODO: Add stroke and fill colours
+        
+        if let path = geometry.linePath {
             let svgPath = SVGPath(path)
             svgPath.fill = "none"
-            svgPath.stroke = connector.shapeStyle.lineColor
+            svgPath.stroke = "black"
             group.addChild(svgPath)
         }
+        if let path = geometry.fillPath {
+            let svgPath = SVGPath(path)
+            svgPath.fill = "none"
+            svgPath.stroke = "black"
+            group.addChild(svgPath)
+        }
+        if let path = geometry.headArrowhead {
+            let svgPath = SVGPath(path)
+            svgPath.fill = "none"
+            svgPath.stroke = "black"
+            group.addChild(svgPath)
+        }
+        if let path = geometry.tailArrowhead {
+            let svgPath = SVGPath(path)
+            svgPath.fill = "none"
+            svgPath.stroke = "black"
+            group.addChild(svgPath)
+        }
+
         elements.append(group)
     }
     

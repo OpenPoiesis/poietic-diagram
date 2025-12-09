@@ -6,7 +6,7 @@
 //
 
 import PoieticCore
-
+#if false
 public protocol DiagramObject {
     /// ID of an object that the diagram object represents.
     ///
@@ -17,17 +17,12 @@ public protocol DiagramObject {
     /// Custom tag that can be used to distinguish multiple diagram objects that
     /// have the same represented object.
     var tag: Int? { get }
-    
-    /// Test whether the object collides with a circle with centre at `point` with
-    /// given radius.
-    /// 
-    func containsTouch(at point: Vector2D, radius: Double) -> Bool
 }
 
 // FIXME: Reconsider necessity of this
-public class Diagram {
-    public var connectors: [Connector]
-    public var blocks: [Block]
+public struct Diagram: Component {
+    public let connectors: [Connector]
+    public let blocks: [Block]
     
     public init() {
         connectors = []
@@ -46,3 +41,4 @@ public class Diagram {
         blocks.append(block)
     }
 }
+#endif

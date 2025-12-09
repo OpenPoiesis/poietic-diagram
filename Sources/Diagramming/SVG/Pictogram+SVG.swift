@@ -27,9 +27,7 @@ extension Pictogram {
 
         let collision = self.collisionShape.toSVGElement()
         collision.id = "debug-collision-\(name)"
-        if let collision = collision as? SVGGeometryElement {
-            collision.setStyle(fill: "LightCyan", stroke: "red")
-        }
+        collision.setStyle(fill: "LightCyan", stroke: "red")
         collision.transform = SVGTransformList([
 //            .translate(tx: origin.x, ty: origin.y),
         ])

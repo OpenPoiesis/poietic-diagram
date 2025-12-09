@@ -46,29 +46,6 @@ public class SVGDiagramComposer {
         return symbol
     }
     
-    public func insertPictogram(_ pictogramName: String, id: String, at position: Vector2D) {
-        let _ = symbolForPictogram(pictogramName)
-        let use = SVGUse()
-        use.x = position.x
-        use.y = position.y
-        use.href = "#pictogram-\(pictogramName)"
-        use.id = "object-\(id)"
-        elements.append(use)
-    }
-
-    public func insertConnector(_ connector: Connector, id: String) {
-        let paths = connector.paths()
-        let group = SVGGroup()
-        group.id = "connector-\(id)"
-        for path in paths {
-            let svgPath = SVGPath(path)
-            svgPath.fill = "none"
-            svgPath.stroke = connector.shapeStyle.lineColor
-            group.addChild(svgPath)
-        }
-        elements.append(group)
-    }
-    
     public func compose() -> SVGImage {
         let image = SVGImage()
         for symbol in symbols.values {
