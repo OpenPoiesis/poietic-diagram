@@ -5,7 +5,7 @@
 //  Created by Stefan Urbanek on 17/06/2025.
 //
 
-// FIXME: [IMPORTANT] Make properties non-optional
+// TODO: Make properties non-optional (?)
 
 public let DefaultSVGLengthDPI = 96.0
 

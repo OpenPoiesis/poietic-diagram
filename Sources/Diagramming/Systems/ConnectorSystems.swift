@@ -23,30 +23,36 @@ public struct TraitConnectorCreationSystem: System {
     // TODO: Name is too long.
     public init() { }
 
-    public func update(_ frame: AugmentedFrame) throws (InternalSystemError) {
-        let notation: Notation = frame.component(for: .Frame) ?? Notation.DefaultNotation
-        let rules: NotationRules = frame.component(for: .Frame) ?? NotationRules()
+    public func update(_ world: World) throws (InternalSystemError) {
+        guard let frame = world.frame else { return }
+        let notation: Notation = world.singleton() ?? Notation.DefaultNotation
+        let rules: NotationRules = world.singleton() ?? NotationRules()
 
         for object in frame.filter(trait: .DiagramConnector) {
-            guard let edge = EdgeObject(object, in: frame) else { continue }
-            try update(edge: edge, in: frame, notation: notation, rules: rules)
+            guard let edge = DesignObjectEdge(object, in: frame) else { continue }
+            try create(edge: edge, in: world, notation: notation, rules: rules)
         }
     }
     
-    public func update(edge: EdgeObject, in frame: AugmentedFrame, notation: Notation, rules: NotationRules) throws (InternalSystemError){
+    public func create(edge: DesignObjectEdge, in world: World, notation: Notation, rules: NotationRules) throws (InternalSystemError){
+        guard let originEntity = world.objectToEntity(edge.origin),
+              let targetEntity = world.objectToEntity(edge.target) else
+        {
+            return
+        }
         let midpoints: [Vector2D] = edge.object["midpoints", default: []]
 
         let glyphName = rules.connectorGlyphName(for: edge.object.type)
         let connectorGlyph = notation.connectorGlyph(glyphName)
 
         let connector = DiagramConnector(
-            representedObjectID: edge.key,
-            originID: .object(edge.origin),
-            targetID: .object(edge.target),
+            representedObjectID: edge.id,
+            originID: originEntity,
+            targetID: targetEntity,
             glyph: connectorGlyph,
             midpoints: midpoints
         )
-        frame.setComponent(connector, for: .object(edge.key))
+        world.setComponent(connector, for: edge.id)
     }
 }
 
@@ -83,24 +89,24 @@ public struct ConnectorGeometrySystem: System {
 
     public init() {}
 
-    public func update(_ frame: AugmentedFrame) throws (InternalSystemError) {
-        for (runtimeID, connector) in frame.runtimeFilter(DiagramConnector.self) {
-            try update(frame, runtimeID: runtimeID, connector: connector)
+    public func update(_ world: World) throws (InternalSystemError) {
+        for (entityID, connector) in world.query(DiagramConnector.self) {
+            try update(world, entityID: entityID, connector: connector)
         }
     }
 
-    public func update(_ frame: AugmentedFrame,
-                       runtimeID: RuntimeEntityID,
+    public func update(_ world: World,
+                       entityID: EphemeralID,
                        connector: DiagramConnector)
     throws (InternalSystemError) {
         // Get origin/target blocks
-        guard let originBlock: DiagramBlock = frame.component(for: connector.originID),
-              let targetBlock: DiagramBlock = frame.component(for: connector.targetID)
+        guard let originBlock: DiagramBlock = world.component(for: connector.originID),
+              let targetBlock: DiagramBlock = world.component(for: connector.targetID)
         else { return }
         
-        let originPreview: BlockPreview? = frame.component(for: connector.originID)
-        let targetPreview: BlockPreview? = frame.component(for: connector.targetID)
-        let preview: ConnectorPreview? = frame.component(for: runtimeID)
+        let originPreview: BlockPreview? = world.component(for: connector.originID)
+        let targetPreview: BlockPreview? = world.component(for: connector.targetID)
+        let preview: ConnectorPreview? = world.component(for: entityID)
         let midpoints = preview?.midpoints ?? connector.midpoints
 
         let (originTouch, targetTouch) = Geometry.touchPoints(
@@ -116,7 +122,7 @@ public struct ConnectorGeometrySystem: System {
                                                 midpoints: midpoints,
                                                 glyph: connector.glyph)
 
-        frame.setComponent(geometry, for: runtimeID)
+        world.setComponent(geometry, for: entityID)
     }
 }
 

@@ -70,25 +70,34 @@ public class SVGDiagramExporter {
     ///
     /// - SeeAlso: ``export(diagram:debug:)``
     ///
-    public func export(frame: AugmentedFrame, to path: String, debug: Bool=false) throws {
-        let image = export(frame: frame)
+    public func export(world: World, to path: String, debug: Bool=false) throws {
+        let image = export(world: world)
         let writer = SVGWriter()
         try writer.writeToFile(image, path: path)
     }
     
+    public func entityIDString(_ id: EphemeralID, in world: World) -> String {
+        if let objectID = world.entityToObject(id) {
+            "o" + objectID.stringValue
+        }
+        else {
+            "e" + id.description
+
+        }
+    }
     /// Export a diagram into SVG image.
     ///
     /// If the ``debug`` flag is `true`, then debug elements such as collision shapes and masks
     /// are included in the image.
     ///
-    public func export(frame: AugmentedFrame, debug: Bool = false) -> SVGImage {
+    public func export(world: World, debug: Bool = false) -> SVGImage {
         let image = SVGImage()
         
-        for (id, block) in frame.runtimeFilter(DiagramBlock.self) {
-            composeBlock(id: id, block: block)
+        for (entityID, block) in world.query(DiagramBlock.self) {
+            composeBlock(id: entityIDString(entityID, in: world), block: block)
         }
-        for (id, geometry) in frame.runtimeFilter(DiagramConnectorGeometry.self) {
-            composeConnector(id: id, geometry: geometry)
+        for (entityID, geometry) in world.query(DiagramConnectorGeometry.self) {
+            composeConnector(id: entityIDString(entityID, in: world), geometry: geometry)
         }
         
         for symbol in symbols.values {
@@ -130,7 +139,7 @@ public class SVGDiagramExporter {
         return symbol
     }
     
-    func composeBlock(id: RuntimeEntityID, block: DiagramBlock, debug: Bool=false) {
+    func composeBlock(id: String, block: DiagramBlock, debug: Bool=false) {
         guard let pictogram = block.pictogram else { return }
         
         let result = SVGGroup()
@@ -142,7 +151,7 @@ public class SVGDiagramExporter {
             result.addChild(origin)
         
             let debugGroup = debugGroup(pictogram,
-                                        id: "debug-\(id.description)",
+                                        id: "debug-\(id)",
                                         position: block.position)
             if debugGroup.transform == nil {
                 debugGroup.transform = SVGTransformList()
@@ -164,7 +173,7 @@ public class SVGDiagramExporter {
         use.x = block.position.x
         use.y = block.position.y
         use.href = "#\(pictogramSymbolIDPrefix)\(pictogram.name)"
-        use.id =  blockIDPrefix + id.description
+        use.id =  blockIDPrefix + id
         
         result.addChild(use)
         
@@ -197,9 +206,9 @@ public class SVGDiagramExporter {
         elements.append(result)
     }
     
-    func composeConnector(id: RuntimeEntityID, geometry: DiagramConnectorGeometry) {
+    func composeConnector(id: String, geometry: DiagramConnectorGeometry) {
         let group = SVGGroup()
-        group.id = connectorIDPrefix + id.description
+        group.id = connectorIDPrefix + id
 
         if let box = geometry.boundingBox() {
             self.extendBoundingBox(box)

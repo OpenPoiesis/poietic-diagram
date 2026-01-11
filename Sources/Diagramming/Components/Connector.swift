@@ -30,8 +30,8 @@ public struct ThinConnector {
 ///
 public struct DiagramConnector: Component {
     internal init(representedObjectID: ObjectID? = nil,
-                  originID: RuntimeEntityID,
-                  targetID: RuntimeEntityID,
+                  originID: EphemeralID,
+                  targetID: EphemeralID,
                   glyph: ConnectorGlyph,
                   midpoints: [Vector2D] = []) {
         self.representedObjectID = representedObjectID
@@ -51,12 +51,12 @@ public struct DiagramConnector: Component {
     /// ID of the origin diagram block.
     ///
     /// The  runtime entity must have ``DiagramBlock`` component.
-    public let originID: RuntimeEntityID
+    public let originID: EphemeralID
 
     /// ID of the target diagram block.
     ///
     /// The  runtime entity must have ``DiagramBlock`` component.
-    public let targetID: RuntimeEntityID
+    public let targetID: EphemeralID
     
     /// Optional intermediate midpoints the connector routes through.
     public let midpoints: [Vector2D]

@@ -23,17 +23,18 @@ public struct BlockCreationSystem: System {
     // TODO: Should this be stored in a component/ephemeral entity?
     public init() {}
 
-    public func update(_ frame: AugmentedFrame) throws (InternalSystemError) {
-        let notation: Notation = frame.component(for: .Frame) ?? Notation.DefaultNotation
-        let rules: NotationRules = frame.component(for: .Frame) ?? NotationRules()
+    public func update(_ world: World) throws (InternalSystemError) {
+        guard let frame = world.frame else { return }
+        let notation: Notation = world.singleton() ?? Notation.DefaultNotation
+        let rules: NotationRules = world.singleton() ?? NotationRules()
 
         for object in frame.filter(trait: .DiagramBlock) {
-            try update(object: object, in: frame, notation: notation, rules: rules)
+            try update(object: object, in: world, notation: notation, rules: rules)
         }
     }
     
     public func update(object: ObjectSnapshot,
-                       in frame: AugmentedFrame,
+                       in world: World,
                        notation: Notation,
                        rules: NotationRules)
     throws (InternalSystemError) {
@@ -51,6 +52,6 @@ public struct BlockCreationSystem: System {
             visualTypeName: object.type.name
         )
         
-        frame.setComponent(block, for: object.objectID)
+        world.setComponent(block, for: object.objectID)
     }
 }
