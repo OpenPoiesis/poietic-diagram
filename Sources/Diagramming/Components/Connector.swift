@@ -28,7 +28,8 @@ public struct ThinConnector {
 /// - Configurable arrowheads with various types and sizes
 /// - Visual styling through ShapeStyle properties
 ///
-/// - SeeAlso: ``DiagramConnectorGeometry``, ``DiagramBlock``
+/// - SeeAlso: ``DiagramConnectorGeometry``, ``DiagramBlock``, ``TraitConnectorCreationSystem``,
+///   ``ConnectorGeometrySystem``
 public struct DiagramConnector: Component {
     internal init(representedObjectID: ObjectID? = nil,
                   originID: RuntimeID,

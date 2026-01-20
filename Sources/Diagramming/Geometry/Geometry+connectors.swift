@@ -286,6 +286,5 @@ extension Geometry {
         path.addLine(to: p1)
         path.addLine(to: connectOut)
     }
-
 }
 
