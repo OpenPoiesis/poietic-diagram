@@ -112,8 +112,10 @@ public enum Geometry {
     /// If no intersection is found, returns the shape center as fallback.
     ///
     /// - Parameters:
-    ///     - position: shape position
-    ///     - from: The origin point of the ray
+    ///     - shape: Shape type that the ray intersects with.
+    ///     - position: Position of the shape.
+    ///     - rayOrigin: The origin point of the ray.
+    ///     - rayDirection: Direction of the ray from the ray origin.
     ///
     /// - Returns: The touch point on the shape boundary when the ray intersects, or the shape
     ///            center when the ray does not intersect.

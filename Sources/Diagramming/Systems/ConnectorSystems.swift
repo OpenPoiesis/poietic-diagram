@@ -21,7 +21,7 @@ import PoieticCore
 ///
 public struct TraitConnectorCreationSystem: System {
     // TODO: Name is too long.
-    public init() { }
+    public init(_ world: World) {}
 
     public func update(_ world: World) throws (InternalSystemError) {
         guard let frame = world.frame else { return }
@@ -59,14 +59,15 @@ public struct TraitConnectorCreationSystem: System {
 /// System that computes connector geometry from ``DiagramConnector`` and ``DiagramBlock``.
 ///
 ///
-/// - **Input:** Any runtime object with ``DiagramConnector`` component. Uses ``DiagramStyle``
-///   component set on `Frame` runtime object.
+/// - **Input:**
+///     - World objects with the ``DiagramConnector`` component.
+///     - Optional ``ConnectorPreview`` for the same objects.
+///     - Optional ``Notation`` singleton. If not provided, default empty notation is used.
 /// - **Output:** ``DiagramConnectorGeometry``.
 /// - **Forgiveness:**
 ///     - Ignores objects where origin or target entities do not exist or if they do not have
 ///       ``DiagramBlock``.
-///     - If no ``DiagramStyle`` is found on `Frame` runtime object, then default diagram style
-///       is used.
+///     - If no ``Notation`` singleton is found, then default empty notation is used.
 ///
 /// When you create your own ``DiagramConnector`` system, make sure that it includes
 /// ``ConnectorGeometrySystem`` in its dependency list:
@@ -87,7 +88,7 @@ public struct ConnectorGeometrySystem: System {
         .after(BlockCreationSystem.self)
     ]
 
-    public init() {}
+    public init(_ world: World) {}
 
     public func update(_ world: World) throws (InternalSystemError) {
         for (entityID, connector) in world.query(DiagramConnector.self) {
@@ -96,7 +97,7 @@ public struct ConnectorGeometrySystem: System {
     }
 
     public func update(_ world: World,
-                       entityID: EphemeralID,
+                       entityID: RuntimeID,
                        connector: DiagramConnector)
     throws (InternalSystemError) {
         // Get origin/target blocks

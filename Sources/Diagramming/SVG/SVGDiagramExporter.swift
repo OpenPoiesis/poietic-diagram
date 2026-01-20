@@ -48,7 +48,7 @@ public class SVGDiagramExporter {
     
     /// Create a new SVG exporter using given style.
     ///
-    /// - SeeAlso: ``export(diagram:to:debug:)``
+    /// - SeeAlso: ``export(world:debug:)``
     ///
     public init(style: SVGDiagramStyle = SVGDiagramStyle()) {
         self.bbox = nil
@@ -68,7 +68,7 @@ public class SVGDiagramExporter {
     
     /// Export diagram into a file at path.
     ///
-    /// - SeeAlso: ``export(diagram:debug:)``
+    /// - SeeAlso: ``export(world:debug:)``
     ///
     public func export(world: World, to path: String, debug: Bool=false) throws {
         let image = export(world: world)
@@ -76,7 +76,7 @@ public class SVGDiagramExporter {
         try writer.writeToFile(image, path: path)
     }
     
-    public func entityIDString(_ id: EphemeralID, in world: World) -> String {
+    public func entityIDString(_ id: RuntimeID, in world: World) -> String {
         if let objectID = world.entityToObject(id) {
             "o" + objectID.stringValue
         }
@@ -87,7 +87,7 @@ public class SVGDiagramExporter {
     }
     /// Export a diagram into SVG image.
     ///
-    /// If the ``debug`` flag is `true`, then debug elements such as collision shapes and masks
+    /// If the debug flag is `true`, then debug elements such as collision shapes and masks
     /// are included in the image.
     ///
     public func export(world: World, debug: Bool = false) -> SVGImage {

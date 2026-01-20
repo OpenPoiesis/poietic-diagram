@@ -68,8 +68,6 @@ public final class Pictogram: Sendable, Codable {
     ///
     /// By default, the collision shape is the same as the mask shape.
     ///
-    /// - SeeAlso: ``origin``, ``maskShape``.
-    ///
     public let collisionShape: CollisionShape
     
     //    public let magnets: [Magnet]

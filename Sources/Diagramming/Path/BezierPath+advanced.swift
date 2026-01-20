@@ -59,7 +59,8 @@ extension BezierPath {
         }
     }
 
-    /// Create a poly-line from ``start`` to ``end`` that goes through midpoints.
+    /// Create a poly-line from the first point in the list through the remaining points in the
+    /// list. If the list contains only one point returns an empty path.
     ///
     /// The poly-line alternates between horizontal and vertical orientation.
     ///

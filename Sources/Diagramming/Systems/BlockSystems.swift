@@ -11,9 +11,9 @@ import PoieticCore
 ///
 /// - **Input:**
 ///     - Design objects with trait `DiagramBlock`.
-///     - ``Notation`` component associated with the frame, default notation is used if not found.
-///     - ``NotationRules`` associated with the frame, empty rules are used if not found.
-/// - **Output:** ``BlockComponent``.
+///     - ``Notation`` singleton component, default notation is used if not found.
+///     - ``NotationRules`` singleton, empty rules are used if not found.
+/// - **Output:** ``DiagramBlock``.
 /// - **Forgiveness:** Nothing needed.
 /// - **Issues collected:** No issues generated.
 ///
@@ -21,7 +21,7 @@ public struct BlockCreationSystem: System {
     // TODO: We do not have a way how to change this once the pipeline is set-up.
     // NOTE: Current system of Systems has no explicit system state management.
     // TODO: Should this be stored in a component/ephemeral entity?
-    public init() {}
+    public init(_ world: World) {}
 
     public func update(_ world: World) throws (InternalSystemError) {
         guard let frame = world.frame else { return }
