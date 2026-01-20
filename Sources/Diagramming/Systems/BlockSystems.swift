@@ -18,9 +18,6 @@ import PoieticCore
 /// - **Issues collected:** No issues generated.
 ///
 public struct BlockCreationSystem: System {
-    // TODO: We do not have a way how to change this once the pipeline is set-up.
-    // NOTE: Current system of Systems has no explicit system state management.
-    // TODO: Should this be stored in a component/ephemeral entity?
     public init(_ world: World) {}
 
     public func update(_ world: World) throws (InternalSystemError) {
