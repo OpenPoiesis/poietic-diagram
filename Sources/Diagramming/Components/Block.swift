@@ -79,7 +79,7 @@ public struct DiagramBlock: Component {
             self.collisionShape = pictogram.collisionShape
         }
         else {
-            self.collisionShape = CollisionShape(position: position, shape: .circle(0.0))
+            self.collisionShape = CollisionShape(position: .zero, shape: .circle(0.0))
         }
         self.visualTypeName = visualTypeName
         self.accentColorName = accentColorName

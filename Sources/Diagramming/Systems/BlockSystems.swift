@@ -38,7 +38,6 @@ public struct BlockCreationSystem: System {
         let accentColorName: String? = object["color"]
         let pictogramName = rules.pictogramName(for: object.type)
         let pictogram = notation.pictogram(pictogramName)
-
         let block = DiagramBlock(
             representedObjectID: object.objectID,
             position: object.position ?? .zero,

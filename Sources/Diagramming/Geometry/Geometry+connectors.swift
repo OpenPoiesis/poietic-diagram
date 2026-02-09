@@ -267,6 +267,7 @@ extension Geometry {
                                     connectOut: pathThere.first!,
                                     size: tailSize)
         }
+        path.closeSubpath()
 
         return path
     }

@@ -42,6 +42,12 @@ public struct CollisionShape: Equatable, Codable, Sendable {
             shape: shape.scaled(scale)
         )
     }
+    public func translated(_ offset: Vector2D) -> CollisionShape {
+        return CollisionShape(
+            position: position + offset,
+            shape: shape
+        )
+    }
 
     public func collide(with other: CollisionShape) -> Bool {
         switch (self.shape, other.shape) {
@@ -130,6 +136,12 @@ public struct CollisionShape: Equatable, Codable, Sendable {
             }
             return path
         }
+    }
+}
+
+extension CollisionShape: CustomDebugStringConvertible {
+    public var debugDescription: String {
+        return "\(self.shape)(\(self.position.x),\(self.position.y))"
     }
 }
 
