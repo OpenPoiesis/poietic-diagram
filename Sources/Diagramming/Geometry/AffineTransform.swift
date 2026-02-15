@@ -84,19 +84,19 @@ public struct AffineTransform: Equatable, Sendable {
     // MARK: - Matrix Operations
     
     /// Returns a transform by concatenating this transform with another transform
-    /// The result applies `other` first, then `self` (following CGAffineTransform convention)
-    /// Mathematically: result = self × other
+    /// The result applies `self` first, then `other`
+    /// Mathematically: result = other × self
     public func concatenating(_ other: AffineTransform) -> AffineTransform {
         return AffineTransform(
-            a: a * other.a + c * other.b,
-            b: b * other.a + d * other.b,
-            c: a * other.c + c * other.d,
-            d: b * other.c + d * other.d,
-            tx: a * other.tx + c * other.ty + tx,
-            ty: b * other.tx + d * other.ty + ty
+            a: other.a * a + other.c * b,
+            b: other.b * a + other.d * b,
+            c: other.a * c + other.c * d,
+            d: other.b * c + other.d * d,
+            tx: other.a * tx + other.c * ty + other.tx,
+            ty: other.b * tx + other.d * ty + other.ty
         )
     }
-    
+
     /// Returns the inverse transform, or nil if the transform is not invertible
     /// Uses simple 2x2 matrix inversion algorithm
     ///

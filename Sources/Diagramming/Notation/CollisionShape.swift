@@ -368,6 +368,7 @@ private func concaveConcavePolygonCollision(position1: Vector2D, points1: [Vecto
 
 // MARK: - Utility Methods
 
+// NOTE: The following code was co-written with help of a LLM. Requires review from a domain-knowledgeable human.
 private func pointInsideConvexPolygon(point: Vector2D, points: [Vector2D]) -> Bool {
     guard points.count >= 3 else { return false }
     
