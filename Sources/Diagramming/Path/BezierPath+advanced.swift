@@ -85,8 +85,28 @@ extension BezierPath {
             isHorizontal = !isHorizontal
         }
     }
-    public mutating func addArc(center: Vector2D, radius: Double, startAngle: Double, endAngle: Double) {
-        let angleDelta = endAngle - startAngle
+    public mutating func addArc(center: Vector2D,
+                                radius: Double,
+                                startAngle: Double,
+                                endAngle: Double,
+                                clockwise: Bool = false) {
+        var adjustedEndAngle: Double = endAngle
+
+        if clockwise {
+            // Swap and adjust to go clockwise
+            if endAngle > startAngle {
+                adjustedEndAngle -= 2 * .pi
+            }
+        }
+        else {
+            // Counter-clockwise
+            if endAngle < startAngle {
+                adjustedEndAngle += 2 * .pi
+            }
+        }
+        
+        let angleDelta = adjustedEndAngle - startAngle
+
         let segments = max(1, Int(abs(angleDelta) / (.pi / 2)) + 1)
         
         for i in 0..<segments {

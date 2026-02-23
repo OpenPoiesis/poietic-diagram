@@ -121,6 +121,7 @@ public struct DiagramConnectorGeometry: Component {
     /// Uses the wire points.
     ///
     public func outline(inflatedBy margin: Double = 10.0) -> BezierPath {
+        // TODO: Precompute. Have something like SelectionOutlineGeometry component.
         return wire.inflated(by: margin)
     }
 }

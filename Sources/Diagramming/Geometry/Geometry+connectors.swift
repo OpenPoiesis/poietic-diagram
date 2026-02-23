@@ -229,8 +229,8 @@ extension Geometry {
 
         let points =  [clippedOrigin] + midpoints + [clippedTarget]
 
-        let pathThere = Geometry.offsetPolyline(points, offset: kind.width, joinType: kind.joinType)
-        let pathBack = Geometry.offsetPolyline(points.reversed(), offset: kind.width, joinType: kind.joinType)
+        let pathThere = Geometry.offsetPolyline(points, offset: kind.width / 2, joinType: kind.joinType)
+        let pathBack = Geometry.offsetPolyline(points.reversed(), offset: kind.width / 2, joinType: kind.joinType)
 
         var path = BezierPath()
 
