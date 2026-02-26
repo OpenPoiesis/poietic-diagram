@@ -61,6 +61,25 @@ public struct DiagramBlock: Component {
     // TODO: Rename to notationTypeName
     public let visualTypeName: String?
 
+    /// Top-center point of a label.
+    public var labelAnchorPosition: Vector2D {
+        if let box = pictogram?.pathBoundingBox {
+            return Vector2D(position.x, position.y + box.topLeft.y)
+        }
+        else {
+            return position
+        }
+    }
+    
+    public var errorIndicatorAnchorOffset: Vector2D {
+        if let box = pictogram?.maskBoundingBox {
+            return Vector2D(0, box.bottomLeft.y)
+        }
+        else {
+            return .zero
+        }
+    }
+
     /// Create a new block.
     ///
     public init(representedObjectID: ObjectID? = nil,
