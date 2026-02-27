@@ -93,11 +93,11 @@ public class SVGDiagramExporter {
     public func export(world: World, debug: Bool = false) -> SVGImage {
         let image = SVGImage()
         
-        for (entityID, block) in world.query(DiagramBlock.self) {
-            composeBlock(id: entityIDString(entityID, in: world), block: block)
+        for (entity, block) in world.query(DiagramBlock.self) {
+            composeBlock(id: entityIDString(entity.runtimeID, in: world), block: block)
         }
-        for (entityID, geometry) in world.query(DiagramConnectorGeometry.self) {
-            composeConnector(id: entityIDString(entityID, in: world), geometry: geometry)
+        for (entity, geometry) in world.query(DiagramConnectorGeometry.self) {
+            composeConnector(id: entityIDString(entity.runtimeID, in: world), geometry: geometry)
         }
         
         for symbol in symbols.values {

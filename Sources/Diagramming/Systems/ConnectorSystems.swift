@@ -91,23 +91,25 @@ public struct ConnectorGeometrySystem: System {
     public init(_ world: World) {}
 
     public func update(_ world: World) throws (InternalSystemError) {
-        for (entityID, connector) in world.query(DiagramConnector.self) {
-            try update(world, entityID: entityID, connector: connector)
+        for (entity, connector) in world.query(DiagramConnector.self) {
+            try update(entity, connector: connector, world: world)
         }
     }
 
-    public func update(_ world: World,
-                       entityID: RuntimeID,
-                       connector: DiagramConnector)
+    public func update(_ entity: RuntimeEntity,
+                       connector: DiagramConnector,
+                       world: World)
     throws (InternalSystemError) {
         // Get origin/target blocks
-        guard let originBlock: DiagramBlock = world.component(for: connector.originID),
-              let targetBlock: DiagramBlock = world.component(for: connector.targetID)
+        guard let origin = world.entity(connector.originID),
+              let originBlock: DiagramBlock = origin.component(),
+              let target = world.entity(connector.targetID),
+              let targetBlock: DiagramBlock = target.component()
         else { return }
         
-        let originPreview: BlockPreview? = world.component(for: connector.originID)
-        let targetPreview: BlockPreview? = world.component(for: connector.targetID)
-        let preview: ConnectorPreview? = world.component(for: entityID)
+        let originPreview: BlockPreview? = origin.component()
+        let targetPreview: BlockPreview? = target.component()
+        let preview: ConnectorPreview? = entity.component()
         let midpoints = preview?.midpoints ?? connector.midpoints
 
         let (originTouch, targetTouch) = Geometry.touchPoints(
@@ -123,7 +125,7 @@ public struct ConnectorGeometrySystem: System {
                                                 midpoints: midpoints,
                                                 glyph: connector.glyph)
 
-        world.setComponent(geometry, for: entityID)
+        entity.setComponent(geometry)
     }
 }
 
