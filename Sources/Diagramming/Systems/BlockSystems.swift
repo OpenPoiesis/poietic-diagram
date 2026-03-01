@@ -35,11 +35,12 @@ public struct BlockCreationSystem: System {
                        notation: Notation,
                        rules: NotationRules)
     throws (InternalSystemError) {
+        guard let entity = world.entity(object.objectID) else { return }
+        
         let accentColorName: String? = object["color"]
         let pictogramName = rules.pictogramName(for: object.type)
         let pictogram = notation.pictogram(pictogramName)
         let block = DiagramBlock(
-            representedObjectID: object.objectID,
             position: object.position ?? .zero,
             pictogram: pictogram,
             label: object.label,
@@ -48,6 +49,6 @@ public struct BlockCreationSystem: System {
             visualTypeName: object.type.name
         )
         
-        world.setComponent(block, for: object.objectID)
+        entity.setComponent(block)
     }
 }

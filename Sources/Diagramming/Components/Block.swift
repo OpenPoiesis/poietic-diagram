@@ -13,12 +13,6 @@ import PoieticCore
 /// - SeeAlso: ``DiagramConnector``, ``BlockCreationSystem``
 ///
 public struct DiagramBlock: Component {
-    
-    /// ID of an object the block represents.
-    public let representedObjectID: ObjectID?
-    
-    // TODO: add `tag:Int?`
-
     /// Position of the diagram block in the diagram or parent's coordinates.
     ///
     /// Uses same coordinates as the represented object.
@@ -82,14 +76,12 @@ public struct DiagramBlock: Component {
 
     /// Create a new block.
     ///
-    public init(representedObjectID: ObjectID? = nil,
-                position: Vector2D,
+    public init(position: Vector2D,
                 pictogram: Pictogram? = nil,
                 label: String? = nil,
                 secondaryLabel: String? = nil,
                 accentColorName: String? = nil,
                 visualTypeName: String? = nil) {
-        self.representedObjectID = representedObjectID
         self.position = position
         self.pictogram = pictogram
         self.label = label

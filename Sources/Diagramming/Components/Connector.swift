@@ -31,19 +31,16 @@ public struct ThinConnector {
 /// - SeeAlso: ``DiagramConnectorGeometry``, ``DiagramBlock``, ``TraitConnectorCreationSystem``,
 ///   ``ConnectorGeometrySystem``
 public struct DiagramConnector: Component {
-    internal init(representedObjectID: ObjectID? = nil,
-                  originID: RuntimeID,
+    internal init(originID: RuntimeID,
                   targetID: RuntimeID,
                   glyph: ConnectorGlyph,
                   midpoints: [Vector2D] = []) {
-        self.representedObjectID = representedObjectID
         self.originID = originID
         self.targetID = targetID
         self.glyph = glyph
         self.midpoints = midpoints
     }
     
-    public let representedObjectID: ObjectID?
     /// Name of connector style.
     ///
     /// Refers to a style defined in ``Notation/connectorGlyphs``.

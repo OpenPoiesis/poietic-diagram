@@ -35,7 +35,8 @@ public struct TraitConnectorCreationSystem: System {
     }
     
     public func create(edge: DesignObjectEdge, in world: World, notation: Notation, rules: NotationRules) throws (InternalSystemError){
-        guard let originEntity = world.objectToEntity(edge.origin),
+        guard let entity = world.entity(edge.id),
+              let originEntity = world.objectToEntity(edge.origin),
               let targetEntity = world.objectToEntity(edge.target) else
         {
             return
@@ -46,13 +47,12 @@ public struct TraitConnectorCreationSystem: System {
         let connectorGlyph = notation.connectorGlyph(glyphName)
 
         let connector = DiagramConnector(
-            representedObjectID: edge.id,
             originID: originEntity,
             targetID: targetEntity,
             glyph: connectorGlyph,
             midpoints: midpoints
         )
-        world.setComponent(connector, for: edge.id)
+        entity.setComponent(connector)
     }
 }
 
