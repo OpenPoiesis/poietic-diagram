@@ -13,8 +13,7 @@ import Foundation
 /// It provides methods for:
 ///
 /// - Character-by-character advancement and peeking: ``peek(offset:)``
-/// - Whitespace skipping: ``skipWhitespace()``
-/// - Pattern matching and acceptance ``accept(_:)``, ``accept(_:)-mtvr``
+/// - Pattern matching and acceptance ``accept(_:)-(String)``, ``accept(_:)-(Character)``.
 /// - Number parsing (integers and doubles with scientific notation): ``scanDouble()``, ``scanInteger()``.
 /// - Identifier scanning (alphanumeric with underscores): ``scanIdentifier()``
 /// - Text extraction up to specified characters or character sets: ``scanUpToCharacter(_:)``, ``scanUpToCharacter(from:)``

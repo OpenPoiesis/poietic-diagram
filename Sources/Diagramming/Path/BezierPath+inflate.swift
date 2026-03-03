@@ -102,24 +102,65 @@ extension Geometry {
             result.move(to: firstPoint)
         }
         
-        // Positive offset line and round cap
-        //
+        // Positive offset line
         for i in 1..<positiveOffset.count {
             result.addLine(to: positiveOffset[i])
         }
         
-        if let lastPositive = positiveOffset.last, let lastNegative = negativeOffset.last {
-            result.addRoundedCap(from: lastPositive, to: lastNegative, center: points.last!, radius: margin)
+        // Add end cap
+        if let lastPoint = points.last, points.count >= 2 {
+            let previous = points[points.count - 2]
+            let direction = (lastPoint - previous).normalized
+            
+            // Perpendicular vector (rotated 90° counter-clockwise)
+            let perpendicular = Vector2D(-direction.y, direction.x)
+            
+            // The two cap endpoints
+            let positiveCapPoint = lastPoint + perpendicular * margin  // Connects to positive offset
+            let negativeCapPoint = lastPoint - perpendicular * margin  // Connects to negative offset
+            
+            // Calculate angles
+            let startAngle = atan2(positiveCapPoint.y - lastPoint.y, positiveCapPoint.x - lastPoint.x)
+            let endAngle = atan2(negativeCapPoint.y - lastPoint.y, negativeCapPoint.x - lastPoint.x)
+            
+            // Use cross product to determine which side is "outside"
+            // Cross product of direction and perpendicular tells us orientation
+            // If cross > 0, perpendicular is to the left of direction, etc.
+            // The cap should go around the side opposite to the direction
+            // This determines clockwise vs counter-clockwise
+            let clockwise = direction.cross(perpendicular) > 0
+            
+            result.addArc(center: lastPoint, radius: margin,
+                         startAngle: startAngle, endAngle: endAngle,
+                         clockwise: clockwise)
         }
         
-        // Negative offset line (reversed) and round cap
-        //
+        // Negative offset line (reversed)
         for point in negativeOffset.reversed() {
             result.addLine(to: point)
         }
         
-        if let firstNegative = negativeOffset.first, let firstPositive = positiveOffset.first {
-            result.addRoundedCap(from: firstNegative, to: firstPositive, center: points.first!, radius: margin)
+        // Add start cap
+        if let firstPoint = points.first, points.count >= 2 {
+            let next = points[1]
+            let direction = (next - firstPoint).normalized
+            
+            let perpendicular = Vector2D(-direction.y, direction.x)
+            
+            // At the start, we go from negative to positive to maintain orientation
+            let positiveCapPoint = firstPoint + perpendicular * margin
+            let negativeCapPoint = firstPoint - perpendicular * margin
+            
+            let startAngle = atan2(negativeCapPoint.y - firstPoint.y, negativeCapPoint.x - firstPoint.x)
+            let endAngle = atan2(positiveCapPoint.y - firstPoint.y, positiveCapPoint.x - firstPoint.x)
+            
+            // At the start, the "outside" is the opposite of the end
+            // So we flip the clockwise flag
+            let clockwise = direction.cross(perpendicular) > 0
+            
+            result.addArc(center: firstPoint, radius: margin,
+                         startAngle: startAngle, endAngle: endAngle,
+                         clockwise: clockwise)
         }
         
         result.closeSubpath()
@@ -127,21 +168,3 @@ extension Geometry {
     }
 }
 
-extension BezierPath {
-    internal mutating func addRoundedCap(from startPoint: Vector2D, to endPoint: Vector2D, center: Vector2D, radius: Double) {
-        // Calculate the arc to connect the two offset points around the center
-        let startAngle = atan2(startPoint.y - center.y, startPoint.x - center.x)
-        let endAngle = atan2(endPoint.y - center.y, endPoint.x - center.x)
-        
-        // Ensure we take the shorter arc (semicircle)
-        var angleDelta = endAngle - startAngle
-        if angleDelta > .pi {
-            angleDelta -= 2 * .pi
-        } else if angleDelta < -.pi {
-            angleDelta += 2 * .pi
-        }
-        
-        // Use proper Bezier curve approximation for the arc
-        self.addArc(center: center, radius: radius, startAngle: startAngle, endAngle: endAngle)
-    }
-}

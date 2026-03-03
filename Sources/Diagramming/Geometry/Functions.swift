@@ -14,13 +14,12 @@ public enum Geometry {
         guard points.count >= 2 else { return [] }
         
         var path: [Vector2D] = []
-        let halfOffset = offset / 2.0
         
         // Compute offset segments
         var offsetSegments: [LineSegment] = []
         for i in 0..<points.count - 1 {
             let segment = LineSegment(from: points[i], to: points[i+1])
-            offsetSegments.append(segment.offset(by: halfOffset))
+            offsetSegments.append(segment.offset(by: offset))
         }
         
         path.append(offsetSegments[0].start)
@@ -36,7 +35,7 @@ public enum Geometry {
                 switch joinType {
                 case .miter:
                     let miterLength = intersect.distance(to: jointPoint)
-                    if miterLength <= halfOffset * miterLimit {
+                    if miterLength <= offset * miterLimit {
                         path.append(intersect)
                     }
                     else {
@@ -50,7 +49,7 @@ public enum Geometry {
                 case .round:
                     path.append(seg1.end)
                     path += roundJoin(from: seg1.end, to: seg2.start,
-                                      around: jointPoint, radius: halfOffset)
+                                      around: jointPoint, radius: offset)
                 }
             }
             else {
@@ -112,8 +111,10 @@ public enum Geometry {
     /// If no intersection is found, returns the shape center as fallback.
     ///
     /// - Parameters:
-    ///     - position: shape position
-    ///     - from: The origin point of the ray
+    ///     - shape: Shape type that the ray intersects with.
+    ///     - position: Position of the shape.
+    ///     - rayOrigin: The origin point of the ray.
+    ///     - rayDirection: Direction of the ray from the ray origin.
     ///
     /// - Returns: The touch point on the shape boundary when the ray intersects, or the shape
     ///            center when the ray does not intersect.

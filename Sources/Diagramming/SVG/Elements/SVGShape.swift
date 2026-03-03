@@ -5,7 +5,7 @@
 //  Created by Stefan Urbanek on 17/06/2025.
 //
 
-// FIXME: [IMPORTANT] Make properties non-optional
+// TODO: Make properties non-optional (?)
 
 public let DefaultSVGLengthDPI = 96.0
 
@@ -13,7 +13,7 @@ public let DefaultSVGLengthDPI = 96.0
 ///
 /// Converts a length described as string with optional absolute units specifier into a length
 /// in pixels. Absolute units considered are: `px`, `in`, `pt`, `cm`, `mm`, `pc`. Relative units
-/// (such as `em` or percentage) result in ``nil`` return value.
+/// (such as `em` or percentage) result in `nil` return value.
 ///
 public func stringToSVGLength(_ string: String, dpi: Double = DefaultSVGLengthDPI) -> Double? {
     var scanner = StringScanner(string)

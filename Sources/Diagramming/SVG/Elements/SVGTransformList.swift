@@ -206,7 +206,7 @@ public struct SVGTransformList {
         var result = AffineTransform.identity
         
         for transform in self.items {
-            result = result.concatenating(transform.asAffineTransform())
+            result = transform.asAffineTransform().concatenating(result)
         }
         return result
     }

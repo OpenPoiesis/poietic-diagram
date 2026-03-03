@@ -10,15 +10,9 @@ import PoieticCore
 /// Component for diagram blocks – a graphical shape which is usually represented by a pictogram
 /// and which can be connected with other blocks using connectors.
 ///
-/// - SeeAlso: ``Connector``
+/// - SeeAlso: ``DiagramConnector``, ``BlockCreationSystem``
 ///
 public struct DiagramBlock: Component {
-    
-    /// ID of an object the block represents.
-    public let representedObjectID: ObjectID?
-    
-    // TODO: add `tag:Int?`
-
     /// Position of the diagram block in the diagram or parent's coordinates.
     ///
     /// Uses same coordinates as the represented object.
@@ -61,16 +55,42 @@ public struct DiagramBlock: Component {
     // TODO: Rename to notationTypeName
     public let visualTypeName: String?
 
+    /// Top-center point of a label.
+    public var labelAnchorPosition: Vector2D {
+        if let box = pictogram?.pathBoundingBox {
+            return Vector2D(position.x, position.y + box.topLeft.y)
+        }
+        else {
+            return position
+        }
+    }
+    
+    public var errorIndicatorAnchorOffset: Vector2D {
+        if let box = pictogram?.maskBoundingBox {
+            return Vector2D(0, box.bottomLeft.y)
+        }
+        else {
+            return .zero
+        }
+    }
+    
+    public var valueIndicatorAnchorOffset: Vector2D {
+        if let box = pictogram?.maskBoundingBox {
+            return Vector2D(0, box.bottomLeft.y)
+        }
+        else {
+            return .zero
+        }
+    }
+
     /// Create a new block.
     ///
-    public init(representedObjectID: ObjectID? = nil,
-                position: Vector2D,
+    public init(position: Vector2D,
                 pictogram: Pictogram? = nil,
                 label: String? = nil,
                 secondaryLabel: String? = nil,
                 accentColorName: String? = nil,
                 visualTypeName: String? = nil) {
-        self.representedObjectID = representedObjectID
         self.position = position
         self.pictogram = pictogram
         self.label = label
@@ -79,7 +99,7 @@ public struct DiagramBlock: Component {
             self.collisionShape = pictogram.collisionShape
         }
         else {
-            self.collisionShape = CollisionShape(position: position, shape: .circle(0.0))
+            self.collisionShape = CollisionShape(position: .zero, shape: .circle(0.0))
         }
         self.visualTypeName = visualTypeName
         self.accentColorName = accentColorName

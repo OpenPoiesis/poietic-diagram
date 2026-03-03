@@ -21,46 +21,53 @@ import PoieticCore
 ///
 public struct TraitConnectorCreationSystem: System {
     // TODO: Name is too long.
-    public init() { }
+    public init(_ world: World) {}
 
-    public func update(_ frame: AugmentedFrame) throws (InternalSystemError) {
-        let notation: Notation = frame.component(for: .Frame) ?? Notation.DefaultNotation
-        let rules: NotationRules = frame.component(for: .Frame) ?? NotationRules()
+    public func update(_ world: World) throws (InternalSystemError) {
+        guard let frame = world.frame else { return }
+        let notation: Notation = world.singleton() ?? Notation.DefaultNotation
+        let rules: NotationRules = world.singleton() ?? NotationRules()
 
         for object in frame.filter(trait: .DiagramConnector) {
-            guard let edge = EdgeObject(object, in: frame) else { continue }
-            try update(edge: edge, in: frame, notation: notation, rules: rules)
+            guard let edge = DesignObjectEdge(object, in: frame) else { continue }
+            try create(edge: edge, in: world, notation: notation, rules: rules)
         }
     }
     
-    public func update(edge: EdgeObject, in frame: AugmentedFrame, notation: Notation, rules: NotationRules) throws (InternalSystemError){
+    public func create(edge: DesignObjectEdge, in world: World, notation: Notation, rules: NotationRules) throws (InternalSystemError){
+        guard let entity = world.entity(edge.id),
+              let originEntity = world.objectToEntity(edge.origin),
+              let targetEntity = world.objectToEntity(edge.target) else
+        {
+            return
+        }
         let midpoints: [Vector2D] = edge.object["midpoints", default: []]
 
         let glyphName = rules.connectorGlyphName(for: edge.object.type)
         let connectorGlyph = notation.connectorGlyph(glyphName)
 
         let connector = DiagramConnector(
-            representedObjectID: edge.key,
-            originID: .object(edge.origin),
-            targetID: .object(edge.target),
+            originID: originEntity,
+            targetID: targetEntity,
             glyph: connectorGlyph,
             midpoints: midpoints
         )
-        frame.setComponent(connector, for: .object(edge.key))
+        entity.setComponent(connector)
     }
 }
 
 /// System that computes connector geometry from ``DiagramConnector`` and ``DiagramBlock``.
 ///
 ///
-/// - **Input:** Any runtime object with ``DiagramConnector`` component. Uses ``DiagramStyle``
-///   component set on `Frame` runtime object.
+/// - **Input:**
+///     - World objects with the ``DiagramConnector`` component.
+///     - Optional ``ConnectorPreview`` for the same objects.
+///     - Optional ``Notation`` singleton. If not provided, default empty notation is used.
 /// - **Output:** ``DiagramConnectorGeometry``.
 /// - **Forgiveness:**
 ///     - Ignores objects where origin or target entities do not exist or if they do not have
 ///       ``DiagramBlock``.
-///     - If no ``DiagramStyle`` is found on `Frame` runtime object, then default diagram style
-///       is used.
+///     - If no ``Notation`` singleton is found, then default empty notation is used.
 ///
 /// When you create your own ``DiagramConnector`` system, make sure that it includes
 /// ``ConnectorGeometrySystem`` in its dependency list:
@@ -81,26 +88,28 @@ public struct ConnectorGeometrySystem: System {
         .after(BlockCreationSystem.self)
     ]
 
-    public init() {}
+    public init(_ world: World) {}
 
-    public func update(_ frame: AugmentedFrame) throws (InternalSystemError) {
-        for (runtimeID, connector) in frame.runtimeFilter(DiagramConnector.self) {
-            try update(frame, runtimeID: runtimeID, connector: connector)
+    public func update(_ world: World) throws (InternalSystemError) {
+        for (entity, connector) in world.query(DiagramConnector.self) {
+            try update(entity, connector: connector, world: world)
         }
     }
 
-    public func update(_ frame: AugmentedFrame,
-                       runtimeID: RuntimeEntityID,
-                       connector: DiagramConnector)
+    public func update(_ entity: RuntimeEntity,
+                       connector: DiagramConnector,
+                       world: World)
     throws (InternalSystemError) {
         // Get origin/target blocks
-        guard let originBlock: DiagramBlock = frame.component(for: connector.originID),
-              let targetBlock: DiagramBlock = frame.component(for: connector.targetID)
+        guard let origin = world.entity(connector.originID),
+              let originBlock: DiagramBlock = origin.component(),
+              let target = world.entity(connector.targetID),
+              let targetBlock: DiagramBlock = target.component()
         else { return }
         
-        let originPreview: BlockPreview? = frame.component(for: connector.originID)
-        let targetPreview: BlockPreview? = frame.component(for: connector.targetID)
-        let preview: ConnectorPreview? = frame.component(for: runtimeID)
+        let originPreview: BlockPreview? = origin.component()
+        let targetPreview: BlockPreview? = target.component()
+        let preview: ConnectorPreview? = entity.component()
         let midpoints = preview?.midpoints ?? connector.midpoints
 
         let (originTouch, targetTouch) = Geometry.touchPoints(
@@ -116,7 +125,7 @@ public struct ConnectorGeometrySystem: System {
                                                 midpoints: midpoints,
                                                 glyph: connector.glyph)
 
-        frame.setComponent(geometry, for: runtimeID)
+        entity.setComponent(geometry)
     }
 }
 

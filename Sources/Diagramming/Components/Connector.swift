@@ -28,43 +28,42 @@ public struct ThinConnector {
 /// - Configurable arrowheads with various types and sizes
 /// - Visual styling through ShapeStyle properties
 ///
+/// - SeeAlso: ``DiagramConnectorGeometry``, ``DiagramBlock``, ``TraitConnectorCreationSystem``,
+///   ``ConnectorGeometrySystem``
 public struct DiagramConnector: Component {
-    internal init(representedObjectID: ObjectID? = nil,
-                  originID: RuntimeEntityID,
-                  targetID: RuntimeEntityID,
+    internal init(originID: RuntimeID,
+                  targetID: RuntimeID,
                   glyph: ConnectorGlyph,
                   midpoints: [Vector2D] = []) {
-        self.representedObjectID = representedObjectID
         self.originID = originID
         self.targetID = targetID
         self.glyph = glyph
         self.midpoints = midpoints
     }
     
-    public let representedObjectID: ObjectID?
     /// Name of connector style.
     ///
-    /// Refers to a style defined in ``DiagramStyle/connectorStyles``.
+    /// Refers to a style defined in ``Notation/connectorGlyphs``.
     ///
     public let glyph: ConnectorGlyph
     
     /// ID of the origin diagram block.
     ///
     /// The  runtime entity must have ``DiagramBlock`` component.
-    public let originID: RuntimeEntityID
+    public let originID: RuntimeID
 
     /// ID of the target diagram block.
     ///
     /// The  runtime entity must have ``DiagramBlock`` component.
-    public let targetID: RuntimeEntityID
+    public let targetID: RuntimeID
     
     /// Optional intermediate midpoints the connector routes through.
     public let midpoints: [Vector2D]
 }
 
-/// Created from ``ConnectorComponent`` and blocks by ``ConnectorGeometrySystem``.
+/// Created from ``DiagramConnector`` and blocks by ``ConnectorGeometrySystem``.
 ///
-/// - SeeAlso: ``ConnectorPreview``
+/// - SeeAlso: ``DiagramConnector``, ``ConnectorPreview``
 ///
 /// - Note: When computing ``DiagramConnectorGeometry`` the ``ConnectorPreview`` and
 ///         ``BlockPreview`` components should be considered as an override.
@@ -119,6 +118,7 @@ public struct DiagramConnectorGeometry: Component {
     /// Uses the wire points.
     ///
     public func outline(inflatedBy margin: Double = 10.0) -> BezierPath {
+        // TODO: Precompute. Have something like SelectionOutlineGeometry component.
         return wire.inflated(by: margin)
     }
 }

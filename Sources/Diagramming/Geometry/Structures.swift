@@ -159,6 +159,13 @@ public struct Rect2D: Equatable, Sendable, Codable {
                point.y >= minY && point.y <= maxY
     }
     
+    public func grown(by amount: Double) -> Rect2D {
+        return Rect2D(
+            origin: self.origin - Vector2D(amount, amount),
+            size: self.size + Vector2D(amount * 2, amount * 2)
+        )
+    }
+    
     /// Union with another rectangle.
     public func union(_ other: Rect2D) -> Rect2D {
         let newMinX = min(minX, other.minX)

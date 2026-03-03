@@ -42,6 +42,12 @@ public struct CollisionShape: Equatable, Codable, Sendable {
             shape: shape.scaled(scale)
         )
     }
+    public func translated(_ offset: Vector2D) -> CollisionShape {
+        return CollisionShape(
+            position: position + offset,
+            shape: shape
+        )
+    }
 
     public func collide(with other: CollisionShape) -> Bool {
         switch (self.shape, other.shape) {
@@ -130,6 +136,12 @@ public struct CollisionShape: Equatable, Codable, Sendable {
             }
             return path
         }
+    }
+}
+
+extension CollisionShape: CustomDebugStringConvertible {
+    public var debugDescription: String {
+        return "\(self.shape)(\(self.position.x),\(self.position.y))"
     }
 }
 
@@ -356,6 +368,7 @@ private func concaveConcavePolygonCollision(position1: Vector2D, points1: [Vecto
 
 // MARK: - Utility Methods
 
+// NOTE: The following code was co-written with help of a LLM. Requires review from a domain-knowledgeable human.
 private func pointInsideConvexPolygon(point: Vector2D, points: [Vector2D]) -> Bool {
     guard points.count >= 3 else { return false }
     
