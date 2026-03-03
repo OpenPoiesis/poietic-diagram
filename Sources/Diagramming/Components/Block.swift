@@ -73,6 +73,15 @@ public struct DiagramBlock: Component {
             return .zero
         }
     }
+    
+    public var valueIndicatorAnchorOffset: Vector2D {
+        if let box = pictogram?.maskBoundingBox {
+            return Vector2D(0, box.bottomLeft.y)
+        }
+        else {
+            return .zero
+        }
+    }
 
     /// Create a new block.
     ///
