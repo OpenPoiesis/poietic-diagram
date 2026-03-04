@@ -30,6 +30,7 @@ public final class Notation: Component {
     ///
     public static let ReplacementPictogram = Pictogram(ReplacementPictogramName, circleWithRadius: 10.0)
     public static let ReplacementConnectorGlyphName = "__REPLACEMENT"
+    // TODO: Add simple error pictogram
 
     /// Connector glyph used when the default connector glyph was not found.
     ///

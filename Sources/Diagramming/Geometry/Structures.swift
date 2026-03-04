@@ -123,16 +123,16 @@ public struct Rect2D: Equatable, Sendable, Codable {
     }
     
     /// The minimum x-coordinate (left edge) of the rectangle.
-    public var minX: Double { origin.x }
+    public var minX: Double { min(origin.x, origin.x + size.x) }
     
     /// The minimum y-coordinate (bottom edge) of the rectangle.
-    public var minY: Double { origin.y }
+    public var minY: Double { min(origin.y, origin.y + size.y) }
     
     /// The maximum x-coordinate (right edge) of the rectangle.
-    public var maxX: Double { origin.x + size.x }
+    public var maxX: Double { max(origin.x, origin.x + size.x) }
     
     /// The maximum y-coordinate (top edge) of the rectangle.
-    public var maxY: Double { origin.y + size.y }
+    public var maxY: Double { max(origin.y, origin.y + size.y) }
     
     /// The width of the rectangle (equivalent to size.x).
     public var width: Double {size.x }
@@ -140,12 +140,12 @@ public struct Rect2D: Equatable, Sendable, Codable {
     /// The height of the rectangle (equivalent to size.y).
     public var height: Double { size.y }
     
+    // FIXME: [IMPORTANT] Flip Y coordinate: exchange bottom with top
     /// The bottom-left corner of the rectangle (same as origin).
     public var bottomLeft: Vector2D { origin }
     
     /// The bottom-right corner of the rectangle.
     public var bottomRight: Vector2D { Vector2D(maxX, minY) }
-    let DefaultHandleSize: Double = 10.0
 
     /// The top-left corner of the rectangle.
     public var topLeft: Vector2D { Vector2D(minX, maxY) }

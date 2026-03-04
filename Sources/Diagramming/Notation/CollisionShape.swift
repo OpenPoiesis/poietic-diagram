@@ -134,7 +134,7 @@ public struct CollisionShape: Equatable, Codable, Sendable {
             if !path.isClosed {
                 path.closeSubpath()
             }
-            return path
+            return path.transform(AffineTransform(translation: self.position))
         }
     }
 }
