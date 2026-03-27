@@ -50,7 +50,7 @@ public struct DiagramBlock: Component {
     ///
     /// The colour name is from a list of adaptable colour names.
     ///
-    public let accentColorName: String?
+    public let accentColor: AdaptableColorKey?
     
     // TODO: Rename to notationTypeName
     public let visualTypeName: String?
@@ -89,7 +89,7 @@ public struct DiagramBlock: Component {
                 pictogram: Pictogram? = nil,
                 label: String? = nil,
                 secondaryLabel: String? = nil,
-                accentColorName: String? = nil,
+                accentColor: AdaptableColorKey? = nil,
                 visualTypeName: String? = nil) {
         self.position = position
         self.pictogram = pictogram
@@ -102,6 +102,6 @@ public struct DiagramBlock: Component {
             self.collisionShape = CollisionShape(position: .zero, shape: .circle(0.0))
         }
         self.visualTypeName = visualTypeName
-        self.accentColorName = accentColorName
+        self.accentColor = accentColor
     }
 }

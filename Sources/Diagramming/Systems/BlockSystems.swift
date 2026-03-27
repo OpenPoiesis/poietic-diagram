@@ -38,6 +38,7 @@ public struct BlockCreationSystem: System {
         guard let entity = world.entity(object.objectID) else { return }
         
         let accentColorName: String? = object["color"]
+        let accentColor = accentColorName.map { AdaptableColorKey(rawValue: $0) } ?? nil
         let pictogramName = rules.pictogramName(for: object.type)
         let pictogram = notation.pictogram(pictogramName)
         let block = DiagramBlock(
@@ -45,7 +46,7 @@ public struct BlockCreationSystem: System {
             pictogram: pictogram,
             label: object.label,
             secondaryLabel: object.secondaryLabel,
-            accentColorName: accentColorName,
+            accentColor: accentColor,
             visualTypeName: object.type.name
         )
         
