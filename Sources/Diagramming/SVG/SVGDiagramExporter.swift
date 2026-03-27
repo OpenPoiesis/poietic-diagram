@@ -77,7 +77,7 @@ public class SVGDiagramExporter {
     }
     
     public func entityIDString(_ id: RuntimeID, in world: World) -> String {
-        if let objectID = world.entityToObject(id) {
+        if let objectID = world.entity(id)?.objectID {
             "o" + objectID.stringValue
         }
         else {

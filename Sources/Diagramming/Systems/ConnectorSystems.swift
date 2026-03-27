@@ -36,8 +36,8 @@ public struct TraitConnectorCreationSystem: System {
     
     public func create(edge: DesignObjectEdge, in world: World, notation: Notation, rules: NotationRules) throws (InternalSystemError){
         guard let entity = world.entity(edge.id),
-              let originEntity = world.objectToEntity(edge.origin),
-              let targetEntity = world.objectToEntity(edge.target) else
+              let originEntity = world.entity(edge.origin)?.runtimeID,
+              let targetEntity = world.entity(edge.target)?.runtimeID else
         {
             return
         }
