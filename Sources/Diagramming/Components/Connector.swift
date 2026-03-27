@@ -124,16 +124,3 @@ public struct DiagramConnectorGeometry: Component {
 }
 
 
-/// Component for user-interaction session of a connector.
-///
-/// This connector should be used as an override for ``DiagramConnector`` when computing ``DiagramConnectorGeometry``.
-///
-/// - Important: The component must be destroyed when the drag or preview operation is concluded.
-///
-public struct ConnectorPreview: Component {
-    public var midpoints: [Vector2D]
-    public init(midpoints: [Vector2D]) {
-        self.midpoints = midpoints
-    }
-}
-

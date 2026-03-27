@@ -9,16 +9,6 @@ import PoieticCore
 
 // NOTE: These protocols and components are being incubated, they are not final.
 
-/// Protocol to mark components that should be removed after a preview/dragging session ends.
-public protocol PreviewComponent: Component {
-    // Empty component protocol
-}
-
-public struct VisuallyDirty: Component {
-    // Empty component, serves just as a flag.
-    public init() {}
-}
-
 /// Component for user-interaction session of a connector.
 ///
 /// - Important: The component must be destroyed when the drag or preview operation is concluded.
@@ -31,14 +21,16 @@ public struct BlockPreview: Component {
     }
 }
 
-
-public struct MidpointHandle: Component {
-    public var index: Int
-    public var position: Vector2D
+/// Component for user-interaction session of a connector.
+///
+/// This connector should be used as an override for ``DiagramConnector`` when computing ``DiagramConnectorGeometry``.
+///
+/// - Important: The component must be destroyed when the drag or preview operation is concluded.
+///
+public struct ConnectorPreview: Component {
+    public var midpoints: [Vector2D]
+    public init(midpoints: [Vector2D]) {
+        self.midpoints = midpoints
+    }
 }
 
-/// Component for user-interaction sessions when a block or a larger selection is being moved.
-public struct PreviewDelta: Component {
-    /// Current delta from the original position of the moved object.
-    public var positionDelta: Vector2D
-}
