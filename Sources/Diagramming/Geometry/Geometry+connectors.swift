@@ -47,6 +47,7 @@ extension Geometry {
     /// ray originating from the first adjacent point to the endpoint. If no intersection is found,
     /// then the endpoint block position is returned for given endpoint.
     ///
+    @available(*, deprecated, message: "Use Geometry.rayIntersection directly")
     public static func touchPoints(originPosition: Vector2D,
                                    originShape: CollisionShape,
                                    targetPosition: Vector2D,
@@ -65,6 +66,7 @@ extension Geometry {
         return (origin: originTouch, target:targetTouch)
     }
     // FIXME: Change to (from:touching:at:)
+    @available(*, deprecated, message: "Use Geometry.rayIntersection directly")
     public static func touchPoint(shape: ShapeType,
                                   position: Vector2D,
                                   from startPoint: Vector2D,

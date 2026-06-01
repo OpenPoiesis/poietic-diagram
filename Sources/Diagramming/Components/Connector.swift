@@ -31,6 +31,7 @@ public struct ThinConnector {
 /// - SeeAlso: ``DiagramConnectorGeometry``, ``DiagramBlock``, ``TraitConnectorCreationSystem``,
 ///   ``ConnectorGeometrySystem``
 public struct DiagramConnector: Component {
+    // TODO: Change origin/target to Relationship components to be consistent with the world data model
     internal init(originID: RuntimeID,
                   targetID: RuntimeID,
                   glyph: ConnectorGlyph,

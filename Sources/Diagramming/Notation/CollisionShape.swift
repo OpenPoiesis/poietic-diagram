@@ -5,8 +5,9 @@
 //  Created by Stefan Urbanek on 29/07/2025.
 //
 
+import PoieticCore
 
-public struct CollisionShape: Equatable, Codable, Sendable {
+public struct CollisionShape: Equatable, Codable, Sendable, Component {
     /// Position within owner's coordinates.
     ///
     /// - Note: For polygon shape the position is typically zero. The polygon points have relative
