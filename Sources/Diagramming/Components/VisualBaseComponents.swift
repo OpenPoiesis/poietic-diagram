@@ -76,7 +76,7 @@ public enum Interactivity: Component {
 /// - SeeAlso: ``Interactivity``
 ///
 public enum TouchRegion: Component {
-    static let DefaultHitRadius: Double = 4.0
+    public static let DefaultHitRadius: Double = 4.0
 
     /// Touch region is defined by a collision shape. Used for blocks and annotations.
     ///

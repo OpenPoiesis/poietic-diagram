@@ -7,12 +7,16 @@
 
 import PoieticCore
 
-// NOTE: These protocols and components are being incubated, they are not final.
+// Components for interactive preview.
+//
+// Naming convention: all components start with Preview* prefix.
+
 
 /// Component for user-interaction session of a connector.
 ///
 /// - Important: The component must be destroyed when the drag or preview operation is concluded.
 ///
+@available(*, deprecated, message: "Use PreviewPosition")
 public struct BlockPreview: Component {
     public var position: Vector2D
 
@@ -27,6 +31,7 @@ public struct BlockPreview: Component {
 ///
 /// - Important: The component must be destroyed when the drag or preview operation is concluded.
 ///
+@available(*, deprecated, message: "Use PreviewMidpoints")
 public struct ConnectorPreview: Component {
     public var midpoints: [Vector2D]
     public init(midpoints: [Vector2D]) {
@@ -34,3 +39,9 @@ public struct ConnectorPreview: Component {
     }
 }
 
+public struct PreviewMidpoints: Component {
+    public var midpoints: [Vector2D]
+    public init(midpoints: [Vector2D]) {
+        self.midpoints = midpoints
+    }
+}

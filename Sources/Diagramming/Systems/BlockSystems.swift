@@ -21,14 +21,16 @@ import PoieticCore
 /// - Design objects with trait `DiagramConnector` will get ``DiagramConnector`` component,
 ///
 /// - **Input:**
-///     - Design objects with trait `DiagramBlock`.
+///     - Design objects with trait `DiagramBlock` or `DiagramConnector`.
 ///     - ``Notation`` singleton component, default notation is used if not found.
 ///     - ``NotationRules`` singleton, empty rules are used if not found.
-/// - **Output:** ``DiagramBlock``.
-/// - **Forgiveness:** Nothing needed.
+/// - **Output:** ``DiagramBlock`` and ``DiagramConnector`` components for their respective entities.
+/// - **Forgiveness:**
+///     - Non-edge objects are ignored.
+///     - Midpoints default to empty list.
 /// - **Issues collected:** No issues generated.
 ///
-public struct DiagramBlockFromTraitSystem: System {
+public struct DiagramObjectsFromTraitsSystem: System {
     public init(_ world: World) {}
 
     public func update(_ world: World) throws (InternalSystemError) {
@@ -38,6 +40,11 @@ public struct DiagramBlockFromTraitSystem: System {
 
         for object in frame.filter(trait: .DiagramBlock) {
             try createBlock(object: object, notation: notation, rules: rules, in: world)
+        }
+        
+        for object in frame.filter(trait: .DiagramConnector) {
+            guard let edge = DesignObjectEdge(object, in: frame) else { continue }
+            createConnector(edge: edge, notation: notation, rules: rules, in: world)
         }
     }
     
@@ -62,34 +69,6 @@ public struct DiagramBlockFromTraitSystem: System {
         )
         
         entity.setComponent(block)
-    }
-}
-
-/// System that creates connector components for edges with trait ``DiagramConnector``.
-///
-/// - **Input:**
-///     - Design objects with trait `DiagramConnector`.
-///     - ``Notation`` component associated with the frame, default notation is used if not found.
-///     - ``NotationRules`` associated with the frame, empty rules are used if not found.
-/// - **Output:** ``DiagramConnector``.
-/// - **Forgiveness:**
-///     - Non-edge objects are ignored.
-///     - Midpoints default to empty list.
-/// - **Issues collected:** No issues generated.
-///
-public struct DiagramConnectorFromTraitSystem: System {
-    // TODO: Name is too long.
-    public init(_ world: World) {}
-
-    public func update(_ world: World) throws (InternalSystemError) {
-        guard let frame = world.frame else { return }
-        let notation: Notation = world.singleton() ?? Notation.DefaultNotation
-        let rules: NotationRules = world.singleton() ?? NotationRules()
-
-        for object in frame.filter(trait: .DiagramConnector) {
-            guard let edge = DesignObjectEdge(object, in: frame) else { continue }
-            createConnector(edge: edge, notation: notation, rules: rules, in: world)
-        }
     }
     
     public func createConnector(edge: DesignObjectEdge,
@@ -117,4 +96,3 @@ public struct DiagramConnectorFromTraitSystem: System {
         entity.setComponent(connector)
     }
 }
-

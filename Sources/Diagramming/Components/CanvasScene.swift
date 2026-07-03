@@ -76,15 +76,30 @@ public struct PictogramCanvasNode: Component {
 
 
 public struct ColorSwatchCanvasNode: Component {
+    public static let DefaultSize: Vector2D = Vector2D(10.0, 10.0)
     public let colorKey: AdaptableColorKey
+    public let size: Vector2D
+    
+    init(colorKey: AdaptableColorKey, size: Vector2D) {
+        self.colorKey = colorKey
+        self.size = size
+    }
 }
 
 public struct LabelCanvasNode: Component {
     public let text: String
     public let anchor: Vector2D
-    public init(text: String, anchor: Vector2D = .zero) {
+    public let fontKey: DiagramLayoutStyle.FontKey?
+    public let colorKey: DiagramColorKey?
+    
+    public init(text: String,
+                anchor: Vector2D = .zero,
+                fontKey: DiagramLayoutStyle.FontKey? = nil,
+                colorKey: DiagramColorKey? = nil) {
         self.text = text
         self.anchor = anchor
+        self.fontKey = fontKey
+        self.colorKey = colorKey
     }
 }
 

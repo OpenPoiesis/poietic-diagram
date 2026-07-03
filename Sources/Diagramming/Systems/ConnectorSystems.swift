@@ -35,8 +35,7 @@ import PoieticCore
 
 public struct ConnectorGeometrySystem: System {
     nonisolated(unsafe) public static let dependencies: [SystemDependency] = [
-        .after(DiagramConnectorFromTraitSystem.self),
-        .after(DiagramBlockFromTraitSystem.self)
+        .after(DiagramObjectsFromTraitsSystem.self),
     ]
 
     public init(_ world: World) {}
@@ -80,6 +79,7 @@ public struct ConnectorGeometrySystem: System {
     }
 }
 
+@available(*, deprecated, message: "Use canvas scene nodes")
 extension DiagramConnectorGeometry {
     public init(originTouch: Vector2D,
                 targetTouch: Vector2D,
@@ -128,6 +128,38 @@ extension DiagramConnectorGeometry {
             self.fillPath = nil
             self.tailArrowhead = paths.tail
             self.headArrowhead = paths.head
+        }
+    }
+}
+
+
+/// System that updates diagram scene trees.
+///
+///
+/// - **Input:**
+///     - World entities with ``DiagramCanvas`` component and their children.
+/// - **Output:** New or updated ``CanvasNode`` entities.
+/// - **Forgiveness:**
+///     - not much
+///
+public struct DiagramUpdateSystem: System {
+    nonisolated(unsafe) public static let dependencies: [SystemDependency] = [
+        .after(DiagramObjectsFromTraitsSystem.self),
+    ]
+    
+    public init(_ world: World) {}
+    
+    public func update(_ world: World) throws (InternalSystemError) {
+        for (entity, connector) in world.query(Diagram.self) {
+            let viewport: ViewportState = entity.component() ?? ViewportState()
+            createDiagram(root: entity, viewport: viewport)
+        }
+        
+        // updateGeometry()
+    }
+    public func createDiagram(root: RuntimeEntity, viewport: ViewportState) {
+        for child in root.children {
+            
         }
     }
 }

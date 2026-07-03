@@ -7,7 +7,7 @@
 
 import PoieticCore
 
-public struct SVGDiagramStyle {
+public struct OLDSVGDiagramStyle {
     public var pictogramLineWidth: Double = 2.0
     public var primaryLabelFontFamily = "IBM Plex Sans"
     public var primaryLabelFontWeight = "600"
@@ -20,6 +20,261 @@ public struct SVGDiagramStyle {
 
     public init() { }
 }
+
+
+public class SVGExportDrawingContext {
+    func setLineWidth() {}
+}
+
+public class SVGDiagramSceneRendererContext: RenderingContextProtocol {
+    /// Prefix for `id` attribute of SVG symbols representing a pictogram.
+    ///
+    public var pictogramSymbolIDPrefix = "pictogram-"
+    public var objectIDPrefix = "object-"
+
+    var transformStack: [AffineTransform] = []
+    var currentTransform: AffineTransform = .identity
+
+    var symbols: [String:SVGSymbol] = [:]
+    var elements: [SVGElement] = []
+
+    /// Bounding box for the whole diagram.
+    var bbox: Rect2D = Rect2D()
+
+    var style: SVGDiagramStyle
+    
+    init(style: SVGDiagramStyle) {
+        self.style = style
+    }
+
+    public func extendBoundingBox(_ box: Rect2D) {
+        // TODO: Transform??
+        self.bbox.union(box)
+    }
+    
+    public func appendWithTransform(_ element: SVGElement) {
+        if let element = element as? SVGGraphicElement {
+            element.transform = SVGTransformList(currentTransform)
+        }
+        self.elements.append(element)
+    }
+    // Conformance methods
+    public func save() {
+        transformStack.append(currentTransform)
+    }
+    public func restore() {
+        if let transform = transformStack.popLast() {
+            self.currentTransform = transform
+        }
+        else {
+            self.currentTransform = .identity
+        }
+    }
+
+    public var transform: AffineTransform {
+        get { return currentTransform }
+    }
+
+    public func setTransform(_ transform: AffineTransform) {
+        self.currentTransform = transform
+    }
+    
+
+    public func registerPictogramSymbol(_ pictogram: Pictogram) {
+        let name = pictogram.name
+
+        let path = SVGPath(pictogram.path)
+        // TODO: Let the use of the symbol decide colors
+//        path.fill = "none"
+//        path.stroke = "black"
+//        path.strokeWidth = style.pictogramLineWidth
+        
+        let group = SVGGroup()
+        group.addChild(path)
+        
+        let symbol = SVGSymbol()
+        symbol.addChild(group)
+        
+        symbol.id = "\(pictogramSymbolIDPrefix)\(name)"
+        
+        symbols[name] = symbol
+    }
+
+}
+
+public class SVGDiagramSceneRenderer: DiagramSceneRenderer {
+    public typealias Context = SVGDiagramSceneRendererContext
+
+    let world: World
+    let viewport: ViewportState
+
+    let style: SVGDiagramStyle
+    
+    public init(world: World,
+                viewport: ViewportState = ViewportState(offset: .zero, zoom: 1.0),
+                style: SVGDiagramStyle? = nil)
+    {
+        self.world = world
+        self.viewport = viewport
+        self.style = style ?? SVGDiagramStyle.Default
+    }
+    
+    public func render(_ diagram: RuntimeEntity, style: SVGDiagramStyle, to path: String) throws {
+        let image = render(diagram, style: style)
+        let writer = SVGWriter()
+        try writer.writeToFile(image, path: path)
+    }
+
+    public func render(_ diagram: RuntimeEntity, style: SVGDiagramStyle) -> SVGImage {
+        let context = SVGDiagramSceneRendererContext(style: style)
+        self.render(diagram, context: context)
+        
+        let image = SVGImage()
+        for element in context.elements {
+            image.addChild(element)
+        }
+//        if let bbox {
+//            image.viewBox = SVGViewBox(bbox)
+//            image.width = bbox.width
+//            image.height = bbox.height
+//        }
+        return image
+    }
+    
+    public func renderBlock(_ entity: PoieticCore.RuntimeEntity, context: Context) {
+        guard let position: PositionComponent = entity.component(),
+              let pictComp: PictogramCanvasNode = entity.component()
+        else { return }
+        
+        // TODO: Color
+        let pictogram = pictComp.pictogram
+        let symbol = SVGUse()
+        symbol.x = position.position.x
+        symbol.y = position.position.y
+        symbol.href = "#\(context.pictogramSymbolIDPrefix)\(pictogram.name)"
+        if let id = entity.objectID {
+            symbol.id =  context.objectIDPrefix + id.stringValue
+        }
+        
+        let styleClass: StyleClass
+        if let nodeStyle: CanvasNodeStyle = entity.component() {
+            styleClass = nodeStyle.class
+        }
+        else {
+            styleClass = .pictogram
+        }
+        
+        if let pictogramStyle = style.classes[styleClass] {
+            // TODO: Color
+        }
+
+        context.appendWithTransform(symbol)
+        // TODO: Highlights (selection)
+    }
+    
+    public func renderPictogram(_ entity: PoieticCore.RuntimeEntity, context: Context) {
+        fatalError("\(#function) Not implemented")
+    }
+    public func renderConnector(_ entity: PoieticCore.RuntimeEntity, context: Context) {
+        guard let stroke: ConnectorStroke = entity.component()
+        else { return }
+        
+        let group = SVGGroup()
+        if let id = entity.objectID {
+            group.id =  context.objectIDPrefix + id.stringValue
+        }
+
+        let styleClass: StyleClass
+        if let nodeStyle: CanvasNodeStyle = entity.component() {
+            styleClass = nodeStyle.class
+        }
+        else {
+            styleClass = .normal
+        }
+        let elementStyle = style.classes[styleClass]
+        
+        if let path = stroke.body {
+            let svgPath = SVGPath(path)
+            svgPath.stroke = elementStyle?.stroke
+            if stroke.isFilled {
+                svgPath.fill = elementStyle?.fill
+            }
+            svgPath.strokeWidth = elementStyle?.strokeWidth ?? 1.0
+            group.addChild(svgPath)
+        }
+        if let path = stroke.headArrowhead {
+            let svgPath = SVGPath(path)
+            svgPath.stroke = elementStyle?.stroke
+            svgPath.fill = elementStyle?.fill
+            svgPath.strokeWidth = elementStyle?.strokeWidth ?? 1.0
+            group.addChild(svgPath)
+        }
+        if let path = stroke.tailArrowhead {
+            let svgPath = SVGPath(path)
+            svgPath.stroke = elementStyle?.stroke
+            svgPath.fill = elementStyle?.fill
+            svgPath.strokeWidth = elementStyle?.strokeWidth ?? 1.0
+            group.addChild(svgPath)
+        }
+        context.appendWithTransform(group)
+    }
+
+    public func renderLabel(_ entity: PoieticCore.RuntimeEntity, context: Context) {
+        guard let position: PositionComponent = entity.component(),
+              let label: LabelCanvasNode = entity.component()
+        else { return }
+        let styleClass: StyleClass
+        if let nodeStyle: CanvasNodeStyle = entity.component() {
+            styleClass = nodeStyle.class
+        }
+        else {
+            styleClass = .label
+        }
+        
+        let element = SVGText()
+        element.textContent = label.text
+        element.x = position.position.x
+        // Note: Flip here when using flipped coordinates
+        element.y = position.position.y
+
+        if let labelStyle = style.classes[styleClass] {
+            element.fontSize = labelStyle.fontSize
+            element.textAnchor = "middle"
+            element.fontFamily = labelStyle.fontName
+            element.fontWeight = labelStyle.fontWeight
+        }
+        context.appendWithTransform(element)
+    }
+    
+    public func renderValueIndicator(_ entity: PoieticCore.RuntimeEntity, context: Context) {
+        // TODO: Implement this
+    }
+    
+    public func renderIssueIndicator(_ entity: PoieticCore.RuntimeEntity, context: Context) {
+        // TODO: Implement this
+    }
+
+    public func renderColorSwatch(_ entity: RuntimeEntity, context: Context) {
+        guard let swatch: ColorSwatchCanvasNode = entity.component()
+        else { return }
+        let styleClass: StyleClass
+        if let nodeStyle: CanvasNodeStyle = entity.component() {
+            styleClass = nodeStyle.class
+        }
+        else {
+            styleClass = .colorSwatch
+        }
+
+        let element = SVGRectangle(rect: Rect2D(center: .zero, size: swatch.size))
+        element.stroke = style.classes[styleClass]?.stroke
+        element.fill = style.adaptableColor(swatch.colorKey)
+        context.appendWithTransform(element)
+    }
+    
+
+}
+
+#if false
 
 // TODO: Change to System
 public class SVGDiagramExporter {
@@ -272,3 +527,4 @@ public class SVGDiagramExporter {
     }
 }
 
+#endif

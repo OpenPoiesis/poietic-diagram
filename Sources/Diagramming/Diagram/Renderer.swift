@@ -1,0 +1,74 @@
+//
+//  Renderer.swift
+//  Diagramming
+//
+//  Created by Stefan Urbanek on 08/06/2026.
+//
+
+import PoieticCore
+
+public protocol RenderingContextProtocol {
+    /// Save context state onto a state stack.
+    func save()
+    /// Restore previously saved context state stack. If there is no saved state in the stack,
+    /// nothing happens.
+    func restore()
+    
+    /// Current affine transform of the rendering context
+    var transform: AffineTransform { get }
+    func setTransform(_ transform: AffineTransform)
+}
+
+
+/// Protocol for renderers of diagram scene.
+///
+public protocol DiagramSceneRenderer {
+    associatedtype Context: RenderingContextProtocol
+    
+    /// Renders a diagram entity and its children.
+    ///
+    func render(_ entity: RuntimeEntity, context: Context)
+    func renderBlock(_ entity: RuntimeEntity, context: Context)
+    func renderConnector(_ entity: RuntimeEntity, context: Context)
+    func renderPictogram(_ entity: RuntimeEntity, context: Context)
+    func renderLabel(_ entity: RuntimeEntity, context: Context)
+    func renderValueIndicator(_ entity: RuntimeEntity, context: Context)
+    func renderIssueIndicator(_ entity: RuntimeEntity, context: Context)
+    func renderColorSwatch(_ entity: RuntimeEntity, context: Context)
+
+}
+
+extension DiagramSceneRenderer {
+    public func render(_ entity: RuntimeEntity, context: Context) {
+        context.save()
+        if let positionComp: PositionComponent = entity.component() {
+            let previewPositionComp: PreviewPositionComponent? = entity.component()
+            let position = previewPositionComp?.position ?? positionComp.position
+            context.setTransform(AffineTransform(translation: position))
+        }
+        
+        if entity.contains(BlockCanvasNode.self) {
+            renderBlock(entity, context: context)
+        }
+        else if entity.contains(ConnectorCanvasNode.self) {
+            renderConnector(entity, context: context)
+        }
+        else if entity.contains(PictogramCanvasNode.self) {
+            renderPictogram(entity, context: context)
+        }
+        else if entity.contains(LabelCanvasNode.self) {
+            renderLabel(entity, context: context)
+        }
+        else if entity.contains(ValueIndicatorCanvasNode.self) {
+            renderValueIndicator(entity, context: context)
+        }
+        else if entity.contains(IssueIndicatorCanvasNode.self) {
+            renderIssueIndicator(entity, context: context)
+
+        }
+        for child in entity.children {
+            render(child, context: context)
+        }
+        context.restore()
+    }
+}
