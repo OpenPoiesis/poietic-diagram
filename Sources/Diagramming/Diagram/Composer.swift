@@ -11,14 +11,21 @@ import PoieticCore
 ///
 /// Main functionality:
 ///
-/// - Create diagram scene from ``DiagramBlock`` and ``DiagramConnector`` objects.
-/// - Update geometry.
+/// - _Create_ diagram scene from ``DiagramBlock`` and ``DiagramConnector`` objects.
+/// - _Update_ geometry and other data.
+/// - _Layout_ labels, indicators and other annotations.
+///
+/// The typical calls:
+///
+/// - _Create_: on new design frame, new entities. Creation is free from layout.
+/// - _Update_: during interaction or on a simulation step.
+/// - _Layout_: during interaction or style change which affects layout metrics,
+///             including fonts and their sizes. Typically no need to call during interaction.
 ///
 public class DiagramSceneComposer {
     public let world: World
     public let viewport: ViewportState
     public let toSceneTransform: AffineTransform
-    public let layout: DiagramLayoutStyle! = nil
     
     public init(world: World, viewport: ViewportState) {
         self.world = world
@@ -36,7 +43,7 @@ public class DiagramSceneComposer {
     ///
     /// - Returns: Created diagram entity.
     ///
-    public func createDefaultDiagram() -> RuntimeEntity {
+    public func createDiagramFromAll() -> RuntimeEntity {
         let diagram: RuntimeEntity = world.spawn(
             Diagram()
         )
@@ -63,9 +70,11 @@ public class DiagramSceneComposer {
     /// - New diagram.
     ///
     public func createScene(diagram: RuntimeEntity) -> RuntimeEntity {
+        debugPrint("=== Creating scene")
         let scene: RuntimeEntity = world.spawn(
             DiagramCanvas()
         )
+
         scene.relate(RepresentationOf(), to: diagram)
         
         for entity in diagram.outgoing(Depicts.self) {
@@ -76,7 +85,7 @@ public class DiagramSceneComposer {
                 createConnectorNode(representing: entity, scene: scene.runtimeID)
             }
         }
-        
+        debugPrint("<-- Created scene with \(scene.children.count) children")
         return scene
     }
     
@@ -115,10 +124,14 @@ public class DiagramSceneComposer {
         )
         node.relate(ChildOf(), to: scene)
         node.relate(RepresentationOf(), to: representedEntity)
-
+        
         updateBlockNode(node, from: representedEntity)
     }
     
+    /// Update the block node content from the entity the node represents.
+    ///
+    /// - Note: The caller is responsible to update layout, if necessary.
+    ///
     func updateBlockNode(_ sceneNode: RuntimeEntity, from representedEntity: RuntimeEntity) {
         updateBlockPictogram(sceneNode, from: representedEntity)
         updateBlockLabel(sceneNode, from: representedEntity)
@@ -126,7 +139,9 @@ public class DiagramSceneComposer {
         updateIssueIndicator(sceneNode, from: representedEntity)
         updateColorSwatch(sceneNode, from: representedEntity)
     }
+
     func updateBlockPictogram(_ blockSceneNode: RuntimeEntity, from representedEntity: RuntimeEntity) {
+        print("??? Update pictogram")
         guard let block: DiagramBlock = representedEntity.component()
         else { return }
         
@@ -137,6 +152,7 @@ public class DiagramSceneComposer {
             return
         }
         
+        print("--- Update pictogram: \(pictogram)")
         let scaledPictogram = pictogram.scaled(viewport.zoom)
         let pictogramNode: RuntimeEntity
         
@@ -252,12 +268,11 @@ public class DiagramSceneComposer {
             return
         }
 
-        let size = layout.metric(.colorSwatchSize, default: 1.0)
         let child: RuntimeEntity
         
         if let target: RuntimeEntity = blockSceneNode.target(CanvasNode.ColorSwatch.self) {
             child = target
-            child.setComponent(ColorSwatchCanvasNode(colorKey: colorKey, size:  Vector2D(size, size)))
+            child.setComponent(ColorSwatchCanvasNode(colorKey: colorKey))
         }
         else {
             child = world.spawn(
@@ -265,9 +280,9 @@ public class DiagramSceneComposer {
                 Visibility.visible,
                 Interactivity.inert,
                 PositionComponent(position: .zero),
-                ColorSwatchCanvasNode(colorKey: colorKey, size:  Vector2D(size, size))
+                ColorSwatchCanvasNode(colorKey: colorKey)
             )
-            child.relate(ChildOf(), to: representedEntity)
+            child.relate(ChildOf(), to: blockSceneNode)
             blockSceneNode.relate(CanvasNode.ColorSwatch(), to: child)
         }
     }
@@ -297,8 +312,12 @@ public class DiagramSceneComposer {
         node.relate(RepresentationOf(), to: representedEntity)
         node.relate(ConnectorCanvasNode.Origin(), to: origin)
         node.relate(ConnectorCanvasNode.Target(), to: target)
+        
+        updateConnectorNode(node, from: representedEntity)
     }
-    func updateConnectorNode(_ sceneNode: RuntimeEntity, from representedEntity: RuntimeEntity) {
+    
+    func updateConnectorNode(_ sceneNode: RuntimeEntity, from representedEntity: RuntimeEntity)
+    {
         updateConnectorWire(sceneNode, from: representedEntity)
     }
     

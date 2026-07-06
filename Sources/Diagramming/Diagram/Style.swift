@@ -20,19 +20,16 @@ public struct CanvasNodeStyle: Component {
     /// Style class of the diagram scene node.
     let `class`: StyleClass
     let modifiers: StyleModifierSet
+
+    /// Adaptable colour of the node, if the node or any of its parts have to be rendered in
+    /// specific colour.
+    ///
+    /// Note that the actual rendering might depend on the class and style modifiers, which might
+    /// make the colour brighter, darer, or might just not display the colour at all (for example
+    /// grey for disabled nodes).
+    ///
     let adaptableColor: AdaptableColorKey?
 }
-
-// TODO: Probably remove, as it should be backend-specific
-// public enum StyleProperty {
-//    case strokeColor
-//    case fillColor
-//    case strokeWidth
-//    case fontName
-//    case fontSize
-//    case fontWeight
-//    case fontStyle
-//}
 
 /// - Note: This is different data type from node type, as this is an information about
 ///   presentation, not behaviour.
@@ -129,6 +126,7 @@ public enum StyleClass: String, Sendable {
 }
 
 
+@available(*, deprecated, message: "Use style class")
 public enum DiagramColorKey: String {
     // NOTE: If extending this list, make sure the cases do not conflict with AdaptableColorKey
     
@@ -198,74 +196,21 @@ public enum DiagramColorKey: String {
 }
 
 
+public enum DiagramLayoutMetric: CaseIterable, Sendable {
+    // Sizes, paddings and magrins
+    case primaryLabelPadding
+    case secondaryLabelPadding
+    case colorSwatchSize
+    case valueIndicatorPadding
+    case errorIndicatorPadding
+    
+    case handleSize
+}
+
 /// Diagram layout geometry.
 ///
-public struct DiagramLayoutStyle {
-    public enum MetricKey: CaseIterable {
-        // Sizes, paddings and magrins
-        case primaryLabelPadding
-        case secondaryLabelPadding
-        case colorSwatchSize
-        case valueIndicatorPadding
-        case errorIndicatorPadding
-        
-        case handleSize
-
-        // Line widths
-        case pictogramLineWidth
-        case connectorLineWidth
-    }
-    
-    public enum FontKey: CaseIterable {
-        /// Default label font.
-        case label
-        
-        /// Font key for primary block label - usually a block name. If not defined, then ``label``
-        /// font is used.
-        case primaryBlockLabel
-        /// Font key for secondary block label - usually a block formula or custom value.
-        /// If not defined, then ``label`` font is used.
-        case secondaryBlockLabel
-
-        /// Font key for value indicator value.
-        /// If not defined, then ``label`` font is used.
-        case indicatorValueLabel
-
-        // case comment
-    }
-
-    public struct Font: Sendable {
-        public let name: String
-        public let size: Double
-        
-        public init(name: String, size: Double) {
-            self.name = name
-            self.size = size
-        }
-    }
-    
-    public let metrics: [MetricKey:Double]
-    public let fonts: [FontKey:Font]
-    public let defaultFont: Font
-    
-    public static let DefaultFont = Font(name: "Helvetica", size: 8.0)
-    
-    /// Create a new diagram layout style.
-    ///
-    ///
-    public init(metrics: [MetricKey:Double] = [:],
-                fonts: [FontKey:Font] = [:],
-                defaultFont: Font? = nil)
-    {
-        self.metrics = metrics
-        self.fonts = fonts
-        self.defaultFont = defaultFont ?? DiagramLayoutStyle.DefaultFont
-    }
-    
-    public func metric(_ key: MetricKey, default defaultValue: Double=0.0) -> Double {
-        return metrics[key, default: defaultValue]
-    }
-    public func font(_ key: FontKey, default defaultValue: Font) -> Font {
-        return fonts[key, default: defaultValue]
-    }
+public protocol LayoutProvider {
+    func metric(_ metric: DiagramLayoutMetric, default defaultValue: Double) -> Double
+    /// Compute text extents for a text with given style class (semantic role).
+    func textExtents(_ text: String, class styleClass: StyleClass) -> Rect2D
 }

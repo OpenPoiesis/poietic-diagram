@@ -6,27 +6,16 @@
 //
 import PoieticCore
 
-public protocol LayoutContextProtocol {
-    var layoutStyle: DiagramLayoutStyle { get }
-    /// Save layout state on a stack. State is restored with ``restoreState()``
-    func saveState()
-    /// Restore saved state from a stack. State is saved with ``saveState()``.
-    ///
-    /// When no state is saved, nothing happens.
-    func restoreState()
-    
-    /// Set current affine transform of the layout.
-    ///
-    /// - SeeAlso: ``saveState()``, ``restoreState()``
-    ///
-    func setTransform(_ transform: AffineTransform)
-    
-    /// Compute text label extents.
-    ///
-    func textExtents(text: String, font: DiagramLayoutStyle.FontKey) -> Rect2D
-}
-
 extension DiagramSceneComposer {
+    public func layoutDiagram(scene: RuntimeEntity, layout: some LayoutProvider) {
+        print("=== Layout diagram scene \(scene) with \(scene.children.count) children")
+        for child in scene.children {
+            guard child.contains(BlockCanvasNode.self)
+            else { continue }
+            
+            layoutBlock(child, layout: layout)
+        }
+    }
     /// Lays out block children nodes such as labels and indicators.
     ///
     /// Usually called when:
@@ -39,7 +28,7 @@ extension DiagramSceneComposer {
     ///
     /// - SeeAlso: ``DiagramLayoutStyle``.
     ///
-    public func layoutBlock(_ entity: RuntimeEntity, context: some LayoutContextProtocol) {
+    public func layoutBlock(_ entity: RuntimeEntity, layout: some LayoutProvider) {
         guard let pictComp: PictogramCanvasNode = entity.component()
         else { return }
         
@@ -53,11 +42,12 @@ extension DiagramSceneComposer {
         if let labelEntity: RuntimeEntity = entity.target(CanvasNode.PrimaryLabel.self),
            let label: LabelCanvasNode = labelEntity.component()
         {
-            let extents = context.textExtents(text: label.text, font: .primaryBlockLabel)
+            labelCenter.y += layout.metric(.primaryLabelPadding, default: 0.0)
+            let extents = layout.textExtents(label.text, class: .primaryLabel)
             let position = labelCenter + extents.center
 
-            labelCenter.y = position.y + context.layoutStyle.metric(.secondaryLabelPadding)
-            swatchCenter = Vector2D(position.x - context.layoutStyle.metric(.colorSwatchSize),
+            labelCenter.y = position.y + layout.metric(.secondaryLabelPadding, default: 0.0)
+            swatchCenter = Vector2D(position.x - layout.metric(.colorSwatchSize, default: 0.0),
                                     position.y - extents.height/2)
 
             let positionComp = PositionComponent(position: position)
@@ -67,7 +57,7 @@ extension DiagramSceneComposer {
         if let labelEntity: RuntimeEntity = entity.target(CanvasNode.SecondaryLabel.self),
            let label: LabelCanvasNode = labelEntity.component()
         {
-            let extents = context.textExtents(text: label.text, font: .secondaryBlockLabel)
+            let extents = layout.textExtents(label.text, class: .secondaryLabel)
             let position = labelCenter + extents.center
             let positionComp = PositionComponent(position: position)
             labelEntity.setComponent(positionComp)

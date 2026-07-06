@@ -49,7 +49,7 @@ public class SVGDiagramSceneRendererContext: RenderingContextProtocol {
 
     public func extendBoundingBox(_ box: Rect2D) {
         // TODO: Transform??
-        self.bbox.union(box)
+        self.bbox = self.bbox.union(box)
     }
     
     public func appendWithTransform(_ element: SVGElement) {
@@ -80,13 +80,24 @@ public class SVGDiagramSceneRendererContext: RenderingContextProtocol {
     }
     
 
-    public func registerPictogramSymbol(_ pictogram: Pictogram) {
+    /// Return symbol ID for given pictogram.
+    ///
+    /// If there is no symbol for given pictogram, new symbol is created.
+    ///
+    public func symbolForPictogram(_ pictogram: Pictogram) -> String {
+        let pictogramID = String(describing: ObjectIdentifier(pictogram))
+        if let symbol = symbols[pictogramID] {
+            return symbol.id! // We always have symbol ID set
+        }
+        print("Registering symbol \(pictogram.name) -> \(pictogramID)")
+        
         let name = pictogram.name
-
+        let id = pictogramSymbolIDPrefix + name
         let path = SVGPath(pictogram.path)
+
         // TODO: Let the use of the symbol decide colors
-//        path.fill = "none"
-//        path.stroke = "black"
+        path.fill = "none"
+        path.stroke = "black"
 //        path.strokeWidth = style.pictogramLineWidth
         
         let group = SVGGroup()
@@ -94,10 +105,10 @@ public class SVGDiagramSceneRendererContext: RenderingContextProtocol {
         
         let symbol = SVGSymbol()
         symbol.addChild(group)
-        
-        symbol.id = "\(pictogramSymbolIDPrefix)\(name)"
-        
-        symbols[name] = symbol
+        symbol.id = id
+        symbols[pictogramID] = symbol
+
+        return id
     }
 
 }
@@ -119,39 +130,52 @@ public class SVGDiagramSceneRenderer: DiagramSceneRenderer {
         self.style = style ?? SVGDiagramStyle.Default
     }
     
-    public func render(_ diagram: RuntimeEntity, style: SVGDiagramStyle, to path: String) throws {
-        let image = render(diagram, style: style)
+    public func render(_ scene: RuntimeEntity, style: SVGDiagramStyle, to path: String) throws {
+        let image = render(scene, style: style)
         let writer = SVGWriter()
         try writer.writeToFile(image, path: path)
     }
 
-    public func render(_ diagram: RuntimeEntity, style: SVGDiagramStyle) -> SVGImage {
+    public func render(_ scene: RuntimeEntity, style: SVGDiagramStyle) -> SVGImage {
         let context = SVGDiagramSceneRendererContext(style: style)
-        self.render(diagram, context: context)
+        self.render(scene, context: context)
         
         let image = SVGImage()
+        
+        print("Symbols: \(context.symbols.keys)")
+        for symbol in context.symbols.values {
+            print("Exporting symbol: \(symbol)")
+            image.addChild(symbol)
+        }
+        
         for element in context.elements {
             image.addChild(element)
         }
-//        if let bbox {
-//            image.viewBox = SVGViewBox(bbox)
-//            image.width = bbox.width
-//            image.height = bbox.height
-//        }
+        print("BBOX: \(context.bbox)")
+        image.viewBox = SVGViewBox(context.bbox)
+        image.width = context.bbox.width
+        image.height = context.bbox.height
+
         return image
     }
     
     public func renderBlock(_ entity: PoieticCore.RuntimeEntity, context: Context) {
+        print("??? Render block? \(entity.debugComponentNames())")
+        // TODO: Separate pictogram rendering into renderPictogram(...)
         guard let position: PositionComponent = entity.component(),
-              let pictComp: PictogramCanvasNode = entity.component()
+              let pictogramNode: RuntimeEntity = entity.target(CanvasNode.Pictogram.self),
+              let pictComp: PictogramCanvasNode = pictogramNode.component()
         else { return }
-        
+        print(">>> Render block!")
+
         // TODO: Color
         let pictogram = pictComp.pictogram
+        let symbolID = context.symbolForPictogram(pictogram)
+        
         let symbol = SVGUse()
         symbol.x = position.position.x
         symbol.y = position.position.y
-        symbol.href = "#\(context.pictogramSymbolIDPrefix)\(pictogram.name)"
+        symbol.href = "#" + symbolID
         if let id = entity.objectID {
             symbol.id =  context.objectIDPrefix + id.stringValue
         }
@@ -169,11 +193,14 @@ public class SVGDiagramSceneRenderer: DiagramSceneRenderer {
         }
 
         context.appendWithTransform(symbol)
+        let box = pictogram.pathBoundingBox.translated(position.position)
+        context.extendBoundingBox(box)
         // TODO: Highlights (selection)
     }
     
     public func renderPictogram(_ entity: PoieticCore.RuntimeEntity, context: Context) {
-        fatalError("\(#function) Not implemented")
+        // TODO: Move code from render block here.
+        debugPrint("WARNING: \(#function) not implemented")
     }
     public func renderConnector(_ entity: PoieticCore.RuntimeEntity, context: Context) {
         guard let stroke: ConnectorStroke = entity.component()
@@ -265,13 +292,14 @@ public class SVGDiagramSceneRenderer: DiagramSceneRenderer {
             styleClass = .colorSwatch
         }
 
-        let element = SVGRectangle(rect: Rect2D(center: .zero, size: swatch.size))
+        let length = style.metric(.colorSwatchSize, default: ColorSwatchCanvasNode.DefaultSize)
+        let size = Vector2D(x: length, y: length)
+        
+        let element = SVGRectangle(rect: Rect2D(center: .zero, size: size))
         element.stroke = style.classes[styleClass]?.stroke
         element.fill = style.adaptableColor(swatch.colorKey)
         context.appendWithTransform(element)
     }
-    
-
 }
 
 #if false

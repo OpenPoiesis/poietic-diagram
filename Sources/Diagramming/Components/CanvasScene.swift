@@ -76,30 +76,26 @@ public struct PictogramCanvasNode: Component {
 
 
 public struct ColorSwatchCanvasNode: Component {
-    public static let DefaultSize: Vector2D = Vector2D(10.0, 10.0)
+    public static let DefaultSize: Double = 10.0
     public let colorKey: AdaptableColorKey
-    public let size: Vector2D
     
-    init(colorKey: AdaptableColorKey, size: Vector2D) {
+    init(colorKey: AdaptableColorKey) {
         self.colorKey = colorKey
-        self.size = size
     }
 }
 
+/// Text label node.
+///
+/// - Note: Font and colour of the node are specified in ``CanvasNodeStyle`` component on the same
+///   entity.
 public struct LabelCanvasNode: Component {
     public let text: String
     public let anchor: Vector2D
-    public let fontKey: DiagramLayoutStyle.FontKey?
-    public let colorKey: DiagramColorKey?
     
     public init(text: String,
-                anchor: Vector2D = .zero,
-                fontKey: DiagramLayoutStyle.FontKey? = nil,
-                colorKey: DiagramColorKey? = nil) {
+                anchor: Vector2D = .zero) {
         self.text = text
         self.anchor = anchor
-        self.fontKey = fontKey
-        self.colorKey = colorKey
     }
 }
 
@@ -146,6 +142,10 @@ public struct ConnectorCanvasNode: Component {
 
 }
 
+/// Primary geometry of a connector, regardless of connector glyph.
+///
+/// - SeeAlso: ``ConnectorStroke`` – visual representation of a connector.
+///
 public struct ConnectorWire: Component {
     /// Points of a wire representation of the connector.
     ///
@@ -184,6 +184,12 @@ public struct ConnectorWire: Component {
     }
 }
 
+/// Visual representation of a connector.
+///
+/// The connector stroke is created from ``ConnectorWire``, which describes basic connector
+/// geometry and from ``ConnectorGlyph`` which defines actual shape and visual features of the
+/// connector.
+///
 public struct ConnectorStroke: Component {
     public let body: BezierPath?
     public let headArrowhead: BezierPath?
