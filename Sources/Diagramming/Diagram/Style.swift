@@ -209,6 +209,8 @@ public enum DiagramLayoutMetric: CaseIterable, Sendable {
 
 /// Diagram layout geometry.
 ///
+/// - Note: It is assumed that the metric do not change between layout and render.
+///
 public protocol LayoutProvider {
     func metric(_ metric: DiagramLayoutMetric, default defaultValue: Double) -> Double
     /// Compute text extents for a text with given style class (semantic role).

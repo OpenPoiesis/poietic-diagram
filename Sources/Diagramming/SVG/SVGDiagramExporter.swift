@@ -52,14 +52,12 @@ public class SVGDiagramSceneRendererContext: RenderingContextProtocol {
         self.bbox = self.bbox.union(box)
     }
     
-    public func appendWithTransform(_ element: SVGElement) {
-        if let element = element as? SVGGraphicElement {
-            element.transform = SVGTransformList(currentTransform)
-        }
+    public func append(_ element: SVGElement) {
         self.elements.append(element)
     }
     // Conformance methods
     public func save() {
+        print("--> T save \(currentTransform.tx), \(currentTransform.ty)")
         transformStack.append(currentTransform)
     }
     public func restore() {
@@ -69,6 +67,7 @@ public class SVGDiagramSceneRendererContext: RenderingContextProtocol {
         else {
             self.currentTransform = .identity
         }
+        print("<-- T restore \(currentTransform.tx), \(currentTransform.ty)")
     }
 
     public var transform: AffineTransform {
@@ -76,6 +75,7 @@ public class SVGDiagramSceneRendererContext: RenderingContextProtocol {
     }
 
     public func setTransform(_ transform: AffineTransform) {
+        print("Set transform: \(transform)")
         self.currentTransform = transform
     }
     
@@ -142,9 +142,7 @@ public class SVGDiagramSceneRenderer: DiagramSceneRenderer {
         
         let image = SVGImage()
         
-        print("Symbols: \(context.symbols.keys)")
         for symbol in context.symbols.values {
-            print("Exporting symbol: \(symbol)")
             image.addChild(symbol)
         }
         
@@ -160,21 +158,18 @@ public class SVGDiagramSceneRenderer: DiagramSceneRenderer {
     }
     
     public func renderBlock(_ entity: PoieticCore.RuntimeEntity, context: Context) {
-        print("??? Render block? \(entity.debugComponentNames())")
         // TODO: Separate pictogram rendering into renderPictogram(...)
-        guard let position: PositionComponent = entity.component(),
-              let pictogramNode: RuntimeEntity = entity.target(CanvasNode.Pictogram.self),
+        guard let pictogramNode: RuntimeEntity = entity.target(CanvasNode.Pictogram.self),
               let pictComp: PictogramCanvasNode = pictogramNode.component()
         else { return }
-        print(">>> Render block!")
 
         // TODO: Color
         let pictogram = pictComp.pictogram
         let symbolID = context.symbolForPictogram(pictogram)
         
         let symbol = SVGUse()
-        symbol.x = position.position.x
-        symbol.y = position.position.y
+        symbol.x = context.currentTransform.origin.x
+        symbol.y = context.currentTransform.origin.y
         symbol.href = "#" + symbolID
         if let id = entity.objectID {
             symbol.id =  context.objectIDPrefix + id.stringValue
@@ -192,8 +187,8 @@ public class SVGDiagramSceneRenderer: DiagramSceneRenderer {
             // TODO: Color
         }
 
-        context.appendWithTransform(symbol)
-        let box = pictogram.pathBoundingBox.translated(position.position)
+        context.append(symbol)
+        let box = pictogram.pathBoundingBox.translated(context.currentTransform.origin)
         context.extendBoundingBox(box)
         // TODO: Highlights (selection)
     }
@@ -243,11 +238,11 @@ public class SVGDiagramSceneRenderer: DiagramSceneRenderer {
             svgPath.strokeWidth = elementStyle?.strokeWidth ?? 1.0
             group.addChild(svgPath)
         }
-        context.appendWithTransform(group)
+        context.append(group)
     }
 
     public func renderLabel(_ entity: PoieticCore.RuntimeEntity, context: Context) {
-        guard let position: PositionComponent = entity.component(),
+        guard let positionComp: PositionComponent = entity.component(),
               let label: LabelCanvasNode = entity.component()
         else { return }
         let styleClass: StyleClass
@@ -258,19 +253,30 @@ public class SVGDiagramSceneRenderer: DiagramSceneRenderer {
             styleClass = .label
         }
         
+        let position = context.currentTransform.apply(to: positionComp.position)
+
         let element = SVGText()
         element.textContent = label.text
-        element.x = position.position.x
+        element.x = context.currentTransform.origin.x
         // Note: Flip here when using flipped coordinates
-        element.y = position.position.y
+        element.y = context.currentTransform.origin.y
 
+        element.textAnchor = "middle"
         if let labelStyle = style.classes[styleClass] {
             element.fontSize = labelStyle.fontSize
-            element.textAnchor = "middle"
             element.fontFamily = labelStyle.fontName
             element.fontWeight = labelStyle.fontWeight
         }
-        context.appendWithTransform(element)
+
+        print("APPEND LABEL \(label.text)")
+        let debug = SVGCircle()
+        debug.cx = element.x
+        debug.cy = element.y
+        debug.r = 4.0
+        debug.stroke = "red"
+        debug.fill = "salmon"
+        context.append(debug)
+        context.append(element)
     }
     
     public func renderValueIndicator(_ entity: PoieticCore.RuntimeEntity, context: Context) {
@@ -298,7 +304,7 @@ public class SVGDiagramSceneRenderer: DiagramSceneRenderer {
         let element = SVGRectangle(rect: Rect2D(center: .zero, size: size))
         element.stroke = style.classes[styleClass]?.stroke
         element.fill = style.adaptableColor(swatch.colorKey)
-        context.appendWithTransform(element)
+        context.append(element)
     }
 }
 

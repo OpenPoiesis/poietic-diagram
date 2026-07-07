@@ -40,11 +40,13 @@ public protocol DiagramSceneRenderer {
 
 extension DiagramSceneRenderer {
     public func render(_ entity: RuntimeEntity, context: Context) {
+        debugPrint("--- render: \(entity)")
         context.save()
         if let positionComp: PositionComponent = entity.component() {
             let previewPositionComp: PreviewPositionComponent? = entity.component()
             let position = previewPositionComp?.position ?? positionComp.position
-            context.setTransform(AffineTransform(translation: position))
+            let transform = context.transform.translated(position)
+            context.setTransform(transform)
         }
         
         if entity.contains(BlockCanvasNode.self) {

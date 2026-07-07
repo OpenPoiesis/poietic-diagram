@@ -29,7 +29,8 @@ extension DiagramSceneComposer {
     /// - SeeAlso: ``DiagramLayoutStyle``.
     ///
     public func layoutBlock(_ entity: RuntimeEntity, layout: some LayoutProvider) {
-        guard let pictComp: PictogramCanvasNode = entity.component()
+        guard let pictogramNode: RuntimeEntity = entity.target(CanvasNode.Pictogram.self),
+              let pictComp: PictogramCanvasNode = pictogramNode.component()
         else { return }
         
         let pictogram = pictComp.pictogram
@@ -44,7 +45,7 @@ extension DiagramSceneComposer {
         {
             labelCenter.y += layout.metric(.primaryLabelPadding, default: 0.0)
             let extents = layout.textExtents(label.text, class: .primaryLabel)
-            let position = labelCenter + extents.center
+            let position = labelCenter
 
             labelCenter.y = position.y + layout.metric(.secondaryLabelPadding, default: 0.0)
             swatchCenter = Vector2D(position.x - layout.metric(.colorSwatchSize, default: 0.0),
@@ -58,7 +59,7 @@ extension DiagramSceneComposer {
            let label: LabelCanvasNode = labelEntity.component()
         {
             let extents = layout.textExtents(label.text, class: .secondaryLabel)
-            let position = labelCenter + extents.center
+            let position = labelCenter
             let positionComp = PositionComponent(position: position)
             labelEntity.setComponent(positionComp)
         }
