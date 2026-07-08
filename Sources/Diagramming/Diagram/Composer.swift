@@ -27,6 +27,10 @@ public class DiagramSceneComposer {
     public let viewport: ViewportState
     public let toSceneTransform: AffineTransform
     
+    
+    /// Mapping between diagram objects and their scene counterparts.
+    var diagramToScene: [RuntimeID:RuntimeID] = [:]
+    
     public init(world: World, viewport: ViewportState) {
         self.world = world
         self.viewport = viewport
@@ -74,16 +78,18 @@ public class DiagramSceneComposer {
         let scene: RuntimeEntity = world.spawn(
             DiagramCanvas()
         )
-
-        scene.relate(RepresentationOf(), to: diagram)
+        // Represented block to scene node map
+        var repToSceneMap: [RuntimeID:RuntimeID] = [:]
         
-        for entity in diagram.outgoing(Depicts.self) {
-            if entity.contains(DiagramBlock.self) {
-                createBlockNode(representing: entity, scene: scene.runtimeID)
-            }
-            else if entity.contains(DiagramConnector.self) {
-                createConnectorNode(representing: entity, scene: scene.runtimeID)
-            }
+        scene.relate(RepresentationOf(), to: diagram)
+
+        for entity in diagram.outgoing(Depicts.self) where entity.contains(DiagramBlock.self) {
+            let node = createBlockNode(representing: entity, scene: scene.runtimeID)
+            repToSceneMap[entity.runtimeID] = node
+        }
+
+        for entity in diagram.outgoing(Depicts.self) where entity.contains(DiagramConnector.self){
+            createConnectorNode(representing: entity, scene: scene.runtimeID, blockMap: repToSceneMap)
         }
         debugPrint("<-- Created scene with \(scene.children.count) children")
         return scene
@@ -111,11 +117,9 @@ public class DiagramSceneComposer {
     /// 1. Spawn a scene block
     /// 2. Create children:
     ///  - label
-    func createBlockNode(representing representedEntity: RuntimeEntity, scene: RuntimeID) {
-        guard let block: DiagramBlock = representedEntity.component()
-        else { return }
-
-        let position = toSceneTransform.apply(to: block.position)
+    func createBlockNode(representing representedEntity: RuntimeEntity, scene: RuntimeID) -> RuntimeID {
+        let block: DiagramBlock? = representedEntity.component()
+        let position = toSceneTransform.apply(to: block?.position ?? .zero)
         
         let node: RuntimeEntity = world.spawn(
             CanvasNode(),
@@ -125,7 +129,11 @@ public class DiagramSceneComposer {
         node.relate(ChildOf(), to: scene)
         node.relate(RepresentationOf(), to: representedEntity)
         
+        self.diagramToScene[representedEntity.runtimeID] = node.runtimeID
+        
         updateBlockNode(node, from: representedEntity)
+        
+        return node.runtimeID
     }
     
     /// Update the block node content from the entity the node represents.
@@ -288,18 +296,31 @@ public class DiagramSceneComposer {
     }
     
     // MARK: - Connector
+    /// - Parameters:
+    ///     - representedEntity: Entity that the new scene node will represent.
+    ///     - scene: Scene of which the new entity will be part of.
+    ///     - blockMap: Mapping between diagram block entities and scene block entities.
+    ///
     /// - Requires that the blocks are composed
     ///
-    /// Connector Canvas Node:
-    /// - CanvasNode()
-    /// - ConnectorCanvasNode()
-    /// - ConnectorStrokeCanvasNode(body, head, tail, filled?)
-    /// - ConnectorWire()
+    /// The created connector node entity has the following components and relationships:
     ///
-    func createConnectorNode(representing representedEntity: RuntimeEntity, scene: RuntimeID) {
+    /// - ``CanvasNode``.
+    /// - ``ConnectorCanvasNode``.
+    /// - ``ConnectorWire``.
+    /// - ``ConnectorStroke`` created from connector wire, origin and target block entities.
+    /// - ``ChildOf`` relationship to the ``scene``
+    /// - ``ConnectorCanvasNode/Origin`` to the scene node block representing connector origin.
+    /// - ``ConnectorCanvasNode/Target`` to the scene node block representing connector target.
+    ///
+    func createConnectorNode(representing representedEntity: RuntimeEntity,
+                             scene: RuntimeID,
+                             blockMap: [RuntimeID:RuntimeID]) {
         guard let connector: DiagramConnector = representedEntity.component(),
-              let origin = world.entity(connector.originID),
-              let target = world.entity(connector.targetID)
+              let originID = blockMap[connector.originID],
+              let origin = world.entity(originID),
+              let targetID = blockMap[connector.targetID],
+              let target = world.entity(targetID)
         else { return }
 
         // 1. Wire
@@ -319,6 +340,7 @@ public class DiagramSceneComposer {
     func updateConnectorNode(_ sceneNode: RuntimeEntity, from representedEntity: RuntimeEntity)
     {
         updateConnectorWire(sceneNode, from: representedEntity)
+        updateConnectorStroke(sceneNode, from: representedEntity)
     }
     
     func updateConnectorWire(_ sceneNode: RuntimeEntity, from representedEntity: RuntimeEntity) {
@@ -335,6 +357,47 @@ public class DiagramSceneComposer {
                                  midpoints: midpoints,
                                  lineType: representedConnector.glyph.lineType)
         sceneNode.setComponent(wire)
+        
+    }
+    func updateConnectorStroke(_ sceneNode: RuntimeEntity, from representedEntity: RuntimeEntity) {
+        guard let connector: DiagramConnector = representedEntity.component(),
+              let wire: ConnectorWire = sceneNode.component()
+        else { return }
+        
+        let stroke: ConnectorStroke
+        let glyph = connector.glyph
+        switch glyph.kind {
+        case .fat(let kind):
+            let outline = Geometry.fatConnectorPath(
+                originPoint: wire.originPoint,
+                targetPoint: wire.targetPoint,
+                midpoints: connector.midpoints,
+                headSize: glyph.headSize,
+                tailSize: glyph.tailSize,
+                kind: kind
+            )
+            stroke = ConnectorStroke(body: outline,
+                                     headArrowhead: nil,
+                                     tailArrowhead: nil,
+                                     isFilled: true)
+            
+        case .thin(let kind):
+            let paths = Geometry.thinConnectorPaths(
+                originPoint: wire.originPoint,
+                targetPoint: wire.targetPoint,
+                midpoints: connector.midpoints,
+                headSize: glyph.headSize,
+                tailSize: glyph.tailSize,
+                lineType: glyph.lineType,
+                kind: kind
+            )
+            
+            stroke = ConnectorStroke(body: paths.body,
+                                     headArrowhead: paths.tail,
+                                     tailArrowhead: paths.head,
+                                     isFilled: false)
+        }
+        sceneNode.setComponent(stroke)
         
     }
 

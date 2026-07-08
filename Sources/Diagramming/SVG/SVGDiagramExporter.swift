@@ -57,7 +57,6 @@ public class SVGDiagramSceneRendererContext: RenderingContextProtocol {
     }
     // Conformance methods
     public func save() {
-        print("--> T save \(currentTransform.tx), \(currentTransform.ty)")
         transformStack.append(currentTransform)
     }
     public func restore() {
@@ -67,7 +66,6 @@ public class SVGDiagramSceneRendererContext: RenderingContextProtocol {
         else {
             self.currentTransform = .identity
         }
-        print("<-- T restore \(currentTransform.tx), \(currentTransform.ty)")
     }
 
     public var transform: AffineTransform {
@@ -75,7 +73,6 @@ public class SVGDiagramSceneRendererContext: RenderingContextProtocol {
     }
 
     public func setTransform(_ transform: AffineTransform) {
-        print("Set transform: \(transform)")
         self.currentTransform = transform
     }
     
@@ -199,8 +196,8 @@ public class SVGDiagramSceneRenderer: DiagramSceneRenderer {
     }
     public func renderConnector(_ entity: PoieticCore.RuntimeEntity, context: Context) {
         guard let stroke: ConnectorStroke = entity.component()
-        else { return }
-        
+        else { debugPrint("!!!  No stroke !!!"); return }
+
         let group = SVGGroup()
         if let id = entity.objectID {
             group.id =  context.objectIDPrefix + id.stringValue
@@ -242,9 +239,9 @@ public class SVGDiagramSceneRenderer: DiagramSceneRenderer {
     }
 
     public func renderLabel(_ entity: PoieticCore.RuntimeEntity, context: Context) {
-        guard let positionComp: PositionComponent = entity.component(),
-              let label: LabelCanvasNode = entity.component()
+        guard let label: LabelCanvasNode = entity.component()
         else { return }
+        
         let styleClass: StyleClass
         if let nodeStyle: CanvasNodeStyle = entity.component() {
             styleClass = nodeStyle.class
@@ -253,12 +250,9 @@ public class SVGDiagramSceneRenderer: DiagramSceneRenderer {
             styleClass = .label
         }
         
-        let position = context.currentTransform.apply(to: positionComp.position)
-
         let element = SVGText()
         element.textContent = label.text
         element.x = context.currentTransform.origin.x
-        // Note: Flip here when using flipped coordinates
         element.y = context.currentTransform.origin.y
 
         element.textAnchor = "middle"
@@ -268,14 +262,6 @@ public class SVGDiagramSceneRenderer: DiagramSceneRenderer {
             element.fontWeight = labelStyle.fontWeight
         }
 
-        print("APPEND LABEL \(label.text)")
-        let debug = SVGCircle()
-        debug.cx = element.x
-        debug.cy = element.y
-        debug.r = 4.0
-        debug.stroke = "red"
-        debug.fill = "salmon"
-        context.append(debug)
         context.append(element)
     }
     

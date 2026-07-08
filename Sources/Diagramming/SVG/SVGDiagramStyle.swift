@@ -12,6 +12,7 @@ public struct SVGDiagramStyle: Sendable {
 
     public static let Default = SVGDiagramStyle(
         classes: [
+            .normal:SVGShapeStyle(stroke: "black", fill: "gray"),
             .pictogram:SVGShapeStyle(),
             .primaryLabel:SVGShapeStyle(fontName: "IBM Plex Sans", fontSize: 18.0, fontWeight: "600"),
             .secondaryLabel:SVGShapeStyle(fontName: "IBM Plex Sans", fontSize: 14.0, fontWeight: "200"),
