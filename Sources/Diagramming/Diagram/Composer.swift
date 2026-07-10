@@ -27,10 +27,6 @@ public class DiagramSceneComposer {
     public let viewport: ViewportState
     public let toSceneTransform: AffineTransform
     
-    
-    /// Mapping between diagram objects and their scene counterparts.
-    var diagramToScene: [RuntimeID:RuntimeID] = [:]
-    
     public init(world: World, viewport: ViewportState) {
         self.world = world
         self.viewport = viewport
@@ -74,7 +70,6 @@ public class DiagramSceneComposer {
     /// - New diagram.
     ///
     public func createScene(diagram: RuntimeEntity) -> RuntimeEntity {
-        debugPrint("=== Creating scene")
         let scene: RuntimeEntity = world.spawn(
             DiagramCanvas()
         )
@@ -89,13 +84,20 @@ public class DiagramSceneComposer {
         }
 
         for entity in diagram.outgoing(Depicts.self) where entity.contains(DiagramConnector.self){
-            createConnectorNode(representing: entity, scene: scene.runtimeID, blockMap: repToSceneMap)
+            createConnectorNode(representing: entity,
+                                scene: scene.runtimeID,
+                                sceneNodeMap: repToSceneMap)
         }
-        debugPrint("<-- Created scene with \(scene.children.count) children")
         return scene
     }
     
-    public func updateDiagramObjectRepresentations() {
+    /// Updates all scenes in the world.
+    ///
+    /// What is updated:
+    /// - All block canvas nodes from their represented entities.
+    /// - All connector canvas nodes from their represented entities.
+    ///
+    public func updateScenes() {
         // TODO: Check for dirty, update dirty only
         for node: RuntimeEntity in world.query(BlockCanvasNode.self) {
             guard let representedEntity: RuntimeEntity = node.target(RepresentationOf.self)
@@ -129,8 +131,6 @@ public class DiagramSceneComposer {
         node.relate(ChildOf(), to: scene)
         node.relate(RepresentationOf(), to: representedEntity)
         
-        self.diagramToScene[representedEntity.runtimeID] = node.runtimeID
-        
         updateBlockNode(node, from: representedEntity)
         
         return node.runtimeID
@@ -149,7 +149,6 @@ public class DiagramSceneComposer {
     }
 
     func updateBlockPictogram(_ blockSceneNode: RuntimeEntity, from representedEntity: RuntimeEntity) {
-        print("??? Update pictogram")
         guard let block: DiagramBlock = representedEntity.component()
         else { return }
         
@@ -160,7 +159,7 @@ public class DiagramSceneComposer {
             return
         }
         
-        print("--- Update pictogram: \(pictogram)")
+        // FIXME: Pre-scale all pictograms for given viewport zoom (also for correct SVG symbols)
         let scaledPictogram = pictogram.scaled(viewport.zoom)
         let pictogramNode: RuntimeEntity
         
@@ -315,11 +314,11 @@ public class DiagramSceneComposer {
     ///
     func createConnectorNode(representing representedEntity: RuntimeEntity,
                              scene: RuntimeID,
-                             blockMap: [RuntimeID:RuntimeID]) {
+                             sceneNodeMap: [RuntimeID:RuntimeID]) {
         guard let connector: DiagramConnector = representedEntity.component(),
-              let originID = blockMap[connector.originID],
+              let originID = sceneNodeMap[connector.originID],
               let origin = world.entity(originID),
-              let targetID = blockMap[connector.targetID],
+              let targetID = sceneNodeMap[connector.targetID],
               let target = world.entity(targetID)
         else { return }
 
@@ -360,6 +359,7 @@ public class DiagramSceneComposer {
         
     }
     func updateConnectorStroke(_ sceneNode: RuntimeEntity, from representedEntity: RuntimeEntity) {
+        // FIXME: [IMPORTANT] Midpoints in connector are not transformed to viewport. Use midpoints from wire (but we need to add midpoints to wire).
         guard let connector: DiagramConnector = representedEntity.component(),
               let wire: ConnectorWire = sceneNode.component()
         else { return }
@@ -424,6 +424,7 @@ public class DiagramSceneComposer {
                          midpoints: [Vector2D],
                          lineType: LineType) -> ConnectorWire
     {
+        print("--- Make wire from \(origin.debugDescription) --> \(target.debugDescription)")
         let originPositionComponent: PositionComponent? = origin.component()
         let originPosition = originPositionComponent?.position ?? .zero
 
@@ -435,10 +436,29 @@ public class DiagramSceneComposer {
         let targetCastPoint = midpoints.last ?? originPosition
         let targetDirection = (targetPosition - targetCastPoint).normalized
 
+        let originCollision: CollisionShape?
+        
+        if let originPictogram: RuntimeEntity = origin.target(CanvasNode.Pictogram.self) {
+            originCollision = originPictogram.component()
+        }
+        else {
+            originCollision = origin.component()
+        }
+
+        let targetCollision: CollisionShape?
+        
+        if let targetPictogram: RuntimeEntity = target.target(CanvasNode.Pictogram.self) {
+            targetCollision = targetPictogram.component()
+        }
+        else {
+            targetCollision = target.component()
+        }
+
+        
         let originTouch: Vector2D
-        if let originShape: CollisionShape = origin.component() {
-            let intersect = Geometry.rayIntersection(shape: originShape.shape,
-                                                     position: originPosition + originShape.position,
+        if let originCollision {
+            let intersect = Geometry.rayIntersection(shape: originCollision.shape,
+                                                     position: originPosition + originCollision.position,
                                                      from: originCastPoint,
                                                      direction: originDirection)
             originTouch = intersect ?? originPosition
@@ -448,9 +468,9 @@ public class DiagramSceneComposer {
         }
         
         let targetTouch: Vector2D
-        if let targetShape: CollisionShape = target.component() {
-            let intersect = Geometry.rayIntersection(shape: targetShape.shape,
-                                                     position: targetPosition + targetShape.position,
+        if let targetCollision {
+            let intersect = Geometry.rayIntersection(shape: targetCollision.shape,
+                                                     position: targetPosition + targetCollision.position,
                                                      from: targetCastPoint,
                                                      direction: targetDirection)
             targetTouch = intersect ?? targetPosition

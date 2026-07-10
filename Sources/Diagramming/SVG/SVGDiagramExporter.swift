@@ -146,7 +146,6 @@ public class SVGDiagramSceneRenderer: DiagramSceneRenderer {
         for element in context.elements {
             image.addChild(element)
         }
-        print("BBOX: \(context.bbox)")
         image.viewBox = SVGViewBox(context.bbox)
         image.width = context.bbox.width
         image.height = context.bbox.height
@@ -196,7 +195,7 @@ public class SVGDiagramSceneRenderer: DiagramSceneRenderer {
     }
     public func renderConnector(_ entity: PoieticCore.RuntimeEntity, context: Context) {
         guard let stroke: ConnectorStroke = entity.component()
-        else { debugPrint("!!!  No stroke !!!"); return }
+        else { return }
 
         let group = SVGGroup()
         if let id = entity.objectID {
@@ -218,6 +217,9 @@ public class SVGDiagramSceneRenderer: DiagramSceneRenderer {
             if stroke.isFilled {
                 svgPath.fill = elementStyle?.fill
             }
+            else {
+                svgPath.fill = "none"
+            }
             svgPath.strokeWidth = elementStyle?.strokeWidth ?? 1.0
             group.addChild(svgPath)
         }
@@ -235,6 +237,16 @@ public class SVGDiagramSceneRenderer: DiagramSceneRenderer {
             svgPath.strokeWidth = elementStyle?.strokeWidth ?? 1.0
             group.addChild(svgPath)
         }
+
+        if let wire: ConnectorWire = entity.component() {
+            let circleO = SVGCircle(center: wire.originPoint, radius: 4.0)
+            circleO.stroke = "green"
+            let circleT = SVGCircle(center: wire.targetPoint, radius: 4.0)
+            circleT.stroke = "red"
+            group.addChild(circleO)
+            group.addChild(circleT)
+        }
+        
         context.append(group)
     }
 

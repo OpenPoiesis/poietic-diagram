@@ -20,6 +20,7 @@ let DiagramTestNotation = Notation(
     /// Creates a World with two blocks and one connector between them.
     /// Returns the world and the three entity runtime IDs.
     init() throws {
+
         self.design = Design(metamodel: Metamodel())
         
         let trans = design.createFrame()
@@ -103,9 +104,14 @@ let DiagramTestNotation = Notation(
         #expect(node.contains(CanvasNode.self))
         #expect(node.contains(BlockCanvasNode.self))
         #expect(node.contains(PositionComponent.self))
+
+        let pictogramNode: RuntimeEntity = try #require(node.target(CanvasNode.Pictogram.self))
+
+        #expect(pictogramNode.contains(CollisionShape.self))
     }
 
     @Test func createConnectorNode() throws {
+        // This test assumes only one scene per diagram
         let composer = DiagramSceneComposer(world: world, viewport: ViewportState())
         let diagram = composer.createDiagramFromAll()
         let scene = composer.createScene(diagram: diagram)
@@ -114,8 +120,12 @@ let DiagramTestNotation = Notation(
         
         #expect(node.contains(CanvasNode.self))
         #expect(node.contains(ConnectorCanvasNode.self))
-        #expect(node.containsRelationship(ConnectorCanvasNode.Origin.self, to: blockA.runtimeID))
-        #expect(node.containsRelationship(ConnectorCanvasNode.Target.self, to: blockB.runtimeID))
+
+        let sceneNodeA: RuntimeEntity = try #require(blockA.incoming(RepresentationOf.self).first)
+        let sceneNodeB: RuntimeEntity = try #require(blockB.incoming(RepresentationOf.self).first)
+
+        #expect(node.containsRelationship(ConnectorCanvasNode.Origin.self, to: sceneNodeA.runtimeID))
+        #expect(node.containsRelationship(ConnectorCanvasNode.Target.self, to: sceneNodeB.runtimeID))
     }
 
 }
