@@ -144,16 +144,11 @@ public struct ConnectorCanvasNode: Component {
 
 /// Primary geometry of a connector, regardless of connector glyph.
 ///
-/// - SeeAlso: ``ConnectorStroke`` – visual representation of a connector.
+/// - SeeAlso: ``ConnectorWire`` – used for hit testing and outlines,
+///   ``ConnectorStroke`` – visual representation of a connector.
 ///
-public struct ConnectorWire: Component {
+public struct ConnectorGeometry: Component {
     /// Points of a wire representation of the connector.
-    ///
-    /// Wire is a tessellated centre line that goes through mid-points.
-    /// The array contains at least two points: the origin and the target point.
-    ///
-    public let body: [Vector2D]
-
     /// Point of connector origin, typically a touch point with a collision shape of a block.
     public let originPoint: Vector2D
     /// Direction of an arrowhead towards the origin point.
@@ -177,15 +172,32 @@ public struct ConnectorWire: Component {
                 originDirection: Vector2D,
                 target: Vector2D,
                 targetDirection: Vector2D,
-                midpoints: [Vector2D],
-                body: [Vector2D])
+                midpoints: [Vector2D])
     {
         self.originPoint = origin
         self.originDirection = originDirection
         self.targetPoint = target
         self.targetDirection = targetDirection
-        self.body = body
         self.midpoints = midpoints
+    }
+}
+
+/// Points of a connector wire used for hit testing and for selection outline.
+/// Typically a tessellated points of a connector curve.
+///
+/// - SeeAlso: ``ConnectorGeometry``, ``ConnectorStroke``.
+///
+public struct ConnectorWire: Component {
+    /// Points of a wire representation of the connector.
+    ///
+    /// Wire is a tessellated centre line that goes through mid-points.
+    /// The array contains at least two points: the origin and the target point.
+    ///
+    public let points: [Vector2D]
+
+    public init(points: [Vector2D])
+    {
+        self.points = points
     }
 }
 

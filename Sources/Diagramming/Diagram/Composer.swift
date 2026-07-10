@@ -386,38 +386,100 @@ public class DiagramSceneComposer {
     
     func updateConnectorNode(_ sceneNode: RuntimeEntity, from representedEntity: RuntimeEntity)
     {
-        updateConnectorWire(sceneNode, from: representedEntity)
+        updateConnectorGeometry(sceneNode, from: representedEntity)
         updateConnectorStroke(sceneNode, from: representedEntity)
     }
     
-    func updateConnectorWire(_ sceneNode: RuntimeEntity, from representedEntity: RuntimeEntity) {
+    func updateConnectorGeometry(_ sceneNode: RuntimeEntity, from representedEntity: RuntimeEntity) {
         guard let representedEntity: RuntimeEntity = sceneNode.target(RepresentationOf.self),
               let representedConnector: DiagramConnector = representedEntity.component(),
               let origin: RuntimeEntity = sceneNode.target(ConnectorCanvasNode.Origin.self),
               let target: RuntimeEntity = sceneNode.target(ConnectorCanvasNode.Target.self)
         else { return }
         // TODO: Use PreviewMidpoints
-        let midpoints: [Vector2D]
+        let worldMidpoints: [Vector2D]
         if let preview: PreviewMidpoints = representedEntity.component() {
-            midpoints = preview.midpoints
+            worldMidpoints = preview.midpoints
         }
         else {
-            midpoints = representedConnector.midpoints
+            worldMidpoints = representedConnector.midpoints
         }
-        let sceneMidpoints = midpoints.map { toSceneTransform.apply(to: $0) }
+        // Scene midpoints
+        let midpoints = worldMidpoints.map { toSceneTransform.apply(to: $0) }
+
+        let lineType = representedConnector.glyph.lineType
+        
+        let originPosition: Vector2D = Self.positionWithPreview(of: origin)
+        let targetPosition: Vector2D = Self.positionWithPreview(of: target)
+
+        let originCastPoint = midpoints.first ?? targetPosition
+        let originDirection = (originPosition - originCastPoint).normalized
+        let targetCastPoint = midpoints.last ?? originPosition
+        let targetDirection = (targetPosition - targetCastPoint).normalized
+
+        let originCollision: CollisionShape?
+        
+        if let originPictogram: RuntimeEntity = origin.target(CanvasNode.Pictogram.self) {
+            originCollision = originPictogram.component()
+        }
+        else {
+            originCollision = origin.component()
+        }
+
+        let targetCollision: CollisionShape?
+        
+        if let targetPictogram: RuntimeEntity = target.target(CanvasNode.Pictogram.self) {
+            targetCollision = targetPictogram.component()
+        }
+        else {
+            targetCollision = target.component()
+        }
 
         
-        let wire = Self.makeWire(origin: origin,
-                                 target: target,
-                                 midpoints: sceneMidpoints,
-                                 lineType: representedConnector.glyph.lineType)
+        let originTouch: Vector2D
+        if let originCollision {
+            let intersect = Geometry.rayIntersection(shape: originCollision.shape,
+                                                     position: originPosition + originCollision.position,
+                                                     from: originCastPoint,
+                                                     direction: originDirection)
+            originTouch = intersect ?? originPosition
+        }
+        else {
+            originTouch = originPosition
+        }
+        
+        let targetTouch: Vector2D
+        if let targetCollision {
+            let intersect = Geometry.rayIntersection(shape: targetCollision.shape,
+                                                     position: targetPosition + targetCollision.position,
+                                                     from: targetCastPoint,
+                                                     direction: targetDirection)
+            targetTouch = intersect ?? targetPosition
+        }
+        else {
+            targetTouch = targetPosition
+        }
+
+        let path = Geometry.wirePath(from: originTouch,
+                                     to: targetTouch,
+                                     through: midpoints,
+                                     lineType: lineType)
+
+        let geometry = ConnectorGeometry(origin: originTouch,
+                                         originDirection: originDirection,
+                                         target: targetTouch,
+                                         targetDirection: targetDirection,
+                                         midpoints: midpoints)
+        sceneNode.setComponent(geometry)
+
+        let wire = ConnectorWire(points: path.tessellate())
         sceneNode.setComponent(wire)
         
     }
     func updateConnectorStroke(_ sceneNode: RuntimeEntity, from representedEntity: RuntimeEntity) {
         // FIXME: [IMPORTANT] Midpoints in connector are not transformed to viewport. Use midpoints from wire (but we need to add midpoints to wire).
         guard let connector: DiagramConnector = representedEntity.component(),
-              let wire: ConnectorWire = sceneNode.component()
+              let geometry: ConnectorGeometry = sceneNode.component()
         else { return }
         
         let stroke: ConnectorStroke
@@ -425,11 +487,7 @@ public class DiagramSceneComposer {
         switch glyph.kind {
         case .fat(let kind):
             let outline = Geometry.fatConnectorStroke(
-                originPoint: wire.originPoint,
-                originDirection: wire.originDirection,
-                targetPoint: wire.targetPoint,
-                targetDirection: wire.targetDirection,
-                midpoints: wire.midpoints,
+                geometry: geometry,
                 headSize: glyph.headSize,
                 tailSize: glyph.tailSize,
                 kind: kind
@@ -441,11 +499,7 @@ public class DiagramSceneComposer {
             
         case .thin(let kind):
             let paths = Geometry.thinConnectorStroke(
-                originPoint: wire.originPoint,
-                originDirection: wire.originDirection,
-                targetPoint: wire.targetPoint,
-                targetDirection: wire.targetDirection,
-                midpoints: wire.midpoints,
+                geometry: geometry,
                 tailSize: glyph.tailSize,
                 headSize: glyph.headSize,
                 lineType: glyph.lineType,
@@ -474,7 +528,7 @@ public class DiagramSceneComposer {
         }
         return position
     }
-    
+#if false
     /// Make a connector wire between origin and target entities which are expected to be a diagram
     /// scene entities.
     ///
@@ -562,4 +616,5 @@ public class DiagramSceneComposer {
                                  body: path.tessellate())
         return wire
     }
+#endif
 }

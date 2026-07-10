@@ -151,6 +151,12 @@ public struct ThinConnectorPaths {
 /// - Configurable arrowheads with various types and sizes
 /// - Visual styling through ShapeStyle properties
 ///
+/// ## Derived Components and Entities
+///
+/// Diagram connector is a logical component from which the following components, usually on a
+/// separate entity are derived:
+///
+/// - ``ConnectorGeometry`` – used for line
 ///
 /// ## Interaction
 ///
@@ -208,6 +214,7 @@ public struct DiagramConnector: Component {
 /// - Note: When computing ``DiagramConnectorGeometry`` the ``ConnectorPreview`` and
 ///         ``BlockPreview`` components should be considered as an override.
 ///
+@available(*, deprecated, message: "Use ConnectorWire, ConnectorGeometry and ConnectorStroke")
 public struct DiagramConnectorGeometry: Component {
     // TODO: Add dash style for line path
     // TODO: Add fill flags for head/tail

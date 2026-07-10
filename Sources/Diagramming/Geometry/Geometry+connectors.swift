@@ -175,32 +175,28 @@ extension Geometry {
     ///     - lineType: type of the body line.
     ///     - kind: glyph kind.
     ///
-    public static func thinConnectorStroke(originPoint: Vector2D,
-                                           originDirection: Vector2D,
-                                           targetPoint: Vector2D,
-                                           targetDirection: Vector2D,
-                                           midpoints: [Vector2D],
+    public static func thinConnectorStroke(geometry: ConnectorGeometry,
                                            tailSize: Double,
                                            headSize: Double,
                                            lineType: LineType,
                                            kind: ConnectorGlyph.Thin)
     -> ThinConnectorPaths {
         // Create arrowheads
-        let headArrowhead = Self.createThinArrowhead(at: targetPoint,
-                                                     direction: targetDirection,
+        let headArrowhead = Self.createThinArrowhead(at: geometry.targetPoint,
+                                                     direction: geometry.targetDirection,
                                                      size: headSize,
                                                      type: kind.headType)
         
-        let tailArrowhead = Self.createThinArrowhead(at: originPoint,
-                                                     direction: originDirection,
+        let tailArrowhead = Self.createThinArrowhead(at: geometry.originPoint,
+                                                     direction: geometry.originDirection,
                                                      size: tailSize,
                                                      type: kind.tailType)
         
         // Calculate clipped endpoints
-        let clippedOrigin = originPoint - (originDirection * tailArrowhead.offset)
-        let clippedTarget = targetPoint - (targetDirection * headArrowhead.offset)
+        let clippedOrigin = geometry.originPoint - (geometry.originDirection * tailArrowhead.offset)
+        let clippedTarget = geometry.targetPoint - (geometry.targetDirection * headArrowhead.offset)
         
-        let allPoints = [clippedOrigin] + midpoints + [clippedTarget]
+        let allPoints = [clippedOrigin] + geometry.midpoints + [clippedTarget]
         // Create main line
         let body: BezierPath
         switch lineType {
@@ -213,8 +209,8 @@ extension Geometry {
         }
         
         return ThinConnectorPaths(tail: tailArrowhead.path,
-                             body: body,
-                             head: headArrowhead.path)
+                                  body: body,
+                                  head: headArrowhead.path)
     }
 }
 
@@ -224,11 +220,7 @@ extension Geometry {
     /// Create a bezier path of a fat (outlined) connector, including arrowheads.
     ///
     public static func fatConnectorStroke(
-        originPoint: Vector2D,
-        originDirection: Vector2D,
-        targetPoint: Vector2D,
-        targetDirection: Vector2D,
-        midpoints: [Vector2D],
+        geometry: ConnectorGeometry,
         headSize: Double,
         tailSize: Double,
         kind: ConnectorGlyph.Fat)
@@ -237,10 +229,10 @@ extension Geometry {
         // TODO: Make fat arrowhead size two-dimensional. For now, we just use this magic ratio.
         let PleasantMagicScale = 1.5
         
-        let clippedOrigin = originPoint - (originDirection * kind.tailType.touchPointOffset(tailSize * PleasantMagicScale))
-        let clippedTarget = targetPoint - (targetDirection * kind.headType.touchPointOffset(headSize * PleasantMagicScale))
+        let clippedOrigin = geometry.originPoint - (geometry.originDirection * kind.tailType.touchPointOffset(tailSize * PleasantMagicScale))
+        let clippedTarget = geometry.targetPoint - (geometry.targetDirection * kind.headType.touchPointOffset(headSize * PleasantMagicScale))
 
-        let points =  [clippedOrigin] + midpoints + [clippedTarget]
+        let points =  [clippedOrigin] + geometry.midpoints + [clippedTarget]
 
         let pathThere = Geometry.offsetPolyline(points, offset: kind.width / 2, joinType: kind.joinType)
         let pathBack = Geometry.offsetPolyline(points.reversed(), offset: kind.width / 2, joinType: kind.joinType)
@@ -258,8 +250,8 @@ extension Geometry {
             path.addLine(to: pathBack[0])
         case .regular:
             Self.appendFatArrowhead(path: &path,
-                                    endpoint: targetPoint,
-                                    direction: targetDirection,
+                                    endpoint: geometry.targetPoint,
+                                    direction: geometry.targetDirection,
                                     connectIn: pathThere.last!,
                                     connectOut: pathBack.first!,
                                     size: headSize)
@@ -274,8 +266,8 @@ extension Geometry {
             path.addLine(to: pathThere[0])
         case .regular:
             Self.appendFatArrowhead(path: &path,
-                                    endpoint: originPoint,
-                                    direction: originDirection,
+                                    endpoint: geometry.originPoint,
+                                    direction: geometry.originDirection,
                                     connectIn: pathBack.last!,
                                     connectOut: pathThere.first!,
                                     size: tailSize)
