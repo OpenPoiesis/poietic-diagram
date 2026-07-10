@@ -152,7 +152,7 @@ public struct ConnectorWire: Component {
     /// Wire is a tessellated centre line that goes through mid-points.
     /// The array contains at least two points: the origin and the target point.
     ///
-    public let points: [Vector2D]
+    public let body: [Vector2D]
 
     /// Point of connector origin, typically a touch point with a collision shape of a block.
     public let originPoint: Vector2D
@@ -170,17 +170,22 @@ public struct ConnectorWire: Component {
     /// if there are no midpoints.
     public let targetDirection: Vector2D
     
+    /// Midpoints used for body routing. The body is constructed from midpoints and ``LineType``.
+    public let midpoints: [Vector2D]
+    
     public init(origin: Vector2D,
                 originDirection: Vector2D,
                 target: Vector2D,
                 targetDirection: Vector2D,
-                points: [Vector2D])
+                midpoints: [Vector2D],
+                body: [Vector2D])
     {
         self.originPoint = origin
         self.originDirection = originDirection
         self.targetPoint = target
         self.targetDirection = targetDirection
-        self.points = points
+        self.body = body
+        self.midpoints = midpoints
     }
 }
 

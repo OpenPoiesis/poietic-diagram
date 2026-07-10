@@ -142,7 +142,7 @@ public class DiagramSceneComposer {
     ///
     func updateBlockNode(_ sceneNode: RuntimeEntity, from representedEntity: RuntimeEntity) {
         updateBlockPictogram(sceneNode, from: representedEntity)
-        updateBlockLabel(sceneNode, from: representedEntity)
+        updateBlockLabels(sceneNode, from: representedEntity)
         updateValueIndicator(sceneNode, from: representedEntity)
         updateIssueIndicator(sceneNode, from: representedEntity)
         updateColorSwatch(sceneNode, from: representedEntity)
@@ -183,6 +183,54 @@ public class DiagramSceneComposer {
         }
     }
     
+    func updateBlockLabels(_ blockSceneNode: RuntimeEntity, from representedEntity: RuntimeEntity) {
+        guard let block: DiagramBlock = representedEntity.component()
+        else { return }
+
+        updateBlockLabel(blockSceneNode,
+                         type: CanvasNode.PrimaryLabel(),
+                         text: block.label,
+                         style: CanvasNodeStyle(class: .primaryLabel))
+        updateBlockLabel(blockSceneNode,
+                         type: CanvasNode.SecondaryLabel(),
+                         text: block.secondaryLabel,
+                         style: CanvasNodeStyle(class: .secondaryLabel))
+    }
+
+    func updateBlockLabel<T: Relationship>(_ blockSceneNode: RuntimeEntity,
+                                           type labelType: T,
+                                           text: String?,
+                                           style: CanvasNodeStyle) {
+        guard let text else {
+            if let target: RuntimeEntity = blockSceneNode.target(T.self) {
+                target.despawn()
+            }
+            return
+        }
+        
+        let labelNode: RuntimeEntity
+        
+        if let target: RuntimeEntity = blockSceneNode.target(T.self) {
+            labelNode = target
+            labelNode.setComponent(LabelCanvasNode(text: text, anchor: Vector2D(0.5,0.0)))
+            // TODO: TouchRegion.shape(rect)
+        }
+        else {
+            labelNode = world.spawn(
+                CanvasNode(),
+                Visibility.visible,
+                Interactivity.interactive,
+                PositionComponent(position: .zero),
+                LabelCanvasNode(text: text, anchor: Vector2D(0.5,0.0)),
+                style
+                
+                // TODO: TouchRegion.shape(rect)
+            )
+            labelNode.relate(ChildOf(), to: blockSceneNode)
+            blockSceneNode.relate(labelType, to: labelNode)
+        }
+    }
+
     func updateBlockLabel(_ blockSceneNode: RuntimeEntity, from representedEntity: RuntimeEntity) {
         guard let block: DiagramBlock = representedEntity.component()
         else { return }
@@ -349,11 +397,19 @@ public class DiagramSceneComposer {
               let target: RuntimeEntity = sceneNode.target(ConnectorCanvasNode.Target.self)
         else { return }
         // TODO: Use PreviewMidpoints
-        let midpoints = representedConnector.midpoints.map { toSceneTransform.apply(to: $0) }
+        let midpoints: [Vector2D]
+        if let preview: PreviewMidpoints = representedEntity.component() {
+            midpoints = preview.midpoints
+        }
+        else {
+            midpoints = representedConnector.midpoints
+        }
+        let sceneMidpoints = midpoints.map { toSceneTransform.apply(to: $0) }
 
+        
         let wire = Self.makeWire(origin: origin,
                                  target: target,
-                                 midpoints: midpoints,
+                                 midpoints: sceneMidpoints,
                                  lineType: representedConnector.glyph.lineType)
         sceneNode.setComponent(wire)
         
@@ -368,10 +424,12 @@ public class DiagramSceneComposer {
         let glyph = connector.glyph
         switch glyph.kind {
         case .fat(let kind):
-            let outline = Geometry.fatConnectorPath(
+            let outline = Geometry.fatConnectorStroke(
                 originPoint: wire.originPoint,
+                originDirection: wire.originDirection,
                 targetPoint: wire.targetPoint,
-                midpoints: connector.midpoints,
+                targetDirection: wire.targetDirection,
+                midpoints: wire.midpoints,
                 headSize: glyph.headSize,
                 tailSize: glyph.tailSize,
                 kind: kind
@@ -382,12 +440,14 @@ public class DiagramSceneComposer {
                                      isFilled: true)
             
         case .thin(let kind):
-            let paths = Geometry.thinConnectorPaths(
+            let paths = Geometry.thinConnectorStroke(
                 originPoint: wire.originPoint,
+                originDirection: wire.originDirection,
                 targetPoint: wire.targetPoint,
-                midpoints: connector.midpoints,
-                headSize: glyph.headSize,
+                targetDirection: wire.targetDirection,
+                midpoints: wire.midpoints,
                 tailSize: glyph.tailSize,
+                headSize: glyph.headSize,
                 lineType: glyph.lineType,
                 kind: kind
             )
@@ -401,6 +461,20 @@ public class DiagramSceneComposer {
         
     }
 
+    static func positionWithPreview(of entity: RuntimeEntity) -> Vector2D {
+        let position: Vector2D
+        if let preview: PreviewPositionComponent = entity.component() {
+            position = preview.position
+        }
+        else if let original: PositionComponent = entity.component() {
+            position = original.position
+        }
+        else {
+            position = .zero
+        }
+        return position
+    }
+    
     /// Make a connector wire between origin and target entities which are expected to be a diagram
     /// scene entities.
     ///
@@ -424,12 +498,8 @@ public class DiagramSceneComposer {
                          midpoints: [Vector2D],
                          lineType: LineType) -> ConnectorWire
     {
-        print("--- Make wire from \(origin.debugDescription) --> \(target.debugDescription)")
-        let originPositionComponent: PositionComponent? = origin.component()
-        let originPosition = originPositionComponent?.position ?? .zero
-
-        let targetPositionComponent: PositionComponent? = target.component()
-        let targetPosition = targetPositionComponent?.position ?? .zero
+        let originPosition: Vector2D = Self.positionWithPreview(of: origin)
+        let targetPosition: Vector2D = Self.positionWithPreview(of: target)
 
         let originCastPoint = midpoints.first ?? targetPosition
         let originDirection = (originPosition - originCastPoint).normalized
@@ -488,7 +558,8 @@ public class DiagramSceneComposer {
                                  originDirection: originDirection,
                                  target: targetTouch,
                                  targetDirection: targetDirection,
-                                 points: path.tessellate())
+                                 midpoints: midpoints,
+                                 body: path.tessellate())
         return wire
     }
 }

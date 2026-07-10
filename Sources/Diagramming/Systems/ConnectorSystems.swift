@@ -41,9 +41,7 @@ public struct ConnectorGeometrySystem: System {
     public init(_ world: World) {}
 
     public func update(_ world: World) throws (InternalSystemError) {
-        for (entity, connector) in world.query(DiagramConnector.self) {
-            try update(entity, connector: connector, world: world)
-        }
+        throw InternalSystemError(self, message: "Connector geometry system has been removed")
     }
 
     public func update(_ entity: RuntimeEntity,
@@ -51,87 +49,13 @@ public struct ConnectorGeometrySystem: System {
                        world: World)
     throws (InternalSystemError) {
         // Get origin/target blocks
-        guard let origin = world.entity(connector.originID),
-              let originBlock: DiagramBlock = origin.component(),
-              let target = world.entity(connector.targetID),
-              let targetBlock: DiagramBlock = target.component()
-        else { return }
-        
-        let originPreview: BlockPreview? = origin.component()
-        let targetPreview: BlockPreview? = target.component()
-        let preview: ConnectorPreview? = entity.component()
-        let midpoints = preview?.midpoints ?? connector.midpoints
+//        let geometry = DiagramConnectorGeometry(originTouch: originTouch,
+//                                                targetTouch: targetTouch,
+//                                                midpoints: midpoints,
+//                                                glyph: connector.glyph)
 
-        let (originTouch, targetTouch) = Geometry.touchPoints(
-            originPosition: originPreview?.position ?? originBlock.position,
-            originShape: originBlock.collisionShape,
-            targetPosition: targetPreview?.position ?? targetBlock.position,
-            targetShape: targetBlock.collisionShape,
-            midpoints: midpoints
-        )
-
-        let geometry = DiagramConnectorGeometry(originTouch: originTouch,
-                                                targetTouch: targetTouch,
-                                                midpoints: midpoints,
-                                                glyph: connector.glyph)
-
-        entity.setComponent(geometry)
     }
 }
-
-@available(*, deprecated, message: "Use canvas scene nodes")
-extension DiagramConnectorGeometry {
-    public init(originTouch: Vector2D,
-                targetTouch: Vector2D,
-                midpoints: [Vector2D] = [],
-                glyph: ConnectorGlyph)
-    {
-        let wirePath = Geometry.wirePath(from: originTouch,
-                                         to: targetTouch,
-                                         through: midpoints,
-                                         lineType: glyph.lineType)
-        
-        switch glyph.kind {
-        case .fat(let kind):
-            let outline = Geometry.fatConnectorPath(
-                originPoint: originTouch,
-                targetPoint: targetTouch,
-                midpoints: midpoints,
-                headSize: glyph.headSize,
-                tailSize: glyph.tailSize,
-                kind: kind
-            )
-            
-            self.originPoint = originTouch
-            self.targetPoint = targetTouch
-            self.wire = wirePath
-            self.linePath = outline
-            self.fillPath = outline
-            self.tailArrowhead = nil
-            self.headArrowhead = nil
-            
-        case .thin(let kind):
-            let paths = Geometry.thinConnectorPaths(
-                originPoint: originTouch,
-                targetPoint: targetTouch,
-                midpoints: midpoints,
-                headSize: glyph.headSize,
-                tailSize: glyph.tailSize,
-                lineType: glyph.lineType,
-                kind: kind
-            )
-            
-            self.originPoint = originTouch
-            self.targetPoint = targetTouch
-            self.wire = wirePath
-            self.linePath = paths.body
-            self.fillPath = nil
-            self.tailArrowhead = paths.tail
-            self.headArrowhead = paths.head
-        }
-    }
-}
-
 
 /// System that updates diagram scene trees.
 ///

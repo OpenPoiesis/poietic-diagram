@@ -15,7 +15,7 @@ public struct SVGDiagramStyle: Sendable {
             .normal:SVGShapeStyle(stroke: "black", fill: "gray"),
             .pictogram:SVGShapeStyle(),
             .primaryLabel:SVGShapeStyle(fontName: "IBM Plex Sans", fontSize: 18.0, fontWeight: "600"),
-            .secondaryLabel:SVGShapeStyle(fontName: "IBM Plex Sans", fontSize: 14.0, fontWeight: "200"),
+            .secondaryLabel:SVGShapeStyle(fontName: "IBM Plex Sans", fontSize: 14.0, fontWeight: "200", fontStyle: "italic"),
             .thinConnector:SVGShapeStyle(stroke: "black"),
             .fatConnector:SVGShapeStyle(stroke: "blue", fill: "azure"),
         ],

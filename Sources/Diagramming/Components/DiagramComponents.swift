@@ -129,8 +129,9 @@ public struct DiagramBlock: Component {
 }
 
 // MARK: - Connector
+// TODO: Remove in favour of ConnectorStroke
 /// Geometry of of a thin connector.
-public struct ThinConnector {
+public struct ThinConnectorPaths {
     public let tail: BezierPath
     public let body: BezierPath
     public let head: BezierPath
@@ -150,8 +151,19 @@ public struct ThinConnector {
 /// - Configurable arrowheads with various types and sizes
 /// - Visual styling through ShapeStyle properties
 ///
-/// - SeeAlso: ``DiagramConnectorGeometry``, ``DiagramBlock``, ``TraitConnectorCreationSystem``,
-///   ``ConnectorGeometrySystem``
+///
+/// ## Interaction
+///
+/// During interactive session, such as dragging, the temporary state of midpoints of a connector
+/// are stored on the same entity as the connector in the ``PreviewMidpointsComponent``.
+///
+///
+/// ## Related components
+///
+/// - ``PreviewMidpointsComponent`` on same entity: Preview of midpoints during interactive session.
+///   Midpoints are in design coordinates.
+/// - ``ConnectorCanvasNode`` visual representation of the connector entity, specific for a viewport.
+///    Relates to the original diagram connector through ``RepresentationOf`` relationship.
 ///
 /// - Note: This is not a relationship component. From modelling perspective it is a visual
 ///   representation of a first-class model object. That the model object relates two other

@@ -29,6 +29,12 @@ public struct CanvasNodeStyle: Component {
     /// grey for disabled nodes).
     ///
     let adaptableColor: AdaptableColorKey?
+    
+    init(class styleClass: StyleClass, modifiers: StyleModifierSet = .none, adaptableColor: AdaptableColorKey? = nil) {
+        self.class = styleClass
+        self.modifiers = modifiers
+        self.adaptableColor = adaptableColor
+    }
 }
 
 /// - Note: This is different data type from node type, as this is an information about
@@ -38,6 +44,7 @@ public struct StyleModifierSet: OptionSet, Sendable {
     public init(rawValue: UInt64) {
         self.rawValue = rawValue
     }
+    public static let none: StyleModifierSet = []
     public static let selected      = StyleModifierSet(rawValue: 1 << 0)
     public static let hovered       = StyleModifierSet(rawValue: 1 << 1)
     /// Elements highlighted by search or other means. Different from `selected`.

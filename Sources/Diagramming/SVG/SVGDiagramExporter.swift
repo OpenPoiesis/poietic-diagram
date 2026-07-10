@@ -213,18 +213,18 @@ public class SVGDiagramSceneRenderer: DiagramSceneRenderer {
         
         if let path = stroke.body {
             let svgPath = SVGPath(path)
+            if stroke.isFilled { svgPath.fill = elementStyle?.fill }
+            else { svgPath.fill = "none" }
+
             svgPath.stroke = elementStyle?.stroke
-            if stroke.isFilled {
-                svgPath.fill = elementStyle?.fill
-            }
-            else {
-                svgPath.fill = "none"
-            }
             svgPath.strokeWidth = elementStyle?.strokeWidth ?? 1.0
             group.addChild(svgPath)
         }
         if let path = stroke.headArrowhead {
             let svgPath = SVGPath(path)
+            if stroke.isFilled { svgPath.fill = elementStyle?.fill }
+            else { svgPath.fill = "none" }
+
             svgPath.stroke = elementStyle?.stroke
             svgPath.fill = elementStyle?.fill
             svgPath.strokeWidth = elementStyle?.strokeWidth ?? 1.0
@@ -232,6 +232,9 @@ public class SVGDiagramSceneRenderer: DiagramSceneRenderer {
         }
         if let path = stroke.tailArrowhead {
             let svgPath = SVGPath(path)
+            if stroke.isFilled { svgPath.fill = elementStyle?.fill }
+            else { svgPath.fill = "none" }
+
             svgPath.stroke = elementStyle?.stroke
             svgPath.fill = elementStyle?.fill
             svgPath.strokeWidth = elementStyle?.strokeWidth ?? 1.0
@@ -272,6 +275,7 @@ public class SVGDiagramSceneRenderer: DiagramSceneRenderer {
             element.fontSize = labelStyle.fontSize
             element.fontFamily = labelStyle.fontName
             element.fontWeight = labelStyle.fontWeight
+            element.fontStyle = labelStyle.fontStyle
         }
 
         context.append(element)
