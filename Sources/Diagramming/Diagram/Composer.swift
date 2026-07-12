@@ -31,9 +31,9 @@ public class DiagramSceneComposer {
         self.world = world
         self.viewport = viewport
         self.toSceneTransform = AffineTransform(scale: Vector2D(viewport.zoom, viewport.zoom))
-                                .translated(viewport.offset)
+            .translated(viewport.offset)
     }
-
+    
     /// Creates a diagram entity from all diagram blocks and diagram connectors.
     ///
     /// - **Input**:
@@ -77,12 +77,12 @@ public class DiagramSceneComposer {
         var repToSceneMap: [RuntimeID:RuntimeID] = [:]
         
         scene.relate(RepresentationOf(), to: diagram)
-
+        
         for entity in diagram.outgoing(Depicts.self) where entity.contains(DiagramBlock.self) {
             let node = createBlockNode(representing: entity, scene: scene.runtimeID)
             repToSceneMap[entity.runtimeID] = node
         }
-
+        
         for entity in diagram.outgoing(Depicts.self) where entity.contains(DiagramConnector.self){
             createConnectorNode(representing: entity,
                                 scene: scene.runtimeID,
@@ -105,14 +105,14 @@ public class DiagramSceneComposer {
             
             updateBlockNode(node, from: representedEntity)
         }
-
+        
         for node: RuntimeEntity in world.query(ConnectorCanvasNode.self) {
             guard let representedEntity: RuntimeEntity = node.target(RepresentationOf.self)
             else { continue }
             
             updateConnectorNode(node, from: representedEntity)
         }
-
+        
     }
     /// Create a diagram block node
     ///
@@ -147,7 +147,7 @@ public class DiagramSceneComposer {
         updateIssueIndicator(sceneNode, from: representedEntity)
         updateColorSwatch(sceneNode, from: representedEntity)
     }
-
+    
     func updateBlockPictogram(_ blockSceneNode: RuntimeEntity, from representedEntity: RuntimeEntity) {
         guard let block: DiagramBlock = representedEntity.component()
         else { return }
@@ -159,7 +159,6 @@ public class DiagramSceneComposer {
             return
         }
         
-        // FIXME: Pre-scale all pictograms for given viewport zoom (also for correct SVG symbols)
         let scaledPictogram = pictogram.scaled(viewport.zoom)
         let pictogramNode: RuntimeEntity
         
@@ -186,7 +185,7 @@ public class DiagramSceneComposer {
     func updateBlockLabels(_ blockSceneNode: RuntimeEntity, from representedEntity: RuntimeEntity) {
         guard let block: DiagramBlock = representedEntity.component()
         else { return }
-
+        
         updateBlockLabel(blockSceneNode,
                          type: CanvasNode.PrimaryLabel(),
                          text: block.label,
@@ -196,7 +195,7 @@ public class DiagramSceneComposer {
                          text: block.secondaryLabel,
                          style: CanvasNodeStyle(class: .secondaryLabel))
     }
-
+    
     func updateBlockLabel<T: Relationship>(_ blockSceneNode: RuntimeEntity,
                                            type labelType: T,
                                            text: String?,
@@ -230,39 +229,7 @@ public class DiagramSceneComposer {
             blockSceneNode.relate(labelType, to: labelNode)
         }
     }
-
-    func updateBlockLabel(_ blockSceneNode: RuntimeEntity, from representedEntity: RuntimeEntity) {
-        guard let block: DiagramBlock = representedEntity.component()
-        else { return }
-        
-        guard let text = block.label else {
-            if let target: RuntimeEntity = blockSceneNode.target(CanvasNode.PrimaryLabel.self) {
-                target.despawn()
-            }
-            return
-        }
-        
-        let labelNode: RuntimeEntity
-        
-        if let target: RuntimeEntity = blockSceneNode.target(CanvasNode.PrimaryLabel.self) {
-            labelNode = target
-            labelNode.setComponent(LabelCanvasNode(text: text, anchor: Vector2D(0.5,0.0)))
-            // TODO: TouchRegion.shape(rect)
-        }
-        else {
-            labelNode = world.spawn(
-                CanvasNode(),
-                Visibility.visible,
-                Interactivity.interactive,
-                PositionComponent(position: .zero),
-                LabelCanvasNode(text: text, anchor: Vector2D(0.5,0.0))
-                // TODO: TouchRegion.shape(rect)
-            )
-            labelNode.relate(ChildOf(), to: blockSceneNode)
-            blockSceneNode.relate(CanvasNode.PrimaryLabel(), to: labelNode)
-        }
-    }
-
+    
     func updateValueIndicator(_ blockSceneNode: RuntimeEntity, from representedEntity: RuntimeEntity) {
         let child: RuntimeEntity
         
@@ -279,6 +246,7 @@ public class DiagramSceneComposer {
                 Visibility.visible,
                 Interactivity.inert,
                 PositionComponent(position: .zero),
+                CanvasNodeStyle(class: .valueIndicator),
                 ValueIndicatorCanvasNode(value: nil,
                                          bounds: ValueBounds(min: 0, max: 1, baseline: 0),
                                          size: ValueIndicatorCanvasNode.DefaultSize)
@@ -287,7 +255,7 @@ public class DiagramSceneComposer {
             blockSceneNode.relate(CanvasNode.ValueIndicator(), to: child)
         }
     }
-
+    
     func updateIssueIndicator(_ blockSceneNode: RuntimeEntity, from representedEntity: RuntimeEntity) {
         let child: RuntimeEntity
         
@@ -304,6 +272,7 @@ public class DiagramSceneComposer {
                 visibility,
                 interactivity,
                 PositionComponent(position: .zero),
+                CanvasNodeStyle(class: .issueIndicator),
                 IssueIndicatorCanvasNode(),
                 // TODO: TouchRegion.shape(rect)
             )
@@ -311,7 +280,7 @@ public class DiagramSceneComposer {
             blockSceneNode.relate(CanvasNode.IssueIndicator(), to: child)
         }
     }
-
+    
     func updateColorSwatch(_ blockSceneNode: RuntimeEntity, from representedEntity: RuntimeEntity) {
         guard let block: DiagramBlock = representedEntity.component()
         else { return }
@@ -322,7 +291,7 @@ public class DiagramSceneComposer {
             }
             return
         }
-
+        
         let child: RuntimeEntity
         
         if let target: RuntimeEntity = blockSceneNode.target(CanvasNode.ColorSwatch.self) {
@@ -369,7 +338,7 @@ public class DiagramSceneComposer {
               let targetID = sceneNodeMap[connector.targetID],
               let target = world.entity(targetID)
         else { return }
-
+        
         // 1. Wire
         
         let node: RuntimeEntity = world.spawn(
@@ -390,9 +359,38 @@ public class DiagramSceneComposer {
         updateConnectorStroke(sceneNode, from: representedEntity)
     }
     
+    /// Update connector wire and stroke geometry from connector glyph and two blocks the connector
+    /// is connecting.
+    ///
+    /// - Parameters:
+    ///     - sceneNode: Node to be updated.
+    ///     - representedEntity: Entity the scene node represents and which the scene node is
+    ///       updated from. For components requirements see below.
+    ///
+    /// Component requirements:
+    ///
+    /// - ``sceneNode``: no components required.
+    /// - ``representedEntity``:
+    ///     - ``DiagramConnector`` (required): used to get glyph (``ConnectorGlyph``) and midpoints.
+    ///     - ``PreviewMidpoints`` (optional): midpoints during interactive overriding
+    ///        ``DiagramConnector/midpoints`` if present.
+    ///     - Relationship ``ConnectorCanvasNode/Origin`` and ``ConnectorCanvasNode/Target`` that
+    ///       point to connector origin and target entities, which are expected to have
+    ///       ``BlockCanvasNode`` component to determine connector touch points.
+    ///
+    /// The function produces ``ConnectorGeometry`` and ``ConnectorWire`` components on the
+    /// ``sceneNode`` entity.
+    ///
+    /// Connector touch-points are determined from connector origin and target blocks and
+    /// their pictograms. If the pictogram can not be determined, then position of the blocks is
+    /// used. Position of the connected blocks is taken from ``PreviewPositionComponent`` if present,
+    /// otherwise from ``PositionComponent``. If for some reason the position component is missing,
+    /// the position defaults to zero.
+    ///
+    /// - SeeAlso: ``Geometry/rayIntersection(shape:position:from:direction:)``
+    ///
     func updateConnectorGeometry(_ sceneNode: RuntimeEntity, from representedEntity: RuntimeEntity) {
-        guard let representedEntity: RuntimeEntity = sceneNode.target(RepresentationOf.self),
-              let representedConnector: DiagramConnector = representedEntity.component(),
+        guard let representedConnector: DiagramConnector = representedEntity.component(),
               let origin: RuntimeEntity = sceneNode.target(ConnectorCanvasNode.Origin.self),
               let target: RuntimeEntity = sceneNode.target(ConnectorCanvasNode.Target.self)
         else { return }
@@ -406,17 +404,17 @@ public class DiagramSceneComposer {
         }
         // Scene midpoints
         let midpoints = worldMidpoints.map { toSceneTransform.apply(to: $0) }
-
+        
         let lineType = representedConnector.glyph.lineType
         
         let originPosition: Vector2D = Self.positionWithPreview(of: origin)
         let targetPosition: Vector2D = Self.positionWithPreview(of: target)
-
+        
         let originCastPoint = midpoints.first ?? targetPosition
         let originDirection = (originPosition - originCastPoint).normalized
         let targetCastPoint = midpoints.last ?? originPosition
         let targetDirection = (targetPosition - targetCastPoint).normalized
-
+        
         let originCollision: CollisionShape?
         
         if let originPictogram: RuntimeEntity = origin.target(CanvasNode.Pictogram.self) {
@@ -425,7 +423,7 @@ public class DiagramSceneComposer {
         else {
             originCollision = origin.component()
         }
-
+        
         let targetCollision: CollisionShape?
         
         if let targetPictogram: RuntimeEntity = target.target(CanvasNode.Pictogram.self) {
@@ -434,7 +432,7 @@ public class DiagramSceneComposer {
         else {
             targetCollision = target.component()
         }
-
+        
         
         let originTouch: Vector2D
         if let originCollision {
@@ -459,19 +457,19 @@ public class DiagramSceneComposer {
         else {
             targetTouch = targetPosition
         }
-
+        
         let path = Geometry.wirePath(from: originTouch,
                                      to: targetTouch,
                                      through: midpoints,
                                      lineType: lineType)
-
+        
         let geometry = ConnectorGeometry(origin: originTouch,
                                          originDirection: originDirection,
                                          target: targetTouch,
                                          targetDirection: targetDirection,
                                          midpoints: midpoints)
         sceneNode.setComponent(geometry)
-
+        
         let wire = ConnectorWire(points: path.tessellate())
         sceneNode.setComponent(wire)
         
@@ -507,14 +505,14 @@ public class DiagramSceneComposer {
             )
             
             stroke = ConnectorStroke(body: paths.body,
-                                     headArrowhead: paths.tail,
-                                     tailArrowhead: paths.head,
+                                     headArrowhead: paths.head,
+                                     tailArrowhead: paths.tail,
                                      isFilled: false)
         }
         sceneNode.setComponent(stroke)
         
     }
-
+    
     static func positionWithPreview(of entity: RuntimeEntity) -> Vector2D {
         let position: Vector2D
         if let preview: PreviewPositionComponent = entity.component() {
@@ -528,93 +526,4 @@ public class DiagramSceneComposer {
         }
         return position
     }
-#if false
-    /// Make a connector wire between origin and target entities which are expected to be a diagram
-    /// scene entities.
-    ///
-    /// - Parameters:
-    ///     - origin: Connector origin diagram canvas node, typically ``BlockCanvasNode``.
-    ///     - origin: Connector target diagram canvas node, typically ``BlockCanvasNode``.
-    ///     - midpoints: List of connector midpoints.
-    ///     - lineType: wire path type, used for bezier path computation.
-    ///       See also: ``Geometry/wirePath(from:to:through:lineType:)``
-    ///
-    /// Expected components and their compensation in both origin and target:
-    /// - ``PositionComponent`` is expected and used for block position. If not present then zero
-    ///   point is used.
-    /// - ``CollisionShape`` is expected and used for block collision shape. If not present then
-    ///   the touch point is the block position point.
-    ///
-    /// - SeeAlso: ``Geometry/rayIntersection(shape:position:from:direction:)``
-    ///
-    static func makeWire(origin: RuntimeEntity,
-                         target: RuntimeEntity,
-                         midpoints: [Vector2D],
-                         lineType: LineType) -> ConnectorWire
-    {
-        let originPosition: Vector2D = Self.positionWithPreview(of: origin)
-        let targetPosition: Vector2D = Self.positionWithPreview(of: target)
-
-        let originCastPoint = midpoints.first ?? targetPosition
-        let originDirection = (originPosition - originCastPoint).normalized
-        let targetCastPoint = midpoints.last ?? originPosition
-        let targetDirection = (targetPosition - targetCastPoint).normalized
-
-        let originCollision: CollisionShape?
-        
-        if let originPictogram: RuntimeEntity = origin.target(CanvasNode.Pictogram.self) {
-            originCollision = originPictogram.component()
-        }
-        else {
-            originCollision = origin.component()
-        }
-
-        let targetCollision: CollisionShape?
-        
-        if let targetPictogram: RuntimeEntity = target.target(CanvasNode.Pictogram.self) {
-            targetCollision = targetPictogram.component()
-        }
-        else {
-            targetCollision = target.component()
-        }
-
-        
-        let originTouch: Vector2D
-        if let originCollision {
-            let intersect = Geometry.rayIntersection(shape: originCollision.shape,
-                                                     position: originPosition + originCollision.position,
-                                                     from: originCastPoint,
-                                                     direction: originDirection)
-            originTouch = intersect ?? originPosition
-        }
-        else {
-            originTouch = originPosition
-        }
-        
-        let targetTouch: Vector2D
-        if let targetCollision {
-            let intersect = Geometry.rayIntersection(shape: targetCollision.shape,
-                                                     position: targetPosition + targetCollision.position,
-                                                     from: targetCastPoint,
-                                                     direction: targetDirection)
-            targetTouch = intersect ?? targetPosition
-        }
-        else {
-            targetTouch = targetPosition
-        }
-
-        let path = Geometry.wirePath(from: originTouch,
-                                     to: targetTouch,
-                                     through: midpoints,
-                                     lineType: lineType)
-
-        let wire = ConnectorWire(origin: originTouch,
-                                 originDirection: originDirection,
-                                 target: targetTouch,
-                                 targetDirection: targetDirection,
-                                 midpoints: midpoints,
-                                 body: path.tessellate())
-        return wire
-    }
-#endif
 }

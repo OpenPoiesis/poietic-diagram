@@ -42,31 +42,3 @@ public struct SVGShapeStyle: Sendable {
     public var fontWeight: String?
     public var fontStyle: String?
 }
-
-#if false
-/// Semantic style of a graphic defining its stroke and fill.
-///
-public struct SVGDiagramGraphicStyle {
-    
-    /// Semantic colour of a graphic's stroke.
-    ///
-    /// If `nil`, then the graphic is assumed to have no stroke.
-    let strokeColor: String?
-
-    /// Semantic colour of a graphic's fill.
-    ///
-    /// If `nil`, then the graphic is assumed to have no fill.
-    let fillColor: String?
-    
-    /// Width of a stroke.
-    ///
-    /// Stroke width is ignored if ``strokeColorKey`` is nil.
-    ///
-    let strokeWidth: Double
-    
-    let fontName: String?
-    let fontSize: Double
-    let fontWeight: String
-    let fontStyle: String
-}
-#endif

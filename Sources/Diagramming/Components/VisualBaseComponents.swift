@@ -16,19 +16,6 @@ public struct PositionComponent: Component {
     
 }
 
-/// Component for user-interaction session of a connector.
-///
-/// - Important: The component must be destroyed when the drag or preview operation is concluded.
-///
-public struct PreviewPositionComponent: Component {
-    public init(position: Vector2D) {
-        self.position = position
-    }
-    
-    public let position: Vector2D
-}
-
-
 /// Flag denoting whether an entity has been modified so that other related entities need to be
 /// updated.
 ///

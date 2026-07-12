@@ -120,7 +120,7 @@ public enum StyleClass: String, Sendable {
     case handle
     
     /// Foreground colour of error indicator.
-    case errorIndicator
+    case issueIndicator
 
     /// Colour of colour swatch border.
     case colorSwatch
@@ -129,76 +129,6 @@ public enum StyleClass: String, Sendable {
     case valueIndicator
     case valueIndicatorLine
 
-    public var stringValue: String { return self.rawValue }
-}
-
-
-@available(*, deprecated, message: "Use style class")
-public enum DiagramColorKey: String {
-    // NOTE: If extending this list, make sure the cases do not conflict with AdaptableColorKey
-    
-    /// Color for strokes if not specified otherwise.
-    case defaultStroke
-    /// Color for labels and other text if not specified otherwise.
-    case defaultText
-    
-    /// Canvas background colour.
-    case background
-
-    /// Canvas grid colour.
-    case grid
-    
-    /// Color for pictogram stroke.
-    case pictogram
-    case pictogramMask
-
-    /// Default colour for connector.
-    case connector
-    /// Default colour for fill of outlined connectors.
-    case connectorFill
-    
-    /// Colour of selection mask fill.
-    case selection
-    /// Colour of selection mask outline.
-    case selectionOutline
-    
-    /// Colour of interactive intent such as new object to be placed.
-    case intentShadow
-    
-    /// Colour of object outline mask for interactive target that accepts interaction.
-    case allowedTarget
-    /// Colour of object outline mask for interactive target that does not accept an interaction.
-    /// For example: invalid connection target;
-    case notAllowedTarget
-    
-    /// Colour of mid-point or other handle.
-    case handle
-    
-    /// Foreground colour of error indicator.
-    case errorIndicator
-    /// Background colour of error indicator.
-    case errorIndicatorBackground
-
-    /// Colour of value indicator line.
-    case indicatorLine
-    
-    /// Colour of colour swatch border.
-    case swatchBorder
-    
-    case valueIndicatorBorder
-    case valueIndicatorBackground
-    case valueIndicatorLine
-    
-    case valueDefault
-    /// Colour of value indicator indicating negative value.
-    case valueNegative
-    /// Colour of value indicator indicating value overflow.
-    case valueOverflow
-    /// Colour of value indicator indicating value underflow.
-    case valueUnderflow
-    /// Colour of value indicator indicating that no value is present for given object.
-    case valueEmpty
-    
     public var stringValue: String { return self.rawValue }
 }
 
