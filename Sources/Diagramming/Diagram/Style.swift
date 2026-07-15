@@ -18,8 +18,8 @@ import PoieticCore
 ///
 public struct CanvasNodeStyle: Component {
     /// Style class of the diagram scene node.
-    let `class`: StyleClass
-    let modifiers: StyleModifierSet
+    public let `class`: StyleClass
+    public let modifiers: StyleModifierSet
 
     /// Adaptable colour of the node, if the node or any of its parts have to be rendered in
     /// specific colour.
@@ -28,9 +28,9 @@ public struct CanvasNodeStyle: Component {
     /// make the colour brighter, darer, or might just not display the colour at all (for example
     /// grey for disabled nodes).
     ///
-    let adaptableColor: AdaptableColorKey?
+    public let adaptableColor: AdaptableColorKey?
     
-    init(class styleClass: StyleClass, modifiers: StyleModifierSet = .none, adaptableColor: AdaptableColorKey? = nil) {
+    public init(class styleClass: StyleClass, modifiers: StyleModifierSet = .none, adaptableColor: AdaptableColorKey? = nil) {
         self.class = styleClass
         self.modifiers = modifiers
         self.adaptableColor = adaptableColor
@@ -39,7 +39,7 @@ public struct CanvasNodeStyle: Component {
 
 /// - Note: This is different data type from node type, as this is an information about
 ///   presentation, not behaviour.
-public struct StyleModifierSet: OptionSet, Sendable {
+public struct StyleModifierSet: OptionSet, Sendable, Hashable {
     public let rawValue: UInt64
     public init(rawValue: UInt64) {
         self.rawValue = rawValue
@@ -110,8 +110,9 @@ public enum StyleClass: String, Sendable {
     /// Fat outlined connector.
     case fatConnector
     
-    /// Colour of selection mask fill.
-    case selection
+    /// Colour of highlight, such as selection. Concrete highlight is to be specified with
+    /// ``StyleModifierSet``.
+    case highlight
     
     /// Colour of interactive intent such as new object to be placed.
     case intentShadow

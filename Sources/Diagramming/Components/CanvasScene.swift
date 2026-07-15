@@ -6,16 +6,29 @@
 //
 import PoieticCore
 
+// TODO: Nested relationship structures in CanvasNode: reconsider their location. Does not feel natural.
+//
+
 /// Tag component for a diagram scene root.
 ///
-/// Children of a diagram scene are ``DiagramSceneNode``.
+///  Expected components:
+///  - ``ViewportState``
+///  Expected relationships:
+///  - ``RepresentationOf`` with ``Diagram`` target.
 ///
-public struct DiagramCanvas: Component {
+/// Children  of a diagram scene are ``DiagramSceneNode``.
+///
+///
+public struct DiagramScene: Component {
     // Empty (for now)
 }
 
 
 /// Tag component for all diagram canvas scene nodes.
+///
+/// Relationships:
+/// - ``ChildOf`` – parent node or ``DiagramScene``
+/// - ``Owner`` – root of the canvas – ``DiagramScene`` entity
 ///
 public struct CanvasNode: Component {
     

@@ -7,7 +7,7 @@
 import PoieticCore
 
 extension DiagramSceneComposer {
-    public func layoutDiagram(scene: RuntimeEntity, layout: some LayoutProvider) {
+    public func layout(scene: RuntimeEntity, layout: some LayoutProvider) {
         print("=== Layout diagram scene \(scene) with \(scene.children.count) children")
         for child in scene.children {
             guard child.contains(BlockCanvasNode.self)

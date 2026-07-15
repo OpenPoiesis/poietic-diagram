@@ -7,7 +7,12 @@
 
 import PoieticCore
 
+// TODO: [REFACTORING][IMPORTANT] Update modifiers flags, especially selection for block and connector (see below)
+
 /// Object responsible for creating and synchronising a diagram scene with model.
+///
+/// Scene composer is a stateless bridge between diagram (model) and scene –
+/// a structure with direct renderable representation.
 ///
 /// Main functionality:
 ///
@@ -24,14 +29,27 @@ import PoieticCore
 ///
 public class DiagramSceneComposer {
     public let world: World
-    public let viewport: ViewportState
-    public let toSceneTransform: AffineTransform
     
-    public init(world: World, viewport: ViewportState) {
+    public struct Context {
+        public let scene: RuntimeEntity
+        public let viewport: ViewportState
+        public let toSceneTransform: AffineTransform
+
+        /// Create a new composer context from a scene entity.
+        ///
+        /// Scene is expected to have a ``ViewportState`` component on it. If the component is
+        /// missing, then default viewport state (zero offset, zoom 100%) is used.
+        ///
+        public init(scene: RuntimeEntity) {
+            self.scene = scene
+            self.viewport = scene.component() ?? ViewportState()
+            self.toSceneTransform = AffineTransform(scale: Vector2D(self.viewport.zoom, self.viewport.zoom))
+                .translated(self.viewport.offset)
+        }
+    }
+    
+    public init(world: World) {
         self.world = world
-        self.viewport = viewport
-        self.toSceneTransform = AffineTransform(scale: Vector2D(viewport.zoom, viewport.zoom))
-            .translated(viewport.offset)
     }
     
     /// Creates a diagram entity from all diagram blocks and diagram connectors.
@@ -56,7 +74,8 @@ public class DiagramSceneComposer {
         }
         return diagram
     }
-    
+   
+    // MARK: - Create
     /// Create a diagram scene for a given diagram entity.
     ///
     /// Result:
@@ -69,27 +88,95 @@ public class DiagramSceneComposer {
     /// Called on:
     /// - New diagram.
     ///
-    public func createScene(diagram: RuntimeEntity) -> RuntimeEntity {
+    public func createScene(diagram: RuntimeEntity, viewport: ViewportState = ViewportState()) -> RuntimeEntity {
         let scene: RuntimeEntity = world.spawn(
-            DiagramCanvas()
+            DiagramScene(),
+            viewport
         )
         // Represented block to scene node map
         var repToSceneMap: [RuntimeID:RuntimeID] = [:]
         
         scene.relate(RepresentationOf(), to: diagram)
         
+        let context = Context(scene: scene)
+        
         for entity in diagram.outgoing(Depicts.self) where entity.contains(DiagramBlock.self) {
-            let node = createBlockNode(representing: entity, scene: scene.runtimeID)
+            let node = createBlockNode(representing: entity, context: context)
             repToSceneMap[entity.runtimeID] = node
         }
         
         for entity in diagram.outgoing(Depicts.self) where entity.contains(DiagramConnector.self){
             createConnectorNode(representing: entity,
-                                scene: scene.runtimeID,
+                                context: context,
                                 sceneNodeMap: repToSceneMap)
         }
         return scene
     }
+    
+    /// Create a diagram block node
+    ///
+    /// 1. Spawn a scene block
+    /// 2. Create children:
+    ///  - label
+    func createBlockNode(representing representedEntity: RuntimeEntity, context: Context) -> RuntimeID {
+        let block: DiagramBlock? = representedEntity.component()
+        let position = context.toSceneTransform.apply(to: block?.position ?? .zero)
+        
+        let node: RuntimeEntity = world.spawn(
+            CanvasNode(),
+            BlockCanvasNode(),
+            PositionComponent(position: position),
+        )
+        node.relate(ChildOf(), to: context.scene.runtimeID)
+        node.relate(RepresentationOf(), to: representedEntity)
+        
+        updateBlockNode(node, from: representedEntity, context: context)
+        
+        return node.runtimeID
+    }
+
+    /// - Parameters:
+    ///     - representedEntity: Entity that the new scene node will represent.
+    ///     - scene: Scene of which the new entity will be part of.
+    ///     - blockMap: Mapping between diagram block entities and scene block entities.
+    ///
+    /// - Requires that the blocks are composed
+    ///
+    /// The created connector node entity has the following components and relationships:
+    ///
+    /// - ``CanvasNode``.
+    /// - ``ConnectorCanvasNode``.
+    /// - ``ConnectorWire``.
+    /// - ``ConnectorStroke`` created from connector wire, origin and target block entities.
+    /// - ``ChildOf`` relationship to the ``scene``
+    /// - ``ConnectorCanvasNode/Origin`` to the scene node block representing connector origin.
+    /// - ``ConnectorCanvasNode/Target`` to the scene node block representing connector target.
+    ///
+    func createConnectorNode(representing representedEntity: RuntimeEntity,
+                             context: Context,
+                             sceneNodeMap: [RuntimeID:RuntimeID]) {
+        guard let connector: DiagramConnector = representedEntity.component(),
+              let originID = sceneNodeMap[connector.originID],
+              let origin = world.entity(originID),
+              let targetID = sceneNodeMap[connector.targetID],
+              let target = world.entity(targetID)
+        else { return }
+        
+        // 1. Wire
+        
+        let node: RuntimeEntity = world.spawn(
+            CanvasNode(),
+            ConnectorCanvasNode(),
+        )
+        node.relate(ChildOf(), to: context.scene.runtimeID)
+        node.relate(RepresentationOf(), to: representedEntity)
+        node.relate(ConnectorCanvasNode.Origin(), to: origin)
+        node.relate(ConnectorCanvasNode.Target(), to: target)
+        
+        updateConnectorNode(node, from: representedEntity, context: context)
+    }
+
+    // MARK: - Update
     
     /// Updates all scenes in the world.
     ///
@@ -98,57 +185,40 @@ public class DiagramSceneComposer {
     /// - All connector canvas nodes from their represented entities.
     ///
     public func updateScenes() {
+        // TODO: Alternative names: updateAll(), updateAllScenes(), updateAllSceneNodes()
         // TODO: Check for dirty, update dirty only
         for node: RuntimeEntity in world.query(BlockCanvasNode.self) {
-            guard let representedEntity: RuntimeEntity = node.target(RepresentationOf.self)
+            guard let representedEntity: RuntimeEntity = node.target(RepresentationOf.self),
+                  let scene: RuntimeEntity = node.target(OwnedBy.self)
             else { continue }
-            
-            updateBlockNode(node, from: representedEntity)
+            let context = Context(scene: scene)
+            updateBlockNode(node, from: representedEntity, context: context)
         }
         
         for node: RuntimeEntity in world.query(ConnectorCanvasNode.self) {
-            guard let representedEntity: RuntimeEntity = node.target(RepresentationOf.self)
+            guard let representedEntity: RuntimeEntity = node.target(RepresentationOf.self),
+                    let scene: RuntimeEntity = node.target(OwnedBy.self)
             else { continue }
             
-            updateConnectorNode(node, from: representedEntity)
+            let context = Context(scene: scene)
+            updateConnectorNode(node, from: representedEntity, context: context)
         }
         
     }
-    /// Create a diagram block node
-    ///
-    /// 1. Spawn a scene block
-    /// 2. Create children:
-    ///  - label
-    func createBlockNode(representing representedEntity: RuntimeEntity, scene: RuntimeID) -> RuntimeID {
-        let block: DiagramBlock? = representedEntity.component()
-        let position = toSceneTransform.apply(to: block?.position ?? .zero)
-        
-        let node: RuntimeEntity = world.spawn(
-            CanvasNode(),
-            BlockCanvasNode(),
-            PositionComponent(position: position),
-        )
-        node.relate(ChildOf(), to: scene)
-        node.relate(RepresentationOf(), to: representedEntity)
-        
-        updateBlockNode(node, from: representedEntity)
-        
-        return node.runtimeID
-    }
-    
     /// Update the block node content from the entity the node represents.
     ///
     /// - Note: The caller is responsible to update layout, if necessary.
     ///
-    func updateBlockNode(_ sceneNode: RuntimeEntity, from representedEntity: RuntimeEntity) {
-        updateBlockPictogram(sceneNode, from: representedEntity)
-        updateBlockLabels(sceneNode, from: representedEntity)
-        updateValueIndicator(sceneNode, from: representedEntity)
-        updateIssueIndicator(sceneNode, from: representedEntity)
-        updateColorSwatch(sceneNode, from: representedEntity)
+    func updateBlockNode(_ sceneNode: RuntimeEntity, from representedEntity: RuntimeEntity, context: Context) {
+        updateBlockPictogram(sceneNode, from: representedEntity, context: context)
+        updateBlockLabels(sceneNode, from: representedEntity, context: context)
+        updateValueIndicator(sceneNode, from: representedEntity, context: context)
+        updateIssueIndicator(sceneNode, from: representedEntity, context: context)
+        updateColorSwatch(sceneNode, from: representedEntity, context: context)
+        // TODO: [REFACTORING][IMPORTANT] Update modifiers flags, especially selection
     }
     
-    func updateBlockPictogram(_ blockSceneNode: RuntimeEntity, from representedEntity: RuntimeEntity) {
+    func updateBlockPictogram(_ blockSceneNode: RuntimeEntity, from representedEntity: RuntimeEntity, context: Context) {
         guard let block: DiagramBlock = representedEntity.component()
         else { return }
         
@@ -159,7 +229,7 @@ public class DiagramSceneComposer {
             return
         }
         
-        let scaledPictogram = pictogram.scaled(viewport.zoom)
+        let scaledPictogram = pictogram // FIXME: [REFACTORING] pictogram.scaled(context.viewport.zoom)
         let pictogramNode: RuntimeEntity
         
         if let target: RuntimeEntity = blockSceneNode.target(CanvasNode.Pictogram.self) {
@@ -182,7 +252,7 @@ public class DiagramSceneComposer {
         }
     }
     
-    func updateBlockLabels(_ blockSceneNode: RuntimeEntity, from representedEntity: RuntimeEntity) {
+    func updateBlockLabels(_ blockSceneNode: RuntimeEntity, from representedEntity: RuntimeEntity, context: Context) {
         guard let block: DiagramBlock = representedEntity.component()
         else { return }
         
@@ -230,7 +300,7 @@ public class DiagramSceneComposer {
         }
     }
     
-    func updateValueIndicator(_ blockSceneNode: RuntimeEntity, from representedEntity: RuntimeEntity) {
+    func updateValueIndicator(_ blockSceneNode: RuntimeEntity, from representedEntity: RuntimeEntity, context: Context) {
         let child: RuntimeEntity
         
         if let target: RuntimeEntity = blockSceneNode.target(CanvasNode.ValueIndicator.self) {
@@ -256,7 +326,7 @@ public class DiagramSceneComposer {
         }
     }
     
-    func updateIssueIndicator(_ blockSceneNode: RuntimeEntity, from representedEntity: RuntimeEntity) {
+    func updateIssueIndicator(_ blockSceneNode: RuntimeEntity, from representedEntity: RuntimeEntity, context: Context) {
         let child: RuntimeEntity
         
         if let target: RuntimeEntity = blockSceneNode.target(CanvasNode.IssueIndicator.self) {
@@ -281,7 +351,7 @@ public class DiagramSceneComposer {
         }
     }
     
-    func updateColorSwatch(_ blockSceneNode: RuntimeEntity, from representedEntity: RuntimeEntity) {
+    func updateColorSwatch(_ blockSceneNode: RuntimeEntity, from representedEntity: RuntimeEntity, context: Context) {
         guard let block: DiagramBlock = representedEntity.component()
         else { return }
         
@@ -311,52 +381,12 @@ public class DiagramSceneComposer {
         }
     }
     
-    // MARK: - Connector
-    /// - Parameters:
-    ///     - representedEntity: Entity that the new scene node will represent.
-    ///     - scene: Scene of which the new entity will be part of.
-    ///     - blockMap: Mapping between diagram block entities and scene block entities.
-    ///
-    /// - Requires that the blocks are composed
-    ///
-    /// The created connector node entity has the following components and relationships:
-    ///
-    /// - ``CanvasNode``.
-    /// - ``ConnectorCanvasNode``.
-    /// - ``ConnectorWire``.
-    /// - ``ConnectorStroke`` created from connector wire, origin and target block entities.
-    /// - ``ChildOf`` relationship to the ``scene``
-    /// - ``ConnectorCanvasNode/Origin`` to the scene node block representing connector origin.
-    /// - ``ConnectorCanvasNode/Target`` to the scene node block representing connector target.
-    ///
-    func createConnectorNode(representing representedEntity: RuntimeEntity,
-                             scene: RuntimeID,
-                             sceneNodeMap: [RuntimeID:RuntimeID]) {
-        guard let connector: DiagramConnector = representedEntity.component(),
-              let originID = sceneNodeMap[connector.originID],
-              let origin = world.entity(originID),
-              let targetID = sceneNodeMap[connector.targetID],
-              let target = world.entity(targetID)
-        else { return }
-        
-        // 1. Wire
-        
-        let node: RuntimeEntity = world.spawn(
-            CanvasNode(),
-            ConnectorCanvasNode(),
-        )
-        node.relate(ChildOf(), to: scene)
-        node.relate(RepresentationOf(), to: representedEntity)
-        node.relate(ConnectorCanvasNode.Origin(), to: origin)
-        node.relate(ConnectorCanvasNode.Target(), to: target)
-        
-        updateConnectorNode(node, from: representedEntity)
-    }
     
-    func updateConnectorNode(_ sceneNode: RuntimeEntity, from representedEntity: RuntimeEntity)
+    func updateConnectorNode(_ sceneNode: RuntimeEntity, from representedEntity: RuntimeEntity, context: Context)
     {
-        updateConnectorGeometry(sceneNode, from: representedEntity)
+        updateConnectorGeometry(sceneNode, from: representedEntity, context: context)
         updateConnectorStroke(sceneNode, from: representedEntity)
+        // TODO: [REFACTORING][IMPORTANT] Update modifiers flags, especially selection
     }
     
     /// Update connector wire and stroke geometry from connector glyph and two blocks the connector
@@ -389,7 +419,7 @@ public class DiagramSceneComposer {
     ///
     /// - SeeAlso: ``Geometry/rayIntersection(shape:position:from:direction:)``
     ///
-    func updateConnectorGeometry(_ sceneNode: RuntimeEntity, from representedEntity: RuntimeEntity) {
+    func updateConnectorGeometry(_ sceneNode: RuntimeEntity, from representedEntity: RuntimeEntity, context: Context) {
         guard let representedConnector: DiagramConnector = representedEntity.component(),
               let origin: RuntimeEntity = sceneNode.target(ConnectorCanvasNode.Origin.self),
               let target: RuntimeEntity = sceneNode.target(ConnectorCanvasNode.Target.self)
@@ -403,7 +433,7 @@ public class DiagramSceneComposer {
             worldMidpoints = representedConnector.midpoints
         }
         // Scene midpoints
-        let midpoints = worldMidpoints.map { toSceneTransform.apply(to: $0) }
+        let midpoints = worldMidpoints.map { context.toSceneTransform.apply(to: $0) }
         
         let lineType = representedConnector.glyph.lineType
         

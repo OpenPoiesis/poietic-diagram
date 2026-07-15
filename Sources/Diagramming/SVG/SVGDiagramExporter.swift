@@ -135,7 +135,7 @@ public class SVGDiagramSceneRenderer: DiagramSceneRenderer {
     }
     
     public func renderBlock(_ entity: PoieticCore.RuntimeEntity, context: Context) {
-        // TODO: Separate pictogram rendering into renderPictogram(...)
+        // TODO: [REFACTORING] Separate pictogram rendering into renderPictogram(...)
         guard let pictogramNode: RuntimeEntity = entity.target(CanvasNode.Pictogram.self),
               let pictComp: PictogramCanvasNode = pictogramNode.component()
         else { return }
