@@ -59,7 +59,7 @@ let DiagramTestNotation = Notation(
     // MARK: - Tests
     
     @Test func createDiagramFromAll() throws {
-        let composer = DiagramSceneComposer(world: world, viewport: ViewportState())
+        let composer = DiagramSceneComposer(world: world)
         let diagram = composer.createDiagramFromAll()
         
         // Diagram entity has the Diagram component
@@ -75,11 +75,12 @@ let DiagramTestNotation = Notation(
     }
     
     @Test func createDiagramScene() throws {
-        let composer = DiagramSceneComposer(world: world, viewport: ViewportState())
+        let composer = DiagramSceneComposer(world: world)
         let diagram = composer.createDiagramFromAll()
         let scene = composer.createScene(diagram: diagram)
         
         #expect(scene.children.count == 3)
+        let _: ViewportState = try #require(scene.component())
         
         let blocks = scene.children.filter { $0.contains(BlockCanvasNode.self) }
         let connectors = scene.children.filter { $0.contains(ConnectorCanvasNode.self) }
@@ -95,30 +96,30 @@ let DiagramTestNotation = Notation(
     }
     
     @Test func createBlockNode() throws {
-        let composer = DiagramSceneComposer(world: world, viewport: ViewportState())
+        let composer = DiagramSceneComposer(world: world)
         let diagram = composer.createDiagramFromAll()
         let scene = composer.createScene(diagram: diagram)
         
         let node: RuntimeEntity = try #require(blockA.incoming(RepresentationOf.self).first)
         
-        #expect(node.contains(CanvasNode.self))
+        #expect(node.contains(DiagramSceneNode.self))
         #expect(node.contains(BlockCanvasNode.self))
         #expect(node.contains(PositionComponent.self))
 
-        let pictogramNode: RuntimeEntity = try #require(node.target(CanvasNode.Pictogram.self))
+        let pictogramNode: RuntimeEntity = try #require(node.target(DiagramSceneNode.Pictogram.self))
 
         #expect(pictogramNode.contains(CollisionShape.self))
     }
 
     @Test func createConnectorNode() throws {
         // This test assumes only one scene per diagram
-        let composer = DiagramSceneComposer(world: world, viewport: ViewportState())
+        let composer = DiagramSceneComposer(world: world)
         let diagram = composer.createDiagramFromAll()
         let scene = composer.createScene(diagram: diagram)
         
         let node: RuntimeEntity = try #require(connectorAB.incoming(RepresentationOf.self).first)
         
-        #expect(node.contains(CanvasNode.self))
+        #expect(node.contains(DiagramSceneNode.self))
         #expect(node.contains(ConnectorCanvasNode.self))
 
         let sceneNodeA: RuntimeEntity = try #require(blockA.incoming(RepresentationOf.self).first)
@@ -128,4 +129,19 @@ let DiagramTestNotation = Notation(
         #expect(node.containsRelationship(ConnectorCanvasNode.Target.self, to: sceneNodeB.runtimeID))
     }
 
+    @Test func despawnSceneWhenDiagramDespawns() throws {
+        // Tests whether relationships are correctly set
+        let composer = DiagramSceneComposer(world: world)
+        let diagram = composer.createDiagramFromAll()
+        let scene = composer.createScene(diagram: diagram)
+        
+        let entities: [RuntimeEntity] = Array(world.query(DiagramSceneNode.self))
+        #expect(!entities.isEmpty)
+
+        world.despawn(diagram)
+        
+        #expect(!world.contains(scene))
+        let noEntities: [RuntimeEntity] = Array(world.query(DiagramSceneNode.self))
+        #expect(noEntities.isEmpty)
+    }
 }

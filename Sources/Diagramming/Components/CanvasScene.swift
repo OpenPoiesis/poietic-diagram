@@ -20,6 +20,22 @@ import PoieticCore
 ///
 ///
 public struct DiagramScene: Component {
+    /// Flag component stating that the diagram scene requires re-layout.
+    ///
+    /// Set on:
+    /// - frame change
+    /// - style change
+    ///
+    public struct LayoutDirty: Component {}
+    /// Flag component stating that the diagram scene requires re-computation of geometry.
+    ///
+    /// Set on:
+    /// - frame change
+    /// - viewport change
+    /// - interactive preview
+    /// - style change
+    ///
+    public struct GeometryDirty: Component {}
     // Empty (for now)
 }
 
@@ -30,7 +46,7 @@ public struct DiagramScene: Component {
 /// - ``ChildOf`` – parent node or ``DiagramScene``
 /// - ``Owner`` – root of the canvas – ``DiagramScene`` entity
 ///
-public struct CanvasNode: Component {
+public struct DiagramSceneNode: Component {
     
     /// Relationship tag for primary label of a diagram scene node.
     ///
@@ -79,8 +95,35 @@ public struct CanvasNode: Component {
 
 // MARK: - Block
 
-/// Associated components:
-/// - PictogramComponent
+/// Primary component of an entity representing a block diagram scene node.
+///
+/// Related components that are expected to be associated with the same entity:
+///
+/// - ``CanvasNode``
+/// - ``BlockCanvasNode``
+/// - ``PositionComponent`` – derived from ``DiagramBlock``
+/// - ``PreviewPositionComponent`` – associated during interactive preview, takes precedence before
+///   the position component, if present
+/// - ``Visibility``
+/// - ``Interactivity``
+/// - ``CanvasNodeStyle`` typically with class ``StyleClass/block``
+/// - ``CollisionShape`` – to determine touch points for connector geometry and for hit testing
+///    through the touch region component.
+/// - ``TouchRegion`` – derived from collision shape, in absolute scene coordinates.
+///
+/// Relationships:
+///
+/// | Relationship | Target Entity | Primary Component |
+/// |---|---|---|
+/// | ``CanvasNode/ChildOf`` | canvas node or scene if it is root block | ``CanvasNode`` or ``DiagramScene``
+/// | ``CanvasNode/OwnedBy`` | scene | ``DiagramScene``
+/// | ``CanvasNode/Pictogram`` | block pictogram | ``PictogramCanvasNode``
+/// | ``CanvasNode/Pictogram`` | block pictogram | ``PictogramCanvasNode``
+/// | ``CanvasNode/PrimaryLabel`` | primary block label (name) | ``LabelCanvasNode``
+/// | ``CanvasNode/SecondaryLabel`` | secondary block label (formula or value) | ``LabelCanvasNode``
+/// | ``CanvasNode/ValueIndicator`` | value indicator | ``ValueIndicatorCanvasNode``
+/// | ``CanvasNode/IssueIndicator`` | issue indicator | ``IssueIndicatorCanvasNode``
+///
 public struct BlockCanvasNode: Component { /* Tag component*/ }
 
 public struct PictogramCanvasNode: Component {

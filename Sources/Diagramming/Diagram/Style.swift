@@ -103,8 +103,12 @@ public enum StyleClass: String, Sendable {
     case canvas
     case grid
     
+    /// Non-specific block
+    case block
     case pictogram
 
+    /// Non-specific connector
+    case connector
     /// Thin wire connector.
     case thinConnector
     /// Fat outlined connector.
@@ -153,4 +157,11 @@ public protocol LayoutProvider {
     func metric(_ metric: DiagramLayoutMetric, default defaultValue: Double) -> Double
     /// Compute text extents for a text with given style class (semantic role).
     func textExtents(_ text: String, class styleClass: StyleClass) -> Rect2D
+}
+
+public struct SceneLayoutProvider: Component {
+    public let provider: any LayoutProvider
+    public init(provider: any LayoutProvider) {
+        self.provider = provider
+    }
 }

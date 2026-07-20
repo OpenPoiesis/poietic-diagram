@@ -7,7 +7,7 @@
 import PoieticCore
 
 extension DiagramSceneComposer {
-    public func layout(scene: RuntimeEntity, layout: some LayoutProvider) {
+    public func layout(scene: RuntimeEntity, layout: any LayoutProvider) {
         print("=== Layout diagram scene \(scene) with \(scene.children.count) children")
         for child in scene.children {
             guard child.contains(BlockCanvasNode.self)
@@ -29,7 +29,7 @@ extension DiagramSceneComposer {
     /// - SeeAlso: ``DiagramLayoutStyle``.
     ///
     public func layoutBlock(_ entity: RuntimeEntity, layout: some LayoutProvider) {
-        guard let pictogramNode: RuntimeEntity = entity.target(CanvasNode.Pictogram.self),
+        guard let pictogramNode: RuntimeEntity = entity.target(DiagramSceneNode.Pictogram.self),
               let pictComp: PictogramCanvasNode = pictogramNode.component()
         else { return }
         
@@ -40,7 +40,7 @@ extension DiagramSceneComposer {
         var swatchCenter: Vector2D = labelCenter
 
         // 1. Primary label
-        if let labelEntity: RuntimeEntity = entity.target(CanvasNode.PrimaryLabel.self),
+        if let labelEntity: RuntimeEntity = entity.target(DiagramSceneNode.PrimaryLabel.self),
            let label: LabelCanvasNode = labelEntity.component()
         {
             labelCenter.y += layout.metric(.primaryLabelPadding, default: 0.0)
@@ -55,7 +55,7 @@ extension DiagramSceneComposer {
             labelEntity.setComponent(positionComp)
         }
         // 2. Secondary label
-        if let labelEntity: RuntimeEntity = entity.target(CanvasNode.SecondaryLabel.self),
+        if let labelEntity: RuntimeEntity = entity.target(DiagramSceneNode.SecondaryLabel.self),
            let label: LabelCanvasNode = labelEntity.component()
         {
             let extents = layout.textExtents(label.text, class: .secondaryLabel)
@@ -64,7 +64,7 @@ extension DiagramSceneComposer {
             labelEntity.setComponent(positionComp)
         }
         // 3. Color swatch
-        if let swatchEntity: RuntimeEntity = entity.target(CanvasNode.ColorSwatch.self) {
+        if let swatchEntity: RuntimeEntity = entity.target(DiagramSceneNode.ColorSwatch.self) {
             swatchEntity.setComponent(PositionComponent(position: swatchCenter))
         }
 
