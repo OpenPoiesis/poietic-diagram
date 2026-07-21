@@ -35,38 +35,43 @@ public struct SceneCompositionSystem: System {
     nonisolated(unsafe) public static let dependencies: [SystemDependency] = [
         .after(DiagramObjectsFromTraitsSystem.self),
     ]
-
+    
     public init(_ world: World) {  /* Nothing here for now */  }
-
+    
     public func update(_ world: World) throws(InternalSystemError) {
         let composer = DiagramSceneComposer(world: world)
-        // 1. Update Data.
-        for scene: RuntimeEntity in world.query(DiagramScene.self) {
-            let dirty: Diagram.DirtyContent = scene.component() ?? .all
-            guard dirty.contains(.data) else { continue }
-            composer.updateData(scene: scene)
-        }
+        updateData(world, composer: composer)
+        updateLayout(world, composer: composer)
+        updateGeometry(world, composer: composer)
 
-        // 2. Update Layout.
-        for (scene, _, provider) in world.query(DiagramScene.self, SceneLayoutProvider.self) {
-            let dirty: Diagram.DirtyContent = scene.component() ?? .all
-            guard dirty.contains(.layout) else { continue }
-            composer.layout(scene: scene, layout: provider.provider)
-        }
-        
-        // 3. Update Geometry.
-        for scene: RuntimeEntity in world.query(DiagramScene.self) {
-            let dirty: Diagram.DirtyContent = scene.component() ?? .all
-            guard dirty.contains(.geometry) else { continue }
-            composer.updateGeometry(scene: scene)
-        }
-        
-        // 4. Clean-up.
+        // Clean-up.
         for scene: RuntimeEntity in world.query(DiagramScene.self) {
             scene.removeComponent(Diagram.DirtyContent.self)
         }
         for node: RuntimeEntity in world.query(DiagramSceneNode.self) {
             node.removeComponent(Diagram.DirtyContent.self)
+        }
+    }
+    
+    func updateData(_ world: World, composer: DiagramSceneComposer) {
+        for scene: RuntimeEntity in world.query(DiagramScene.self) {
+            let dirty: Diagram.DirtyContent = scene.component() ?? .all
+            guard dirty.contains(.data) else { continue }
+            composer.updateData(scene: scene)
+        }
+    }
+    func updateLayout(_ world: World, composer: DiagramSceneComposer) {
+        for (scene, _, provider) in world.query(DiagramScene.self, SceneLayoutProvider.self) {
+            let dirty: Diagram.DirtyContent = scene.component() ?? .all
+            guard dirty.contains(.layout) else { continue }
+            composer.layout(scene: scene, layout: provider.provider)
+        }
+    }
+    func updateGeometry(_ world: World, composer: DiagramSceneComposer) {
+        for scene: RuntimeEntity in world.query(DiagramScene.self) {
+            let dirty: Diagram.DirtyContent = scene.component() ?? .all
+            guard dirty.contains(.geometry) else { continue }
+            composer.updateGeometry(scene: scene)
         }
     }
 }

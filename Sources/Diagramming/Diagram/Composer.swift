@@ -388,7 +388,8 @@ public class DiagramSceneComposer {
                                            style: CanvasNodeStyle) {
         guard let text else {
             if let target: RuntimeEntity = blockSceneNode.target(T.self) {
-                target.despawn()
+                target.setComponent(Visibility.hidden)
+                target.setComponent(Interactivity.inert)
             }
             return
         }
@@ -398,6 +399,8 @@ public class DiagramSceneComposer {
         if let target: RuntimeEntity = blockSceneNode.target(T.self) {
             labelNode = target
             labelNode.setComponent(LabelCanvasNode(text: text, anchor: Vector2D(0.5,0.0)))
+            target.setComponent(Visibility.visible)
+            target.setComponent(Interactivity.interactive)
             // TODO: TouchRegion.shape(rect)
         }
         else {
@@ -417,25 +420,40 @@ public class DiagramSceneComposer {
     }
     
     func updateValueIndicator(_ blockSceneNode: RuntimeEntity, from representedEntity: RuntimeEntity) {
-        let child: RuntimeEntity
+        let sample: NumericValueSample? = representedEntity.component()
+        let stats: NumericValueStats? = representedEntity.component()
+        let displayBounds: DisplayValueBounds? = representedEntity.component()
+        let bounds: ValueBounds
+        if let stats {
+            bounds = ValueBounds(min: stats.min, max: stats.max, limit: displayBounds)
+        }
+        else {
+            bounds = ValueBounds(min: displayBounds?.min ?? 0, max: displayBounds?.max ?? 1)
+        }
+        let visibility: Visibility = representedEntity.contains(HasNumericIndicator.self) ? .visible : .hidden
+
         
+        let child: RuntimeEntity
+        let indicatorComponent = ValueIndicatorCanvasNode(
+            value: sample?.value,
+            bounds: bounds,
+            size: ValueIndicatorCanvasNode.DefaultSize
+        )
+
         if let target: RuntimeEntity = blockSceneNode.target(DiagramSceneNode.ValueIndicator.self) {
             child = target
-            child.setComponent(ValueIndicatorCanvasNode(value: nil,
-                                                        bounds: ValueBounds(min: 0, max: 1, baseline: 0),
-                                                        size: ValueIndicatorCanvasNode.DefaultSize))
+            child.setComponent(indicatorComponent)
+            child.setComponent(visibility)
             // TODO: TouchRegion.shape(rect)
         }
         else {
             child = world.spawn(
                 DiagramSceneNode(),
-                Visibility.visible,
+                indicatorComponent,
+                visibility,
                 Interactivity.inert,
                 PositionComponent(position: .zero),
                 CanvasNodeStyle(class: .valueIndicator),
-                ValueIndicatorCanvasNode(value: nil,
-                                         bounds: ValueBounds(min: 0, max: 1, baseline: 0),
-                                         size: ValueIndicatorCanvasNode.DefaultSize)
             )
             child.relate(ChildOf(), to: blockSceneNode)
             blockSceneNode.relate(DiagramSceneNode.ValueIndicator(), to: child)
@@ -444,15 +462,16 @@ public class DiagramSceneComposer {
     
     func updateIssueIndicator(_ blockSceneNode: RuntimeEntity, from representedEntity: RuntimeEntity) {
         let child: RuntimeEntity
-        
+        let visibility: Visibility = representedEntity.hasIssues ? .visible : .hidden
+        let interactivity: Interactivity = representedEntity.hasIssues ? .interactive : .inert
+
         if let target: RuntimeEntity = blockSceneNode.target(DiagramSceneNode.IssueIndicator.self) {
             child = target
-            //            child.setComponent(IssueIndicatorCanvasNode())
+            target.setComponent(visibility)
+            target.setComponent(interactivity)
             // TODO: TouchRegion.shape(rect)
         }
         else {
-            let visibility: Visibility = representedEntity.hasIssues ? .visible : .hidden
-            let interactivity = visibility
             child = world.spawn(
                 DiagramSceneNode(),
                 visibility,
