@@ -24,7 +24,7 @@ public struct PreviewPositionComponent: Component {
         self.position = position
     }
     
-    public let position: Vector2D
+    public var position: Vector2D
 }
 
 /// Component for user-interaction session of a connector.
