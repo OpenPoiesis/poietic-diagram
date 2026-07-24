@@ -105,10 +105,11 @@ let DiagramTestNotation = Notation(
         #expect(node.contains(DiagramSceneNode.self))
         #expect(node.contains(BlockCanvasNode.self))
         #expect(node.contains(PositionComponent.self))
+        #expect(node.contains(CollisionShape.self))
 
         let pictogramNode: RuntimeEntity = try #require(node.target(DiagramSceneNode.Pictogram.self))
 
-        #expect(pictogramNode.contains(CollisionShape.self))
+        #expect(pictogramNode.contains(PictogramCanvasNode.self))
     }
 
     @Test func createConnectorNode() throws {

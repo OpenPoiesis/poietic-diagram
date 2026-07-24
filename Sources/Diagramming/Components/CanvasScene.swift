@@ -5,6 +5,7 @@
 //  Created by Stefan Urbanek on 01/06/2026.
 //
 import PoieticCore
+// TODO: [REFACTORING][IMPORTANT] *CanvasNode to *SceneNode
 
 // TODO: Nested relationship structures in CanvasNode: reconsider their location. Does not feel natural.
 //
@@ -182,6 +183,7 @@ public struct ValueIndicatorCanvasNode: Component {
 /// - ``ConnectorStroke``
 ///
 public struct ConnectorCanvasNode: Component {
+// TODO: [REFACTORING] Rename to ConnectorSceneNode
     /// Relationship tag for connector origin block. Relationship target is expected to be
     /// a ``BlockCanvasNode``.
     ///
