@@ -10,13 +10,14 @@ extension DiagramSceneComposer {
     public func layout(scene: RuntimeEntity, layout: any LayoutProvider) {
         print("=== Layout diagram scene \(scene) with \(scene.children.count) children")
         for child in scene.children {
-            guard child.contains(BlockCanvasNode.self)
-            else { continue }
-            
             layoutBlock(child, layout: layout)
+            // Other canvas node types that need layout go here... (nothing else yet)
         }
     }
+    
     /// Lays out block children nodes such as labels and indicators.
+    ///
+    /// The function positions labels and indicators based on their content and style.
     ///
     /// Usually called when:
     /// - A new block is created.
@@ -29,6 +30,8 @@ extension DiagramSceneComposer {
     /// - SeeAlso: ``DiagramLayoutStyle``.
     ///
     public func layoutBlock(_ entity: RuntimeEntity, layout: some LayoutProvider) {
+        // NOTE: Do not change block position here, only position of block's children.
+        
         guard let pictogramNode: RuntimeEntity = entity.target(DiagramSceneNode.Pictogram.self),
               let pictComp: PictogramCanvasNode = pictogramNode.component()
         else { return }
@@ -53,6 +56,9 @@ extension DiagramSceneComposer {
 
             let positionComp = PositionComponent(position: position)
             labelEntity.setComponent(positionComp)
+            
+            let shape = CollisionShape(position: extents.origin, shape: .rectangle(extents.size))
+            labelEntity.setComponent(shape)
         }
         // 2. Secondary label
         if let labelEntity: RuntimeEntity = entity.target(DiagramSceneNode.SecondaryLabel.self),
@@ -62,10 +68,14 @@ extension DiagramSceneComposer {
             let position = labelCenter
             let positionComp = PositionComponent(position: position)
             labelEntity.setComponent(positionComp)
+
+            let shape = CollisionShape(position: extents.origin, shape: .rectangle(extents.size))
+            labelEntity.setComponent(shape)
         }
         // 3. Color swatch
         if let swatchEntity: RuntimeEntity = entity.target(DiagramSceneNode.ColorSwatch.self) {
             swatchEntity.setComponent(PositionComponent(position: swatchCenter))
+            // Swatch is not yet touchable, no touch region here.
         }
 
     }

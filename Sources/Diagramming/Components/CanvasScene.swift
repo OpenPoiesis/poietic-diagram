@@ -90,6 +90,8 @@ public struct DiagramSceneNode: Component {
     public struct Pictogram: Relationship {
         public static let targetRemovalPolicy: RelationshipRemovalPolicy = .remove
     }
+    
+    public init() { /* Empty */ }
 
 }
 
@@ -125,10 +127,15 @@ public struct DiagramSceneNode: Component {
 /// | ``CanvasNode/ValueIndicator`` | value indicator | ``ValueIndicatorCanvasNode``
 /// | ``CanvasNode/IssueIndicator`` | issue indicator | ``IssueIndicatorCanvasNode``
 ///
-public struct BlockCanvasNode: Component { /* Tag component*/ }
+public struct BlockCanvasNode: Component {
+    public init() { /* Empty */ }
+}
 
 public struct PictogramCanvasNode: Component {
     public let pictogram: Pictogram
+    public init(pictogram: Pictogram) {
+        self.pictogram = pictogram
+    }
 }
 
 
@@ -157,16 +164,18 @@ public struct LabelCanvasNode: Component {
 }
 
 public struct IssueIndicatorCanvasNode: Component {
+    public static let DefaultSize: Double = 10.0
+    public init() { /* Empty */ }
 }
 
 public struct ValueIndicatorCanvasNode: Component {
-    static let DefaultSize = Vector2D(100, 20)
+    public static let DefaultSize = Vector2D(100, 20)
     /// Size of the value indicator in canvas/viewport coordinates.
     public let value: Double?
     public let bounds: ValueBounds
     public let size: Vector2D
 
-    init(value: Double?, bounds: ValueBounds, size: Vector2D) {
+    public init(value: Double?, bounds: ValueBounds, size: Vector2D) {
         self.value = value
         self.bounds = bounds
         self.size = size
@@ -189,6 +198,7 @@ public struct ConnectorCanvasNode: Component {
     ///
     public struct Origin: Relationship {
         public static let targetRemovalPolicy: RelationshipRemovalPolicy = .remove
+        public init() { /* Empty */ }
     }
 
     /// Relationship tag for connector target block. Relationship target is expected to be
@@ -196,7 +206,9 @@ public struct ConnectorCanvasNode: Component {
     ///
     public struct Target: Relationship {
         public static let targetRemovalPolicy: RelationshipRemovalPolicy = .remove
+        public init() { /* Empty */ }
     }
 
+    public init() { /* Empty */ }
 }
 

@@ -18,8 +18,8 @@ import PoieticCore
 ///
 public struct CanvasNodeStyle: Component {
     /// Style class of the diagram scene node.
-    public let `class`: StyleClass
-    public let modifiers: StyleModifierSet
+    public var `class`: StyleClass
+    public var modifiers: StyleModifierSet
 
     /// Adaptable colour of the node, if the node or any of its parts have to be rendered in
     /// specific colour.
@@ -28,7 +28,7 @@ public struct CanvasNodeStyle: Component {
     /// make the colour brighter, darer, or might just not display the colour at all (for example
     /// grey for disabled nodes).
     ///
-    public let adaptableColor: AdaptableColorKey?
+    public var adaptableColor: AdaptableColorKey?
     
     public init(class styleClass: StyleClass, modifiers: StyleModifierSet = .none, adaptableColor: AdaptableColorKey? = nil) {
         self.class = styleClass
@@ -55,14 +55,32 @@ public struct StyleModifierSet: OptionSet, Sendable, Hashable {
     // public static let locked       = StyleModifierSet(rawValue: 1 << 6)
 
     // Interaction
-    public static let allowed       = StyleModifierSet(rawValue: 1 << 7)
-    public static let notAllowed    = StyleModifierSet(rawValue: 1 << 8)
+    /// The node is just an intent to be previewed.
+    ///
+    /// Typical style should be light, shadow-like.
+    public static let preview       = StyleModifierSet(rawValue: 1 << 7)
+    
+    /// Highlight of a node that is an allowed target of an interaction. For example
+    /// a block node representing flow rate of an intended flow connector.
+    public static let allowed       = StyleModifierSet(rawValue: 1 << 8)
+    /// Highlight of a node that is not allowed target of an interaction. For example
+    /// a block node of an auxiliary computation as a target intended flow connector.
+    public static let notAllowed    = StyleModifierSet(rawValue: 1 << 9)
 
+    /// Mask for both `allowed` and `notAllowed` modifiers used to remove them both. Used in
+    /// clean-up:
+    ///
+    /// ```swift
+    /// var modifiers: StyleModifierSet
+    /// modifiers.subtract(.allowedMask)
+    /// ```
+    public static let allowedMask   = StyleModifierSet([.allowed, .notAllowed])
+    
     // Indicated Value
-    public static let overflow      = StyleModifierSet(rawValue: 1 << 9)
-    public static let underflow     = StyleModifierSet(rawValue: 1 << 10)
-    public static let positive      = StyleModifierSet(rawValue: 1 << 11)
-    public static let negative      = StyleModifierSet(rawValue: 1 << 12)
+    public static let overflow      = StyleModifierSet(rawValue: 1 << 10)
+    public static let underflow     = StyleModifierSet(rawValue: 1 << 11)
+    public static let positive      = StyleModifierSet(rawValue: 1 << 12)
+    public static let negative      = StyleModifierSet(rawValue: 1 << 13)
 
     public func asStrings() -> [String] {
         var result: [String] = []

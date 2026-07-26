@@ -55,11 +55,6 @@ public enum Interactivity: Component {
     
     /// Scene node is not interactive.
     case inert
-
-    /// Scene node visibility is inherited from its parent.
-    ///
-    /// - SeeAlso: ``ChildOf``
-    case inherit
 }
 
 /// Component specifying touch region of the component owning entity.

@@ -44,6 +44,14 @@ import PoieticCore
 /// - _Layout_: during interaction or style change which affects layout metrics,
 ///             including fonts and their sizes. Typically no need to call during interaction.
 ///
+/// ## Interactivity
+///
+/// Diagram composer prepares canvas nodes for interactivity by setting ``CollisionShape`` (relative
+/// coordinates to parent) or ``ConnectorWire`` (absolute coordinates) on interactive entities
+/// together with ``Interactivity/interactive`` component.
+///
+/// It is up to the application to create and manage ``TouchRegion`` components.
+///
 public class DiagramSceneComposer {
     public let world: World
     
@@ -151,6 +159,8 @@ public class DiagramSceneComposer {
             BlockCanvasNode(),
             PositionComponent(position: position),
             Diagram.DirtyContent.all,
+            Interactivity.interactive,
+            Visibility.visible,
         )
         node.relate(OwnedBy(), to: context.scene.runtimeID)
         node.relate(ChildOf(), to: context.scene.runtimeID)
@@ -197,6 +207,8 @@ public class DiagramSceneComposer {
             DiagramSceneNode(),
             ConnectorCanvasNode(),
             Diagram.DirtyContent.all,
+            Interactivity.interactive,
+            Visibility.visible,
         )
         node.relate(OwnedBy(), to: context.scene.runtimeID)
         node.relate(ChildOf(), to: context.scene.runtimeID)
@@ -229,7 +241,6 @@ public class DiagramSceneComposer {
         let context = Context(scene: scene)
         for child in scene.children where child.contains(BlockCanvasNode.self) {
             updateBlockPosition(child, context: context)
-            updateBlockCollision(child, context: context)
         }
         for child in scene.children where child.contains(ConnectorCanvasNode.self) {
             updateConnectorGeometry(child, context: context)
@@ -254,14 +265,6 @@ public class DiagramSceneComposer {
         }
         let viewportPosition = context.toSceneTransform.apply(to: position)
         node.setComponent(PositionComponent(position: viewportPosition))
-    }
-    func updateBlockCollision(_ node: RuntimeEntity, context: Context) {
-        guard let represented: RuntimeEntity = node.target(RepresentationOf.self),
-              let block: DiagramBlock = represented.component(),
-              let pictogram = block.pictogram
-        else { return }
-
-        node.setComponent(pictogram.collisionShape)
     }
 
     /// Update the block node content from the entity the node represents.
@@ -292,20 +295,17 @@ public class DiagramSceneComposer {
         }
         
         blockSceneNode.setComponent(pictogram.collisionShape)
-        blockSceneNode.setComponent(TouchRegion.shape(pictogram.collisionShape))
-        
+
         let pictogramNode: RuntimeEntity
         
         if let target: RuntimeEntity = blockSceneNode.target(DiagramSceneNode.Pictogram.self) {
             pictogramNode = target
             pictogramNode.setComponent(PictogramCanvasNode(pictogram: pictogram))
-            pictogramNode.setComponent(TouchRegion.shape(pictogram.collisionShape))
         }
         else {
             pictogramNode = world.spawn(
                 DiagramSceneNode(),
                 Visibility.visible,
-                Interactivity.interactive,
                 PositionComponent(position: .zero),
                 PictogramCanvasNode(pictogram: pictogram),
             )
@@ -331,7 +331,9 @@ public class DiagramSceneComposer {
     func updateBlockLabel<T: Relationship>(_ blockSceneNode: RuntimeEntity,
                                            type labelType: T,
                                            text: String?,
-                                           style: CanvasNodeStyle) {
+                                           style: CanvasNodeStyle)
+    {
+        // Note: Collision shapes of labels are assigned in DiagramSceneComposer.layoutBlock(...)
         guard let text else {
             if let target: RuntimeEntity = blockSceneNode.target(T.self) {
                 target.setComponent(Visibility.hidden)
@@ -347,7 +349,6 @@ public class DiagramSceneComposer {
             labelNode.setComponent(LabelCanvasNode(text: text, anchor: Vector2D(0.5,0.0)))
             target.setComponent(Visibility.visible)
             target.setComponent(Interactivity.interactive)
-            // TODO: TouchRegion.shape(rect)
         }
         else {
             labelNode = world.spawn(
@@ -357,8 +358,6 @@ public class DiagramSceneComposer {
                 PositionComponent(position: .zero),
                 LabelCanvasNode(text: text, anchor: Vector2D(0.5,0.0)),
                 style
-                
-                // TODO: TouchRegion.shape(rect)
             )
             labelNode.relate(ChildOf(), to: blockSceneNode)
             blockSceneNode.relate(labelType, to: labelNode)
@@ -390,7 +389,6 @@ public class DiagramSceneComposer {
             child = target
             child.setComponent(indicatorComponent)
             child.setComponent(visibility)
-            // TODO: TouchRegion.shape(rect)
         }
         else {
             child = world.spawn(
@@ -404,21 +402,27 @@ public class DiagramSceneComposer {
             child.relate(ChildOf(), to: blockSceneNode)
             blockSceneNode.relate(DiagramSceneNode.ValueIndicator(), to: child)
         }
+        
+        // Touch region
+        let shape = CollisionShape(position: .zero,
+                                   shape: .rectangle(ValueIndicatorCanvasNode.DefaultSize))
+        child.setComponent(shape)
+
     }
     
     func updateIssueIndicator(_ blockSceneNode: RuntimeEntity, from representedEntity: RuntimeEntity) {
-        let child: RuntimeEntity
+        let indicator: RuntimeEntity
         let visibility: Visibility = representedEntity.hasIssues ? .visible : .hidden
         let interactivity: Interactivity = representedEntity.hasIssues ? .interactive : .inert
 
         if let target: RuntimeEntity = blockSceneNode.target(DiagramSceneNode.IssueIndicator.self) {
-            child = target
+            indicator = target
             target.setComponent(visibility)
             target.setComponent(interactivity)
             // TODO: TouchRegion.shape(rect)
         }
         else {
-            child = world.spawn(
+            indicator = world.spawn(
                 DiagramSceneNode(),
                 visibility,
                 interactivity,
@@ -427,9 +431,13 @@ public class DiagramSceneComposer {
                 IssueIndicatorCanvasNode(),
                 // TODO: TouchRegion.shape(rect)
             )
-            child.relate(ChildOf(), to: blockSceneNode)
-            blockSceneNode.relate(DiagramSceneNode.IssueIndicator(), to: child)
+            indicator.relate(ChildOf(), to: blockSceneNode)
+            blockSceneNode.relate(DiagramSceneNode.IssueIndicator(), to: indicator)
         }
+        // Touch region
+        let shape = CollisionShape(position: .zero,
+                                   shape: .circle(IssueIndicatorCanvasNode.DefaultSize))
+        indicator.setComponent(shape)
     }
     
     func updateColorSwatch(_ blockSceneNode: RuntimeEntity, from representedEntity: RuntimeEntity) {
@@ -621,17 +629,17 @@ public class DiagramSceneComposer {
                                      to: targetTouch,
                                      through: midpoints,
                                      lineType: lineType)
-        
+        let points = path.tessellate()
+
         let geometry = ConnectorGeometry(origin: originTouch,
                                          originDirection: originDirection,
                                          target: targetTouch,
                                          targetDirection: targetDirection,
                                          midpoints: midpoints)
+        
+
         sceneNode.setComponent(geometry)
-        
-        let wire = ConnectorWire(points: path.tessellate())
-        sceneNode.setComponent(wire)
-        
+        sceneNode.setComponent(ConnectorWire(points: points))
     }
 
     func updateConnectorStroke(_ sceneNode: RuntimeEntity, glyph: ConnectorGlyph) {
