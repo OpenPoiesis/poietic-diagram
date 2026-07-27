@@ -68,8 +68,8 @@ public class DiagramSceneComposer {
         public init(scene: RuntimeEntity) {
             self.scene = scene
             self.viewport = scene.component() ?? ViewportState()
-            self.toSceneTransform = AffineTransform(scale: Vector2D(self.viewport.zoom, self.viewport.zoom))
-                .translated(self.viewport.offset)
+            self.toSceneTransform = AffineTransform(translation: -self.viewport.offset)
+                .scaled(Vector2D(self.viewport.zoom, self.viewport.zoom))
         }
     }
     
@@ -253,12 +253,8 @@ public class DiagramSceneComposer {
         else { return }
 
         let position: Vector2D
-        if let preview: PreviewPositionComponent = node.component() {
+        if let preview: PreviewPositionComponent = represented.component() {
             position = preview.position
-        }
-        else if let original: PositionComponent = node.component() {
-            // TODO: [Remove this comment] We are not using this yet, but let us put it here for instant future-proofing when block.position is removed
-            position = original.position
         }
         else {
             position = block.position
