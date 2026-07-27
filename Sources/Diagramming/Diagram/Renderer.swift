@@ -36,6 +36,12 @@ public protocol DiagramSceneRenderer {
     func renderIssueIndicator(_ entity: RuntimeEntity, context: Context)
     func renderColorSwatch(_ entity: RuntimeEntity, context: Context)
 
+    /// Function to render additional content regardless of node type. For example debugging
+    /// annotations.
+    ///
+    /// Called from default ``render(_:context:)`` after the type dispatch and before descending
+    /// into children.
+    func renderNodeExtras(_ entity: RuntimeEntity, context: Context)
 }
 
 extension DiagramSceneRenderer {
@@ -50,9 +56,7 @@ extension DiagramSceneRenderer {
             context.setTransform(transform)
         }
         
-        if entity.contains(BlockCanvasNode.self) {
-            renderBlock(entity, context: context)
-        }
+        if entity.contains(BlockCanvasNode.self) { renderBlock(entity, context: context) }
         else if entity.contains(ConnectorCanvasNode.self) {
             renderConnector(entity, context: context)
         }
@@ -70,11 +74,17 @@ extension DiagramSceneRenderer {
         }
         else if entity.contains(ColorSwatchCanvasNode.self) {
             renderColorSwatch(entity, context: context)
-
         }
+
+        renderNodeExtras(entity, context: context)
+        
         for child in entity.children {
             render(child, context: context)
         }
         context.restore()
+    }
+    
+    public func renderNodeExtras(_ entity: RuntimeEntity, context: Context) {
+        /* Default implementation does nothing */
     }
 }

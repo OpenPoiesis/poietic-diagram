@@ -151,7 +151,7 @@ public enum StyleClass: String, Sendable {
     case valueLabel
     case valueIndicator
     case valueIndicatorLine
-
+    
     public var stringValue: String { return self.rawValue }
 }
 

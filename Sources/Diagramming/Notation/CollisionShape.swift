@@ -35,7 +35,11 @@ public struct CollisionShape: Equatable, Codable, Sendable, Component {
         self.position = position
         self.shape = shape
     }
-    
+    public init(rectangle: Rect2D) {
+        self.position = rectangle.center
+        self.shape = .rectangle(rectangle.size)
+    }
+
     // TODO: Remove in favour of common pictogram transform when rendering
     public func scaled(_ scale: Double) -> CollisionShape {
         return CollisionShape(

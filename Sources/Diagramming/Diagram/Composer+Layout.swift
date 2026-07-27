@@ -56,7 +56,7 @@ extension DiagramSceneComposer {
 
             labelEntity.setComponent(PositionComponent(position: position))
             
-            let shape = CollisionShape(position: extents.origin, shape: .rectangle(extents.size))
+            let shape = CollisionShape(rectangle: extents)
             labelEntity.setComponent(shape)
         }
         // 2. Secondary label
@@ -68,7 +68,7 @@ extension DiagramSceneComposer {
 
             labelEntity.setComponent(PositionComponent(position: position))
 
-            let shape = CollisionShape(position: extents.origin, shape: .rectangle(extents.size))
+            let shape = CollisionShape(rectangle: extents)
             labelEntity.setComponent(shape)
         }
         // 3. Color swatch
