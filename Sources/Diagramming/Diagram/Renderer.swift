@@ -67,6 +67,9 @@ extension DiagramSceneRenderer {
         }
         else if entity.contains(IssueIndicatorCanvasNode.self) {
             renderIssueIndicator(entity, context: context)
+        }
+        else if entity.contains(ColorSwatchCanvasNode.self) {
+            renderColorSwatch(entity, context: context)
 
         }
         for child in entity.children {

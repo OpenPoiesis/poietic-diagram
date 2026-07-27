@@ -48,14 +48,13 @@ extension DiagramSceneComposer {
         {
             labelCenter.y += layout.metric(.primaryLabelPadding, default: 0.0)
             let extents = layout.textExtents(label.text, class: .primaryLabel)
-            let position = labelCenter
+            let position = labelPosition(center: labelCenter, anchor: label.anchor, extents: extents)
 
-            labelCenter.y = position.y + layout.metric(.secondaryLabelPadding, default: 0.0)
+            labelCenter.y += layout.metric(.secondaryLabelPadding, default: 0.0)
             swatchCenter = Vector2D(position.x - layout.metric(.colorSwatchSize, default: 0.0),
                                     position.y - extents.height/2)
 
-            let positionComp = PositionComponent(position: position)
-            labelEntity.setComponent(positionComp)
+            labelEntity.setComponent(PositionComponent(position: position))
             
             let shape = CollisionShape(position: extents.origin, shape: .rectangle(extents.size))
             labelEntity.setComponent(shape)
@@ -65,9 +64,9 @@ extension DiagramSceneComposer {
            let label: LabelCanvasNode = labelEntity.component()
         {
             let extents = layout.textExtents(label.text, class: .secondaryLabel)
-            let position = labelCenter
-            let positionComp = PositionComponent(position: position)
-            labelEntity.setComponent(positionComp)
+            let position = labelPosition(center: labelCenter, anchor: label.anchor, extents: extents)
+
+            labelEntity.setComponent(PositionComponent(position: position))
 
             let shape = CollisionShape(position: extents.origin, shape: .rectangle(extents.size))
             labelEntity.setComponent(shape)
@@ -78,6 +77,11 @@ extension DiagramSceneComposer {
             // Swatch is not yet touchable, no touch region here.
         }
 
+    }
+    
+    @inlinable
+    func labelPosition(center: Vector2D, anchor: Vector2D, extents: Rect2D) -> Vector2D {
+        return center - extents.origin - extents.size * anchor
     }
 
 }
