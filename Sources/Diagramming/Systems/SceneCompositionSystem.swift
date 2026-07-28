@@ -27,7 +27,7 @@ import PoieticCore
 /// - **Defaults:**
 ///     - ``SceneLayoutProvider`` must be present if layout is requested, otherwise layout phase is
 ///       omitted.
-///     - If ``Diagram/DirtyContent`` component is not set, then ``Diagram/DirtyContent/all`` is
+///     - If ``Diagram/DirtyContent`` component is not set, then empty set (all clean) is
 ///     assumed.
 /// - **Issues collected:** No issues generated.
 ///
