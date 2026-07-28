@@ -39,6 +39,7 @@ public struct SceneCompositionSystem: System {
     public init(_ world: World) {  /* Nothing here for now */  }
     
     public func update(_ world: World) throws(InternalSystemError) {
+        print("⚙️🖼️ Running scene composition system")
         let composer = DiagramSceneComposer(world: world)
         updateData(world, composer: composer)
         updateLayout(world, composer: composer)
@@ -55,22 +56,25 @@ public struct SceneCompositionSystem: System {
     
     func updateData(_ world: World, composer: DiagramSceneComposer) {
         for scene: RuntimeEntity in world.query(DiagramScene.self) {
-            let dirty: Diagram.DirtyContent = scene.component() ?? .all
+            let dirty: Diagram.DirtyContent = scene.component() ?? []
             guard dirty.contains(.data) else { continue }
+            print("  ⚙️📄 Scene data update")
             composer.updateData(scene: scene)
         }
     }
     func updateLayout(_ world: World, composer: DiagramSceneComposer) {
         for (scene, _, provider) in world.query(DiagramScene.self, SceneLayoutProvider.self) {
-            let dirty: Diagram.DirtyContent = scene.component() ?? .all
+            let dirty: Diagram.DirtyContent = scene.component() ?? []
             guard dirty.contains(.layout) else { continue }
+            print("  ⚙️✂️ Scene layout update")
             composer.layout(scene: scene, layout: provider.provider)
         }
     }
     func updateGeometry(_ world: World, composer: DiagramSceneComposer) {
         for scene: RuntimeEntity in world.query(DiagramScene.self) {
-            let dirty: Diagram.DirtyContent = scene.component() ?? .all
+            let dirty: Diagram.DirtyContent = scene.component() ?? []
             guard dirty.contains(.geometry) else { continue }
+            print("  ⚙️📐 geometry update")
             composer.updateGeometry(scene: scene)
         }
     }

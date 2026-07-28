@@ -8,11 +8,12 @@ import PoieticCore
 
 extension DiagramSceneComposer {
     public func layout(scene: RuntimeEntity, layout: any LayoutProvider) {
-        print("=== Layout diagram scene \(scene) with \(scene.children.count) children")
         for child in scene.children {
             layoutBlock(child, layout: layout)
             // Other canvas node types that need layout go here... (nothing else yet)
         }
+
+        scene.modify(Diagram.DirtyContent.self) { $0.remove(.layout) }
     }
     
     /// Lays out block children nodes such as labels and indicators.
@@ -31,7 +32,6 @@ extension DiagramSceneComposer {
     ///
     public func layoutBlock(_ entity: RuntimeEntity, layout: some LayoutProvider) {
         // NOTE: Do not change block position here, only position of block's children.
-        
         guard let pictogramNode: RuntimeEntity = entity.target(DiagramSceneNode.Pictogram.self),
               let pictComp: PictogramCanvasNode = pictogramNode.component()
         else { return }

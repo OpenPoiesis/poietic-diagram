@@ -57,6 +57,7 @@ public struct SceneInteractionSystem: System {
     public init(_ world: World) {  /* Nothing here for now */  }
     
     public func update(_ world: World) throws(InternalSystemError) {
+        // TODO: [REFACTORING] Prevent running if we have up-to-date touch regions. How? Maybe remove the system and add composer phase updateTouchRegions after geometry update and add touchRegions dirty on geometry update
         for scene: RuntimeEntity in world.query(DiagramScene.self) {
             computeTouchRegions(scene: scene)
         }

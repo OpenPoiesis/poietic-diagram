@@ -230,6 +230,7 @@ public class DiagramSceneComposer {
             guard let represented: RuntimeEntity = child.target(RepresentationOf.self) else { continue }
             updateBlockData(child, from: represented)
         }
+        scene.modify(Diagram.DirtyContent.self) { $0.remove(.data) }
     }
 
     // Needs context (viewport) — recomputes viewport-space geometry
@@ -245,6 +246,7 @@ public class DiagramSceneComposer {
         for child in scene.children where child.contains(ConnectorCanvasNode.self) {
             updateConnectorGeometry(child, context: context)
         }
+        scene.modify(Diagram.DirtyContent.self) { $0.remove(.geometry) }
     }
 
     func updateBlockPosition(_ node: RuntimeEntity, context: Context) {
@@ -439,31 +441,30 @@ public class DiagramSceneComposer {
     func updateColorSwatch(_ blockSceneNode: RuntimeEntity, from representedEntity: RuntimeEntity) {
         guard let block: DiagramBlock = representedEntity.component()
         else { return }
-        
-        guard let colorKey = block.accentColor else {
-            if let target: RuntimeEntity = blockSceneNode.target(DiagramSceneNode.ColorSwatch.self) {
-                target.despawn()
-            }
-            return
-        }
-        
-        let child: RuntimeEntity
-        
+
+        let swatch: RuntimeEntity
+
         if let target: RuntimeEntity = blockSceneNode.target(DiagramSceneNode.ColorSwatch.self) {
-            child = target
-            child.setComponent(ColorSwatchCanvasNode(colorKey: colorKey))
+            swatch = target
         }
         else {
-            child = world.spawn(
+            swatch = world.spawn(
                 DiagramSceneNode(),
-                Visibility.visible,
                 Interactivity.inert,
                 PositionComponent(position: .zero),
-                ColorSwatchCanvasNode(colorKey: colorKey)
             )
-            child.relate(ChildOf(), to: blockSceneNode)
-            blockSceneNode.relate(DiagramSceneNode.ColorSwatch(), to: child)
+            swatch.relate(ChildOf(), to: blockSceneNode)
+            blockSceneNode.relate(DiagramSceneNode.ColorSwatch(), to: swatch)
         }
+        if let colorKey = block.accentColor {
+            swatch.setComponent(ColorSwatchCanvasNode(colorKey: colorKey))
+            swatch.setComponent(Visibility.visible)
+        }
+        else {
+            swatch.setComponent(Visibility.hidden)
+        }
+
+        // TODO: Do we need touch region for color swatch? Maybe for inspector?
     }
     
     // TODO: Move the component documentation to ConnectorSceneNode, also split to two scenarios: with and without represented entity
