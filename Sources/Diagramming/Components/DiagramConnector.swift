@@ -21,6 +21,9 @@ import PoieticCore
 /// - Configurable arrowheads with various types and sizes
 /// - Visual styling through ShapeStyle properties
 ///
+/// Objects with `DiagramConnector` component are expected to have ``DiagramObject`` tag
+/// as well.
+///
 /// ## Derived Components and Entities
 ///
 /// Diagram connector is a logical component. Its visual representation are entities with
@@ -44,6 +47,8 @@ import PoieticCore
 /// - Note: This is not a relationship component. From modelling perspective it is a visual
 ///   representation of a first-class model object. That the model object relates two other
 ///   model objects together is irrelevant for the concept of visual representation itself.
+///
+/// - SeeAlso:  ``DiagramObject``, ``Diagram``
 ///
 public struct DiagramConnector: Component {
     // TODO: Change origin/target to Relationship components to be consistent with the world data model

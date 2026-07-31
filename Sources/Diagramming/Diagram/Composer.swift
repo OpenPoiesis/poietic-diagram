@@ -86,7 +86,7 @@ public class DiagramSceneComposer {
     ///
     /// - Returns: Created diagram entity.
     ///
-    public func createDiagramFromAll() -> RuntimeEntity {
+    public static func createDiagramFromAll(world: World) -> RuntimeEntity {
         let diagram: RuntimeEntity = world.spawn(
             Diagram()
         )
@@ -145,7 +145,7 @@ public class DiagramSceneComposer {
     /// - ``CanvasNode``
     /// - ``BlockCanvasNode``
     /// - ``PositionComponent``
-    /// - ``OwnedBy`` relationship to a scene which owns the node
+    /// - ``MemberOf`` relationship to a scene which owns the node
     /// - ``ChildOf`` relationship to other scene node or the scene itself.
     ///
     /// Upon creation the block node is set as dirty with ``Diagram/DirtyContent/all``.
@@ -158,13 +158,14 @@ public class DiagramSceneComposer {
             DiagramSceneNode(),
             BlockCanvasNode(),
             PositionComponent(position: position),
-            Diagram.DirtyContent.all,
             Interactivity.interactive,
             Visibility.visible,
+            LayoutDirty(),
         )
-        node.relate(OwnedBy(), to: context.scene.runtimeID)
+        node.relate(MemberOf(), to: context.scene.runtimeID)
         node.relate(ChildOf(), to: context.scene.runtimeID)
         node.relate(RepresentationOf(), to: representedEntity)
+        context.scene.setComponent(LayoutDirty())
 
         updateBlockData(node, from: representedEntity)
         
@@ -206,17 +207,17 @@ public class DiagramSceneComposer {
         let node: RuntimeEntity = world.spawn(
             DiagramSceneNode(),
             ConnectorCanvasNode(),
-            Diagram.DirtyContent.all,
             Interactivity.interactive,
             Visibility.visible,
+//            LayoutDirty(),
         )
-        node.relate(OwnedBy(), to: context.scene.runtimeID)
+        node.relate(MemberOf(), to: context.scene.runtimeID)
         node.relate(ChildOf(), to: context.scene.runtimeID)
         node.relate(RepresentationOf(), to: representedEntity)
         node.relate(ConnectorCanvasNode.Origin(), to: origin)
         node.relate(ConnectorCanvasNode.Target(), to: target)
         
-        updateConnectorGeometry(node, context: context)
+        updateConnectorGeometry(node, from: representedEntity, context: context)
     }
 
     // MARK: - Update
@@ -225,12 +226,12 @@ public class DiagramSceneComposer {
     ///
     /// - SeeAlso: ``updateGeometry(scene:)``
     ///
+    @available(*, deprecated, message: "Use SceneCompositionSystem for world-wide update")
     public func updateData(scene: RuntimeEntity) {
         for child in scene.children where child.contains(BlockCanvasNode.self) {
             guard let represented: RuntimeEntity = child.target(RepresentationOf.self) else { continue }
             updateBlockData(child, from: represented)
         }
-        scene.modify(Diagram.DirtyContent.self) { $0.remove(.data) }
     }
 
     // Needs context (viewport) — recomputes viewport-space geometry
@@ -238,20 +239,29 @@ public class DiagramSceneComposer {
     ///
     /// Called when viewport of the scene changes.
     ///
+    @available(*, deprecated, message: "Use SceneCompositionSystem for world-wide update")
     public func updateGeometry(scene: RuntimeEntity) {
         let context = Context(scene: scene)
         for child in scene.children where child.contains(BlockCanvasNode.self) {
-            updateBlockPosition(child, context: context)
+            guard let represented: RuntimeEntity = child.target(RepresentationOf.self)
+            else { continue }
+            updateBlockGeometry(child, from: represented)
         }
         for child in scene.children where child.contains(ConnectorCanvasNode.self) {
-            updateConnectorGeometry(child, context: context)
+            guard let represented: RuntimeEntity = child.target(RepresentationOf.self)
+            else { continue }
+            updateConnectorGeometry(child, from: represented, context: context)
         }
-        scene.modify(Diagram.DirtyContent.self) { $0.remove(.geometry) }
     }
 
-    func updateBlockPosition(_ node: RuntimeEntity, context: Context) {
-        guard let represented: RuntimeEntity = node.target(RepresentationOf.self),
-              let block: DiagramBlock = represented.component()
+    func updateBlockGeometry(_ node: RuntimeEntity, from represented: RuntimeEntity) {
+        // TODO: Consider defaults (no scene)
+        guard let scene: RuntimeEntity = node.target(MemberOf.self) else { return }
+        updateBlockPosition(node, from: represented, context: Context(scene: scene))
+    }
+
+    func updateBlockPosition(_ node: RuntimeEntity, from represented: RuntimeEntity, context: Context) {
+        guard let block: DiagramBlock = represented.component()
         else { return }
 
         let position: Vector2D
@@ -275,6 +285,13 @@ public class DiagramSceneComposer {
         updateValueIndicator(sceneNode, from: representedEntity)
         updateIssueIndicator(sceneNode, from: representedEntity)
         updateColorSwatch(sceneNode, from: representedEntity)
+
+        // TODO: Set only when relevant components changed
+        sceneNode.setComponent(InteractionDirty())
+        sceneNode.withChildrenRecursively {
+            guard $0.contains(Interactivity.self) else { return }
+            $0.setComponent(InteractionDirty())
+        }
         // TODO: [REFACTORING][IMPORTANT] Update modifiers flags, especially selection
     }
     
@@ -285,6 +302,7 @@ public class DiagramSceneComposer {
         guard let block: DiagramBlock = representedEntity.component()
         else { return }
         
+        // FIXME: [REFACTORING] Do not despawn, Just hide
         guard let pictogram = block.pictogram else {
             if let target: RuntimeEntity = blockSceneNode.target(DiagramSceneNode.Pictogram.self) {
                 target.despawn()
@@ -473,6 +491,8 @@ public class DiagramSceneComposer {
     ///
     /// - Parameters:
     ///     - sceneNode: Node to be updated.
+    ///     - represented: Design object entity that the connector represents. If `nil` then
+    ///       non-represented connector is assumed, such as new connector intent.
     ///     - context: composer context
     ///
     /// Situation:
@@ -534,10 +554,23 @@ public class DiagramSceneComposer {
     ///
     /// - SeeAlso: ``Geometry/rayIntersection(shape:position:from:direction:)``
     ///
-    func updateConnectorGeometry(_ sceneNode: RuntimeEntity, context: Context)
+    func updateConnectorGeometry(_ sceneNode: RuntimeEntity,
+                                 from represented: RuntimeEntity? = nil,
+                                 context providedContext: Context? = nil)
     {
-        let representedEntity: RuntimeEntity? = sceneNode.target(RepresentationOf.self)
-        let representedConnector: DiagramConnector? = representedEntity?.component()
+        let context: Context
+        if let providedContext {
+            context = providedContext
+        }
+        else if let scene: RuntimeEntity = sceneNode.target(MemberOf.self) {
+            context = Context(scene: scene)
+        }
+        else {
+            // TODO: Consider defaults
+            return
+        }
+
+        let representedConnector: DiagramConnector? = represented?.component()
         
         let glyph: ConnectorGlyph
 
@@ -559,7 +592,7 @@ public class DiagramSceneComposer {
         }
         
         let worldMidpoints: [Vector2D]
-        if let preview: PreviewMidpoints = representedEntity?.component() {
+        if let preview: PreviewMidpoints = represented?.component() {
             worldMidpoints = preview.midpoints
         }
         else {

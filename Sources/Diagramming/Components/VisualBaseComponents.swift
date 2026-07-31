@@ -16,14 +16,6 @@ public struct PositionComponent: Component {
     
 }
 
-/// Flag denoting whether an entity has been modified so that other related entities need to be
-/// updated.
-///
-/// Typical use case: when a position of a diagram block is changed, a block entity is marked as
-/// dirty so that the geometry of connectors is recomputed and visuals are updated.
-///
-struct IsDirty: Component { /* Tag component */ }
-
 /// Component stating visibility of a scene node.
 ///
 /// - SeeAlso: ``Interactivity``
@@ -59,7 +51,7 @@ public enum Interactivity: Component {
 
 /// Component specifying touch region of the component owning entity.
 ///
-/// - SeeAlso: ``Interactivity``
+/// - SeeAlso: ``Interactivity``, ``InteractionDirty``
 ///
 public enum TouchRegion: Component {
     public static let DefaultHitRadius: Double = 4.0
@@ -91,4 +83,10 @@ public enum TouchRegion: Component {
             return false
         }
     }
+}
+
+/// Component for tagging visual entities that require re-computation of ``TouchRegion``
+///
+public struct InteractionDirty: Component {
+    public init() { /* Empty */ }
 }

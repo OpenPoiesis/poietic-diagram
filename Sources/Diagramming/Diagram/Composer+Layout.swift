@@ -12,8 +12,6 @@ extension DiagramSceneComposer {
             layoutBlock(child, layout: layout)
             // Other canvas node types that need layout go here... (nothing else yet)
         }
-
-        scene.modify(Diagram.DirtyContent.self) { $0.remove(.layout) }
     }
     
     /// Lays out block children nodes such as labels and indicators.

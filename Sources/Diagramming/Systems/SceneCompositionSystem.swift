@@ -33,49 +33,116 @@ import PoieticCore
 ///
 public struct SceneCompositionSystem: System {
     nonisolated(unsafe) public static let dependencies: [SystemDependency] = [
-        .after(DiagramObjectsFromTraitsSystem.self),
+        .after(TraitsToDiagramObjectsSystem.self),
     ]
     
     public init(_ world: World) {  /* Nothing here for now */  }
     
     public func update(_ world: World) throws(InternalSystemError) {
-        print("⚙️🖼️ Running scene composition system")
         let composer = DiagramSceneComposer(world: world)
         updateData(world, composer: composer)
         updateLayout(world, composer: composer)
         updateGeometry(world, composer: composer)
 
-        // Clean-up.
-        for scene: RuntimeEntity in world.query(DiagramScene.self) {
-            scene.removeComponent(Diagram.DirtyContent.self)
-        }
-        for node: RuntimeEntity in world.query(DiagramSceneNode.self) {
-            node.removeComponent(Diagram.DirtyContent.self)
-        }
     }
-    
+
     func updateData(_ world: World, composer: DiagramSceneComposer) {
-        for scene: RuntimeEntity in world.query(DiagramScene.self) {
-            let dirty: Diagram.DirtyContent = scene.component() ?? []
-            guard dirty.contains(.data) else { continue }
-            print("  ⚙️📄 Scene data update")
-            composer.updateData(scene: scene)
+        for sceneNode: RuntimeEntity in world.query(BlockCanvasNode.self) {
+            guard let represented: RuntimeEntity = sceneNode.target(RepresentationOf.self),
+                  let flags: DirtyContent = represented.component(),
+                  flags.contains(.data)
+            else { continue }
+            composer.updateBlockData(sceneNode, from: represented)
+        }
+        // No connector data to be updated here yet.
+    }
+
+    /// Update geometry of scene nodes.
+    ///
+    /// - Block Nodes:
+    ///     - when represented entity is dirty
+    ///     - when scene has ``ViewportDirty``
+    /// - Connector Nodes:
+    ///     - when represented entity is dirty
+    ///     - when scene has ``ViewportDirty``
+    ///     - when either origin or target
+    func updateGeometry(_ world: World, composer: DiagramSceneComposer) {
+        var dirtyBlocks: Set<RuntimeID> = Set()
+        
+        // TODO: Update WHEN: original is geometry dirty OR scene is geometry dirty
+        for sceneNode: RuntimeEntity in world.query(BlockCanvasNode.self) {
+            guard let represented: RuntimeEntity = sceneNode.target(RepresentationOf.self)
+            else { continue }
+
+            var isDirty: Bool = false
+
+            if let flags: DirtyContent = represented.component() {
+                isDirty = flags.contains(.geometry)
+            }
+            if let scene: RuntimeEntity = sceneNode.target(MemberOf.self) {
+                isDirty = isDirty || scene.contains(ViewportDirty.self)
+            }
+                  
+            guard isDirty else { continue }
+            
+            dirtyBlocks.insert(represented.runtimeID)
+            composer.updateBlockGeometry(sceneNode, from: represented)
+        }
+        
+        for sceneNode: RuntimeEntity in world.query(ConnectorCanvasNode.self) {
+            guard let represented: RuntimeEntity = sceneNode.target(RepresentationOf.self)
+            else { continue }
+
+            var isDirty: Bool = false
+            if let flags: DirtyContent = represented.component() {
+                isDirty = flags.contains(.geometry)
+            }
+            if let scene: RuntimeEntity = sceneNode.target(MemberOf.self) {
+                isDirty = isDirty || scene.contains(ViewportDirty.self)
+            }
+            if let connector: DiagramConnector = represented.component() {
+                isDirty = dirtyBlocks.contains(connector.originID) ||
+                            dirtyBlocks.contains(connector.targetID)
+
+            }
+
+            guard isDirty else { continue }
+            
+            composer.updateConnectorGeometry(sceneNode, from: represented)
         }
     }
+
     func updateLayout(_ world: World, composer: DiagramSceneComposer) {
         for (scene, _, provider) in world.query(DiagramScene.self, SceneLayoutProvider.self) {
-            let dirty: Diagram.DirtyContent = scene.component() ?? []
-            guard dirty.contains(.layout) else { continue }
-            print("  ⚙️✂️ Scene layout update")
+            guard scene.contains(LayoutDirty.self)
+            else { continue }
+
             composer.layout(scene: scene, layout: provider.provider)
         }
     }
-    func updateGeometry(_ world: World, composer: DiagramSceneComposer) {
-        for scene: RuntimeEntity in world.query(DiagramScene.self) {
-            let dirty: Diagram.DirtyContent = scene.component() ?? []
-            guard dirty.contains(.geometry) else { continue }
-            print("  ⚙️📐 geometry update")
-            composer.updateGeometry(scene: scene)
-        }
-    }
+
+//    func updateData(_ world: World, composer: DiagramSceneComposer) {
+//        for scene: RuntimeEntity in world.query(DiagramScene.self) {
+//            let dirty: Diagram.DirtyContent = scene.component() ?? []
+//            guard dirty.contains(.data) else { continue }
+//            print("  ⚙️📄 Scene data update")
+//            composer.updateData(scene: scene)
+//        }
+//    }
+//    func updateLayout(_ world: World, composer: DiagramSceneComposer) {
+//        for (scene, _, provider) in world.query(DiagramScene.self, SceneLayoutProvider.self) {
+//            let dirty: Diagram.DirtyContent = scene.component() ?? []
+//            guard dirty.contains(.layout) else { continue }
+//            print("  ⚙️✂️ Scene layout update")
+//            composer.layout(scene: scene, layout: provider.provider)
+//        }
+//    }
+//    func updateGeometry(_ world: World, composer: DiagramSceneComposer) {
+//        for scene: RuntimeEntity in world.query(DiagramScene.self) {
+//            let dirty: Diagram.DirtyContent = scene.component() ?? []
+//            guard dirty.contains(.geometry) else { continue }
+//            print("  ⚙️📐 geometry update")
+//            composer.updateGeometry(scene: scene)
+//        }
+//    }
 }

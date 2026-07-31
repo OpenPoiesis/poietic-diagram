@@ -12,34 +12,23 @@ import PoieticCore
 
 /// Tag component for a diagram scene root.
 ///
-///  Expected components:
-///  - ``ViewportState``
-///  Expected relationships:
+///  Required relationships:
 ///  - ``RepresentationOf`` with ``Diagram`` target.
+///
+///  Expected components:
+///  - ``ViewportState``. If not present, then viewport with offset (0,0) and zoom of 1 is used.
 ///
 /// Children  of a diagram scene are ``DiagramSceneNode``.
 ///
-///
 public struct DiagramScene: Component {
-    /// Flag component stating that the diagram scene requires re-layout.
-    ///
-    /// Set on:
-    /// - frame change
-    /// - style change
-    ///
-    public struct LayoutDirty: Component {}
-    /// Flag component stating that the diagram scene requires re-computation of geometry.
-    ///
-    /// Set on:
-    /// - frame change
-    /// - viewport change
-    /// - interactive preview
-    /// - style change
-    ///
-    public struct GeometryDirty: Component {}
-    // Empty (for now)
+    public init() { /* Empty */ }
 }
 
+/// Flag component stating that the diagram scene requires re-layout.
+///
+public struct LayoutDirty: Component {}
+/// Flag stating that the viewport of a given scene was changed.
+public struct ViewportDirty: Component { public init() {} }
 
 /// Tag component for all diagram canvas scene nodes.
 ///

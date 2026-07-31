@@ -4,14 +4,6 @@
 //
 //  Created by Stefan Urbanek on 15/11/2025.
 //
-/// - **Input:**
-///     - Design objects with trait `DiagramBlock` or `DiagramConnector`.
-///     - ``Notation`` singleton component, default notation is used if not found.
-///     - ``NotationRules`` singleton, empty rules are used if not found.
-/// - **Output:**
-///     - ``DiagramBlock`` component for `DiagramBlock` trait.
-///     - ``DiagramConnector`` component for `DiagramConnector` trait.
-/// - **Forgiveness:**
 
 import PoieticCore
 
@@ -30,7 +22,7 @@ import PoieticCore
 ///     - Midpoints default to empty list.
 /// - **Issues collected:** No issues generated.
 ///
-public struct DiagramObjectsFromTraitsSystem: System {
+public struct TraitsToDiagramObjectsSystem: System {
     public init(_ world: World) {}
 
     public func update(_ world: World) throws (InternalSystemError) {
@@ -69,6 +61,8 @@ public struct DiagramObjectsFromTraitsSystem: System {
         )
         
         entity.setComponent(block)
+//        entity.setComponent(DiagramObject())
+        entity.setComponent(DirtyContent.all)
     }
     
     public func createConnector(edge: DesignObjectEdge,
@@ -94,5 +88,7 @@ public struct DiagramObjectsFromTraitsSystem: System {
             midpoints: midpoints
         )
         entity.setComponent(connector)
+//        entity.setComponent(DiagramObject())
+        entity.setComponent(DirtyContent.all)
     }
 }

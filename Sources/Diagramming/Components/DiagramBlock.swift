@@ -9,7 +9,10 @@ import PoieticCore
 /// Component for diagram blocks – a graphical shape which is usually represented by a pictogram
 /// and which can be connected with other blocks using connectors.
 ///
-/// - SeeAlso: ``DiagramConnector``, ``BlockCreationSystem``
+/// Objects with `DiagramBlock` component are expected to have ``DiagramObject`` tag
+/// as well.
+///
+/// - SeeAlso: ``DiagramConnector``, ``DiagramObject``, ``BlockCreationSystem``
 ///
 public struct DiagramBlock: Component {
     /// Position of the diagram block in the diagram or parent's coordinates.
