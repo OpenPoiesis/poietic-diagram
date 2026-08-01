@@ -41,6 +41,7 @@ public struct SceneCompositionSystem: System {
     public func update(_ world: World) throws(InternalSystemError) {
         let composer = DiagramSceneComposer(world: world)
         updateData(world, composer: composer)
+        updateHighlights(world)
         updateLayout(world, composer: composer)
         updateGeometry(world, composer: composer)
 
@@ -57,6 +58,19 @@ public struct SceneCompositionSystem: System {
         // No connector data to be updated here yet.
     }
 
+    func updateHighlights(_ world: World) {
+        for sceneNode: RuntimeEntity in world.query(CanvasNode.self) {
+            guard let represented: RuntimeEntity = sceneNode.target(RepresentationOf.self)
+            else { continue }
+            
+            if represented.contains(IsSelected.self) {
+                sceneNode.modify(CanvasNodeStyle.self) { $0.modifiers.insert(.selected) }
+            } else {
+                sceneNode.modify(CanvasNodeStyle.self) { $0.modifiers.remove(.selected) }
+            }
+        }
+    }
+    
     /// Update geometry of scene nodes.
     ///
     /// - Block Nodes:

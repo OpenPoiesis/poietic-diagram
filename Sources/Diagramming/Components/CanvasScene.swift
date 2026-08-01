@@ -36,7 +36,7 @@ public struct ViewportDirty: Component { public init() {} }
 /// - ``ChildOf`` – parent node or ``DiagramScene``
 /// - ``Owner`` – root of the canvas – ``DiagramScene`` entity
 ///
-public struct DiagramSceneNode: Component {
+public struct CanvasNode: Component {
     
     /// Relationship tag for primary label of a diagram scene node.
     ///

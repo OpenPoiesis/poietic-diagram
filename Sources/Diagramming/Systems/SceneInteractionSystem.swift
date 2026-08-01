@@ -85,7 +85,7 @@ public struct SceneInteractionSystem: System {
             node.removeComponent(TouchRegion.self)
         }
         
-        for child in node.children where child.contains(DiagramSceneNode.self) {
+        for child in node.children where child.contains(CanvasNode.self) {
             computeTouchRegions(node: child, parentPosition: positionOffset)
         }
     }

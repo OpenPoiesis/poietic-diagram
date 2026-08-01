@@ -30,7 +30,7 @@ extension DiagramSceneComposer {
     ///
     public func layoutBlock(_ entity: RuntimeEntity, layout: some LayoutProvider) {
         // NOTE: Do not change block position here, only position of block's children.
-        guard let pictogramNode: RuntimeEntity = entity.target(DiagramSceneNode.Pictogram.self),
+        guard let pictogramNode: RuntimeEntity = entity.target(CanvasNode.Pictogram.self),
               let pictComp: PictogramCanvasNode = pictogramNode.component()
         else { return }
         
@@ -41,7 +41,7 @@ extension DiagramSceneComposer {
         var swatchCenter: Vector2D = labelCenter
 
         // 1. Primary label
-        if let labelEntity: RuntimeEntity = entity.target(DiagramSceneNode.PrimaryLabel.self),
+        if let labelEntity: RuntimeEntity = entity.target(CanvasNode.PrimaryLabel.self),
            let label: LabelCanvasNode = labelEntity.component()
         {
             labelCenter.y += layout.metric(.primaryLabelPadding, default: 0.0)
@@ -58,7 +58,7 @@ extension DiagramSceneComposer {
             labelEntity.setComponent(shape)
         }
         // 2. Secondary label
-        if let labelEntity: RuntimeEntity = entity.target(DiagramSceneNode.SecondaryLabel.self),
+        if let labelEntity: RuntimeEntity = entity.target(CanvasNode.SecondaryLabel.self),
            let label: LabelCanvasNode = labelEntity.component()
         {
             let extents = layout.textExtents(label.text, class: .secondaryLabel)
@@ -70,7 +70,7 @@ extension DiagramSceneComposer {
             labelEntity.setComponent(shape)
         }
         // 3. Color swatch
-        if let swatchEntity: RuntimeEntity = entity.target(DiagramSceneNode.ColorSwatch.self) {
+        if let swatchEntity: RuntimeEntity = entity.target(CanvasNode.ColorSwatch.self) {
             swatchEntity.setComponent(PositionComponent(position: swatchCenter))
             // Swatch is not yet touchable, no touch region here.
         }

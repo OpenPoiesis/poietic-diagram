@@ -153,10 +153,12 @@ public class DiagramSceneComposer {
     func createBlockNode(representing representedEntity: RuntimeEntity, context: Context) -> RuntimeID {
         let block: DiagramBlock? = representedEntity.component()
         let position = context.toSceneTransform.apply(to: block?.position ?? .zero)
+        let isSelected = representedEntity.contains(IsSelected.self)
         
         let node: RuntimeEntity = world.spawn(
-            DiagramSceneNode(),
+            CanvasNode(),
             BlockCanvasNode(),
+            CanvasNodeStyle(class: .block, modifiers: isSelected ? .selected : .none),
             PositionComponent(position: position),
             Interactivity.interactive,
             Visibility.visible,
@@ -202,14 +204,25 @@ public class DiagramSceneComposer {
               let target = world.entity(targetID)
         else { return }
         
-        // 1. Wire
-        
+        let isSelected = representedEntity.contains(IsSelected.self)
+
+        let styleClass: StyleClass
+        switch connector.glyph.kind {
+        case .thin(_): styleClass = .thinConnector
+        case .fat(_): styleClass = .fatConnector
+        }
+
+        let style = CanvasNodeStyle(
+            class: styleClass,
+            modifiers: isSelected ? .selected : .none
+        )
+
         let node: RuntimeEntity = world.spawn(
-            DiagramSceneNode(),
+            CanvasNode(),
             ConnectorCanvasNode(),
+            style,
             Interactivity.interactive,
             Visibility.visible,
-//            LayoutDirty(),
         )
         node.relate(MemberOf(), to: context.scene.runtimeID)
         node.relate(ChildOf(), to: context.scene.runtimeID)
@@ -279,12 +292,12 @@ public class DiagramSceneComposer {
     ///
     /// - Note: The caller is responsible to update layout, if necessary.
     ///
-    func updateBlockData(_ sceneNode: RuntimeEntity, from representedEntity: RuntimeEntity) {
-        updateBlockPictogram(sceneNode, from: representedEntity)
-        updateBlockLabels(sceneNode, from: representedEntity)
-        updateValueIndicator(sceneNode, from: representedEntity)
-        updateIssueIndicator(sceneNode, from: representedEntity)
-        updateColorSwatch(sceneNode, from: representedEntity)
+    func updateBlockData(_ sceneNode: RuntimeEntity, from represented: RuntimeEntity) {
+        updateBlockPictogram(sceneNode, from: represented)
+        updateBlockLabels(sceneNode, from: represented)
+        updateValueIndicator(sceneNode, from: represented)
+        updateIssueIndicator(sceneNode, from: represented)
+        updateColorSwatch(sceneNode, from: represented)
 
         // TODO: Set only when relevant components changed
         sceneNode.setComponent(InteractionDirty())
@@ -293,6 +306,17 @@ public class DiagramSceneComposer {
             $0.setComponent(InteractionDirty())
         }
         // TODO: [REFACTORING][IMPORTANT] Update modifiers flags, especially selection
+  
+//        if represented.contains(IsSelected.self) {
+//            sceneNode.modify(CanvasNodeStyle.self) {
+//                $0.modifiers.insert(.selected)
+//            }
+//        }
+//        else {
+//            sceneNode.modify(CanvasNodeStyle.self) {
+//                $0.modifiers.remove(.selected)
+//            }
+//        }
     }
     
     func updateBlockPictogram(_ blockSceneNode: RuntimeEntity, from representedEntity: RuntimeEntity) {
@@ -304,7 +328,7 @@ public class DiagramSceneComposer {
         
         // FIXME: [REFACTORING] Do not despawn, Just hide
         guard let pictogram = block.pictogram else {
-            if let target: RuntimeEntity = blockSceneNode.target(DiagramSceneNode.Pictogram.self) {
+            if let target: RuntimeEntity = blockSceneNode.target(CanvasNode.Pictogram.self) {
                 target.despawn()
             }
             return
@@ -314,19 +338,19 @@ public class DiagramSceneComposer {
 
         let pictogramNode: RuntimeEntity
         
-        if let target: RuntimeEntity = blockSceneNode.target(DiagramSceneNode.Pictogram.self) {
+        if let target: RuntimeEntity = blockSceneNode.target(CanvasNode.Pictogram.self) {
             pictogramNode = target
             pictogramNode.setComponent(PictogramCanvasNode(pictogram: pictogram))
         }
         else {
             pictogramNode = world.spawn(
-                DiagramSceneNode(),
+                CanvasNode(),
                 Visibility.visible,
                 PositionComponent(position: .zero),
                 PictogramCanvasNode(pictogram: pictogram),
             )
             pictogramNode.relate(ChildOf(), to: blockSceneNode)
-            blockSceneNode.relate(DiagramSceneNode.Pictogram(), to: pictogramNode)
+            blockSceneNode.relate(CanvasNode.Pictogram(), to: pictogramNode)
         }
     }
     
@@ -335,11 +359,11 @@ public class DiagramSceneComposer {
         else { return }
         
         updateBlockLabel(blockSceneNode,
-                         type: DiagramSceneNode.PrimaryLabel(),
+                         type: CanvasNode.PrimaryLabel(),
                          text: block.label,
                          style: CanvasNodeStyle(class: .primaryLabel))
         updateBlockLabel(blockSceneNode,
-                         type: DiagramSceneNode.SecondaryLabel(),
+                         type: CanvasNode.SecondaryLabel(),
                          text: block.secondaryLabel,
                          style: CanvasNodeStyle(class: .secondaryLabel))
     }
@@ -368,7 +392,7 @@ public class DiagramSceneComposer {
         }
         else {
             labelNode = world.spawn(
-                DiagramSceneNode(),
+                CanvasNode(),
                 Visibility.visible,
                 Interactivity.interactive,
                 PositionComponent(position: .zero),
@@ -401,14 +425,14 @@ public class DiagramSceneComposer {
             size: ValueIndicatorCanvasNode.DefaultSize
         )
 
-        if let target: RuntimeEntity = blockSceneNode.target(DiagramSceneNode.ValueIndicator.self) {
+        if let target: RuntimeEntity = blockSceneNode.target(CanvasNode.ValueIndicator.self) {
             child = target
             child.setComponent(indicatorComponent)
             child.setComponent(visibility)
         }
         else {
             child = world.spawn(
-                DiagramSceneNode(),
+                CanvasNode(),
                 indicatorComponent,
                 visibility,
                 Interactivity.inert,
@@ -416,7 +440,7 @@ public class DiagramSceneComposer {
                 CanvasNodeStyle(class: .valueIndicator),
             )
             child.relate(ChildOf(), to: blockSceneNode)
-            blockSceneNode.relate(DiagramSceneNode.ValueIndicator(), to: child)
+            blockSceneNode.relate(CanvasNode.ValueIndicator(), to: child)
         }
         
         // Touch region
@@ -431,7 +455,7 @@ public class DiagramSceneComposer {
         let visibility: Visibility = representedEntity.hasIssues ? .visible : .hidden
         let interactivity: Interactivity = representedEntity.hasIssues ? .interactive : .inert
 
-        if let target: RuntimeEntity = blockSceneNode.target(DiagramSceneNode.IssueIndicator.self) {
+        if let target: RuntimeEntity = blockSceneNode.target(CanvasNode.IssueIndicator.self) {
             indicator = target
             target.setComponent(visibility)
             target.setComponent(interactivity)
@@ -439,7 +463,7 @@ public class DiagramSceneComposer {
         }
         else {
             indicator = world.spawn(
-                DiagramSceneNode(),
+                CanvasNode(),
                 visibility,
                 interactivity,
                 PositionComponent(position: .zero),
@@ -448,7 +472,7 @@ public class DiagramSceneComposer {
                 // TODO: TouchRegion.shape(rect)
             )
             indicator.relate(ChildOf(), to: blockSceneNode)
-            blockSceneNode.relate(DiagramSceneNode.IssueIndicator(), to: indicator)
+            blockSceneNode.relate(CanvasNode.IssueIndicator(), to: indicator)
         }
         // Touch region
         let shape = CollisionShape(position: .zero,
@@ -462,17 +486,17 @@ public class DiagramSceneComposer {
 
         let swatch: RuntimeEntity
 
-        if let target: RuntimeEntity = blockSceneNode.target(DiagramSceneNode.ColorSwatch.self) {
+        if let target: RuntimeEntity = blockSceneNode.target(CanvasNode.ColorSwatch.self) {
             swatch = target
         }
         else {
             swatch = world.spawn(
-                DiagramSceneNode(),
+                CanvasNode(),
                 Interactivity.inert,
                 PositionComponent(position: .zero),
             )
             swatch.relate(ChildOf(), to: blockSceneNode)
-            blockSceneNode.relate(DiagramSceneNode.ColorSwatch(), to: swatch)
+            blockSceneNode.relate(CanvasNode.ColorSwatch(), to: swatch)
         }
         if let colorKey = block.accentColor {
             swatch.setComponent(ColorSwatchCanvasNode(colorKey: colorKey))

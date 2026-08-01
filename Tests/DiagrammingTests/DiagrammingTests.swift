@@ -102,12 +102,12 @@ let DiagramTestNotation = Notation(
         
         let node: RuntimeEntity = try #require(blockA.incoming(RepresentationOf.self).first)
         
-        #expect(node.contains(DiagramSceneNode.self))
+        #expect(node.contains(CanvasNode.self))
         #expect(node.contains(BlockCanvasNode.self))
         #expect(node.contains(PositionComponent.self))
         #expect(node.contains(CollisionShape.self))
 
-        let pictogramNode: RuntimeEntity = try #require(node.target(DiagramSceneNode.Pictogram.self))
+        let pictogramNode: RuntimeEntity = try #require(node.target(CanvasNode.Pictogram.self))
 
         #expect(pictogramNode.contains(PictogramCanvasNode.self))
     }
@@ -120,7 +120,7 @@ let DiagramTestNotation = Notation(
         
         let node: RuntimeEntity = try #require(connectorAB.incoming(RepresentationOf.self).first)
         
-        #expect(node.contains(DiagramSceneNode.self))
+        #expect(node.contains(CanvasNode.self))
         #expect(node.contains(ConnectorCanvasNode.self))
 
         let sceneNodeA: RuntimeEntity = try #require(blockA.incoming(RepresentationOf.self).first)
@@ -136,13 +136,13 @@ let DiagramTestNotation = Notation(
         let diagram = composer.createDiagramFromAll()
         let scene = composer.createScene(diagram: diagram)
         
-        let entities: [RuntimeEntity] = Array(world.query(DiagramSceneNode.self))
+        let entities: [RuntimeEntity] = Array(world.query(CanvasNode.self))
         #expect(!entities.isEmpty)
 
         world.despawn(diagram)
         
         #expect(!world.contains(scene))
-        let noEntities: [RuntimeEntity] = Array(world.query(DiagramSceneNode.self))
+        let noEntities: [RuntimeEntity] = Array(world.query(CanvasNode.self))
         #expect(noEntities.isEmpty)
     }
 }
