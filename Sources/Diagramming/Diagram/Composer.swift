@@ -305,18 +305,6 @@ public class DiagramSceneComposer {
             guard $0.contains(Interactivity.self) else { return }
             $0.setComponent(InteractionDirty())
         }
-        // TODO: [REFACTORING][IMPORTANT] Update modifiers flags, especially selection
-  
-//        if represented.contains(IsSelected.self) {
-//            sceneNode.modify(CanvasNodeStyle.self) {
-//                $0.modifiers.insert(.selected)
-//            }
-//        }
-//        else {
-//            sceneNode.modify(CanvasNodeStyle.self) {
-//                $0.modifiers.remove(.selected)
-//            }
-//        }
     }
     
     func updateBlockPictogram(_ blockSceneNode: RuntimeEntity, from representedEntity: RuntimeEntity) {

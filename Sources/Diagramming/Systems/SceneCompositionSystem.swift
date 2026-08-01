@@ -59,6 +59,7 @@ public struct SceneCompositionSystem: System {
     }
 
     func updateHighlights(_ world: World) {
+        // TODO: Use something like SelectionDirty world singleton
         for sceneNode: RuntimeEntity in world.query(CanvasNode.self) {
             guard let represented: RuntimeEntity = sceneNode.target(RepresentationOf.self)
             else { continue }
