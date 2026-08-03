@@ -28,13 +28,25 @@ public protocol DiagramSceneRenderer {
     /// Renders a diagram entity and its children.
     ///
     func render(_ entity: RuntimeEntity, context: Context)
+    /// Render a diagram canvas node.
+    ///
+    /// The `entity` is guaranteed to have the ``BlockCanvasNode`` component.
     func renderBlock(_ entity: RuntimeEntity, context: Context)
+    /// Render a diagram connector node.
+    ///
+    /// The `entity` is guaranteed to have the ``ConnectorCanvasNodeNode`` component.
     func renderConnector(_ entity: RuntimeEntity, context: Context)
     func renderPictogram(_ entity: RuntimeEntity, context: Context)
     func renderLabel(_ entity: RuntimeEntity, context: Context)
     func renderValueIndicator(_ entity: RuntimeEntity, context: Context)
     func renderIssueIndicator(_ entity: RuntimeEntity, context: Context)
     func renderColorSwatch(_ entity: RuntimeEntity, context: Context)
+
+    /// Render entity that is not known to the diagramming library – an entity that was
+    /// not handled in any other rendering methods by the renderer.
+    ///
+    /// Use this method to render directly or for further dispatch.
+    func renderUnknown(_ entity: RuntimeEntity, context: Context)
 
     /// Function to render additional content regardless of node type. For example debugging
     /// annotations.
@@ -74,6 +86,9 @@ extension DiagramSceneRenderer {
         else if entity.contains(ColorSwatchCanvasNode.self) {
             renderColorSwatch(entity, context: context)
         }
+        else {
+            renderUnknown(entity, context: context)
+        }
 
         renderNodeExtras(entity, context: context)
         
@@ -82,7 +97,10 @@ extension DiagramSceneRenderer {
         }
         context.restore()
     }
-    
+    public func renderUnknown(_ entity: RuntimeEntity, context: Context) {
+        /* Default implementation does nothing */
+    }
+
     public func renderNodeExtras(_ entity: RuntimeEntity, context: Context) {
         /* Default implementation does nothing */
     }
