@@ -37,13 +37,13 @@ public struct ViewportDirty: Component { public init() {} }
 /// - ``Owner`` – root of the canvas – ``DiagramScene`` entity
 ///
 public struct CanvasNode: Component {
-    
     /// Relationship tag for primary label of a diagram scene node.
     ///
     /// Usually used for a block name, derived from ``DiagramBlock/label``.
     ///
     public struct PrimaryLabel: Relationship {
         public static let targetRemovalPolicy: RelationshipRemovalPolicy = .remove
+        public init() { /* Empty */ }
     }
 
     /// Relationship tag for secondary label of a diagram scene node.
@@ -52,6 +52,7 @@ public struct CanvasNode: Component {
     ///
     public struct SecondaryLabel: Relationship {
         public static let targetRemovalPolicy: RelationshipRemovalPolicy = .remove
+        public init() { /* Empty */ }
     }
 
     /// Relationship tag for a colour swatch node of a diagram scene node.
@@ -60,24 +61,28 @@ public struct CanvasNode: Component {
     ///
     public struct ColorSwatch: Relationship {
         public static let targetRemovalPolicy: RelationshipRemovalPolicy = .remove
+        public init() { /* Empty */ }
     }
 
     /// Relationship tag for a value indicator scene node.
     ///
     public struct ValueIndicator: Relationship {
         public static let targetRemovalPolicy: RelationshipRemovalPolicy = .remove
+        public init() { /* Empty */ }
     }
 
     /// Relationship tag for a issue indicator scene node.
     ///
     public struct IssueIndicator: Relationship {
         public static let targetRemovalPolicy: RelationshipRemovalPolicy = .remove
+        public init() { /* Empty */ }
     }
 
     /// Relationship tag for a pictogram scene node.
     ///
     public struct Pictogram: Relationship {
         public static let targetRemovalPolicy: RelationshipRemovalPolicy = .remove
+        public init() { /* Empty */ }
     }
     
     public init() { /* Empty */ }
