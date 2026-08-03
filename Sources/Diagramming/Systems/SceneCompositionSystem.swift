@@ -114,25 +114,34 @@ public struct SceneCompositionSystem: System {
         }
         
         for sceneNode: RuntimeEntity in world.query(ConnectorCanvasNode.self) {
-            guard let represented: RuntimeEntity = sceneNode.target(RepresentationOf.self)
-            else { continue }
-
             var isDirty: Bool = false
-            if let flags: DirtyContent = represented.component() {
-                isDirty = flags.contains(.geometry)
-            }
-            if let scene: RuntimeEntity = sceneNode.target(MemberOf.self) {
-                isDirty = isDirty || scene.contains(ViewportDirty.self)
-            }
-            if let connector: DiagramConnector = represented.component() {
-                isDirty = isDirty || dirtyBlocks.contains(connector.originID) ||
-                                        dirtyBlocks.contains(connector.targetID)
-
-            }
-
-            guard isDirty else { continue }
+            let original: RuntimeEntity?
             
-            composer.updateConnectorGeometry(sceneNode, from: represented)
+            if let represented: RuntimeEntity = sceneNode.target(RepresentationOf.self) {
+                if let flags: DirtyContent = represented.component() {
+                    isDirty = flags.contains(.geometry)
+                }
+                if let scene: RuntimeEntity = sceneNode.target(MemberOf.self) {
+                    isDirty = isDirty || scene.contains(ViewportDirty.self)
+                }
+                if let connector: DiagramConnector = represented.component() {
+                    isDirty = isDirty || dirtyBlocks.contains(connector.originID) ||
+                    dirtyBlocks.contains(connector.targetID)
+                    
+                }
+                guard isDirty else { continue }
+                original = represented
+            }
+            else {
+                // For connectors without representation check dirty directly on the connector
+                if let flags: DirtyContent = sceneNode.component() {
+                    isDirty = flags.contains(.geometry)
+                }
+                guard isDirty else { continue }
+                original = nil
+            }
+
+            composer.updateConnectorGeometry(sceneNode, from: original)
         }
     }
 
