@@ -79,25 +79,38 @@ public class DiagramSceneComposer {
     
     /// Creates a diagram entity from all diagram blocks and diagram connectors.
     ///
+    /// This is a convenience method. Calling it makes sense only when the diagram entities in the
+    /// world are not nested, when all of the entities are top-level.
+    ///
+    /// - Parameters:
+    ///     - world: World in which the diagram is to be created.
+    ///     - diagram: Existing diagram entity to which the content is to be attached. If not
+    ///       provided, new entity will be created. If provided, existing content will be unrelated.
+    ///
     /// - **Input**:
     ///     - Entities with component ``DiagramBlock`` and ``DiagramConnector``.
     /// - **Output**:
     ///     - New diagram entity with input entities related with ``Depicts`` relationship.
     ///
-    /// - Returns: Created diagram entity.
+    /// - Returns: Created or recycled diagram entity.
     ///
-    public static func createDiagramFromAll(world: World) -> RuntimeEntity {
-        let diagram: RuntimeEntity = world.spawn(
-            Diagram()
-        )
+    public static func createDiagramFromAll(world: World, diagram: RuntimeEntity? = nil) -> RuntimeEntity {
+        let result: RuntimeEntity
+        if let diagram {
+            result = diagram
+            result.unrelate(Depicts.self)
+        }
+        else {
+            result = world.spawn(Diagram())
+        }
         
         for entity: RuntimeEntity in world.query(DiagramBlock.self) {
-            diagram.relate(Depicts(), to: entity)
+            result.relate(Depicts(), to: entity)
         }
         for entity: RuntimeEntity in world.query(DiagramConnector.self) {
-            diagram.relate(Depicts(), to: entity)
+            result.relate(Depicts(), to: entity)
         }
-        return diagram
+        return result
     }
    
     // MARK: - Create
