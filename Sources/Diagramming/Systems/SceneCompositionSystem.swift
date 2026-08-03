@@ -125,8 +125,8 @@ public struct SceneCompositionSystem: System {
                 isDirty = isDirty || scene.contains(ViewportDirty.self)
             }
             if let connector: DiagramConnector = represented.component() {
-                isDirty = dirtyBlocks.contains(connector.originID) ||
-                            dirtyBlocks.contains(connector.targetID)
+                isDirty = isDirty || dirtyBlocks.contains(connector.originID) ||
+                                        dirtyBlocks.contains(connector.targetID)
 
             }
 
