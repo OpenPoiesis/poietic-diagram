@@ -126,7 +126,7 @@ public class DiagramSceneComposer {
     /// Called on:
     /// - New diagram.
     ///
-    public func createScene(diagram: RuntimeEntity, viewport: ViewportState = ViewportState()) -> RuntimeEntity {
+    public func OLDcreateScene(diagram: RuntimeEntity, viewport: ViewportState = ViewportState()) -> RuntimeEntity {
         let scene: RuntimeEntity = world.spawn(
             DiagramScene(),
             viewport
@@ -150,7 +150,61 @@ public class DiagramSceneComposer {
         }
         return scene
     }
-    
+    public func createScene(diagram: RuntimeEntity, viewport: ViewportState = ViewportState()) -> RuntimeEntity {
+        let scene: RuntimeEntity = world.spawn(
+            DiagramScene(),
+            viewport
+        )
+        scene.relate(RepresentationOf(), to: diagram)
+        syncScene(scene)
+        return scene
+    }
+
+    // MARK: - Sync
+    /// Updates a scene from the diagram it represents.
+    ///
+    /// Requirements and Expectations:
+    /// - `scene` requires ``RepresentationOf`` relationship to a ``Diagram`` entity
+    /// - (optional) `scene` is expected to have ``ViewportState`` component. If not present, then
+    ///   default one is created.
+    ///
+    public func syncScene(_ scene: RuntimeEntity) {
+        guard let diagram = scene.target(RepresentationOf.self) else { return }
+        let context = Context(scene: scene)
+
+        // Note: We do not have to remove scene nodes where their represented objects were removed.
+        //       This was taken care of automatic despawn through RepresentationOf removal policy.
+        
+        var originalToScene: [RuntimeID:RuntimeID] = [:]
+        var existing: [RuntimeID:RuntimeEntity] = [:]
+
+        for child in scene.children {
+            if let rep = child.target(RepresentationOf.self) {
+                existing[rep.runtimeID] = child
+            }
+        }
+        for entity in diagram.outgoing(Depicts.self) where entity.contains(DiagramBlock.self) {
+            let sceneNodeID: RuntimeID
+            if let node = existing[entity.runtimeID] {
+                sceneNodeID = node.runtimeID
+                syncBlockNode(node, from: entity, context: context)
+            } else {
+                sceneNodeID = createBlockNode(representing: entity, context: context)
+            }
+            originalToScene[entity.runtimeID] = sceneNodeID
+        }
+
+        for entity in diagram.outgoing(Depicts.self) where entity.contains(DiagramConnector.self) {
+            if let node = existing[entity.runtimeID] {
+                syncConnectorNode(node, from: entity, context: context, sceneNodeMap: originalToScene)
+            } else {
+                createConnectorNode(representing: entity, context: context, sceneNodeMap: originalToScene)
+            }
+        }
+
+        scene.setComponent(LayoutDirty())
+    }
+
     /// Create a diagram block node
     ///
     /// 1. Spawn a scene block
@@ -166,12 +220,11 @@ public class DiagramSceneComposer {
     func createBlockNode(representing representedEntity: RuntimeEntity, context: Context) -> RuntimeID {
         let block: DiagramBlock? = representedEntity.component()
         let position = context.toSceneTransform.apply(to: block?.position ?? .zero)
-        let isSelected = representedEntity.contains(IsSelected.self)
         
         let node: RuntimeEntity = world.spawn(
             CanvasNode(),
             BlockCanvasNode(),
-            CanvasNodeStyle(class: .block, modifiers: isSelected ? .selected : .none),
+            CanvasNodeStyle(class: .block),
             PositionComponent(position: position),
             Interactivity.interactive,
             Visibility.visible,
@@ -185,6 +238,11 @@ public class DiagramSceneComposer {
         updateBlockData(node, from: representedEntity)
         
         return node.runtimeID
+    }
+
+    func syncBlockNode(_ node: RuntimeEntity, from original: RuntimeEntity, context: Context) {
+        updateBlockData(node, from: original)
+        updateBlockGeometry(node, from: original, context: context)
     }
 
     /// - Parameters:
@@ -217,23 +275,16 @@ public class DiagramSceneComposer {
               let target = world.entity(targetID)
         else { return }
         
-        let isSelected = representedEntity.contains(IsSelected.self)
-
         let styleClass: StyleClass
         switch connector.glyph.kind {
         case .thin(_): styleClass = .thinConnector
         case .fat(_): styleClass = .fatConnector
         }
 
-        let style = CanvasNodeStyle(
-            class: styleClass,
-            modifiers: isSelected ? .selected : .none
-        )
-
         let node: RuntimeEntity = world.spawn(
             CanvasNode(),
             ConnectorCanvasNode(),
-            style,
+            CanvasNodeStyle(class: styleClass),
             Interactivity.interactive,
             Visibility.visible,
         )
@@ -246,8 +297,25 @@ public class DiagramSceneComposer {
         updateConnectorGeometry(node, from: representedEntity, context: context)
     }
 
+    func syncConnectorNode(_ node: RuntimeEntity,
+                           from original: RuntimeEntity,
+                           context: Context,
+                           sceneNodeMap: [RuntimeID:RuntimeID])
+    {
+        guard let connector: DiagramConnector = original.component(),
+              let originID = sceneNodeMap[connector.originID],
+              let origin = world.entity(originID),
+              let targetID = sceneNodeMap[connector.targetID],
+              let target = world.entity(targetID)
+        else { return }
+
+        node.relate(ConnectorCanvasNode.Origin(), to: origin)
+        node.relate(ConnectorCanvasNode.Target(), to: target)
+
+        updateConnectorGeometry(node, from: original, context: context)
+    }
+
     // MARK: - Update
-    
     /// Update scene data that is not related to geometry.
     ///
     /// - SeeAlso: ``updateGeometry(scene:)``
@@ -280,10 +348,16 @@ public class DiagramSceneComposer {
         }
     }
 
-    func updateBlockGeometry(_ node: RuntimeEntity, from represented: RuntimeEntity) {
-        // TODO: Consider defaults (no scene)
-        guard let scene: RuntimeEntity = node.target(MemberOf.self) else { return }
-        updateBlockPosition(node, from: represented, context: Context(scene: scene))
+    func updateBlockGeometry(_ node: RuntimeEntity, from represented: RuntimeEntity, context: Context? = nil) {
+        let actualContext: Context
+        if let context {
+            actualContext = context
+        }
+        else {
+            guard let scene: RuntimeEntity = node.target(MemberOf.self) else { return }
+            actualContext = Context(scene: scene)
+        }
+        updateBlockPosition(node, from: represented, context: actualContext)
     }
 
     func updateBlockPosition(_ node: RuntimeEntity, from represented: RuntimeEntity, context: Context) {
@@ -318,6 +392,8 @@ public class DiagramSceneComposer {
             guard $0.contains(Interactivity.self) else { return }
             $0.setComponent(InteractionDirty())
         }
+        // TODO: Set only when really needed (pictogram changed or label changed)
+        sceneNode.setComponent(LayoutDirty())
     }
     
     func updateBlockPictogram(_ blockSceneNode: RuntimeEntity, from representedEntity: RuntimeEntity) {
@@ -630,12 +706,13 @@ public class DiagramSceneComposer {
         updateConnectorGeometry(sceneNode, midpoints: midpoints, glyph: glyph, context: context)
         updateConnectorStroke(sceneNode, glyph: glyph)
         // TODO: [REFACTORING][IMPORTANT] Update modifiers flags, especially selection
+        sceneNode.setComponent(InteractionDirty())
     }
     
-    func updateConnectorGeometry(_ sceneNode: RuntimeEntity,
-                                    midpoints: [Vector2D],
-                                    glyph: ConnectorGlyph,
-                                    context: Context)
+    private func updateConnectorGeometry(_ sceneNode: RuntimeEntity,
+                                         midpoints: [Vector2D],
+                                         glyph: ConnectorGlyph,
+                                         context: Context)
     {
         guard let origin: RuntimeEntity = sceneNode.target(ConnectorCanvasNode.Origin.self),
               let target: RuntimeEntity = sceneNode.target(ConnectorCanvasNode.Target.self)

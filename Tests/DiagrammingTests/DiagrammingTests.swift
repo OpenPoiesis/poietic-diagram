@@ -60,8 +60,8 @@ let DiagramTestNotation = Notation(
     
     @Test func createDiagramFromAll() throws {
         let composer = DiagramSceneComposer(world: world)
-        let diagram = composer.createDiagramFromAll()
-        
+        let diagram = DiagramSceneComposer.createDiagramFromAll(world: world)
+
         // Diagram entity has the Diagram component
         #expect(diagram.contains(Diagram.self))
         
@@ -76,7 +76,7 @@ let DiagramTestNotation = Notation(
     
     @Test func createDiagramScene() throws {
         let composer = DiagramSceneComposer(world: world)
-        let diagram = composer.createDiagramFromAll()
+        let diagram = DiagramSceneComposer.createDiagramFromAll(world: world)
         let scene = composer.createScene(diagram: diagram)
         
         #expect(scene.children.count == 3)
@@ -97,7 +97,7 @@ let DiagramTestNotation = Notation(
     
     @Test func createBlockNode() throws {
         let composer = DiagramSceneComposer(world: world)
-        let diagram = composer.createDiagramFromAll()
+        let diagram = DiagramSceneComposer.createDiagramFromAll(world: world)
         let scene = composer.createScene(diagram: diagram)
         
         let node: RuntimeEntity = try #require(blockA.incoming(RepresentationOf.self).first)
@@ -115,7 +115,7 @@ let DiagramTestNotation = Notation(
     @Test func createConnectorNode() throws {
         // This test assumes only one scene per diagram
         let composer = DiagramSceneComposer(world: world)
-        let diagram = composer.createDiagramFromAll()
+        let diagram = DiagramSceneComposer.createDiagramFromAll(world: world)
         let scene = composer.createScene(diagram: diagram)
         
         let node: RuntimeEntity = try #require(connectorAB.incoming(RepresentationOf.self).first)
@@ -133,7 +133,7 @@ let DiagramTestNotation = Notation(
     @Test func despawnSceneWhenDiagramDespawns() throws {
         // Tests whether relationships are correctly set
         let composer = DiagramSceneComposer(world: world)
-        let diagram = composer.createDiagramFromAll()
+        let diagram = DiagramSceneComposer.createDiagramFromAll(world: world)
         let scene = composer.createScene(diagram: diagram)
         
         let entities: [RuntimeEntity] = Array(world.query(CanvasNode.self))

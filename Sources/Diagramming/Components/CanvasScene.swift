@@ -26,7 +26,7 @@ public struct DiagramScene: Component {
 
 /// Flag component stating that the diagram scene requires re-layout.
 ///
-public struct LayoutDirty: Component {}
+public struct LayoutDirty: Component { public init() {} }
 /// Flag stating that the viewport of a given scene was changed.
 public struct ViewportDirty: Component { public init() {} }
 

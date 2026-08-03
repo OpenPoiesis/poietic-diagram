@@ -31,16 +31,16 @@ public struct TraitsToDiagramObjectsSystem: System {
         let rules: NotationRules = world.singleton() ?? NotationRules()
 
         for object in frame.filter(trait: .DiagramBlock) {
-            try createBlock(object: object, notation: notation, rules: rules, in: world)
+            try updateBlock(object: object, notation: notation, rules: rules, in: world)
         }
         
         for object in frame.filter(trait: .DiagramConnector) {
             guard let edge = DesignObjectEdge(object, in: frame) else { continue }
-            createConnector(edge: edge, notation: notation, rules: rules, in: world)
+            updateConnector(edge: edge, notation: notation, rules: rules, in: world)
         }
     }
     
-    public func createBlock(object: ObjectSnapshot,
+    public func updateBlock(object: ObjectSnapshot,
                             notation: Notation,
                             rules: NotationRules,
                             in world: World)
@@ -61,11 +61,11 @@ public struct TraitsToDiagramObjectsSystem: System {
         )
         
         entity.setComponent(block)
-//        entity.setComponent(DiagramObject())
+        entity.setComponent(DiagramObject())
         entity.setComponent(DirtyContent.all)
     }
     
-    public func createConnector(edge: DesignObjectEdge,
+    public func updateConnector(edge: DesignObjectEdge,
                                 notation: Notation,
                                 rules: NotationRules,
                                 in world: World)
@@ -88,7 +88,7 @@ public struct TraitsToDiagramObjectsSystem: System {
             midpoints: midpoints
         )
         entity.setComponent(connector)
-//        entity.setComponent(DiagramObject())
+        entity.setComponent(DiagramObject())
         entity.setComponent(DirtyContent.all)
     }
 }

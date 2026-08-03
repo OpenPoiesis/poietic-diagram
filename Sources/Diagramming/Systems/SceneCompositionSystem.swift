@@ -40,13 +40,22 @@ public struct SceneCompositionSystem: System {
     
     public func update(_ world: World) throws(InternalSystemError) {
         let composer = DiagramSceneComposer(world: world)
+        flagTouchedObjects(world)
         updateData(world, composer: composer)
         updateHighlights(world)
         updateLayout(world, composer: composer)
         updateGeometry(world, composer: composer)
 
     }
-
+    /// Transform ``ObjectTouched`` flag into dirty content.
+    func flagTouchedObjects(_ world: World) {
+        for entity: RuntimeEntity in world.query(ObjectTouched.self) {
+            // TODO: Filter only diagram object entities. Enable once we know for sure the component is set.
+            // guard entity.contains(DiagramObject.self) else { continue }
+            entity.setComponent(DirtyContent.all)
+        }
+    }
+    
     func updateData(_ world: World, composer: DiagramSceneComposer) {
         for sceneNode: RuntimeEntity in world.query(BlockCanvasNode.self) {
             guard let represented: RuntimeEntity = sceneNode.target(RepresentationOf.self),
