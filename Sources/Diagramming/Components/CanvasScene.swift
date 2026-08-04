@@ -162,17 +162,25 @@ public struct IssueIndicatorCanvasNode: Component {
     public init() { /* Empty */ }
 }
 
+/// Visual indicator of a numeric value in form of a bar.
+///
+/// Probes value using ``RuntimeEntity/numericProbe(:)``
+/// of represented object (``ChildOf`` -> ``RepresentationOf``):
+///
 public struct ValueIndicatorCanvasNode: Component {
     public static let DefaultSize = Vector2D(100, 20)
     /// Size of the value indicator in canvas/viewport coordinates.
-    public let value: Double?
-    public let bounds: ValueBounds
     public let size: Vector2D
+    public let orientation: Orientation
 
-    public init(value: Double?, bounds: ValueBounds, size: Vector2D) {
-        self.value = value
-        self.bounds = bounds
+    public enum Orientation {
+        case horizontal
+        case vertical
+    }
+
+    public init(size: Vector2D, orientation: Orientation = .horizontal) {
         self.size = size
+        self.orientation = orientation
     }
 }
 

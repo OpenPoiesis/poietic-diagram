@@ -482,35 +482,21 @@ public class DiagramSceneComposer {
     }
     
     func updateValueIndicator(_ blockSceneNode: RuntimeEntity, from representedEntity: RuntimeEntity) {
-        let sample: NumericValueSample? = representedEntity.component()
-        let stats: NumericValueStats? = representedEntity.component()
-        let displayBounds: DisplayValueBounds? = representedEntity.component()
-        let bounds: ValueBounds
-        if let stats {
-            bounds = ValueBounds(min: stats.min, max: stats.max, limit: displayBounds)
-        }
-        else {
-            bounds = ValueBounds(min: displayBounds?.min ?? 0, max: displayBounds?.max ?? 1)
-        }
         let visibility: Visibility = representedEntity.contains(HasNumericIndicator.self) ? .visible : .hidden
 
-        
         let child: RuntimeEntity
-        let indicatorComponent = ValueIndicatorCanvasNode(
-            value: sample?.value,
-            bounds: bounds,
-            size: ValueIndicatorCanvasNode.DefaultSize
-        )
 
         if let target: RuntimeEntity = blockSceneNode.target(CanvasNode.ValueIndicator.self) {
             child = target
-            child.setComponent(indicatorComponent)
             child.setComponent(visibility)
         }
         else {
             child = world.spawn(
                 CanvasNode(),
-                indicatorComponent,
+                ValueIndicatorCanvasNode(
+                    size: ValueIndicatorCanvasNode.DefaultSize,
+                    orientation: .horizontal
+                ),
                 visibility,
                 Interactivity.inert,
                 PositionComponent(position: .zero),

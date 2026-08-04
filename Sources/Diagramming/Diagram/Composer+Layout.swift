@@ -74,6 +74,21 @@ extension DiagramSceneComposer {
             swatchEntity.setComponent(PositionComponent(position: swatchCenter))
             // Swatch is not yet touchable, no touch region here.
         }
+        
+        // 3. Color swatch
+        if let indicatorEntity: RuntimeEntity = entity.target(CanvasNode.ValueIndicator.self),
+           let indicator: ValueIndicatorCanvasNode = indicatorEntity.component()
+        {
+            let top = Vector2D(bbox.center.x, bbox.minY)
+            let offset = layout.metric(.valueIndicatorPadding, default: 0.0)
+            let position: Vector2D = Vector2D(
+                bbox.center.x,
+                bbox.minY - indicator.size.y / 2 - offset
+            )
+            indicatorEntity.setComponent(PositionComponent(position: position))
+            // Swatch is not yet touchable, no touch region here.
+        }
+
 
     }
     
