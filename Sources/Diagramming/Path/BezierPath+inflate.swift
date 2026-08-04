@@ -57,7 +57,7 @@ extension BezierPath {
             points = subpath.tessellate(tolerance: tolerance)
         }
         
-        guard points.count >= 3 else { return subpath }
+        guard points.count >= 2 else { return subpath }
         
         // Check if path is closed (either explicitly or by having same start/end points)
         let isClosed = subpath.isClosed || (points.first?.distance(to: points.last!) ?? Double.infinity) < 1e-6

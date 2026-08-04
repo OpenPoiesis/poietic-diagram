@@ -5,12 +5,13 @@
 //  Created by Stefan Urbanek on 15/11/2025.
 //
 
+import PoieticCore
 
 /// Visual semantic definition of a connector.
 ///
 /// Defines whether a connector should be drawn as thin stroked paths or fat filled polygons.
 ///
-public final class ConnectorGlyph: Sendable {
+public final class ConnectorGlyph: Sendable, Component {
     public enum Kind: Sendable {
         /// Thin connector drawn as stroked paths with separate arrowhead elements.
         case thin(Thin)

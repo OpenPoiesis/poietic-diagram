@@ -201,7 +201,16 @@ public struct SVGTransformList {
     var rawValue: String {
         return items.map { $0.rawValue }.joined(separator: " ")
     }
-    
+   
+    public init(_ transform: AffineTransform) {
+        let matrix: SVGTransform = .matrix(a: transform.a,
+                                           b: transform.b,
+                                           c: transform.c,
+                                           d: transform.d,
+                                           e: transform.tx,
+                                           f: transform.ty)
+        self.items = [matrix]
+    }
     public func asAffineTransform() -> AffineTransform {
         var result = AffineTransform.identity
         

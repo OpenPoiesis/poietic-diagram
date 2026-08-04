@@ -13,7 +13,7 @@ import PoieticCore
 ///
 /// - SeeAlso: ``NotationRules``
 ///
-public final class Notation: Component {
+public final class Notation: Component, Sendable {
 #if false
     /// Name of the notation.
     ///

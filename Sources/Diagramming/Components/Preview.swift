@@ -7,30 +7,40 @@
 
 import PoieticCore
 
-// NOTE: These protocols and components are being incubated, they are not final.
-
-/// Component for user-interaction session of a connector.
+/// Component for user-interaction session of a entities, such as diagram block.
+///
+/// ``DiagramSceneComposer`` uses the component to override ``PositionComponent`` of diagram
+/// blocks.
+///
+/// Interactive tools should set the component during interactive session, such as dragging, on
+/// an entity that serves as a source of truth for visual entities.
+///
+/// Coordinates are typically design coordinates.
 ///
 /// - Important: The component must be destroyed when the drag or preview operation is concluded.
 ///
-public struct BlockPreview: Component {
-    public var position: Vector2D
-
+public struct PreviewPositionComponent: Component {
     public init(position: Vector2D) {
         self.position = position
     }
+    
+    public var position: Vector2D
 }
 
 /// Component for user-interaction session of a connector.
 ///
-/// This connector should be used as an override for ``DiagramConnector`` when computing ``DiagramConnectorGeometry``.
+/// It is used to override ``DiagramConnector/midpoints``.
+///
+/// Interactive tools should set the component during interactive session, such as dragging, on
+/// an entity that serves as a source of truth for visual entities.
+///
+/// Coordinates are typically design coordinates.
 ///
 /// - Important: The component must be destroyed when the drag or preview operation is concluded.
 ///
-public struct ConnectorPreview: Component {
+public struct PreviewMidpoints: Component {
     public var midpoints: [Vector2D]
     public init(midpoints: [Vector2D]) {
         self.midpoints = midpoints
     }
 }
-

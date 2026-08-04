@@ -47,6 +47,7 @@ extension Geometry {
     /// ray originating from the first adjacent point to the endpoint. If no intersection is found,
     /// then the endpoint block position is returned for given endpoint.
     ///
+    @available(*, deprecated, message: "Use Geometry.rayIntersection directly")
     public static func touchPoints(originPosition: Vector2D,
                                    originShape: CollisionShape,
                                    targetPosition: Vector2D,
@@ -65,6 +66,7 @@ extension Geometry {
         return (origin: originTouch, target:targetTouch)
     }
     // FIXME: Change to (from:touching:at:)
+    @available(*, deprecated, message: "Use Geometry.rayIntersection directly")
     public static func touchPoint(shape: ShapeType,
                                   position: Vector2D,
                                   from startPoint: Vector2D,
@@ -82,6 +84,7 @@ extension Geometry {
 
 extension Geometry {
     /// Create a thin arrowhead (stroke-based) at the specified point
+    ///
     public static func createThinArrowhead(at headPoint: Vector2D,
                                            direction: Vector2D,
                                            size: Double,
@@ -159,34 +162,41 @@ extension Geometry {
     
     /// Create a collection of bezier paths for a thin connector and its arrowheads.
     ///
-    public static func thinConnectorPaths(originPoint: Vector2D,
-                                          targetPoint: Vector2D,
-                                          midpoints: [Vector2D],
-                                          headSize: Double,
-                                          tailSize: Double,
-                                          lineType: LineType,
-                                          kind: ConnectorGlyph.Thin)
-    -> ThinConnector {
-        // Arrowhead directions
-        let originDir = (originPoint - (midpoints.first ?? targetPoint)).normalized
-        let targetDir = (targetPoint - (midpoints.last ?? originPoint)).normalized
-
+    /// - Parameters:
+    ///     - originPoint: The first point of the connector – tail of the connector arrow.
+    ///     - originDirection: Normalised vector of a direction towards the origin point. Used
+    ///       for arrowhead stroke.
+    ///     - targetPoint: The last point of the connector – tail of the connector arrow.
+    ///     - targetDirection: Normalised vector of a direction towards the target point. Used
+    ///       for arrowhead stroke.
+    ///     - midpoints: points used to route the stroke body through.
+    ///     - headSize: size of the arrowhead at the target.
+    ///     - tailSize: size of the arrowhead at the origin.
+    ///     - lineType: type of the body line.
+    ///     - kind: glyph kind.
+    ///
+    public static func thinConnectorStroke(geometry: ConnectorGeometry,
+                                           tailSize: Double,
+                                           headSize: Double,
+                                           lineType: LineType,
+                                           kind: ConnectorGlyph.Thin)
+    -> ThinConnectorPaths {
         // Create arrowheads
-        let headArrowhead = Self.createThinArrowhead(at: targetPoint,
-                                                     direction: targetDir,
+        let headArrowhead = Self.createThinArrowhead(at: geometry.targetPoint,
+                                                     direction: geometry.targetDirection,
                                                      size: headSize,
                                                      type: kind.headType)
         
-        let tailArrowhead = Self.createThinArrowhead(at: originPoint,
-                                                     direction: originDir,
+        let tailArrowhead = Self.createThinArrowhead(at: geometry.originPoint,
+                                                     direction: geometry.originDirection,
                                                      size: tailSize,
                                                      type: kind.tailType)
         
         // Calculate clipped endpoints
-        let clippedOrigin = originPoint - (originDir * tailArrowhead.offset)
-        let clippedTarget = targetPoint - (targetDir * headArrowhead.offset)
+        let clippedOrigin = geometry.originPoint - (geometry.originDirection * tailArrowhead.offset)
+        let clippedTarget = geometry.targetPoint - (geometry.targetDirection * headArrowhead.offset)
         
-        let allPoints = [clippedOrigin] + midpoints + [clippedTarget]
+        let allPoints = [clippedOrigin] + geometry.midpoints + [clippedTarget]
         // Create main line
         let body: BezierPath
         switch lineType {
@@ -198,9 +208,9 @@ extension Geometry {
             body = BezierPath(orthogonalPolylineThrough: allPoints)
         }
         
-        return ThinConnector(tail: tailArrowhead.path,
-                             body: body,
-                             head: headArrowhead.path)
+        return ThinConnectorPaths(tail: tailArrowhead.path,
+                                  body: body,
+                                  head: headArrowhead.path)
     }
 }
 
@@ -209,25 +219,20 @@ extension Geometry {
 extension Geometry {
     /// Create a bezier path of a fat (outlined) connector, including arrowheads.
     ///
-    public static func fatConnectorPath(
-        originPoint: Vector2D,
-        targetPoint: Vector2D,
-        midpoints: [Vector2D],
+    public static func fatConnectorStroke(
+        geometry: ConnectorGeometry,
         headSize: Double,
         tailSize: Double,
         kind: ConnectorGlyph.Fat)
     -> BezierPath {
         // Arrowhead directions
-        let originDir = (originPoint - (midpoints.first ?? targetPoint)).normalized
-        let targetDir = (targetPoint - (midpoints.last ?? originPoint)).normalized
-
         // TODO: Make fat arrowhead size two-dimensional. For now, we just use this magic ratio.
         let PleasantMagicScale = 1.5
         
-        let clippedOrigin = originPoint - (originDir * kind.tailType.touchPointOffset(tailSize * PleasantMagicScale))
-        let clippedTarget = targetPoint - (targetDir * kind.headType.touchPointOffset(headSize * PleasantMagicScale))
+        let clippedOrigin = geometry.originPoint - (geometry.originDirection * kind.tailType.touchPointOffset(tailSize * PleasantMagicScale))
+        let clippedTarget = geometry.targetPoint - (geometry.targetDirection * kind.headType.touchPointOffset(headSize * PleasantMagicScale))
 
-        let points =  [clippedOrigin] + midpoints + [clippedTarget]
+        let points =  [clippedOrigin] + geometry.midpoints + [clippedTarget]
 
         let pathThere = Geometry.offsetPolyline(points, offset: kind.width / 2, joinType: kind.joinType)
         let pathBack = Geometry.offsetPolyline(points.reversed(), offset: kind.width / 2, joinType: kind.joinType)
@@ -245,8 +250,8 @@ extension Geometry {
             path.addLine(to: pathBack[0])
         case .regular:
             Self.appendFatArrowhead(path: &path,
-                                    endpoint: targetPoint,
-                                    direction: targetDir,
+                                    endpoint: geometry.targetPoint,
+                                    direction: geometry.targetDirection,
                                     connectIn: pathThere.last!,
                                     connectOut: pathBack.first!,
                                     size: headSize)
@@ -261,8 +266,8 @@ extension Geometry {
             path.addLine(to: pathThere[0])
         case .regular:
             Self.appendFatArrowhead(path: &path,
-                                    endpoint: originPoint,
-                                    direction: originDir,
+                                    endpoint: geometry.originPoint,
+                                    direction: geometry.originDirection,
                                     connectIn: pathBack.last!,
                                     connectOut: pathThere.first!,
                                     size: tailSize)

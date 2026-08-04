@@ -5,8 +5,9 @@
 //  Created by Stefan Urbanek on 29/07/2025.
 //
 
+import PoieticCore
 
-public struct CollisionShape: Equatable, Codable, Sendable {
+public struct CollisionShape: Equatable, Codable, Sendable, Component {
     /// Position within owner's coordinates.
     ///
     /// - Note: For polygon shape the position is typically zero. The polygon points have relative
@@ -34,7 +35,11 @@ public struct CollisionShape: Equatable, Codable, Sendable {
         self.position = position
         self.shape = shape
     }
-    
+    public init(rectangle: Rect2D) {
+        self.position = rectangle.center
+        self.shape = .rectangle(rectangle.size)
+    }
+
     // TODO: Remove in favour of common pictogram transform when rendering
     public func scaled(_ scale: Double) -> CollisionShape {
         return CollisionShape(

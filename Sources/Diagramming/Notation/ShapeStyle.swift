@@ -5,39 +5,6 @@
 //  Created by Stefan Urbanek on 21/07/2025.
 //
 
-
-/// Visual styling properties for shapes and connectors.
-///
-/// Defines appearance characteristics including stroke width, stroke colour, and fill colour.
-/// Used by connectors and other drawable elements to control their visual presentation.
-///
-public struct ShapeStyle: Equatable, Sendable {
-    // TODO: Make colours optional, where nil = default
-    
-    /// The width of the stroke/outline in points.
-    public let lineWidth: Double
-    
-    /// The colour of the stroke/outline as a string.
-    ///
-    /// It is recommended that the colour name is one of the adaptable colours.
-    ///
-    public let lineColor: String
-    
-    /// The fill colour for closed shapes as a string.
-    ///
-    /// It is recommended that the colour name is one of the adaptable colours.
-    ///
-    public let fillColor: String
-
-    public init(lineWidth: Double = 1.0,
-                lineColor: String = "black",
-                fillColor: String = "white") {
-        self.lineWidth = lineWidth
-        self.lineColor = lineColor
-        self.fillColor = fillColor
-    }
-}
-
 /// Defines different line rendering styles for connectors.
 ///
 /// Controls how lines are drawn between connector endpoints and through midpoints.

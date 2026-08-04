@@ -1,16 +1,18 @@
 //
-//  Block.swift
+//  DiagramBlock.swift
 //  Diagramming
 //
-//  Created by Stefan Urbanek on 31/07/2025.
+//  Created by Stefan Urbanek on 12/07/2026.
 //
-
 import PoieticCore
 
 /// Component for diagram blocks – a graphical shape which is usually represented by a pictogram
 /// and which can be connected with other blocks using connectors.
 ///
-/// - SeeAlso: ``DiagramConnector``, ``BlockCreationSystem``
+/// Objects with `DiagramBlock` component are expected to have ``DiagramObject`` tag
+/// as well.
+///
+/// - SeeAlso: ``DiagramConnector``, ``DiagramObject``, ``BlockCreationSystem``
 ///
 public struct DiagramBlock: Component {
     /// Position of the diagram block in the diagram or parent's coordinates.
@@ -38,12 +40,14 @@ public struct DiagramBlock: Component {
     ///
     public let secondaryLabel: String?
 
+    // FIXME: Deprecate. This is historical leftover.
     /// Collision shape of the block relative to the block position.
     ///
     /// If the block does not have a pictogram, then a circle shape with radius zero is returned.
     ///
     /// - SeeAlso: ``Pictogram/collisionShape``
     ///
+    @available(*, deprecated, message: "Use scene node collision shape.")
     public let collisionShape: CollisionShape
     // TODO: Separate to "color tag"
     /// Name of a primary colour.
@@ -105,3 +109,4 @@ public struct DiagramBlock: Component {
         self.accentColor = accentColor
     }
 }
+
