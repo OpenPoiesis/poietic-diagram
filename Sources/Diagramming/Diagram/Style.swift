@@ -81,6 +81,7 @@ public struct StyleModifierSet: OptionSet, Sendable, Hashable {
     public static let underflow     = StyleModifierSet(rawValue: 1 << 11)
     public static let positive      = StyleModifierSet(rawValue: 1 << 12)
     public static let negative      = StyleModifierSet(rawValue: 1 << 13)
+    public static let empty         = StyleModifierSet(rawValue: 1 << 14)
 
     public func asStrings() -> [String] {
         var result: [String] = []
