@@ -12,6 +12,7 @@ extension DiagramSceneComposer {
             layoutBlock(child, layout: layout)
             // Other canvas node types that need layout go here... (nothing else yet)
         }
+        scene.removeComponent(LayoutDirty.self)
     }
     
     /// Lays out block children nodes such as labels and indicators.
@@ -88,8 +89,8 @@ extension DiagramSceneComposer {
             indicatorEntity.setComponent(PositionComponent(position: position))
             // Swatch is not yet touchable, no touch region here.
         }
-
-
+        
+        entity.removeComponent(LayoutDirty.self)
     }
     
     @inlinable

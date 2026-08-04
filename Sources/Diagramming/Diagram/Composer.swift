@@ -126,30 +126,6 @@ public class DiagramSceneComposer {
     /// Called on:
     /// - New diagram.
     ///
-    public func OLDcreateScene(diagram: RuntimeEntity, viewport: ViewportState = ViewportState()) -> RuntimeEntity {
-        let scene: RuntimeEntity = world.spawn(
-            DiagramScene(),
-            viewport
-        )
-        // Represented block to scene node map
-        var repToSceneMap: [RuntimeID:RuntimeID] = [:]
-        
-        scene.relate(RepresentationOf(), to: diagram)
-        
-        let context = Context(scene: scene)
-        
-        for entity in diagram.outgoing(Depicts.self) where entity.contains(DiagramBlock.self) {
-            let node = createBlockNode(representing: entity, context: context)
-            repToSceneMap[entity.runtimeID] = node
-        }
-        
-        for entity in diagram.outgoing(Depicts.self) where entity.contains(DiagramConnector.self){
-            createConnectorNode(representing: entity,
-                                context: context,
-                                sceneNodeMap: repToSceneMap)
-        }
-        return scene
-    }
     public func createScene(diagram: RuntimeEntity, viewport: ViewportState = ViewportState()) -> RuntimeEntity {
         let scene: RuntimeEntity = world.spawn(
             DiagramScene(),
@@ -333,7 +309,6 @@ public class DiagramSceneComposer {
     ///
     /// Called when viewport of the scene changes.
     ///
-    @available(*, deprecated, message: "Use SceneCompositionSystem for world-wide update")
     public func updateGeometry(scene: RuntimeEntity) {
         let context = Context(scene: scene)
         for child in scene.children where child.contains(BlockCanvasNode.self) {
