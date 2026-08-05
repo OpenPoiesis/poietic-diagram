@@ -82,8 +82,8 @@ let DiagramTestNotation = Notation(
         #expect(scene.children.count == 3)
         let _: ViewportState = try #require(scene.component())
         
-        let blocks = scene.children.filter { $0.contains(BlockCanvasNode.self) }
-        let connectors = scene.children.filter { $0.contains(ConnectorCanvasNode.self) }
+        let blocks = scene.children.filter { $0.contains(BlockSceneNode.self) }
+        let connectors = scene.children.filter { $0.contains(ConnectorSceneNode.self) }
         
         #expect(blocks.count == 2)
         for entity in blocks {
@@ -102,14 +102,14 @@ let DiagramTestNotation = Notation(
         
         let node: RuntimeEntity = try #require(blockA.incoming(RepresentationOf.self).first)
         
-        #expect(node.contains(CanvasNode.self))
-        #expect(node.contains(BlockCanvasNode.self))
+        #expect(node.contains(SceneNode.self))
+        #expect(node.contains(BlockSceneNode.self))
         #expect(node.contains(PositionComponent.self))
         #expect(node.contains(CollisionShape.self))
 
-        let pictogramNode: RuntimeEntity = try #require(node.target(CanvasNode.Pictogram.self))
+        let pictogramNode: RuntimeEntity = try #require(node.target(SceneNode.Pictogram.self))
 
-        #expect(pictogramNode.contains(PictogramCanvasNode.self))
+        #expect(pictogramNode.contains(PictogramSceneNode.self))
     }
 
     @Test func createConnectorNode() throws {
@@ -120,14 +120,14 @@ let DiagramTestNotation = Notation(
         
         let node: RuntimeEntity = try #require(connectorAB.incoming(RepresentationOf.self).first)
         
-        #expect(node.contains(CanvasNode.self))
-        #expect(node.contains(ConnectorCanvasNode.self))
+        #expect(node.contains(SceneNode.self))
+        #expect(node.contains(ConnectorSceneNode.self))
 
         let sceneNodeA: RuntimeEntity = try #require(blockA.incoming(RepresentationOf.self).first)
         let sceneNodeB: RuntimeEntity = try #require(blockB.incoming(RepresentationOf.self).first)
 
-        #expect(node.containsRelationship(ConnectorCanvasNode.Origin.self, to: sceneNodeA.runtimeID))
-        #expect(node.containsRelationship(ConnectorCanvasNode.Target.self, to: sceneNodeB.runtimeID))
+        #expect(node.containsRelationship(ConnectorSceneNode.Origin.self, to: sceneNodeA.runtimeID))
+        #expect(node.containsRelationship(ConnectorSceneNode.Target.self, to: sceneNodeB.runtimeID))
     }
 
     @Test func despawnSceneWhenDiagramDespawns() throws {
@@ -136,13 +136,13 @@ let DiagramTestNotation = Notation(
         let diagram = DiagramSceneComposer.createDiagramFromAll(world: world)
         let scene = composer.createScene(diagram: diagram)
         
-        let entities: [RuntimeEntity] = Array(world.query(CanvasNode.self))
+        let entities: [RuntimeEntity] = Array(world.query(SceneNode.self))
         #expect(!entities.isEmpty)
 
         world.despawn(diagram)
         
         #expect(!world.contains(scene))
-        let noEntities: [RuntimeEntity] = Array(world.query(CanvasNode.self))
+        let noEntities: [RuntimeEntity] = Array(world.query(SceneNode.self))
         #expect(noEntities.isEmpty)
     }
 }

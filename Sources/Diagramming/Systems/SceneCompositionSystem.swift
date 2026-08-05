@@ -57,7 +57,7 @@ public struct SceneCompositionSystem: System {
     }
     
     func updateData(_ world: World, composer: DiagramSceneComposer) {
-        for sceneNode: RuntimeEntity in world.query(BlockCanvasNode.self) {
+        for sceneNode: RuntimeEntity in world.query(BlockSceneNode.self) {
             guard let represented: RuntimeEntity = sceneNode.target(RepresentationOf.self),
                   let flags: DirtyContent = represented.component(),
                   flags.contains(.data)
@@ -69,7 +69,7 @@ public struct SceneCompositionSystem: System {
 
     func updateHighlights(_ world: World) {
         // TODO: Use something like SelectionDirty world singleton
-        for sceneNode: RuntimeEntity in world.query(CanvasNode.self) {
+        for sceneNode: RuntimeEntity in world.query(SceneNode.self) {
             guard let represented: RuntimeEntity = sceneNode.target(RepresentationOf.self)
             else { continue }
             
@@ -94,7 +94,7 @@ public struct SceneCompositionSystem: System {
         var dirtyBlocks: Set<RuntimeID> = Set()
         
         // TODO: Update WHEN: original is geometry dirty OR scene is geometry dirty
-        for sceneNode: RuntimeEntity in world.query(BlockCanvasNode.self) {
+        for sceneNode: RuntimeEntity in world.query(BlockSceneNode.self) {
             guard let represented: RuntimeEntity = sceneNode.target(RepresentationOf.self)
             else { continue }
 
@@ -113,7 +113,7 @@ public struct SceneCompositionSystem: System {
             composer.updateBlockGeometry(sceneNode, from: represented)
         }
         
-        for sceneNode: RuntimeEntity in world.query(ConnectorCanvasNode.self) {
+        for sceneNode: RuntimeEntity in world.query(ConnectorSceneNode.self) {
             var isDirty: Bool = false
             let original: RuntimeEntity?
             

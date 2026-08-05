@@ -67,23 +67,23 @@ extension DiagramSceneRenderer {
             context.setTransform(transform)
         }
         
-        if entity.contains(BlockCanvasNode.self) { renderBlock(entity, context: context) }
-        else if entity.contains(ConnectorCanvasNode.self) {
+        if entity.contains(BlockSceneNode.self) { renderBlock(entity, context: context) }
+        else if entity.contains(ConnectorSceneNode.self) {
             renderConnector(entity, context: context)
         }
-        else if entity.contains(PictogramCanvasNode.self) {
+        else if entity.contains(PictogramSceneNode.self) {
             renderPictogram(entity, context: context)
         }
-        else if entity.contains(LabelCanvasNode.self) {
+        else if entity.contains(LabelSceneNode.self) {
             renderLabel(entity, context: context)
         }
-        else if entity.contains(ValueIndicatorCanvasNode.self) {
+        else if entity.contains(ValueIndicatorSceneNode.self) {
             renderValueIndicator(entity, context: context)
         }
-        else if entity.contains(IssueIndicatorCanvasNode.self) {
+        else if entity.contains(IssueIndicatorSceneNode.self) {
             renderIssueIndicator(entity, context: context)
         }
-        else if entity.contains(ColorSwatchCanvasNode.self) {
+        else if entity.contains(ColorSwatchSceneNode.self) {
             renderColorSwatch(entity, context: context)
         }
         else {

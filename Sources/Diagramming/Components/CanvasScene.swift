@@ -5,10 +5,6 @@
 //  Created by Stefan Urbanek on 01/06/2026.
 //
 import PoieticCore
-// TODO: [REFACTORING][IMPORTANT] *CanvasNode to *SceneNode
-
-// TODO: Nested relationship structures in CanvasNode: reconsider their location. Does not feel natural.
-//
 
 /// Tag component for a diagram scene root.
 ///
@@ -30,13 +26,15 @@ public struct LayoutDirty: Component { public init() {} }
 /// Flag stating that the viewport of a given scene was changed.
 public struct ViewportDirty: Component { public init() {} }
 
+// TODO: Nested relationship structures in SceneNode: reconsider their location. Does not feel natural on one hand, on the other, we do not want to pollute the global namespace.
+
 /// Tag component for all diagram canvas scene nodes.
 ///
 /// Relationships:
 /// - ``ChildOf`` – parent node or ``DiagramScene``
 /// - ``Owner`` – root of the canvas – ``DiagramScene`` entity
 ///
-public struct CanvasNode: Component {
+public struct SceneNode: Component {
     /// Relationship tag for primary label of a diagram scene node.
     ///
     /// Usually used for a block name, derived from ``DiagramBlock/label``.
@@ -96,14 +94,14 @@ public struct CanvasNode: Component {
 ///
 /// Related components that are expected to be associated with the same entity:
 ///
-/// - ``CanvasNode``
-/// - ``BlockCanvasNode``
+/// - ``SceneNode``
+/// - ``BlockSceneNode``
 /// - ``PositionComponent`` – derived from ``DiagramBlock``
 /// - ``PreviewPositionComponent`` – associated during interactive preview, takes precedence before
 ///   the position component, if present
 /// - ``Visibility``
 /// - ``Interactivity``
-/// - ``CanvasNodeStyle`` typically with class ``StyleClass/block``
+/// - ``SceneNodeStyle`` typically with class ``StyleClass/block``
 /// - ``CollisionShape`` – to determine touch points for connector geometry and for hit testing
 ///    through the touch region component.
 /// - ``TouchRegion`` – derived from collision shape, in absolute scene coordinates.
@@ -112,20 +110,20 @@ public struct CanvasNode: Component {
 ///
 /// | Relationship | Target Entity | Primary Component |
 /// |---|---|---|
-/// | ``CanvasNode/ChildOf`` | canvas node or scene if it is root block | ``CanvasNode`` or ``DiagramScene``
-/// | ``CanvasNode/OwnedBy`` | scene | ``DiagramScene``
-/// | ``CanvasNode/Pictogram`` | block pictogram | ``PictogramCanvasNode``
-/// | ``CanvasNode/Pictogram`` | block pictogram | ``PictogramCanvasNode``
-/// | ``CanvasNode/PrimaryLabel`` | primary block label (name) | ``LabelCanvasNode``
-/// | ``CanvasNode/SecondaryLabel`` | secondary block label (formula or value) | ``LabelCanvasNode``
-/// | ``CanvasNode/ValueIndicator`` | value indicator | ``ValueIndicatorCanvasNode``
-/// | ``CanvasNode/IssueIndicator`` | issue indicator | ``IssueIndicatorCanvasNode``
+/// | ``SceneNode/ChildOf`` | canvas node or scene if it is root block | ``SceneNode`` or ``DiagramScene``
+/// | ``SceneNode/OwnedBy`` | scene | ``DiagramScene``
+/// | ``SceneNode/Pictogram`` | block pictogram | ``PictogramSceneNode``
+/// | ``SceneNode/Pictogram`` | block pictogram | ``PictogramSceneNode``
+/// | ``SceneNode/PrimaryLabel`` | primary block label (name) | ``LabelSceneNode``
+/// | ``SceneNode/SecondaryLabel`` | secondary block label (formula or value) | ``LabelSceneNode``
+/// | ``SceneNode/ValueIndicator`` | value indicator | ``ValueIndicatorSceneNode``
+/// | ``SceneNode/IssueIndicator`` | issue indicator | ``IssueIndicatorSceneNode``
 ///
-public struct BlockCanvasNode: Component {
+public struct BlockSceneNode: Component {
     public init() { /* Empty */ }
 }
 
-public struct PictogramCanvasNode: Component {
+public struct PictogramSceneNode: Component {
     public let pictogram: Pictogram
     public init(pictogram: Pictogram) {
         self.pictogram = pictogram
@@ -133,7 +131,7 @@ public struct PictogramCanvasNode: Component {
 }
 
 
-public struct ColorSwatchCanvasNode: Component {
+public struct ColorSwatchSceneNode: Component {
     public static let DefaultSize: Double = 10.0
     public let colorKey: AdaptableColorKey
     
@@ -144,9 +142,9 @@ public struct ColorSwatchCanvasNode: Component {
 
 /// Text label node.
 ///
-/// - Note: Font and colour of the node are specified in ``CanvasNodeStyle`` component on the same
+/// - Note: Font and colour of the node are specified in ``SceneNodeStyle`` component on the same
 ///   entity.
-public struct LabelCanvasNode: Component {
+public struct LabelSceneNode: Component {
     public let text: String
     public let anchor: Vector2D
     
@@ -157,7 +155,7 @@ public struct LabelCanvasNode: Component {
     }
 }
 
-public struct IssueIndicatorCanvasNode: Component {
+public struct IssueIndicatorSceneNode: Component {
     public static let DefaultSize: Double = 10.0
     public init() { /* Empty */ }
 }
@@ -167,7 +165,7 @@ public struct IssueIndicatorCanvasNode: Component {
 /// Probes value using ``RuntimeEntity/numericProbe(:)``
 /// of represented object (``ChildOf`` -> ``RepresentationOf``):
 ///
-public struct ValueIndicatorCanvasNode: Component {
+public struct ValueIndicatorSceneNode: Component {
     public static let DefaultSize = Vector2D(100, 20)
     /// Size of the value indicator in canvas/viewport coordinates.
     public let size: Vector2D
@@ -193,10 +191,9 @@ public struct ValueIndicatorCanvasNode: Component {
 /// - ``ConnectorWire``
 /// - ``ConnectorStroke``
 ///
-public struct ConnectorCanvasNode: Component {
-// TODO: [REFACTORING] Rename to ConnectorSceneNode
+public struct ConnectorSceneNode: Component {
     /// Relationship tag for connector origin block. Relationship target is expected to be
-    /// a ``BlockCanvasNode``.
+    /// a ``BlockSceneNode``.
     ///
     public struct Origin: Relationship {
         public static let targetRemovalPolicy: RelationshipRemovalPolicy = .remove
@@ -204,7 +201,7 @@ public struct ConnectorCanvasNode: Component {
     }
 
     /// Relationship tag for connector target block. Relationship target is expected to be
-    /// a ``BlockCanvasNode``.
+    /// a ``BlockSceneNode``.
     ///
     public struct Target: Relationship {
         public static let targetRemovalPolicy: RelationshipRemovalPolicy = .remove

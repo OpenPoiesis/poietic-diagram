@@ -31,8 +31,8 @@ extension DiagramSceneComposer {
     ///
     public func layoutBlock(_ entity: RuntimeEntity, layout: some LayoutProvider) {
         // NOTE: Do not change block position here, only position of block's children.
-        guard let pictogramNode: RuntimeEntity = entity.target(CanvasNode.Pictogram.self),
-              let pictComp: PictogramCanvasNode = pictogramNode.component()
+        guard let pictogramNode: RuntimeEntity = entity.target(SceneNode.Pictogram.self),
+              let pictComp: PictogramSceneNode = pictogramNode.component()
         else { return }
         
         let pictogram = pictComp.pictogram
@@ -42,8 +42,8 @@ extension DiagramSceneComposer {
         var swatchCenter: Vector2D = labelCenter
 
         // 1. Primary label
-        if let labelEntity: RuntimeEntity = entity.target(CanvasNode.PrimaryLabel.self),
-           let label: LabelCanvasNode = labelEntity.component()
+        if let labelEntity: RuntimeEntity = entity.target(SceneNode.PrimaryLabel.self),
+           let label: LabelSceneNode = labelEntity.component()
         {
             labelCenter.y += layout.metric(.primaryLabelPadding, default: 0.0)
             let extents = layout.textExtents(label.text, class: .primaryLabel)
@@ -59,8 +59,8 @@ extension DiagramSceneComposer {
             labelEntity.setComponent(shape)
         }
         // 2. Secondary label
-        if let labelEntity: RuntimeEntity = entity.target(CanvasNode.SecondaryLabel.self),
-           let label: LabelCanvasNode = labelEntity.component()
+        if let labelEntity: RuntimeEntity = entity.target(SceneNode.SecondaryLabel.self),
+           let label: LabelSceneNode = labelEntity.component()
         {
             let extents = layout.textExtents(label.text, class: .secondaryLabel)
             let position = labelPosition(center: labelCenter, anchor: label.anchor, extents: extents)
@@ -71,14 +71,14 @@ extension DiagramSceneComposer {
             labelEntity.setComponent(shape)
         }
         // 3. Color swatch
-        if let swatchEntity: RuntimeEntity = entity.target(CanvasNode.ColorSwatch.self) {
+        if let swatchEntity: RuntimeEntity = entity.target(SceneNode.ColorSwatch.self) {
             swatchEntity.setComponent(PositionComponent(position: swatchCenter))
             // Swatch is not yet touchable, no touch region here.
         }
         
         // 3. Color swatch
-        if let indicatorEntity: RuntimeEntity = entity.target(CanvasNode.ValueIndicator.self),
-           let indicator: ValueIndicatorCanvasNode = indicatorEntity.component()
+        if let indicatorEntity: RuntimeEntity = entity.target(SceneNode.ValueIndicator.self),
+           let indicator: ValueIndicatorSceneNode = indicatorEntity.component()
         {
             let top = Vector2D(bbox.center.x, bbox.minY)
             let offset = layout.metric(.valueIndicatorPadding, default: 0.0)
