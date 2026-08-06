@@ -40,16 +40,6 @@ public struct DiagramBlock: Component {
     ///
     public let secondaryLabel: String?
 
-    // FIXME: Deprecate. This is historical leftover.
-    /// Collision shape of the block relative to the block position.
-    ///
-    /// If the block does not have a pictogram, then a circle shape with radius zero is returned.
-    ///
-    /// - SeeAlso: ``Pictogram/collisionShape``
-    ///
-    @available(*, deprecated, message: "Use scene node collision shape.")
-    public let collisionShape: CollisionShape
-    // TODO: Separate to "color tag"
     /// Name of a primary colour.
     ///
     /// The colour name is from a list of adaptable colour names.
@@ -99,12 +89,6 @@ public struct DiagramBlock: Component {
         self.pictogram = pictogram
         self.label = label
         self.secondaryLabel = secondaryLabel
-        if let pictogram {
-            self.collisionShape = pictogram.collisionShape
-        }
-        else {
-            self.collisionShape = CollisionShape(position: .zero, shape: .circle(0.0))
-        }
         self.visualTypeName = visualTypeName
         self.accentColor = accentColor
     }
