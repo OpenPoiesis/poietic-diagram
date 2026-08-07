@@ -61,9 +61,7 @@ extension DiagramSceneRenderer {
         // TODO: [REFACTORING] Is the preview position still needed here? It should be set on the original (represented object, as source of truth)
         context.save()
         if let positionComp: PositionComponent = entity.component() {
-            let previewPositionComp: PreviewPositionComponent? = entity.component()
-            let position = previewPositionComp?.position ?? positionComp.position
-            let transform = context.transform.translated(position)
+            let transform = context.transform.translated(positionComp.position)
             context.setTransform(transform)
         }
         

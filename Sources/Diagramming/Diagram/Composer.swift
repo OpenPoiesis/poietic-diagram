@@ -362,7 +362,7 @@ public class DiagramSceneComposer {
         updateIssueIndicator(sceneNode, from: represented)
         updateColorSwatch(sceneNode, from: represented)
 
-        // TODO: Set only when relevant components changed
+        // TODO: [OPTIMISATION] Set only when relevant components changed
         sceneNode.setComponent(InteractionDirty())
         sceneNode.withChildrenRecursively {
             guard $0.contains(Interactivity.self) else { return }
@@ -371,14 +371,11 @@ public class DiagramSceneComposer {
         if let scene: RuntimeEntity = sceneNode.target(MemberOf.self) {
             scene.setComponent(InteractionDirty())
         }
-        // TODO: Set only when really needed (pictogram changed or label changed)
+        // TODO: : [OPTIMISATION] Set only when really needed (pictogram changed or label changed)
         sceneNode.setComponent(LayoutDirty())
     }
     
     func updateBlockPictogram(_ blockSceneNode: RuntimeEntity, from representedEntity: RuntimeEntity) {
-        // TODO: Do not forget to mark as geometry dirty when pictogram changes
-        // TODO: Do not forget to consider dirty geometry in connector update or mark the connector dirty
-
         guard let block: DiagramBlock = representedEntity.component()
         else { return }
         
@@ -393,7 +390,7 @@ public class DiagramSceneComposer {
         blockSceneNode.setComponent(pictogram.collisionShape)
 
         let pictogramNode: RuntimeEntity
-        
+
         if let target: RuntimeEntity = blockSceneNode.target(SceneNode.Pictogram.self) {
             pictogramNode = target
             pictogramNode.setComponent(PictogramSceneNode(pictogram: pictogram))

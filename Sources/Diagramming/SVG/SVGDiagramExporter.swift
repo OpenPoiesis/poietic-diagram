@@ -222,15 +222,6 @@ public class SVGDiagramSceneRenderer: DiagramSceneRenderer {
             group.addChild(svgPath)
         }
 
-        if let geometry: ConnectorGeometry = entity.component() {
-            let circleO = SVGCircle(center: geometry.originPoint, radius: 4.0)
-            circleO.stroke = "green"
-            let circleT = SVGCircle(center: geometry.targetPoint, radius: 4.0)
-            circleT.stroke = "red"
-            group.addChild(circleO)
-            group.addChild(circleT)
-        }
-        
         context.append(group)
     }
 

@@ -38,24 +38,35 @@ extension DiagramSceneComposer {
         let pictogram = pictComp.pictogram
         
         let bbox = pictogram.pathBoundingBox
-        var labelCenter = Vector2D(0, bbox.topLeft.y)
-        var swatchCenter: Vector2D = labelCenter
+        var labelTopCenter = Vector2D(0, bbox.topLeft.y)
+        var swatchCenter: Vector2D = labelTopCenter
 
         // 1. Primary label
         if let labelEntity: RuntimeEntity = entity.target(SceneNode.PrimaryLabel.self),
            let label: LabelSceneNode = labelEntity.component()
         {
-            labelCenter.y += layout.metric(.primaryLabelPadding, default: 0.0)
             let extents = layout.textExtents(label.text, class: .primaryLabel)
-            let position = labelPosition(center: labelCenter, anchor: label.anchor, extents: extents)
 
-            labelCenter.y += layout.metric(.secondaryLabelPadding, default: 0.0)
-            swatchCenter = Vector2D(position.x - layout.metric(.colorSwatchSize, default: 0.0),
-                                    position.y - extents.height/2)
+            labelTopCenter.y += layout.metric(.primaryLabelPadding, default: 0.0)
 
-            labelEntity.setComponent(PositionComponent(position: position))
+            let position = labelTopCenter + Vector2D(0.0, extents.height / 2) - extents.origin
             
-            let shape = CollisionShape(rectangle: extents)
+            let swatchSize = layout.metric(.colorSwatchSize, default: 0.0)
+            swatchCenter = Vector2D(position.x - extents.center.x - swatchSize ,
+                                    position.y + extents.height/2)
+            
+
+            labelTopCenter.y += extents.height + layout.metric(.secondaryLabelPadding, default: 0.0)
+            let offset = layout.labelRenderingOffset(extents: extents, anchor: label.anchor)
+            
+            labelEntity.setComponent(PositionComponent(position: position))
+            if offset != .zero {
+                labelEntity.setComponent(RenderingOffset(position: offset))
+            }
+
+            let labelBox = Rect2D(origin: -extents.center, size: extents.size)
+            let shape = CollisionShape(rectangle: labelBox)
+            
             labelEntity.setComponent(shape)
         }
         // 2. Secondary label
@@ -63,11 +74,21 @@ extension DiagramSceneComposer {
            let label: LabelSceneNode = labelEntity.component()
         {
             let extents = layout.textExtents(label.text, class: .secondaryLabel)
-            let position = labelPosition(center: labelCenter, anchor: label.anchor, extents: extents)
+
+            labelTopCenter.y += layout.metric(.primaryLabelPadding, default: 0.0)
+
+            let position = labelTopCenter + Vector2D(0.0, extents.height / 2) - extents.origin
+            
+            let offset = layout.labelRenderingOffset(extents: extents, anchor: label.anchor)
 
             labelEntity.setComponent(PositionComponent(position: position))
+            if offset != .zero {
+                labelEntity.setComponent(RenderingOffset(position: offset))
+            }
 
-            let shape = CollisionShape(rectangle: extents)
+            let labelBox = Rect2D(origin: -extents.center, size: extents.size)
+            let shape = CollisionShape(rectangle: labelBox)
+            
             labelEntity.setComponent(shape)
         }
         // 3. Color swatch
@@ -80,7 +101,6 @@ extension DiagramSceneComposer {
         if let indicatorEntity: RuntimeEntity = entity.target(SceneNode.ValueIndicator.self),
            let indicator: ValueIndicatorSceneNode = indicatorEntity.component()
         {
-            let top = Vector2D(bbox.center.x, bbox.minY)
             let offset = layout.metric(.valueIndicatorPadding, default: 0.0)
             let position: Vector2D = Vector2D(
                 bbox.center.x,
@@ -92,10 +112,4 @@ extension DiagramSceneComposer {
         
         entity.removeComponent(LayoutDirty.self)
     }
-    
-    @inlinable
-    func labelPosition(center: Vector2D, anchor: Vector2D, extents: Rect2D) -> Vector2D {
-        return center - extents.origin - extents.size * anchor
-    }
-
 }

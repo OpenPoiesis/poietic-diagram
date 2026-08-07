@@ -20,8 +20,8 @@ public struct SVGDiagramStyle: Sendable {
             .fatConnector:SVGShapeStyle(stroke: "blue", fill: "azure"),
         ],
         metrics: [
-            .primaryLabelPadding: 18.0,
-            .secondaryLabelPadding: 18.0,
+            .primaryLabelPadding: 6.0,
+            .secondaryLabelPadding: 2.0,
         ]
     )
 
@@ -65,5 +65,4 @@ extension SVGDiagramStyle: LayoutProvider {
         return Rect2D(origin: .zero, size: Vector2D(x: width, y: height))
         
     }
-
 }

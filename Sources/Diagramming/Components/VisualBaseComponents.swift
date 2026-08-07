@@ -16,6 +16,18 @@ public struct PositionComponent: Component {
     
 }
 
+/// Offset used as an adjustment by renderers (presenters) for positions computed by
+/// backend-agnostic functions.
+///
+public struct RenderingOffset: Component {
+    public init(position: Vector2D) {
+        self.offset = position
+    }
+    
+    public let offset: Vector2D
+    
+}
+
 /// Component stating visibility of a scene node.
 ///
 /// - SeeAlso: ``Interactivity``

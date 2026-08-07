@@ -175,7 +175,29 @@ public enum DiagramLayoutMetric: CaseIterable, Sendable {
 public protocol LayoutProvider {
     func metric(_ metric: DiagramLayoutMetric, default defaultValue: Double) -> Double
     /// Compute text extents for a text with given style class (semantic role).
+    ///
+    /// Used to compute label bounding box and for ``TouchRegion``.
     func textExtents(_ text: String, class styleClass: StyleClass) -> Rect2D
+    /// Offset for label rendering position relative to label node position.
+    ///
+    /// Different backends might use different positions for label rendering. Typically
+    /// backends use lower left point. SVG can use centre point (using `"middle"` positioning
+    /// attribute). This method give opportunity to the rendering backend to compute correct offset
+    /// without affecting the actual node position.
+    ///
+    /// Default implementation returns nil – default backend behaviour.
+    ///
+    /// The return value is used by the ``DiagramSceneComposer`` during layout phase to create
+    /// ``RenderingOffset`` component on ``LabelSceneNode``.
+    ///
+    func labelRenderingOffset(extents: Rect2D, anchor: Vector2D) -> Vector2D
+}
+
+public extension LayoutProvider {
+    func labelRenderingOffset(extents: Rect2D, anchor: Vector2D) -> Vector2D {
+        return .zero
+    }
+
 }
 
 public struct SceneLayoutProvider: Component {
