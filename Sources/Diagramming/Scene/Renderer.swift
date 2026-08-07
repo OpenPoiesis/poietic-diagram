@@ -58,7 +58,6 @@ public protocol DiagramSceneRenderer {
 
 extension DiagramSceneRenderer {
     public func render(_ entity: RuntimeEntity, context: Context) {
-        // TODO: [REFACTORING] Is the preview position still needed here? It should be set on the original (represented object, as source of truth)
         context.save()
         if let positionComp: PositionComponent = entity.component() {
             let transform = context.transform.translated(positionComp.position)

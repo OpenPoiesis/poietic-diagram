@@ -1,32 +1,11 @@
 //
-//  StatusComponents.swift
+//  SceneBaseComponents.swift
 //  Diagramming
 //
-//  Created by Stefan Urbanek on 01/06/2026.
+//  Created by Stefan Urbanek on 07/08/2026.
 //
 
 import PoieticCore
-
-public struct PositionComponent: Component {
-    public init(position: Vector2D) {
-        self.position = position
-    }
-    
-    public let position: Vector2D
-    
-}
-
-/// Offset used as an adjustment by renderers (presenters) for positions computed by
-/// backend-agnostic functions.
-///
-public struct RenderingOffset: Component {
-    public init(position: Vector2D) {
-        self.offset = position
-    }
-    
-    public let offset: Vector2D
-    
-}
 
 /// Component stating visibility of a scene node.
 ///
@@ -43,7 +22,6 @@ public enum Visibility: Component {
     case inherit
 }
 
-// TODO: ComputedInteractivity (final)
 /// Component stating interactivity of a scene node.
 ///
 /// Scene nodes flagged as interactive can be touched. Touch region is specified
@@ -97,8 +75,25 @@ public enum TouchRegion: Component {
     }
 }
 
+/// Flag component stating that the diagram scene requires re-layout.
+///
+public struct LayoutDirty: Component { public init() { /* Empty */ } }
+
+/// Flag stating that the viewport of a given scene was changed.
+public struct ViewportDirty: Component { public init() { /* Empty */ } }
+
 /// Component for tagging visual entities that require re-computation of ``TouchRegion``
 ///
-public struct InteractionDirty: Component {
-    public init() { /* Empty */ }
+public struct InteractionDirty: Component { public init() { /* Empty */ } }
+
+/// Offset used as an adjustment by renderers (presenters) for positions computed by
+/// backend-agnostic functions.
+///
+public struct RenderingOffset: Component {
+    public init(position: Vector2D) {
+        self.offset = position
+    }
+    
+    public let offset: Vector2D
+    
 }

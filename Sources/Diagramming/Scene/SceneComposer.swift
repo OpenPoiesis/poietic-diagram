@@ -23,9 +23,6 @@ import PoieticCore
  
  */
 
-// TODO: [REFACTORING]: Review interactivity and visibility
-// TODO: [REFACTORING][IMPORTANT] Update modifiers flags, especially selection for block and connector (see below)
-
 /// Object responsible for creating and synchronising a diagram scene with model.
 ///
 /// Scene composer is a stateless bridge between diagram (model) and scene –
@@ -367,7 +364,6 @@ public class DiagramSceneComposer {
         guard let block: DiagramBlock = representedEntity.component()
         else { return }
         
-        // FIXME: [REFACTORING] Do not despawn, Just hide
         guard let pictogram = block.pictogram else {
             if let target: RuntimeEntity = blockSceneNode.target(SceneNode.Pictogram.self) {
                 target.despawn()
@@ -655,7 +651,6 @@ public class DiagramSceneComposer {
 
         updateConnectorGeometry(sceneNode, midpoints: midpoints, glyph: glyph, context: context)
         updateConnectorStroke(sceneNode, glyph: glyph)
-        // TODO: [REFACTORING][IMPORTANT] Update modifiers flags, especially selection
         sceneNode.setComponent(InteractionDirty())
         context.scene.setComponent(InteractionDirty())
     }
