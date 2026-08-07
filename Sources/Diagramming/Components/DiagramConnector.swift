@@ -127,7 +127,14 @@ public struct ConnectorGeometry: Component {
 /// Points of a connector wire used for hit testing and for selection outline.
 /// Typically a tessellated points of a connector curve.
 ///
-/// Attached to entities with ``ConnectorSceneNode`` by ``DiagramSceneComposer``.
+/// Computed from ``ConnectorGeometry``.
+///
+/// - **Set By:**
+///     - ``DiagramSceneComposer`` computes and sets the entity during
+///       ``DiagramSceneComposer/updateGeometry(scene:)`` on ``ConnectorSceneNode``
+/// - **Used by:**
+///     - ``SceneInteractionSystem`` to compute ``TouchRegion`` for a connector.
+///     - renderers to produce selection highlight.
 ///
 /// - SeeAlso: ``ConnectorGeometry``, ``ConnectorStroke``.
 ///

@@ -168,7 +168,9 @@ public enum DiagramLayoutMetric: CaseIterable, Sendable {
     case handleSize
 }
 
-/// Diagram layout geometry.
+/// Provider of a diagram layout geometry.
+///
+/// Part of diagram rendering backend, related to ``DiagramSceneRenderer`` and its rendering context.
 ///
 /// - Note: It is assumed that the metric do not change between layout and render.
 ///
@@ -200,6 +202,11 @@ public extension LayoutProvider {
 
 }
 
+
+/// Component set on diagram scene.
+///
+/// Required by ``SceneCompositionSystem`` to preform scene layout.
+///
 public struct SceneLayoutProvider: Component {
     public let provider: any LayoutProvider
     public init(provider: any LayoutProvider) {

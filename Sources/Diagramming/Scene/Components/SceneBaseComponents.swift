@@ -7,7 +7,7 @@
 
 import PoieticCore
 
-/// Component stating visibility of a scene node.
+/// A scene node component stating visibility of a scene node.
 ///
 /// - SeeAlso: ``Interactivity``
 public enum Visibility: Component {
@@ -15,11 +15,6 @@ public enum Visibility: Component {
     case visible
     /// Scene node is hidden, it is not rendered onto a rendering surface.
     case hidden
-
-    /// Scene node visibility is inherited from its parent.
-    ///
-    /// - SeeAlso: ``ChildOf``
-    case inherit
 }
 
 /// Component stating interactivity of a scene node.
@@ -39,7 +34,7 @@ public enum Interactivity: Component {
     case inert
 }
 
-/// Component specifying touch region of the component owning entity.
+/// Scene node component specifying touch region of the component owning entity.
 ///
 /// - SeeAlso: ``Interactivity``, ``InteractionDirty``
 ///
@@ -75,25 +70,24 @@ public enum TouchRegion: Component {
     }
 }
 
-/// Flag component stating that the diagram scene requires re-layout.
+/// Flag component of a scene node stating that the diagram scene requires re-layout.
 ///
 public struct LayoutDirty: Component { public init() { /* Empty */ } }
 
-/// Flag stating that the viewport of a given scene was changed.
+/// Flag component of a scene node stating that the viewport of a given scene was changed.
 public struct ViewportDirty: Component { public init() { /* Empty */ } }
 
-/// Component for tagging visual entities that require re-computation of ``TouchRegion``
+/// Flag component of a scene node for tagging visual entities that require re-computation of ``TouchRegion``
 ///
 public struct InteractionDirty: Component { public init() { /* Empty */ } }
 
-/// Offset used as an adjustment by renderers (presenters) for positions computed by
-/// backend-agnostic functions.
+/// Scene node component containing offset used as an adjustment by renderers (presenters) for
+/// positions computed by backend-agnostic functions.
 ///
 public struct RenderingOffset: Component {
+    public let offset: Vector2D
+
     public init(position: Vector2D) {
         self.offset = position
     }
-    
-    public let offset: Vector2D
-    
 }
