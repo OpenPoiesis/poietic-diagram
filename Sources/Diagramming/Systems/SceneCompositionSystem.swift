@@ -153,29 +153,4 @@ public struct SceneCompositionSystem: System {
             composer.layout(scene: scene, layout: provider.provider)
         }
     }
-
-//    func updateData(_ world: World, composer: DiagramSceneComposer) {
-//        for scene: RuntimeEntity in world.query(DiagramScene.self) {
-//            let dirty: Diagram.DirtyContent = scene.component() ?? []
-//            guard dirty.contains(.data) else { continue }
-//            print("  ⚙️📄 Scene data update")
-//            composer.updateData(scene: scene)
-//        }
-//    }
-//    func updateLayout(_ world: World, composer: DiagramSceneComposer) {
-//        for (scene, _, provider) in world.query(DiagramScene.self, SceneLayoutProvider.self) {
-//            let dirty: Diagram.DirtyContent = scene.component() ?? []
-//            guard dirty.contains(.layout) else { continue }
-//            print("  ⚙️✂️ Scene layout update")
-//            composer.layout(scene: scene, layout: provider.provider)
-//        }
-//    }
-//    func updateGeometry(_ world: World, composer: DiagramSceneComposer) {
-//        for scene: RuntimeEntity in world.query(DiagramScene.self) {
-//            let dirty: Diagram.DirtyContent = scene.component() ?? []
-//            guard dirty.contains(.geometry) else { continue }
-//            print("  ⚙️📐 geometry update")
-//            composer.updateGeometry(scene: scene)
-//        }
-//    }
 }

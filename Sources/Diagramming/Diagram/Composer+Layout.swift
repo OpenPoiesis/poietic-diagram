@@ -38,7 +38,7 @@ extension DiagramSceneComposer {
         let pictogram = pictComp.pictogram
         
         let bbox = pictogram.pathBoundingBox
-        var labelTopCenter = Vector2D(0, bbox.topLeft.y)
+        var labelTopCenter = Vector2D(0, bbox.bottomLeft.y)
         var swatchCenter: Vector2D = labelTopCenter
 
         // 1. Primary label

@@ -72,10 +72,10 @@ extension Vector2D {
 ///
 /// `Rect2D` provides a comprehensive set of operations for working with 2D rectangular regions,
 /// including containment testing, union operations, and coordinate access. The rectangle is
-/// defined using an origin point (bottom-left corner) and size vector (width, height).
+/// defined using an origin point (top-left corner) and size vector (width, height).
 ///
 /// The rectangle uses a standard 2D coordinate system where:
-/// - Origin represents the bottom-left corner
+/// - Origin represents the top-left corner
 /// - Positive x extends to the right
 /// - Positive y extends upward
 /// - Size components represent width (x) and height (y)
@@ -89,17 +89,27 @@ extension Vector2D {
 /// ```
 ///
 public struct Rect2D: Equatable, Sendable, Codable {
-    /// The bottom-left corner position of the rectangle.
+    /// The top-left corner position of the rectangle.
     public var origin: Vector2D
     
     /// The width and height dimensions of the rectangle as a vector (width=x, height=y).
     public var size: Vector2D
     
+    /// Create a new 2D rectangle.
+    ///
+    /// - Parameter origin: Top-left corner of the rectangle.
+    /// - Parameter size: Size of the rectangle.
+    ///
     public init(origin: Vector2D = Vector2D.zero, size: Vector2D = Vector2D.zero) {
         self.origin = origin
         self.size = size
     }
     
+    /// Create a new 2D rectangle with provided centre and size.
+    ///
+    /// - Parameter center: Centre of the rectangle.
+    /// - Parameter size: Size of the rectangle.
+    ///
     public init(center: Vector2D, size: Vector2D) {
         self.origin = center - size / 2
         self.size = size
@@ -108,10 +118,11 @@ public struct Rect2D: Equatable, Sendable, Codable {
     /// Creates a rectangle with explicit x, y coordinates and width, height dimensions.
     ///
     /// - Parameters:
-    ///   - x: The x-coordinate of the bottom-left corner
-    ///   - y: The y-coordinate of the bottom-left corner
+    ///   - x: The x-coordinate of the top-left corner
+    ///   - y: The y-coordinate of the top-left corner
     ///   - width: The width of the rectangle
     ///   - height: The height of the rectangle
+    ///
     public init(x: Double, y: Double, width: Double, height: Double) {
         self.origin = Vector2D(x, y)
         self.size = Vector2D(width, height)
@@ -125,13 +136,13 @@ public struct Rect2D: Equatable, Sendable, Codable {
     /// The minimum x-coordinate (left edge) of the rectangle.
     public var minX: Double { min(origin.x, origin.x + size.x) }
     
-    /// The minimum y-coordinate (bottom edge) of the rectangle.
+    /// The minimum y-coordinate (top edge) of the rectangle.
     public var minY: Double { min(origin.y, origin.y + size.y) }
     
     /// The maximum x-coordinate (right edge) of the rectangle.
     public var maxX: Double { max(origin.x, origin.x + size.x) }
     
-    /// The maximum y-coordinate (top edge) of the rectangle.
+    /// The maximum y-coordinate (bottom edge) of the rectangle.
     public var maxY: Double { max(origin.y, origin.y + size.y) }
     
     /// The width of the rectangle (equivalent to size.x).
@@ -140,18 +151,17 @@ public struct Rect2D: Equatable, Sendable, Codable {
     /// The height of the rectangle (equivalent to size.y).
     public var height: Double { size.y }
     
-    // FIXME: [IMPORTANT] Flip Y coordinate: exchange bottom with top
-    /// The bottom-left corner of the rectangle (same as origin).
-    public var bottomLeft: Vector2D { origin }
-    
-    /// The bottom-right corner of the rectangle.
-    public var bottomRight: Vector2D { Vector2D(maxX, minY) }
-
-    /// The top-left corner of the rectangle.
-    public var topLeft: Vector2D { Vector2D(minX, maxY) }
+    /// The top-left corner of the rectangle (same as origin).
+    public var topLeft: Vector2D { origin }
     
     /// The top-right corner of the rectangle.
-    public var topRight: Vector2D { Vector2D(maxX, maxY) }
+    public var topRight: Vector2D { Vector2D(maxX, minY) }
+
+    /// The bottom-left corner of the rectangle.
+    public var bottomLeft: Vector2D { Vector2D(minX, maxY) }
+    
+    /// The bottom-right corner of the rectangle.
+    public var bottomRight: Vector2D { Vector2D(maxX, maxY) }
     
     /// Check if point is inside rectangle.
     public func contains(_ point: Vector2D) -> Bool {

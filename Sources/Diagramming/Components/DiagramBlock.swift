@@ -52,7 +52,7 @@ public struct DiagramBlock: Component {
     /// Top-center point of a label.
     public var labelAnchorPosition: Vector2D {
         if let box = pictogram?.pathBoundingBox {
-            return Vector2D(position.x, position.y + box.topLeft.y)
+            return Vector2D(position.x, position.y + box.bottomLeft.y)
         }
         else {
             return position
@@ -61,7 +61,7 @@ public struct DiagramBlock: Component {
     
     public var errorIndicatorAnchorOffset: Vector2D {
         if let box = pictogram?.maskBoundingBox {
-            return Vector2D(0, box.bottomLeft.y)
+            return Vector2D(0, box.topLeft.y)
         }
         else {
             return .zero
@@ -70,7 +70,7 @@ public struct DiagramBlock: Component {
     
     public var valueIndicatorAnchorOffset: Vector2D {
         if let box = pictogram?.maskBoundingBox {
-            return Vector2D(0, box.bottomLeft.y)
+            return Vector2D(0, box.topLeft.y)
         }
         else {
             return .zero

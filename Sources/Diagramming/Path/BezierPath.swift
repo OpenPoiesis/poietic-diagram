@@ -343,10 +343,10 @@ public struct BezierPath: Sendable, Codable {
     
     /// Add a rectangle
     public mutating func addRect(_ rect: Rect2D) {
-        move(to: rect.bottomLeft)
-        addLine(to: rect.bottomRight)
+        move(to: rect.topLeft)
         addLine(to: rect.topRight)
-        addLine(to: rect.topLeft)
+        addLine(to: rect.bottomRight)
+        addLine(to: rect.bottomLeft)
         closeSubpath()
     }
     

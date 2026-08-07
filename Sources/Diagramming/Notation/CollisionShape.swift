@@ -212,10 +212,10 @@ private func rectangleConvexPolygonCollision(rectangleCenter: Vector2D, size: Ve
     let worldPoints = points.map { $0 + polygonPosition }
     
     // Check if any rectangle corner is inside polygon
-    if pointInsideConvexPolygon(point: rect.bottomLeft, points: worldPoints)
-        || pointInsideConvexPolygon(point: rect.bottomRight, points: worldPoints)
-        || pointInsideConvexPolygon(point: rect.topLeft, points: worldPoints)
+    if pointInsideConvexPolygon(point: rect.topLeft, points: worldPoints)
         || pointInsideConvexPolygon(point: rect.topRight, points: worldPoints)
+        || pointInsideConvexPolygon(point: rect.bottomLeft, points: worldPoints)
+        || pointInsideConvexPolygon(point: rect.bottomRight, points: worldPoints)
     {
         return true
     }
@@ -266,10 +266,10 @@ private func rectangleConcavePolygonCollision(rectangleCenter: Vector2D, size: V
     let rect = Rect2D(center: rectangleCenter, size: size)
     
     // Check if any rectangle corner is inside polygon
-    if pointInsideConcavePolygon(point: rect.bottomLeft, points: worldPoints)
-        || pointInsideConcavePolygon(point: rect.bottomRight, points: worldPoints)
+    if pointInsideConcavePolygon(point: rect.topLeft, points: worldPoints)
         || pointInsideConcavePolygon(point: rect.topRight, points: worldPoints)
-        || pointInsideConcavePolygon(point: rect.topLeft, points: worldPoints)
+        || pointInsideConcavePolygon(point: rect.bottomRight, points: worldPoints)
+        || pointInsideConcavePolygon(point: rect.bottomLeft, points: worldPoints)
     {
         return true
     }
@@ -282,10 +282,10 @@ private func rectangleConcavePolygonCollision(rectangleCenter: Vector2D, size: V
     }
     
     // Check for edge intersections
-    let bottomEdge = LineSegment(from: rect.bottomLeft, to: rect.bottomRight)
-    let rightEdge = LineSegment(from: rect.bottomRight, to: rect.topRight)
-    let topEdge = LineSegment(from: rect.topRight, to: rect.topLeft)
-    let leftEdge = LineSegment(from: rect.topLeft, to: rect.bottomLeft)
+    let bottomEdge = LineSegment(from: rect.topLeft, to: rect.topRight)
+    let rightEdge = LineSegment(from: rect.topRight, to: rect.bottomRight)
+    let topEdge = LineSegment(from: rect.bottomRight, to: rect.bottomLeft)
+    let leftEdge = LineSegment(from: rect.bottomLeft, to: rect.topLeft)
     
     for i in 0..<worldPoints.count {
         let nextIndex = (i + 1) % worldPoints.count
@@ -446,7 +446,7 @@ private func separatingAxisTestConvexPolygons(points1: [Vector2D], points2: [Vec
 private func separatingAxisTestRectanglePolygon(rectangle rect: Rect2D,
                                                 points: [Vector2D]) -> Bool {
     let corners = [
-        rect.bottomLeft, rect.bottomRight, rect.topRight, rect.topLeft
+        rect.topLeft, rect.topRight, rect.bottomRight, rect.bottomLeft
     ]
     
     // Test rectangle axes (x and y)
