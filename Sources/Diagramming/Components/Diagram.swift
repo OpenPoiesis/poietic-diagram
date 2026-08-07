@@ -13,7 +13,7 @@ import PoieticCore
 ///
 /// - **Set by:**
 ///     - Custom diagram creation methods.
-///     - ``DiagramSceneComposer`` on ``DiagramSceneComposer/createDiagramFromAll()``.
+///     - ``DiagramSceneComposer`` on ``DiagramSceneComposer/createDiagramFromAll(world:diagram:)``.
 /// - **Read by:** ``DiagramSceneComposer/createScene(diagram:viewport:)``
 ///
 ///
@@ -58,10 +58,6 @@ public struct Diagram: Component {
 /// - **Set by:** Custom: application, interactive tools (canvas tools).
 /// - **Read by:** ``SceneCompositionSystem``
 /// - **Removed by:** Custom clean-up systems.
-///
-/// Set this entity together with ``IsDirty`` component. When a diagram is
-/// dirty and there is no ``DirtyContent`` component set, then it is assumed
-/// that everything is dirty.
 ///
 /// - Note: (Developer's reasoning) The dirty content structure is here not to pollute the
 ///   top-level namespace.

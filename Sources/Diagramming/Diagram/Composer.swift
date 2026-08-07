@@ -293,18 +293,6 @@ public class DiagramSceneComposer {
     }
 
     // MARK: - Update
-    /// Update scene data that is not related to geometry.
-    ///
-    /// - SeeAlso: ``updateGeometry(scene:)``
-    ///
-    @available(*, deprecated, message: "Use SceneCompositionSystem for world-wide update")
-    public func updateData(scene: RuntimeEntity) {
-        for child in scene.children where child.contains(BlockSceneNode.self) {
-            guard let represented: RuntimeEntity = child.target(RepresentationOf.self) else { continue }
-            updateBlockData(child, from: represented)
-        }
-    }
-
     // Needs context (viewport) — recomputes viewport-space geometry
     /// Update geometry of a particular scene.
     ///
