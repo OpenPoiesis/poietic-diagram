@@ -1,6 +1,7 @@
 # ``Diagramming``
 
-Diagramming is an OpenPoiesis project package for representing diagrams. 
+Diagramming is an OpenPoiesis project package for representing and composing diagrams from design
+objects.
 
 ## Overview
 
@@ -50,6 +51,7 @@ Diagramming is an OpenPoiesis project package for representing diagrams.
 - ``InteractionDirty``
 
 ### Composer
+
 - ``DiagramSceneComposer``
 - ``DiagramLayoutMetric``
 - ``LayoutProvider``
