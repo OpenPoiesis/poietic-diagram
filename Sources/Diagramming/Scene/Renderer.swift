@@ -58,32 +58,29 @@ public protocol DiagramSceneRenderer {
 
 extension DiagramSceneRenderer {
     public func render(_ entity: RuntimeEntity, context: Context) {
-        // TODO: [REFACTORING] Is the preview position still needed here? It should be set on the original (represented object, as source of truth)
         context.save()
         if let positionComp: PositionComponent = entity.component() {
-            let previewPositionComp: PreviewPositionComponent? = entity.component()
-            let position = previewPositionComp?.position ?? positionComp.position
-            let transform = context.transform.translated(position)
+            let transform = context.transform.translated(positionComp.position)
             context.setTransform(transform)
         }
         
-        if entity.contains(BlockCanvasNode.self) { renderBlock(entity, context: context) }
-        else if entity.contains(ConnectorCanvasNode.self) {
+        if entity.contains(BlockSceneNode.self) { renderBlock(entity, context: context) }
+        else if entity.contains(ConnectorSceneNode.self) {
             renderConnector(entity, context: context)
         }
-        else if entity.contains(PictogramCanvasNode.self) {
+        else if entity.contains(PictogramSceneNode.self) {
             renderPictogram(entity, context: context)
         }
-        else if entity.contains(LabelCanvasNode.self) {
+        else if entity.contains(LabelSceneNode.self) {
             renderLabel(entity, context: context)
         }
-        else if entity.contains(ValueIndicatorCanvasNode.self) {
+        else if entity.contains(ValueIndicatorSceneNode.self) {
             renderValueIndicator(entity, context: context)
         }
-        else if entity.contains(IssueIndicatorCanvasNode.self) {
+        else if entity.contains(IssueIndicatorSceneNode.self) {
             renderIssueIndicator(entity, context: context)
         }
-        else if entity.contains(ColorSwatchCanvasNode.self) {
+        else if entity.contains(ColorSwatchSceneNode.self) {
             renderColorSwatch(entity, context: context)
         }
         else {

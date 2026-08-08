@@ -136,8 +136,8 @@ public class SVGDiagramSceneRenderer: DiagramSceneRenderer {
     
     public func renderBlock(_ entity: PoieticCore.RuntimeEntity, context: Context) {
         // TODO: [REFACTORING] Separate pictogram rendering into renderPictogram(...)
-        guard let pictogramNode: RuntimeEntity = entity.target(CanvasNode.Pictogram.self),
-              let pictComp: PictogramCanvasNode = pictogramNode.component()
+        guard let pictogramNode: RuntimeEntity = entity.target(SceneNode.Pictogram.self),
+              let pictComp: PictogramSceneNode = pictogramNode.component()
         else { return }
 
         // TODO: Color
@@ -222,20 +222,11 @@ public class SVGDiagramSceneRenderer: DiagramSceneRenderer {
             group.addChild(svgPath)
         }
 
-        if let geometry: ConnectorGeometry = entity.component() {
-            let circleO = SVGCircle(center: geometry.originPoint, radius: 4.0)
-            circleO.stroke = "green"
-            let circleT = SVGCircle(center: geometry.targetPoint, radius: 4.0)
-            circleT.stroke = "red"
-            group.addChild(circleO)
-            group.addChild(circleT)
-        }
-        
         context.append(group)
     }
 
     public func renderLabel(_ entity: PoieticCore.RuntimeEntity, context: Context) {
-        guard let label: LabelCanvasNode = entity.component()
+        guard let label: LabelSceneNode = entity.component()
         else { return }
         
         let styleClass: StyleClass
@@ -271,7 +262,7 @@ public class SVGDiagramSceneRenderer: DiagramSceneRenderer {
     }
 
     public func renderColorSwatch(_ entity: RuntimeEntity, context: Context) {
-        guard let swatch: ColorSwatchCanvasNode = entity.component()
+        guard let swatch: ColorSwatchSceneNode = entity.component()
         else { return }
         let styleClass: StyleClass
         if let nodeStyle: CanvasNodeStyle = entity.component() {
@@ -281,7 +272,7 @@ public class SVGDiagramSceneRenderer: DiagramSceneRenderer {
             styleClass = .colorSwatch
         }
 
-        let length = style.metric(.colorSwatchSize, default: ColorSwatchCanvasNode.DefaultSize)
+        let length = style.metric(.colorSwatchSize, default: ColorSwatchSceneNode.DefaultSize)
         let size = Vector2D(x: length, y: length)
         
         let element = SVGRectangle(rect: Rect2D(center: .zero, size: size))

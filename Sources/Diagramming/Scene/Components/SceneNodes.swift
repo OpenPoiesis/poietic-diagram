@@ -1,42 +1,48 @@
 //
-//  Scene.swift
+//  SceneNodes.swift
 //  Diagramming
 //
-//  Created by Stefan Urbanek on 01/06/2026.
+//  Created by Stefan Urbanek on 07/08/2026.
 //
 import PoieticCore
-// TODO: [REFACTORING][IMPORTANT] *CanvasNode to *SceneNode
-
-// TODO: Nested relationship structures in CanvasNode: reconsider their location. Does not feel natural.
-//
-
-/// Tag component for a diagram scene root.
-///
-///  Required relationships:
-///  - ``RepresentationOf`` with ``Diagram`` target.
-///
-///  Expected components:
-///  - ``ViewportState``. If not present, then viewport with offset (0,0) and zoom of 1 is used.
-///
-/// Children  of a diagram scene are ``DiagramSceneNode``.
-///
-public struct DiagramScene: Component {
-    public init() { /* Empty */ }
-}
-
-/// Flag component stating that the diagram scene requires re-layout.
-///
-public struct LayoutDirty: Component { public init() {} }
-/// Flag stating that the viewport of a given scene was changed.
-public struct ViewportDirty: Component { public init() {} }
 
 /// Tag component for all diagram canvas scene nodes.
+///
+/// Scene nodes are children of ``DiagramScene`` or other diagram scene nodes. See diagram scene
+/// documentation with more information about hierarchy.
+///
+/// ## Related Components
+///
+/// | Component | Required? | Notes |
+/// |---|---|---|
+/// | Concrete scene node | yes | Dispatch tag for rendering |
+/// | `PositionComponent` | yes | Viewport coordinates. |
+/// | `SceneNodeStyle` | yes | Class + modifiers (`.selected`, `.preview`, `.allowed`, `.notAllowed`) |
+/// | `Interactivity` | no | Interactive nodes. ``TouchRegion`` is computed on nodes with ``Interactivity/interactive`` |
+/// | `Visibility` | yes | Denotes whether the node is to be rendered (``Visibility/visible``) or not (``Visibility/hidden``) |
+/// | `CollisionShape` | depends | Used to compute ``TouchRegion`` for blocks, labels and indicators. |
+/// | `ConnectorWire` | depends | Required by ``ConnectorSceneNode``. Absolute wire path — recomputed on any geometry change. |
+/// | `ConnectorStroke` | yes (connectors) | Filled/outlined wire path for rendering. |
+/// | `ConnectorGeometry` | yes (connectors) | Internal — used to compute wire and stroke. |
+///
+/// ## Related Relationships
+///
+/// | Relationship | Required | Target |
+/// |---|---|---|
+/// | `ChildOf` | Yes | Scene root (top-level) or parent node (children) |
+/// | `MemberOf` | Yes | Scene root |
+/// | `RepresentationOf` | top-level only | The `DiagramBlock` or `DiagramConnector` entity. |
+/// | `ConnectorSceneNode.Origin` | ``ConnectorSceneNode`` only | Origin block scene node |
+/// | `ConnectorSceneNode.Target` | ``ConnectorSceneNode`` only | Target block scene node |
+
+/// - Note: **PositionComponent** for connectors is usually zero, as connectors use midpoints which
+/// are analogy to their position.
 ///
 /// Relationships:
 /// - ``ChildOf`` – parent node or ``DiagramScene``
 /// - ``Owner`` – root of the canvas – ``DiagramScene`` entity
 ///
-public struct CanvasNode: Component {
+public struct SceneNode: Component {
     /// Relationship tag for primary label of a diagram scene node.
     ///
     /// Usually used for a block name, derived from ``DiagramBlock/label``.
@@ -90,20 +96,21 @@ public struct CanvasNode: Component {
 }
 
 
+
 // MARK: - Block
 
 /// Primary component of an entity representing a block diagram scene node.
 ///
 /// Related components that are expected to be associated with the same entity:
 ///
-/// - ``CanvasNode``
-/// - ``BlockCanvasNode``
+/// - ``SceneNode``
+/// - ``BlockSceneNode``
 /// - ``PositionComponent`` – derived from ``DiagramBlock``
 /// - ``PreviewPositionComponent`` – associated during interactive preview, takes precedence before
 ///   the position component, if present
 /// - ``Visibility``
 /// - ``Interactivity``
-/// - ``CanvasNodeStyle`` typically with class ``StyleClass/block``
+/// - ``SceneNodeStyle`` typically with class ``StyleClass/block``
 /// - ``CollisionShape`` – to determine touch points for connector geometry and for hit testing
 ///    through the touch region component.
 /// - ``TouchRegion`` – derived from collision shape, in absolute scene coordinates.
@@ -112,20 +119,32 @@ public struct CanvasNode: Component {
 ///
 /// | Relationship | Target Entity | Primary Component |
 /// |---|---|---|
-/// | ``CanvasNode/ChildOf`` | canvas node or scene if it is root block | ``CanvasNode`` or ``DiagramScene``
-/// | ``CanvasNode/OwnedBy`` | scene | ``DiagramScene``
-/// | ``CanvasNode/Pictogram`` | block pictogram | ``PictogramCanvasNode``
-/// | ``CanvasNode/Pictogram`` | block pictogram | ``PictogramCanvasNode``
-/// | ``CanvasNode/PrimaryLabel`` | primary block label (name) | ``LabelCanvasNode``
-/// | ``CanvasNode/SecondaryLabel`` | secondary block label (formula or value) | ``LabelCanvasNode``
-/// | ``CanvasNode/ValueIndicator`` | value indicator | ``ValueIndicatorCanvasNode``
-/// | ``CanvasNode/IssueIndicator`` | issue indicator | ``IssueIndicatorCanvasNode``
+/// | ``SceneNode/ChildOf`` | canvas node or scene if it is root block | ``SceneNode`` or ``DiagramScene``
+/// | ``SceneNode/OwnedBy`` | scene | ``DiagramScene``
+/// | ``SceneNode/Pictogram`` | block pictogram | ``PictogramSceneNode``
+/// | ``SceneNode/Pictogram`` | block pictogram | ``PictogramSceneNode``
+/// | ``SceneNode/PrimaryLabel`` | primary block label (name) | ``LabelSceneNode``
+/// | ``SceneNode/SecondaryLabel`` | secondary block label (formula or value) | ``LabelSceneNode``
+/// | ``SceneNode/ValueIndicator`` | value indicator | ``ValueIndicatorSceneNode``
+/// | ``SceneNode/IssueIndicator`` | issue indicator | ``IssueIndicatorSceneNode``
 ///
-public struct BlockCanvasNode: Component {
+///
+/// ## Styling
+///
+/// The typical block node has style class ``StyleClass/block``.
+///
+/// Styling metrics used for layout:
+///
+/// - Primary label padding from the block bottom: ``DiagramLayoutMetric/primaryLabelPadding``
+/// - Secondary label padding from primary label: ``DiagramLayoutMetric/secondaryLabelPadding``
+/// - Padding of the value indicator from the top ``DiagramLayoutMetric/valueIndicatorPadding``
+///
+///
+public struct BlockSceneNode: Component {
     public init() { /* Empty */ }
 }
 
-public struct PictogramCanvasNode: Component {
+public struct PictogramSceneNode: Component {
     public let pictogram: Pictogram
     public init(pictogram: Pictogram) {
         self.pictogram = pictogram
@@ -133,7 +152,7 @@ public struct PictogramCanvasNode: Component {
 }
 
 
-public struct ColorSwatchCanvasNode: Component {
+public struct ColorSwatchSceneNode: Component {
     public static let DefaultSize: Double = 10.0
     public let colorKey: AdaptableColorKey
     
@@ -144,9 +163,9 @@ public struct ColorSwatchCanvasNode: Component {
 
 /// Text label node.
 ///
-/// - Note: Font and colour of the node are specified in ``CanvasNodeStyle`` component on the same
+/// - Note: Font and colour of the node are specified in ``SceneNodeStyle`` component on the same
 ///   entity.
-public struct LabelCanvasNode: Component {
+public struct LabelSceneNode: Component {
     public let text: String
     public let anchor: Vector2D
     
@@ -157,7 +176,7 @@ public struct LabelCanvasNode: Component {
     }
 }
 
-public struct IssueIndicatorCanvasNode: Component {
+public struct IssueIndicatorSceneNode: Component {
     public static let DefaultSize: Double = 10.0
     public init() { /* Empty */ }
 }
@@ -167,7 +186,9 @@ public struct IssueIndicatorCanvasNode: Component {
 /// Probes value using ``RuntimeEntity/numericProbe(:)``
 /// of represented object (``ChildOf`` -> ``RepresentationOf``):
 ///
-public struct ValueIndicatorCanvasNode: Component {
+/// Styling metrics: ``DiagramLayoutMetric/valueIndicatorPadding
+///
+public struct ValueIndicatorSceneNode: Component {
     public static let DefaultSize = Vector2D(100, 20)
     /// Size of the value indicator in canvas/viewport coordinates.
     public let size: Vector2D
@@ -189,14 +210,30 @@ public struct ValueIndicatorCanvasNode: Component {
 
 /// Primary component of a canvas node representing a connector.
 ///
-/// Associated components:
-/// - ``ConnectorWire``
-/// - ``ConnectorStroke``
+/// Related components:
 ///
-public struct ConnectorCanvasNode: Component {
-// TODO: [REFACTORING] Rename to ConnectorSceneNode
+/// | Component | Created By | Notes |
+/// |---|---|---|
+/// | ``SceneNode`` | owner | Required. Includes all relevant scene node related components. |
+/// | ``ConnectorGeometry`` | Scene Composer | Used to compute wire and stroke. |
+/// | ``ConnectorWire`` | Scene Composer | Used to compute  ``TouchRegion``. Absolute wire path — recomputed on any geometry change. |
+/// | ``ConnectorStroke`` | Scene Composer | Filled/outlined wire path for rendering. |
+///
+/// | Relationship | Target |
+/// |---|---|
+/// | `ChildOf` | Scene root (top-level) or parent node (children) |
+/// | `MemberOf` | Scene root |
+/// | `RepresentationOf` | The `DiagramBlock` or `DiagramConnector` entity. |
+/// | ``ConnectorSceneNode/Origin`` |  Origin block scene node |
+/// | ``ConnectorSceneNode/Target`` |  Target block scene node |
+///
+/// All relationships are required for the node to function properly.
+///
+/// - Note: ``PositionComponent`` is ignored on connector scene nodes.
+///
+public struct ConnectorSceneNode: Component {
     /// Relationship tag for connector origin block. Relationship target is expected to be
-    /// a ``BlockCanvasNode``.
+    /// a ``BlockSceneNode``.
     ///
     public struct Origin: Relationship {
         public static let targetRemovalPolicy: RelationshipRemovalPolicy = .remove
@@ -204,7 +241,7 @@ public struct ConnectorCanvasNode: Component {
     }
 
     /// Relationship tag for connector target block. Relationship target is expected to be
-    /// a ``BlockCanvasNode``.
+    /// a ``BlockSceneNode``.
     ///
     public struct Target: Relationship {
         public static let targetRemovalPolicy: RelationshipRemovalPolicy = .remove

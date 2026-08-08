@@ -34,6 +34,7 @@ import PoieticCore
 ///
 /// - **Input:**
 ///     - ``DiagramScene`` scene hierarchy root entity.
+///     - ``InteractionDirty`` tag set on the scene.
 ///     - ``DiagramSceneNode`` scene node entities (children of scene or other nodes).
 ///         - ``Interactivity``: required component, regardless of value.
 ///         - ``PositionComponent``: optional – see defaults below.
@@ -57,9 +58,15 @@ public struct SceneInteractionSystem: System {
     public init(_ world: World) {  /* Nothing here for now */  }
     
     public func update(_ world: World) throws(InternalSystemError) {
-        // TODO: [REFACTORING] Prevent running if we have up-to-date touch regions. How? Maybe remove the system and add composer phase updateTouchRegions after geometry update and add touchRegions dirty on geometry update
         for scene: RuntimeEntity in world.query(DiagramScene.self) {
+            guard scene.contains(InteractionDirty.self) else { continue }
             computeTouchRegions(scene: scene)
+
+            // Clean-up
+            scene.removeComponent(InteractionDirty.self)
+            scene.withChildrenRecursively {
+                $0.removeComponent(InteractionDirty.self)
+            }
         }
     }
     
@@ -85,7 +92,7 @@ public struct SceneInteractionSystem: System {
             node.removeComponent(TouchRegion.self)
         }
         
-        for child in node.children where child.contains(CanvasNode.self) {
+        for child in node.children where child.contains(SceneNode.self) {
             computeTouchRegions(node: child, parentPosition: positionOffset)
         }
     }
