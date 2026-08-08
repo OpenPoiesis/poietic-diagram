@@ -1,0 +1,510 @@
+{
+  "abstract" : [
+    {
+      "text" : "Style configuration for fat (filled polygon) connectors.",
+      "type" : "text"
+    }
+  ],
+  "hierarchy" : {
+    "paths" : [
+      [
+        "doc:\/\/Diagramming\/documentation\/Diagramming",
+        "doc:\/\/Diagramming\/documentation\/Diagramming\/ConnectorGlyph"
+      ]
+    ]
+  },
+  "identifier" : {
+    "interfaceLanguage" : "swift",
+    "url" : "doc:\/\/Diagramming\/documentation\/Diagramming\/ConnectorGlyph\/Fat"
+  },
+  "kind" : "symbol",
+  "metadata" : {
+    "externalID" : "s:11Diagramming14ConnectorGlyphC3FatV",
+    "fragments" : [
+      {
+        "kind" : "keyword",
+        "text" : "struct"
+      },
+      {
+        "kind" : "text",
+        "text" : " "
+      },
+      {
+        "kind" : "identifier",
+        "text" : "Fat"
+      }
+    ],
+    "modules" : [
+      {
+        "name" : "Diagramming"
+      }
+    ],
+    "navigatorTitle" : [
+      {
+        "kind" : "identifier",
+        "text" : "Fat"
+      }
+    ],
+    "role" : "symbol",
+    "roleHeading" : "Structure",
+    "symbolKind" : "struct",
+    "title" : "ConnectorGlyph.Fat"
+  },
+  "primaryContentSections" : [
+    {
+      "declarations" : [
+        {
+          "languages" : [
+            "swift"
+          ],
+          "platforms" : [
+            "macOS"
+          ],
+          "tokens" : [
+            {
+              "kind" : "keyword",
+              "text" : "struct"
+            },
+            {
+              "kind" : "text",
+              "text" : " "
+            },
+            {
+              "kind" : "identifier",
+              "text" : "Fat"
+            }
+          ]
+        }
+      ],
+      "kind" : "declarations"
+    },
+    {
+      "content" : [
+        {
+          "anchor" : "overview",
+          "level" : 2,
+          "text" : "Overview",
+          "type" : "heading"
+        },
+        {
+          "inlineContent" : [
+            {
+              "text" : "Defines the visual properties for connectors drawn as single filled polygon shapes",
+              "type" : "text"
+            },
+            {
+              "text" : " ",
+              "type" : "text"
+            },
+            {
+              "text" : "with integrated arrowheads. The entire connector including arrowheads is rendered",
+              "type" : "text"
+            },
+            {
+              "text" : " ",
+              "type" : "text"
+            },
+            {
+              "text" : "as one continuous filled path.",
+              "type" : "text"
+            }
+          ],
+          "type" : "paragraph"
+        }
+      ],
+      "kind" : "content"
+    }
+  ],
+  "relationshipsSections" : [
+    {
+      "identifiers" : [
+        "doc:\/\/Diagramming\/s8SendableP",
+        "doc:\/\/Diagramming\/s16SendableMetatypeP"
+      ],
+      "kind" : "relationships",
+      "title" : "Conforms To",
+      "type" : "conformsTo"
+    }
+  ],
+  "schemaVersion" : {
+    "major" : 0,
+    "minor" : 3,
+    "patch" : 0
+  },
+  "sections" : [
+
+  ],
+  "topicSections" : [
+    {
+      "anchor" : "Initializers",
+      "generated" : true,
+      "identifiers" : [
+        "doc:\/\/Diagramming\/documentation\/Diagramming\/ConnectorGlyph\/Fat\/init(headType:tailType:width:joinType:)"
+      ],
+      "title" : "Initializers"
+    },
+    {
+      "anchor" : "Instance-Properties",
+      "generated" : true,
+      "identifiers" : [
+        "doc:\/\/Diagramming\/documentation\/Diagramming\/ConnectorGlyph\/Fat\/headType",
+        "doc:\/\/Diagramming\/documentation\/Diagramming\/ConnectorGlyph\/Fat\/joinType",
+        "doc:\/\/Diagramming\/documentation\/Diagramming\/ConnectorGlyph\/Fat\/tailType",
+        "doc:\/\/Diagramming\/documentation\/Diagramming\/ConnectorGlyph\/Fat\/width"
+      ],
+      "title" : "Instance Properties"
+    }
+  ],
+  "variants" : [
+    {
+      "paths" : [
+        "\/documentation\/diagramming\/connectorglyph\/fat"
+      ],
+      "traits" : [
+        {
+          "interfaceLanguage" : "swift"
+        }
+      ]
+    }
+  ]
+, 
+"references": {
+"doc://Diagramming/documentation/Diagramming": {
+  "abstract" : [
+    {
+      "text" : "Diagramming is an OpenPoiesis project package for representing and composing diagrams from design",
+      "type" : "text"
+    },
+    {
+      "text" : " ",
+      "type" : "text"
+    },
+    {
+      "text" : "objects.",
+      "type" : "text"
+    }
+  ],
+  "identifier" : "doc:\/\/Diagramming\/documentation\/Diagramming",
+  "kind" : "symbol",
+  "role" : "collection",
+  "title" : "Diagramming",
+  "type" : "topic",
+  "url" : "\/documentation\/diagramming"
+},
+"doc://Diagramming/documentation/Diagramming/ConnectorGlyph": {
+  "abstract" : [
+    {
+      "text" : "Visual semantic definition of a connector.",
+      "type" : "text"
+    }
+  ],
+  "fragments" : [
+    {
+      "kind" : "keyword",
+      "text" : "class"
+    },
+    {
+      "kind" : "text",
+      "text" : " "
+    },
+    {
+      "kind" : "identifier",
+      "text" : "ConnectorGlyph"
+    }
+  ],
+  "identifier" : "doc:\/\/Diagramming\/documentation\/Diagramming\/ConnectorGlyph",
+  "kind" : "symbol",
+  "navigatorTitle" : [
+    {
+      "kind" : "identifier",
+      "text" : "ConnectorGlyph"
+    }
+  ],
+  "role" : "symbol",
+  "title" : "ConnectorGlyph",
+  "type" : "topic",
+  "url" : "\/documentation\/diagramming\/connectorglyph"
+},
+"doc://Diagramming/documentation/Diagramming/ConnectorGlyph/Fat": {
+  "abstract" : [
+    {
+      "text" : "Style configuration for fat (filled polygon) connectors.",
+      "type" : "text"
+    }
+  ],
+  "fragments" : [
+    {
+      "kind" : "keyword",
+      "text" : "struct"
+    },
+    {
+      "kind" : "text",
+      "text" : " "
+    },
+    {
+      "kind" : "identifier",
+      "text" : "Fat"
+    }
+  ],
+  "identifier" : "doc:\/\/Diagramming\/documentation\/Diagramming\/ConnectorGlyph\/Fat",
+  "kind" : "symbol",
+  "navigatorTitle" : [
+    {
+      "kind" : "identifier",
+      "text" : "Fat"
+    }
+  ],
+  "role" : "symbol",
+  "title" : "ConnectorGlyph.Fat",
+  "type" : "topic",
+  "url" : "\/documentation\/diagramming\/connectorglyph\/fat"
+},
+"doc://Diagramming/documentation/Diagramming/ConnectorGlyph/Fat/headType": {
+  "abstract" : [
+    {
+      "text" : "The arrowhead type at the target endpoint.",
+      "type" : "text"
+    }
+  ],
+  "fragments" : [
+    {
+      "kind" : "keyword",
+      "text" : "let"
+    },
+    {
+      "kind" : "text",
+      "text" : " "
+    },
+    {
+      "kind" : "identifier",
+      "text" : "headType"
+    },
+    {
+      "kind" : "text",
+      "text" : ": "
+    },
+    {
+      "kind" : "typeIdentifier",
+      "preciseIdentifier" : "s:11Diagramming16FatArrowheadTypeO",
+      "text" : "FatArrowheadType"
+    }
+  ],
+  "identifier" : "doc:\/\/Diagramming\/documentation\/Diagramming\/ConnectorGlyph\/Fat\/headType",
+  "kind" : "symbol",
+  "role" : "symbol",
+  "title" : "headType",
+  "type" : "topic",
+  "url" : "\/documentation\/diagramming\/connectorglyph\/fat\/headtype"
+},
+"doc://Diagramming/documentation/Diagramming/ConnectorGlyph/Fat/init(headType:tailType:width:joinType:)": {
+  "abstract" : [
+
+  ],
+  "fragments" : [
+    {
+      "kind" : "identifier",
+      "text" : "init"
+    },
+    {
+      "kind" : "text",
+      "text" : "("
+    },
+    {
+      "kind" : "externalParam",
+      "text" : "headType"
+    },
+    {
+      "kind" : "text",
+      "text" : ": "
+    },
+    {
+      "kind" : "typeIdentifier",
+      "preciseIdentifier" : "s:11Diagramming16FatArrowheadTypeO",
+      "text" : "FatArrowheadType"
+    },
+    {
+      "kind" : "text",
+      "text" : ", "
+    },
+    {
+      "kind" : "externalParam",
+      "text" : "tailType"
+    },
+    {
+      "kind" : "text",
+      "text" : ": "
+    },
+    {
+      "kind" : "typeIdentifier",
+      "preciseIdentifier" : "s:11Diagramming16FatArrowheadTypeO",
+      "text" : "FatArrowheadType"
+    },
+    {
+      "kind" : "text",
+      "text" : ", "
+    },
+    {
+      "kind" : "externalParam",
+      "text" : "width"
+    },
+    {
+      "kind" : "text",
+      "text" : ": "
+    },
+    {
+      "kind" : "typeIdentifier",
+      "preciseIdentifier" : "s:Sd",
+      "text" : "Double"
+    },
+    {
+      "kind" : "text",
+      "text" : ", "
+    },
+    {
+      "kind" : "externalParam",
+      "text" : "joinType"
+    },
+    {
+      "kind" : "text",
+      "text" : ": "
+    },
+    {
+      "kind" : "typeIdentifier",
+      "preciseIdentifier" : "s:11Diagramming8JoinTypeO",
+      "text" : "JoinType"
+    },
+    {
+      "kind" : "text",
+      "text" : ")"
+    }
+  ],
+  "identifier" : "doc:\/\/Diagramming\/documentation\/Diagramming\/ConnectorGlyph\/Fat\/init(headType:tailType:width:joinType:)",
+  "kind" : "symbol",
+  "role" : "symbol",
+  "title" : "init(headType:tailType:width:joinType:)",
+  "type" : "topic",
+  "url" : "\/documentation\/diagramming\/connectorglyph\/fat\/init(headtype:tailtype:width:jointype:)"
+},
+"doc://Diagramming/documentation/Diagramming/ConnectorGlyph/Fat/joinType": {
+  "abstract" : [
+    {
+      "text" : "How line segments are joined at corners in the polygon.",
+      "type" : "text"
+    }
+  ],
+  "fragments" : [
+    {
+      "kind" : "keyword",
+      "text" : "let"
+    },
+    {
+      "kind" : "text",
+      "text" : " "
+    },
+    {
+      "kind" : "identifier",
+      "text" : "joinType"
+    },
+    {
+      "kind" : "text",
+      "text" : ": "
+    },
+    {
+      "kind" : "typeIdentifier",
+      "preciseIdentifier" : "s:11Diagramming8JoinTypeO",
+      "text" : "JoinType"
+    }
+  ],
+  "identifier" : "doc:\/\/Diagramming\/documentation\/Diagramming\/ConnectorGlyph\/Fat\/joinType",
+  "kind" : "symbol",
+  "role" : "symbol",
+  "title" : "joinType",
+  "type" : "topic",
+  "url" : "\/documentation\/diagramming\/connectorglyph\/fat\/jointype"
+},
+"doc://Diagramming/documentation/Diagramming/ConnectorGlyph/Fat/tailType": {
+  "abstract" : [
+    {
+      "text" : "The arrowhead type at the origin endpoint.",
+      "type" : "text"
+    }
+  ],
+  "fragments" : [
+    {
+      "kind" : "keyword",
+      "text" : "let"
+    },
+    {
+      "kind" : "text",
+      "text" : " "
+    },
+    {
+      "kind" : "identifier",
+      "text" : "tailType"
+    },
+    {
+      "kind" : "text",
+      "text" : ": "
+    },
+    {
+      "kind" : "typeIdentifier",
+      "preciseIdentifier" : "s:11Diagramming16FatArrowheadTypeO",
+      "text" : "FatArrowheadType"
+    }
+  ],
+  "identifier" : "doc:\/\/Diagramming\/documentation\/Diagramming\/ConnectorGlyph\/Fat\/tailType",
+  "kind" : "symbol",
+  "role" : "symbol",
+  "title" : "tailType",
+  "type" : "topic",
+  "url" : "\/documentation\/diagramming\/connectorglyph\/fat\/tailtype"
+},
+"doc://Diagramming/documentation/Diagramming/ConnectorGlyph/Fat/width": {
+  "abstract" : [
+    {
+      "text" : "The width of the connector body in points.",
+      "type" : "text"
+    }
+  ],
+  "fragments" : [
+    {
+      "kind" : "keyword",
+      "text" : "let"
+    },
+    {
+      "kind" : "text",
+      "text" : " "
+    },
+    {
+      "kind" : "identifier",
+      "text" : "width"
+    },
+    {
+      "kind" : "text",
+      "text" : ": "
+    },
+    {
+      "kind" : "typeIdentifier",
+      "preciseIdentifier" : "s:Sd",
+      "text" : "Double"
+    }
+  ],
+  "identifier" : "doc:\/\/Diagramming\/documentation\/Diagramming\/ConnectorGlyph\/Fat\/width",
+  "kind" : "symbol",
+  "role" : "symbol",
+  "title" : "width",
+  "type" : "topic",
+  "url" : "\/documentation\/diagramming\/connectorglyph\/fat\/width"
+},
+"doc://Diagramming/s16SendableMetatypeP": {
+  "identifier" : "doc:\/\/Diagramming\/s16SendableMetatypeP",
+  "title" : "Swift.SendableMetatype",
+  "type" : "unresolvable"
+},
+"doc://Diagramming/s8SendableP": {
+  "identifier" : "doc:\/\/Diagramming\/s8SendableP",
+  "title" : "Swift.Sendable",
+  "type" : "unresolvable"
+}
+}
+}

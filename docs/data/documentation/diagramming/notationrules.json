@@ -1,0 +1,903 @@
+{
+  "abstract" : [
+    {
+      "text" : "Rules for mapping between object types and notation elements.",
+      "type" : "text"
+    }
+  ],
+  "hierarchy" : {
+    "paths" : [
+      [
+        "doc:\/\/Diagramming\/documentation\/Diagramming"
+      ]
+    ]
+  },
+  "identifier" : {
+    "interfaceLanguage" : "swift",
+    "url" : "doc:\/\/Diagramming\/documentation\/Diagramming\/NotationRules"
+  },
+  "kind" : "symbol",
+  "metadata" : {
+    "externalID" : "s:11Diagramming13NotationRulesV",
+    "fragments" : [
+      {
+        "kind" : "keyword",
+        "text" : "struct"
+      },
+      {
+        "kind" : "text",
+        "text" : " "
+      },
+      {
+        "kind" : "identifier",
+        "text" : "NotationRules"
+      }
+    ],
+    "modules" : [
+      {
+        "name" : "Diagramming"
+      }
+    ],
+    "navigatorTitle" : [
+      {
+        "kind" : "identifier",
+        "text" : "NotationRules"
+      }
+    ],
+    "role" : "symbol",
+    "roleHeading" : "Structure",
+    "symbolKind" : "struct",
+    "title" : "NotationRules"
+  },
+  "primaryContentSections" : [
+    {
+      "declarations" : [
+        {
+          "languages" : [
+            "swift"
+          ],
+          "platforms" : [
+            "macOS"
+          ],
+          "tokens" : [
+            {
+              "kind" : "keyword",
+              "text" : "struct"
+            },
+            {
+              "kind" : "text",
+              "text" : " "
+            },
+            {
+              "kind" : "identifier",
+              "text" : "NotationRules"
+            }
+          ]
+        }
+      ],
+      "kind" : "declarations"
+    },
+    {
+      "content" : [
+        {
+          "anchor" : "overview",
+          "level" : 2,
+          "text" : "Overview",
+          "type" : "heading"
+        },
+        {
+          "content" : [
+            {
+              "inlineContent" : [
+                {
+                  "text" : "",
+                  "type" : "text"
+                },
+                {
+                  "identifier" : "doc:\/\/Diagramming\/documentation\/Diagramming\/Notation",
+                  "isActive" : true,
+                  "type" : "reference"
+                },
+                {
+                  "text" : ", ",
+                  "type" : "text"
+                },
+                {
+                  "identifier" : "doc:\/\/Diagramming\/documentation\/Diagramming\/Pictogram",
+                  "isActive" : true,
+                  "type" : "reference"
+                },
+                {
+                  "text" : ", ",
+                  "type" : "text"
+                },
+                {
+                  "identifier" : "doc:\/\/Diagramming\/documentation\/Diagramming\/ConnectorGlyph",
+                  "isActive" : true,
+                  "type" : "reference"
+                }
+              ],
+              "type" : "paragraph"
+            }
+          ],
+          "name" : "See Also",
+          "style" : "note",
+          "type" : "aside"
+        }
+      ],
+      "kind" : "content"
+    }
+  ],
+  "relationshipsSections" : [
+    {
+      "identifiers" : [
+        "doc:\/\/Diagramming\/11PoieticCore9ComponentP"
+      ],
+      "kind" : "relationships",
+      "title" : "Conforms To",
+      "type" : "conformsTo"
+    }
+  ],
+  "schemaVersion" : {
+    "major" : 0,
+    "minor" : 3,
+    "patch" : 0
+  },
+  "sections" : [
+
+  ],
+  "seeAlsoSections" : [
+    {
+      "anchor" : "Notation",
+      "generated" : true,
+      "identifiers" : [
+        "doc:\/\/Diagramming\/documentation\/Diagramming\/Notation",
+        "doc:\/\/Diagramming\/documentation\/Diagramming\/Pictogram",
+        "doc:\/\/Diagramming\/documentation\/Diagramming\/ConnectorGlyph",
+        "doc:\/\/Diagramming\/documentation\/Diagramming\/PictogramCollection",
+        "doc:\/\/Diagramming\/documentation\/Diagramming\/LineType",
+        "doc:\/\/Diagramming\/documentation\/Diagramming\/JoinType",
+        "doc:\/\/Diagramming\/documentation\/Diagramming\/CollisionShape",
+        "doc:\/\/Diagramming\/documentation\/Diagramming\/ThinArrowheadType",
+        "doc:\/\/Diagramming\/documentation\/Diagramming\/FatArrowheadType",
+        "doc:\/\/Diagramming\/documentation\/Diagramming\/Arrowhead"
+      ],
+      "title" : "Notation"
+    }
+  ],
+  "topicSections" : [
+    {
+      "anchor" : "Initializers",
+      "generated" : true,
+      "identifiers" : [
+        "doc:\/\/Diagramming\/documentation\/Diagramming\/NotationRules\/init(typeToPictogram:typeToConnectorGlyph:)"
+      ],
+      "title" : "Initializers"
+    },
+    {
+      "anchor" : "Instance-Properties",
+      "generated" : true,
+      "identifiers" : [
+        "doc:\/\/Diagramming\/documentation\/Diagramming\/NotationRules\/typeToConnectorGlyph",
+        "doc:\/\/Diagramming\/documentation\/Diagramming\/NotationRules\/typeToPictogram"
+      ],
+      "title" : "Instance Properties"
+    },
+    {
+      "anchor" : "Instance-Methods",
+      "generated" : true,
+      "identifiers" : [
+        "doc:\/\/Diagramming\/documentation\/Diagramming\/NotationRules\/connectorGlyphName(for:)",
+        "doc:\/\/Diagramming\/documentation\/Diagramming\/NotationRules\/pictogramName(for:)"
+      ],
+      "title" : "Instance Methods"
+    }
+  ],
+  "variants" : [
+    {
+      "paths" : [
+        "\/documentation\/diagramming\/notationrules"
+      ],
+      "traits" : [
+        {
+          "interfaceLanguage" : "swift"
+        }
+      ]
+    }
+  ]
+, 
+"references": {
+"doc://Diagramming/11PoieticCore9ComponentP": {
+  "identifier" : "doc:\/\/Diagramming\/11PoieticCore9ComponentP",
+  "title" : "PoieticCore.Component",
+  "type" : "unresolvable"
+},
+"doc://Diagramming/documentation/Diagramming": {
+  "abstract" : [
+    {
+      "text" : "Diagramming is an OpenPoiesis project package for representing and composing diagrams from design",
+      "type" : "text"
+    },
+    {
+      "text" : " ",
+      "type" : "text"
+    },
+    {
+      "text" : "objects.",
+      "type" : "text"
+    }
+  ],
+  "identifier" : "doc:\/\/Diagramming\/documentation\/Diagramming",
+  "kind" : "symbol",
+  "role" : "collection",
+  "title" : "Diagramming",
+  "type" : "topic",
+  "url" : "\/documentation\/diagramming"
+},
+"doc://Diagramming/documentation/Diagramming/Arrowhead": {
+  "abstract" : [
+    {
+      "text" : "A thin arrowhead represented as a stroke path with connection offset.",
+      "type" : "text"
+    }
+  ],
+  "fragments" : [
+    {
+      "kind" : "keyword",
+      "text" : "struct"
+    },
+    {
+      "kind" : "text",
+      "text" : " "
+    },
+    {
+      "kind" : "identifier",
+      "text" : "Arrowhead"
+    }
+  ],
+  "identifier" : "doc:\/\/Diagramming\/documentation\/Diagramming\/Arrowhead",
+  "kind" : "symbol",
+  "navigatorTitle" : [
+    {
+      "kind" : "identifier",
+      "text" : "Arrowhead"
+    }
+  ],
+  "role" : "symbol",
+  "title" : "Arrowhead",
+  "type" : "topic",
+  "url" : "\/documentation\/diagramming\/arrowhead"
+},
+"doc://Diagramming/documentation/Diagramming/CollisionShape": {
+  "abstract" : [
+
+  ],
+  "fragments" : [
+    {
+      "kind" : "keyword",
+      "text" : "struct"
+    },
+    {
+      "kind" : "text",
+      "text" : " "
+    },
+    {
+      "kind" : "identifier",
+      "text" : "CollisionShape"
+    }
+  ],
+  "identifier" : "doc:\/\/Diagramming\/documentation\/Diagramming\/CollisionShape",
+  "kind" : "symbol",
+  "navigatorTitle" : [
+    {
+      "kind" : "identifier",
+      "text" : "CollisionShape"
+    }
+  ],
+  "role" : "symbol",
+  "title" : "CollisionShape",
+  "type" : "topic",
+  "url" : "\/documentation\/diagramming\/collisionshape"
+},
+"doc://Diagramming/documentation/Diagramming/ConnectorGlyph": {
+  "abstract" : [
+    {
+      "text" : "Visual semantic definition of a connector.",
+      "type" : "text"
+    }
+  ],
+  "fragments" : [
+    {
+      "kind" : "keyword",
+      "text" : "class"
+    },
+    {
+      "kind" : "text",
+      "text" : " "
+    },
+    {
+      "kind" : "identifier",
+      "text" : "ConnectorGlyph"
+    }
+  ],
+  "identifier" : "doc:\/\/Diagramming\/documentation\/Diagramming\/ConnectorGlyph",
+  "kind" : "symbol",
+  "navigatorTitle" : [
+    {
+      "kind" : "identifier",
+      "text" : "ConnectorGlyph"
+    }
+  ],
+  "role" : "symbol",
+  "title" : "ConnectorGlyph",
+  "type" : "topic",
+  "url" : "\/documentation\/diagramming\/connectorglyph"
+},
+"doc://Diagramming/documentation/Diagramming/FatArrowheadType": {
+  "abstract" : [
+    {
+      "text" : "Arrowhead styles for fat (filled polygon) connectors.",
+      "type" : "text"
+    }
+  ],
+  "fragments" : [
+    {
+      "kind" : "keyword",
+      "text" : "enum"
+    },
+    {
+      "kind" : "text",
+      "text" : " "
+    },
+    {
+      "kind" : "identifier",
+      "text" : "FatArrowheadType"
+    }
+  ],
+  "identifier" : "doc:\/\/Diagramming\/documentation\/Diagramming\/FatArrowheadType",
+  "kind" : "symbol",
+  "navigatorTitle" : [
+    {
+      "kind" : "identifier",
+      "text" : "FatArrowheadType"
+    }
+  ],
+  "role" : "symbol",
+  "title" : "FatArrowheadType",
+  "type" : "topic",
+  "url" : "\/documentation\/diagramming\/fatarrowheadtype"
+},
+"doc://Diagramming/documentation/Diagramming/JoinType": {
+  "abstract" : [
+    {
+      "text" : "Defines how line segments are joined together at corners.",
+      "type" : "text"
+    }
+  ],
+  "fragments" : [
+    {
+      "kind" : "keyword",
+      "text" : "enum"
+    },
+    {
+      "kind" : "text",
+      "text" : " "
+    },
+    {
+      "kind" : "identifier",
+      "text" : "JoinType"
+    }
+  ],
+  "identifier" : "doc:\/\/Diagramming\/documentation\/Diagramming\/JoinType",
+  "kind" : "symbol",
+  "navigatorTitle" : [
+    {
+      "kind" : "identifier",
+      "text" : "JoinType"
+    }
+  ],
+  "role" : "symbol",
+  "title" : "JoinType",
+  "type" : "topic",
+  "url" : "\/documentation\/diagramming\/jointype"
+},
+"doc://Diagramming/documentation/Diagramming/LineType": {
+  "abstract" : [
+    {
+      "text" : "Defines different line rendering styles for connectors.",
+      "type" : "text"
+    }
+  ],
+  "fragments" : [
+    {
+      "kind" : "keyword",
+      "text" : "enum"
+    },
+    {
+      "kind" : "text",
+      "text" : " "
+    },
+    {
+      "kind" : "identifier",
+      "text" : "LineType"
+    }
+  ],
+  "identifier" : "doc:\/\/Diagramming\/documentation\/Diagramming\/LineType",
+  "kind" : "symbol",
+  "navigatorTitle" : [
+    {
+      "kind" : "identifier",
+      "text" : "LineType"
+    }
+  ],
+  "role" : "symbol",
+  "title" : "LineType",
+  "type" : "topic",
+  "url" : "\/documentation\/diagramming\/linetype"
+},
+"doc://Diagramming/documentation/Diagramming/Notation": {
+  "abstract" : [
+    {
+      "text" : "Collection of pictograms and connector glyphs.",
+      "type" : "text"
+    }
+  ],
+  "fragments" : [
+    {
+      "kind" : "keyword",
+      "text" : "class"
+    },
+    {
+      "kind" : "text",
+      "text" : " "
+    },
+    {
+      "kind" : "identifier",
+      "text" : "Notation"
+    }
+  ],
+  "identifier" : "doc:\/\/Diagramming\/documentation\/Diagramming\/Notation",
+  "kind" : "symbol",
+  "navigatorTitle" : [
+    {
+      "kind" : "identifier",
+      "text" : "Notation"
+    }
+  ],
+  "role" : "symbol",
+  "title" : "Notation",
+  "type" : "topic",
+  "url" : "\/documentation\/diagramming\/notation"
+},
+"doc://Diagramming/documentation/Diagramming/NotationRules": {
+  "abstract" : [
+    {
+      "text" : "Rules for mapping between object types and notation elements.",
+      "type" : "text"
+    }
+  ],
+  "fragments" : [
+    {
+      "kind" : "keyword",
+      "text" : "struct"
+    },
+    {
+      "kind" : "text",
+      "text" : " "
+    },
+    {
+      "kind" : "identifier",
+      "text" : "NotationRules"
+    }
+  ],
+  "identifier" : "doc:\/\/Diagramming\/documentation\/Diagramming\/NotationRules",
+  "kind" : "symbol",
+  "navigatorTitle" : [
+    {
+      "kind" : "identifier",
+      "text" : "NotationRules"
+    }
+  ],
+  "role" : "symbol",
+  "title" : "NotationRules",
+  "type" : "topic",
+  "url" : "\/documentation\/diagramming\/notationrules"
+},
+"doc://Diagramming/documentation/Diagramming/NotationRules/connectorGlyphName(for:)": {
+  "abstract" : [
+    {
+      "text" : "Look-up a connector glyph name for given object type. If there is no specific name for the",
+      "type" : "text"
+    },
+    {
+      "text" : " ",
+      "type" : "text"
+    },
+    {
+      "text" : "object type, then use the object type name itself.",
+      "type" : "text"
+    }
+  ],
+  "fragments" : [
+    {
+      "kind" : "keyword",
+      "text" : "func"
+    },
+    {
+      "kind" : "text",
+      "text" : " "
+    },
+    {
+      "kind" : "identifier",
+      "text" : "connectorGlyphName"
+    },
+    {
+      "kind" : "text",
+      "text" : "("
+    },
+    {
+      "kind" : "externalParam",
+      "text" : "for"
+    },
+    {
+      "kind" : "text",
+      "text" : ": "
+    },
+    {
+      "kind" : "typeIdentifier",
+      "preciseIdentifier" : "s:11PoieticCore10ObjectTypeC",
+      "text" : "ObjectType"
+    },
+    {
+      "kind" : "text",
+      "text" : ") -> "
+    },
+    {
+      "kind" : "typeIdentifier",
+      "preciseIdentifier" : "s:SS",
+      "text" : "String"
+    }
+  ],
+  "identifier" : "doc:\/\/Diagramming\/documentation\/Diagramming\/NotationRules\/connectorGlyphName(for:)",
+  "kind" : "symbol",
+  "role" : "symbol",
+  "title" : "connectorGlyphName(for:)",
+  "type" : "topic",
+  "url" : "\/documentation\/diagramming\/notationrules\/connectorglyphname(for:)"
+},
+"doc://Diagramming/documentation/Diagramming/NotationRules/init(typeToPictogram:typeToConnectorGlyph:)": {
+  "abstract" : [
+
+  ],
+  "fragments" : [
+    {
+      "kind" : "identifier",
+      "text" : "init"
+    },
+    {
+      "kind" : "text",
+      "text" : "("
+    },
+    {
+      "kind" : "externalParam",
+      "text" : "typeToPictogram"
+    },
+    {
+      "kind" : "text",
+      "text" : ": ["
+    },
+    {
+      "kind" : "typeIdentifier",
+      "preciseIdentifier" : "s:SS",
+      "text" : "String"
+    },
+    {
+      "kind" : "text",
+      "text" : " : "
+    },
+    {
+      "kind" : "typeIdentifier",
+      "preciseIdentifier" : "s:SS",
+      "text" : "String"
+    },
+    {
+      "kind" : "text",
+      "text" : "], "
+    },
+    {
+      "kind" : "externalParam",
+      "text" : "typeToConnectorGlyph"
+    },
+    {
+      "kind" : "text",
+      "text" : ": ["
+    },
+    {
+      "kind" : "typeIdentifier",
+      "preciseIdentifier" : "s:SS",
+      "text" : "String"
+    },
+    {
+      "kind" : "text",
+      "text" : " : "
+    },
+    {
+      "kind" : "typeIdentifier",
+      "preciseIdentifier" : "s:SS",
+      "text" : "String"
+    },
+    {
+      "kind" : "text",
+      "text" : "])"
+    }
+  ],
+  "identifier" : "doc:\/\/Diagramming\/documentation\/Diagramming\/NotationRules\/init(typeToPictogram:typeToConnectorGlyph:)",
+  "kind" : "symbol",
+  "role" : "symbol",
+  "title" : "init(typeToPictogram:typeToConnectorGlyph:)",
+  "type" : "topic",
+  "url" : "\/documentation\/diagramming\/notationrules\/init(typetopictogram:typetoconnectorglyph:)"
+},
+"doc://Diagramming/documentation/Diagramming/NotationRules/pictogramName(for:)": {
+  "abstract" : [
+    {
+      "text" : "Look-up a pictogram name for given object type. If there is no specific name for the object",
+      "type" : "text"
+    },
+    {
+      "text" : " ",
+      "type" : "text"
+    },
+    {
+      "text" : "type, then use the object type name itself.",
+      "type" : "text"
+    }
+  ],
+  "fragments" : [
+    {
+      "kind" : "keyword",
+      "text" : "func"
+    },
+    {
+      "kind" : "text",
+      "text" : " "
+    },
+    {
+      "kind" : "identifier",
+      "text" : "pictogramName"
+    },
+    {
+      "kind" : "text",
+      "text" : "("
+    },
+    {
+      "kind" : "externalParam",
+      "text" : "for"
+    },
+    {
+      "kind" : "text",
+      "text" : ": "
+    },
+    {
+      "kind" : "typeIdentifier",
+      "preciseIdentifier" : "s:11PoieticCore10ObjectTypeC",
+      "text" : "ObjectType"
+    },
+    {
+      "kind" : "text",
+      "text" : ") -> "
+    },
+    {
+      "kind" : "typeIdentifier",
+      "preciseIdentifier" : "s:SS",
+      "text" : "String"
+    }
+  ],
+  "identifier" : "doc:\/\/Diagramming\/documentation\/Diagramming\/NotationRules\/pictogramName(for:)",
+  "kind" : "symbol",
+  "role" : "symbol",
+  "title" : "pictogramName(for:)",
+  "type" : "topic",
+  "url" : "\/documentation\/diagramming\/notationrules\/pictogramname(for:)"
+},
+"doc://Diagramming/documentation/Diagramming/NotationRules/typeToConnectorGlyph": {
+  "abstract" : [
+    {
+      "text" : "Mapping between object type name and connector glyph name.",
+      "type" : "text"
+    }
+  ],
+  "fragments" : [
+    {
+      "kind" : "keyword",
+      "text" : "let"
+    },
+    {
+      "kind" : "text",
+      "text" : " "
+    },
+    {
+      "kind" : "identifier",
+      "text" : "typeToConnectorGlyph"
+    },
+    {
+      "kind" : "text",
+      "text" : ": ["
+    },
+    {
+      "kind" : "typeIdentifier",
+      "preciseIdentifier" : "s:SS",
+      "text" : "String"
+    },
+    {
+      "kind" : "text",
+      "text" : " : "
+    },
+    {
+      "kind" : "typeIdentifier",
+      "preciseIdentifier" : "s:SS",
+      "text" : "String"
+    },
+    {
+      "kind" : "text",
+      "text" : "]"
+    }
+  ],
+  "identifier" : "doc:\/\/Diagramming\/documentation\/Diagramming\/NotationRules\/typeToConnectorGlyph",
+  "kind" : "symbol",
+  "role" : "symbol",
+  "title" : "typeToConnectorGlyph",
+  "type" : "topic",
+  "url" : "\/documentation\/diagramming\/notationrules\/typetoconnectorglyph"
+},
+"doc://Diagramming/documentation/Diagramming/NotationRules/typeToPictogram": {
+  "abstract" : [
+    {
+      "text" : "Mapping between object type name and pictogram name.",
+      "type" : "text"
+    }
+  ],
+  "fragments" : [
+    {
+      "kind" : "keyword",
+      "text" : "let"
+    },
+    {
+      "kind" : "text",
+      "text" : " "
+    },
+    {
+      "kind" : "identifier",
+      "text" : "typeToPictogram"
+    },
+    {
+      "kind" : "text",
+      "text" : ": ["
+    },
+    {
+      "kind" : "typeIdentifier",
+      "preciseIdentifier" : "s:SS",
+      "text" : "String"
+    },
+    {
+      "kind" : "text",
+      "text" : " : "
+    },
+    {
+      "kind" : "typeIdentifier",
+      "preciseIdentifier" : "s:SS",
+      "text" : "String"
+    },
+    {
+      "kind" : "text",
+      "text" : "]"
+    }
+  ],
+  "identifier" : "doc:\/\/Diagramming\/documentation\/Diagramming\/NotationRules\/typeToPictogram",
+  "kind" : "symbol",
+  "role" : "symbol",
+  "title" : "typeToPictogram",
+  "type" : "topic",
+  "url" : "\/documentation\/diagramming\/notationrules\/typetopictogram"
+},
+"doc://Diagramming/documentation/Diagramming/Pictogram": {
+  "abstract" : [
+    {
+      "text" : "Visual representation of an object in a diagram.",
+      "type" : "text"
+    }
+  ],
+  "fragments" : [
+    {
+      "kind" : "keyword",
+      "text" : "class"
+    },
+    {
+      "kind" : "text",
+      "text" : " "
+    },
+    {
+      "kind" : "identifier",
+      "text" : "Pictogram"
+    }
+  ],
+  "identifier" : "doc:\/\/Diagramming\/documentation\/Diagramming\/Pictogram",
+  "kind" : "symbol",
+  "navigatorTitle" : [
+    {
+      "kind" : "identifier",
+      "text" : "Pictogram"
+    }
+  ],
+  "role" : "symbol",
+  "title" : "Pictogram",
+  "type" : "topic",
+  "url" : "\/documentation\/diagramming\/pictogram"
+},
+"doc://Diagramming/documentation/Diagramming/PictogramCollection": {
+  "abstract" : [
+
+  ],
+  "fragments" : [
+    {
+      "kind" : "keyword",
+      "text" : "class"
+    },
+    {
+      "kind" : "text",
+      "text" : " "
+    },
+    {
+      "kind" : "identifier",
+      "text" : "PictogramCollection"
+    }
+  ],
+  "identifier" : "doc:\/\/Diagramming\/documentation\/Diagramming\/PictogramCollection",
+  "kind" : "symbol",
+  "navigatorTitle" : [
+    {
+      "kind" : "identifier",
+      "text" : "PictogramCollection"
+    }
+  ],
+  "role" : "symbol",
+  "title" : "PictogramCollection",
+  "type" : "topic",
+  "url" : "\/documentation\/diagramming\/pictogramcollection"
+},
+"doc://Diagramming/documentation/Diagramming/ThinArrowheadType": {
+  "abstract" : [
+    {
+      "text" : "Arrowhead style for thin (stroke-based) connectors.",
+      "type" : "text"
+    }
+  ],
+  "fragments" : [
+    {
+      "kind" : "keyword",
+      "text" : "enum"
+    },
+    {
+      "kind" : "text",
+      "text" : " "
+    },
+    {
+      "kind" : "identifier",
+      "text" : "ThinArrowheadType"
+    }
+  ],
+  "identifier" : "doc:\/\/Diagramming\/documentation\/Diagramming\/ThinArrowheadType",
+  "kind" : "symbol",
+  "navigatorTitle" : [
+    {
+      "kind" : "identifier",
+      "text" : "ThinArrowheadType"
+    }
+  ],
+  "role" : "symbol",
+  "title" : "ThinArrowheadType",
+  "type" : "topic",
+  "url" : "\/documentation\/diagramming\/thinarrowheadtype"
+}
+}
+}

@@ -1,0 +1,194 @@
+{
+  "hierarchy" : {
+    "paths" : [
+      [
+        "doc:\/\/Diagramming\/documentation\/Diagramming",
+        "doc:\/\/Diagramming\/documentation\/Diagramming\/SceneNode",
+        "doc:\/\/Diagramming\/documentation\/Diagramming\/SceneNode\/PrimaryLabel"
+      ]
+    ]
+  },
+  "identifier" : {
+    "interfaceLanguage" : "swift",
+    "url" : "doc:\/\/Diagramming\/documentation\/Diagramming\/SceneNode\/PrimaryLabel\/init()"
+  },
+  "kind" : "symbol",
+  "metadata" : {
+    "externalID" : "s:11Diagramming9SceneNodeV12PrimaryLabelVAEycfc",
+    "fragments" : [
+      {
+        "kind" : "identifier",
+        "text" : "init"
+      },
+      {
+        "kind" : "text",
+        "text" : "()"
+      }
+    ],
+    "modules" : [
+      {
+        "name" : "Diagramming"
+      }
+    ],
+    "role" : "symbol",
+    "roleHeading" : "Initializer",
+    "symbolKind" : "init",
+    "title" : "init()"
+  },
+  "primaryContentSections" : [
+    {
+      "declarations" : [
+        {
+          "languages" : [
+            "swift"
+          ],
+          "platforms" : [
+            "macOS"
+          ],
+          "tokens" : [
+            {
+              "kind" : "keyword",
+              "text" : "init"
+            },
+            {
+              "kind" : "text",
+              "text" : "()"
+            }
+          ]
+        }
+      ],
+      "kind" : "declarations"
+    }
+  ],
+  "schemaVersion" : {
+    "major" : 0,
+    "minor" : 3,
+    "patch" : 0
+  },
+  "sections" : [
+
+  ],
+  "variants" : [
+    {
+      "paths" : [
+        "\/documentation\/diagramming\/scenenode\/primarylabel\/init()"
+      ],
+      "traits" : [
+        {
+          "interfaceLanguage" : "swift"
+        }
+      ]
+    }
+  ]
+, 
+"references": {
+"doc://Diagramming/documentation/Diagramming": {
+  "abstract" : [
+    {
+      "text" : "Diagramming is an OpenPoiesis project package for representing and composing diagrams from design",
+      "type" : "text"
+    },
+    {
+      "text" : " ",
+      "type" : "text"
+    },
+    {
+      "text" : "objects.",
+      "type" : "text"
+    }
+  ],
+  "identifier" : "doc:\/\/Diagramming\/documentation\/Diagramming",
+  "kind" : "symbol",
+  "role" : "collection",
+  "title" : "Diagramming",
+  "type" : "topic",
+  "url" : "\/documentation\/diagramming"
+},
+"doc://Diagramming/documentation/Diagramming/SceneNode": {
+  "abstract" : [
+
+  ],
+  "fragments" : [
+    {
+      "kind" : "keyword",
+      "text" : "struct"
+    },
+    {
+      "kind" : "text",
+      "text" : " "
+    },
+    {
+      "kind" : "identifier",
+      "text" : "SceneNode"
+    }
+  ],
+  "identifier" : "doc:\/\/Diagramming\/documentation\/Diagramming\/SceneNode",
+  "kind" : "symbol",
+  "navigatorTitle" : [
+    {
+      "kind" : "identifier",
+      "text" : "SceneNode"
+    }
+  ],
+  "role" : "symbol",
+  "title" : "SceneNode",
+  "type" : "topic",
+  "url" : "\/documentation\/diagramming\/scenenode"
+},
+"doc://Diagramming/documentation/Diagramming/SceneNode/PrimaryLabel": {
+  "abstract" : [
+    {
+      "text" : "Relationship tag for primary label of a diagram scene node.",
+      "type" : "text"
+    }
+  ],
+  "fragments" : [
+    {
+      "kind" : "keyword",
+      "text" : "struct"
+    },
+    {
+      "kind" : "text",
+      "text" : " "
+    },
+    {
+      "kind" : "identifier",
+      "text" : "PrimaryLabel"
+    }
+  ],
+  "identifier" : "doc:\/\/Diagramming\/documentation\/Diagramming\/SceneNode\/PrimaryLabel",
+  "kind" : "symbol",
+  "navigatorTitle" : [
+    {
+      "kind" : "identifier",
+      "text" : "PrimaryLabel"
+    }
+  ],
+  "role" : "symbol",
+  "title" : "SceneNode.PrimaryLabel",
+  "type" : "topic",
+  "url" : "\/documentation\/diagramming\/scenenode\/primarylabel"
+},
+"doc://Diagramming/documentation/Diagramming/SceneNode/PrimaryLabel/init()": {
+  "abstract" : [
+
+  ],
+  "fragments" : [
+    {
+      "kind" : "identifier",
+      "text" : "init"
+    },
+    {
+      "kind" : "text",
+      "text" : "()"
+    }
+  ],
+  "identifier" : "doc:\/\/Diagramming\/documentation\/Diagramming\/SceneNode\/PrimaryLabel\/init()",
+  "kind" : "symbol",
+  "role" : "symbol",
+  "title" : "init()",
+  "type" : "topic",
+  "url" : "\/documentation\/diagramming\/scenenode\/primarylabel\/init()"
+}
+}
+}

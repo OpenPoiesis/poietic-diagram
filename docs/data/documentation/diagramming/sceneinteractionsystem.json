@@ -1,0 +1,1338 @@
+{
+  "abstract" : [
+    {
+      "text" : "System that computes absolute touch regions for interactive scene nodes.",
+      "type" : "text"
+    }
+  ],
+  "hierarchy" : {
+    "paths" : [
+      [
+        "doc:\/\/Diagramming\/documentation\/Diagramming"
+      ]
+    ]
+  },
+  "identifier" : {
+    "interfaceLanguage" : "swift",
+    "url" : "doc:\/\/Diagramming\/documentation\/Diagramming\/SceneInteractionSystem"
+  },
+  "kind" : "symbol",
+  "metadata" : {
+    "externalID" : "s:11Diagramming22SceneInteractionSystemV",
+    "fragments" : [
+      {
+        "kind" : "keyword",
+        "text" : "struct"
+      },
+      {
+        "kind" : "text",
+        "text" : " "
+      },
+      {
+        "kind" : "identifier",
+        "text" : "SceneInteractionSystem"
+      }
+    ],
+    "modules" : [
+      {
+        "name" : "Diagramming"
+      }
+    ],
+    "navigatorTitle" : [
+      {
+        "kind" : "identifier",
+        "text" : "SceneInteractionSystem"
+      }
+    ],
+    "role" : "symbol",
+    "roleHeading" : "Structure",
+    "symbolKind" : "struct",
+    "title" : "SceneInteractionSystem"
+  },
+  "primaryContentSections" : [
+    {
+      "declarations" : [
+        {
+          "languages" : [
+            "swift"
+          ],
+          "platforms" : [
+            "macOS"
+          ],
+          "tokens" : [
+            {
+              "kind" : "keyword",
+              "text" : "struct"
+            },
+            {
+              "kind" : "text",
+              "text" : " "
+            },
+            {
+              "kind" : "identifier",
+              "text" : "SceneInteractionSystem"
+            }
+          ]
+        }
+      ],
+      "kind" : "declarations"
+    },
+    {
+      "content" : [
+        {
+          "anchor" : "overview",
+          "level" : 2,
+          "text" : "Overview",
+          "type" : "heading"
+        },
+        {
+          "inlineContent" : [
+            {
+              "text" : "The system traverses all scenes and finds nodes with ",
+              "type" : "text"
+            },
+            {
+              "identifier" : "doc:\/\/Diagramming\/documentation\/Diagramming\/Interactivity",
+              "isActive" : true,
+              "type" : "reference"
+            },
+            {
+              "text" : " component and one of",
+              "type" : "text"
+            },
+            {
+              "text" : " ",
+              "type" : "text"
+            },
+            {
+              "text" : "geometry components: ",
+              "type" : "text"
+            },
+            {
+              "identifier" : "doc:\/\/Diagramming\/documentation\/Diagramming\/CollisionShape",
+              "isActive" : true,
+              "type" : "reference"
+            },
+            {
+              "text" : " or ",
+              "type" : "text"
+            },
+            {
+              "identifier" : "doc:\/\/Diagramming\/documentation\/Diagramming\/ConnectorWire",
+              "isActive" : true,
+              "type" : "reference"
+            },
+            {
+              "text" : ". Computes ",
+              "type" : "text"
+            },
+            {
+              "identifier" : "doc:\/\/Diagramming\/documentation\/Diagramming\/TouchRegion",
+              "isActive" : true,
+              "type" : "reference"
+            },
+            {
+              "text" : " component",
+              "type" : "text"
+            },
+            {
+              "text" : " ",
+              "type" : "text"
+            },
+            {
+              "text" : "with absolute scene coordinates.",
+              "type" : "text"
+            }
+          ],
+          "type" : "paragraph"
+        },
+        {
+          "inlineContent" : [
+            {
+              "text" : "If an application uses handles to manipulate visual objects, the handles must follow the",
+              "type" : "text"
+            },
+            {
+              "text" : " ",
+              "type" : "text"
+            },
+            {
+              "text" : "component requirements above.",
+              "type" : "text"
+            }
+          ],
+          "type" : "paragraph"
+        },
+        {
+          "inlineContent" : [
+            {
+              "text" : "This system is intended to be run when:",
+              "type" : "text"
+            }
+          ],
+          "type" : "paragraph"
+        },
+        {
+          "items" : [
+            {
+              "content" : [
+                {
+                  "inlineContent" : [
+                    {
+                      "text" : "frame changes (on transaction)",
+                      "type" : "text"
+                    }
+                  ],
+                  "type" : "paragraph"
+                }
+              ]
+            },
+            {
+              "content" : [
+                {
+                  "inlineContent" : [
+                    {
+                      "text" : "viewport changes",
+                      "type" : "text"
+                    }
+                  ],
+                  "type" : "paragraph"
+                }
+              ]
+            },
+            {
+              "content" : [
+                {
+                  "inlineContent" : [
+                    {
+                      "text" : "style or notation changes",
+                      "type" : "text"
+                    }
+                  ],
+                  "type" : "paragraph"
+                }
+              ]
+            }
+          ],
+          "type" : "unorderedList"
+        },
+        {
+          "anchor" : "Coordinates",
+          "level" : 2,
+          "text" : "Coordinates",
+          "type" : "heading"
+        },
+        {
+          "header" : "row",
+          "rows" : [
+            [
+              [
+                {
+                  "inlineContent" : [
+                    {
+                      "text" : "Component",
+                      "type" : "text"
+                    }
+                  ],
+                  "type" : "paragraph"
+                }
+              ],
+              [
+                {
+                  "inlineContent" : [
+                    {
+                      "text" : "Coordinates",
+                      "type" : "text"
+                    }
+                  ],
+                  "type" : "paragraph"
+                }
+              ],
+              [
+                {
+                  "inlineContent" : [
+                    {
+                      "text" : "Relative To",
+                      "type" : "text"
+                    }
+                  ],
+                  "type" : "paragraph"
+                }
+              ]
+            ],
+            [
+              [
+                {
+                  "inlineContent" : [
+                    {
+                      "code" : "PositionComponent",
+                      "type" : "codeVoice"
+                    }
+                  ],
+                  "type" : "paragraph"
+                }
+              ],
+              [
+                {
+                  "inlineContent" : [
+                    {
+                      "text" : "relative",
+                      "type" : "text"
+                    }
+                  ],
+                  "type" : "paragraph"
+                }
+              ],
+              [
+                {
+                  "inlineContent" : [
+                    {
+                      "text" : "parent node",
+                      "type" : "text"
+                    }
+                  ],
+                  "type" : "paragraph"
+                }
+              ]
+            ],
+            [
+              [
+                {
+                  "inlineContent" : [
+                    {
+                      "code" : "CollisionShape",
+                      "type" : "codeVoice"
+                    }
+                  ],
+                  "type" : "paragraph"
+                }
+              ],
+              [
+                {
+                  "inlineContent" : [
+                    {
+                      "text" : "relative",
+                      "type" : "text"
+                    }
+                  ],
+                  "type" : "paragraph"
+                }
+              ],
+              [
+                {
+                  "inlineContent" : [
+                    {
+                      "text" : "component owning node",
+                      "type" : "text"
+                    }
+                  ],
+                  "type" : "paragraph"
+                }
+              ]
+            ],
+            [
+              [
+                {
+                  "inlineContent" : [
+                    {
+                      "code" : "ConnectorWire",
+                      "type" : "codeVoice"
+                    }
+                  ],
+                  "type" : "paragraph"
+                }
+              ],
+              [
+                {
+                  "inlineContent" : [
+                    {
+                      "text" : "absolute",
+                      "type" : "text"
+                    }
+                  ],
+                  "type" : "paragraph"
+                }
+              ],
+              [
+                {
+                  "inlineContent" : [
+                    {
+                      "text" : "–",
+                      "type" : "text"
+                    }
+                  ],
+                  "type" : "paragraph"
+                }
+              ]
+            ],
+            [
+              [
+                {
+                  "inlineContent" : [
+                    {
+                      "code" : "TouchRegion",
+                      "type" : "codeVoice"
+                    }
+                  ],
+                  "type" : "paragraph"
+                }
+              ],
+              [
+                {
+                  "inlineContent" : [
+                    {
+                      "text" : "absolute",
+                      "type" : "text"
+                    }
+                  ],
+                  "type" : "paragraph"
+                }
+              ],
+              [
+                {
+                  "inlineContent" : [
+                    {
+                      "text" : "–",
+                      "type" : "text"
+                    }
+                  ],
+                  "type" : "paragraph"
+                }
+              ]
+            ]
+          ],
+          "type" : "table"
+        },
+        {
+          "items" : [
+            {
+              "content" : [
+                {
+                  "inlineContent" : [
+                    {
+                      "inlineContent" : [
+                        {
+                          "text" : "Input:",
+                          "type" : "text"
+                        }
+                      ],
+                      "type" : "strong"
+                    }
+                  ],
+                  "type" : "paragraph"
+                },
+                {
+                  "items" : [
+                    {
+                      "content" : [
+                        {
+                          "inlineContent" : [
+                            {
+                              "identifier" : "doc:\/\/Diagramming\/documentation\/Diagramming\/DiagramScene",
+                              "isActive" : true,
+                              "type" : "reference"
+                            },
+                            {
+                              "text" : " scene hierarchy root entity.",
+                              "type" : "text"
+                            }
+                          ],
+                          "type" : "paragraph"
+                        }
+                      ]
+                    },
+                    {
+                      "content" : [
+                        {
+                          "inlineContent" : [
+                            {
+                              "identifier" : "doc:\/\/Diagramming\/documentation\/Diagramming\/InteractionDirty",
+                              "isActive" : true,
+                              "type" : "reference"
+                            },
+                            {
+                              "text" : " tag set on the scene.",
+                              "type" : "text"
+                            }
+                          ],
+                          "type" : "paragraph"
+                        }
+                      ]
+                    },
+                    {
+                      "content" : [
+                        {
+                          "inlineContent" : [
+                            {
+                              "code" : "DiagramSceneNode",
+                              "type" : "codeVoice"
+                            },
+                            {
+                              "text" : " scene node entities (children of scene or other nodes).",
+                              "type" : "text"
+                            }
+                          ],
+                          "type" : "paragraph"
+                        },
+                        {
+                          "items" : [
+                            {
+                              "content" : [
+                                {
+                                  "inlineContent" : [
+                                    {
+                                      "identifier" : "doc:\/\/Diagramming\/documentation\/Diagramming\/Interactivity",
+                                      "isActive" : true,
+                                      "type" : "reference"
+                                    },
+                                    {
+                                      "text" : ": required component, regardless of value.",
+                                      "type" : "text"
+                                    }
+                                  ],
+                                  "type" : "paragraph"
+                                }
+                              ]
+                            },
+                            {
+                              "content" : [
+                                {
+                                  "inlineContent" : [
+                                    {
+                                      "identifier" : "doc:\/\/Diagramming\/documentation\/Diagramming\/PositionComponent",
+                                      "isActive" : true,
+                                      "type" : "reference"
+                                    },
+                                    {
+                                      "text" : ": optional – see defaults below.",
+                                      "type" : "text"
+                                    }
+                                  ],
+                                  "type" : "paragraph"
+                                }
+                              ]
+                            },
+                            {
+                              "content" : [
+                                {
+                                  "inlineContent" : [
+                                    {
+                                      "text" : "Requires one of: ",
+                                      "type" : "text"
+                                    },
+                                    {
+                                      "identifier" : "doc:\/\/Diagramming\/documentation\/Diagramming\/CollisionShape",
+                                      "isActive" : true,
+                                      "type" : "reference"
+                                    },
+                                    {
+                                      "text" : " or ",
+                                      "type" : "text"
+                                    },
+                                    {
+                                      "identifier" : "doc:\/\/Diagramming\/documentation\/Diagramming\/ConnectorWire",
+                                      "isActive" : true,
+                                      "type" : "reference"
+                                    },
+                                    {
+                                      "text" : " components.",
+                                      "type" : "text"
+                                    }
+                                  ],
+                                  "type" : "paragraph"
+                                }
+                              ]
+                            },
+                            {
+                              "content" : [
+                                {
+                                  "inlineContent" : [
+                                    {
+                                      "code" : "ChildOf",
+                                      "type" : "codeVoice"
+                                    },
+                                    {
+                                      "text" : " relationship is used for scene hierarchy.",
+                                      "type" : "text"
+                                    }
+                                  ],
+                                  "type" : "paragraph"
+                                }
+                              ]
+                            }
+                          ],
+                          "type" : "unorderedList"
+                        }
+                      ]
+                    }
+                  ],
+                  "type" : "unorderedList"
+                }
+              ]
+            },
+            {
+              "content" : [
+                {
+                  "inlineContent" : [
+                    {
+                      "inlineContent" : [
+                        {
+                          "text" : "Updates:",
+                          "type" : "text"
+                        }
+                      ],
+                      "type" : "strong"
+                    },
+                    {
+                      "text" : " Scene nodes and their children ",
+                      "type" : "text"
+                    },
+                    {
+                      "code" : "DiagramSceneNode",
+                      "type" : "codeVoice"
+                    },
+                    {
+                      "text" : ".",
+                      "type" : "text"
+                    }
+                  ],
+                  "type" : "paragraph"
+                }
+              ]
+            },
+            {
+              "content" : [
+                {
+                  "inlineContent" : [
+                    {
+                      "inlineContent" : [
+                        {
+                          "text" : "Output:",
+                          "type" : "text"
+                        }
+                      ],
+                      "type" : "strong"
+                    }
+                  ],
+                  "type" : "paragraph"
+                },
+                {
+                  "items" : [
+                    {
+                      "content" : [
+                        {
+                          "inlineContent" : [
+                            {
+                              "text" : "Sets ",
+                              "type" : "text"
+                            },
+                            {
+                              "identifier" : "doc:\/\/Diagramming\/documentation\/Diagramming\/TouchRegion",
+                              "isActive" : true,
+                              "type" : "reference"
+                            },
+                            {
+                              "text" : " with absolute coordinates to a ",
+                              "type" : "text"
+                            },
+                            {
+                              "code" : "DiagramSceneNode",
+                              "type" : "codeVoice"
+                            },
+                            {
+                              "text" : " entity, if",
+                              "type" : "text"
+                            },
+                            {
+                              "text" : " ",
+                              "type" : "text"
+                            },
+                            {
+                              "text" : "the entity is included in interactivity",
+                              "type" : "text"
+                            }
+                          ],
+                          "type" : "paragraph"
+                        }
+                      ]
+                    },
+                    {
+                      "content" : [
+                        {
+                          "inlineContent" : [
+                            {
+                              "text" : "Removes ",
+                              "type" : "text"
+                            },
+                            {
+                              "identifier" : "doc:\/\/Diagramming\/documentation\/Diagramming\/TouchRegion",
+                              "isActive" : true,
+                              "type" : "reference"
+                            },
+                            {
+                              "text" : " on nodes without ",
+                              "type" : "text"
+                            },
+                            {
+                              "identifier" : "doc:\/\/Diagramming\/documentation\/Diagramming\/Interactivity",
+                              "isActive" : true,
+                              "type" : "reference"
+                            },
+                            {
+                              "text" : " component.",
+                              "type" : "text"
+                            }
+                          ],
+                          "type" : "paragraph"
+                        }
+                      ]
+                    }
+                  ],
+                  "type" : "unorderedList"
+                }
+              ]
+            },
+            {
+              "content" : [
+                {
+                  "inlineContent" : [
+                    {
+                      "inlineContent" : [
+                        {
+                          "text" : "Defaults:",
+                          "type" : "text"
+                        }
+                      ],
+                      "type" : "strong"
+                    }
+                  ],
+                  "type" : "paragraph"
+                },
+                {
+                  "items" : [
+                    {
+                      "content" : [
+                        {
+                          "inlineContent" : [
+                            {
+                              "text" : "If ",
+                              "type" : "text"
+                            },
+                            {
+                              "identifier" : "doc:\/\/Diagramming\/documentation\/Diagramming\/PositionComponent",
+                              "isActive" : true,
+                              "type" : "reference"
+                            },
+                            {
+                              "text" : " is missing, then it defaults to zero (0,0) position.",
+                              "type" : "text"
+                            }
+                          ],
+                          "type" : "paragraph"
+                        }
+                      ]
+                    }
+                  ],
+                  "type" : "unorderedList"
+                }
+              ]
+            },
+            {
+              "content" : [
+                {
+                  "inlineContent" : [
+                    {
+                      "inlineContent" : [
+                        {
+                          "text" : "Order:",
+                          "type" : "text"
+                        }
+                      ],
+                      "type" : "strong"
+                    },
+                    {
+                      "text" : " Runs after ",
+                      "type" : "text"
+                    },
+                    {
+                      "identifier" : "doc:\/\/Diagramming\/documentation\/Diagramming\/SceneCompositionSystem",
+                      "isActive" : true,
+                      "type" : "reference"
+                    },
+                    {
+                      "text" : ", if the system is present in the same",
+                      "type" : "text"
+                    },
+                    {
+                      "text" : " ",
+                      "type" : "text"
+                    },
+                    {
+                      "text" : "schedule.",
+                      "type" : "text"
+                    }
+                  ],
+                  "type" : "paragraph"
+                }
+              ]
+            }
+          ],
+          "type" : "unorderedList"
+        }
+      ],
+      "kind" : "content"
+    }
+  ],
+  "relationshipsSections" : [
+    {
+      "identifiers" : [
+        "doc:\/\/Diagramming\/11PoieticCore6SystemP"
+      ],
+      "kind" : "relationships",
+      "title" : "Conforms To",
+      "type" : "conformsTo"
+    }
+  ],
+  "schemaVersion" : {
+    "major" : 0,
+    "minor" : 3,
+    "patch" : 0
+  },
+  "sections" : [
+
+  ],
+  "topicSections" : [
+    {
+      "anchor" : "Initializers",
+      "generated" : true,
+      "identifiers" : [
+        "doc:\/\/Diagramming\/documentation\/Diagramming\/SceneInteractionSystem\/init(_:)"
+      ],
+      "title" : "Initializers"
+    },
+    {
+      "anchor" : "Instance-Methods",
+      "generated" : true,
+      "identifiers" : [
+        "doc:\/\/Diagramming\/documentation\/Diagramming\/SceneInteractionSystem\/update(_:)"
+      ],
+      "title" : "Instance Methods"
+    },
+    {
+      "anchor" : "Type-Properties",
+      "generated" : true,
+      "identifiers" : [
+        "doc:\/\/Diagramming\/documentation\/Diagramming\/SceneInteractionSystem\/dependencies"
+      ],
+      "title" : "Type Properties"
+    },
+    {
+      "anchor" : "Default-Implementations",
+      "generated" : true,
+      "identifiers" : [
+        "doc:\/\/Diagramming\/documentation\/Diagramming\/SceneInteractionSystem\/System-Implementations"
+      ],
+      "title" : "Default Implementations"
+    }
+  ],
+  "variants" : [
+    {
+      "paths" : [
+        "\/documentation\/diagramming\/sceneinteractionsystem"
+      ],
+      "traits" : [
+        {
+          "interfaceLanguage" : "swift"
+        }
+      ]
+    }
+  ]
+, 
+"references": {
+"doc://Diagramming/11PoieticCore6SystemP": {
+  "identifier" : "doc:\/\/Diagramming\/11PoieticCore6SystemP",
+  "title" : "PoieticCore.System",
+  "type" : "unresolvable"
+},
+"doc://Diagramming/documentation/Diagramming": {
+  "abstract" : [
+    {
+      "text" : "Diagramming is an OpenPoiesis project package for representing and composing diagrams from design",
+      "type" : "text"
+    },
+    {
+      "text" : " ",
+      "type" : "text"
+    },
+    {
+      "text" : "objects.",
+      "type" : "text"
+    }
+  ],
+  "identifier" : "doc:\/\/Diagramming\/documentation\/Diagramming",
+  "kind" : "symbol",
+  "role" : "collection",
+  "title" : "Diagramming",
+  "type" : "topic",
+  "url" : "\/documentation\/diagramming"
+},
+"doc://Diagramming/documentation/Diagramming/CollisionShape": {
+  "abstract" : [
+
+  ],
+  "fragments" : [
+    {
+      "kind" : "keyword",
+      "text" : "struct"
+    },
+    {
+      "kind" : "text",
+      "text" : " "
+    },
+    {
+      "kind" : "identifier",
+      "text" : "CollisionShape"
+    }
+  ],
+  "identifier" : "doc:\/\/Diagramming\/documentation\/Diagramming\/CollisionShape",
+  "kind" : "symbol",
+  "navigatorTitle" : [
+    {
+      "kind" : "identifier",
+      "text" : "CollisionShape"
+    }
+  ],
+  "role" : "symbol",
+  "title" : "CollisionShape",
+  "type" : "topic",
+  "url" : "\/documentation\/diagramming\/collisionshape"
+},
+"doc://Diagramming/documentation/Diagramming/ConnectorWire": {
+  "abstract" : [
+    {
+      "text" : "Points of a connector wire used for hit testing and for selection outline.",
+      "type" : "text"
+    },
+    {
+      "text" : " ",
+      "type" : "text"
+    },
+    {
+      "text" : "Typically a tessellated points of a connector curve.",
+      "type" : "text"
+    }
+  ],
+  "fragments" : [
+    {
+      "kind" : "keyword",
+      "text" : "struct"
+    },
+    {
+      "kind" : "text",
+      "text" : " "
+    },
+    {
+      "kind" : "identifier",
+      "text" : "ConnectorWire"
+    }
+  ],
+  "identifier" : "doc:\/\/Diagramming\/documentation\/Diagramming\/ConnectorWire",
+  "kind" : "symbol",
+  "navigatorTitle" : [
+    {
+      "kind" : "identifier",
+      "text" : "ConnectorWire"
+    }
+  ],
+  "role" : "symbol",
+  "title" : "ConnectorWire",
+  "type" : "topic",
+  "url" : "\/documentation\/diagramming\/connectorwire"
+},
+"doc://Diagramming/documentation/Diagramming/DiagramScene": {
+  "abstract" : [
+    {
+      "text" : "Tag component for a diagram scene root.",
+      "type" : "text"
+    }
+  ],
+  "fragments" : [
+    {
+      "kind" : "keyword",
+      "text" : "struct"
+    },
+    {
+      "kind" : "text",
+      "text" : " "
+    },
+    {
+      "kind" : "identifier",
+      "text" : "DiagramScene"
+    }
+  ],
+  "identifier" : "doc:\/\/Diagramming\/documentation\/Diagramming\/DiagramScene",
+  "kind" : "symbol",
+  "navigatorTitle" : [
+    {
+      "kind" : "identifier",
+      "text" : "DiagramScene"
+    }
+  ],
+  "role" : "symbol",
+  "title" : "DiagramScene",
+  "type" : "topic",
+  "url" : "\/documentation\/diagramming\/diagramscene"
+},
+"doc://Diagramming/documentation/Diagramming/InteractionDirty": {
+  "abstract" : [
+    {
+      "text" : "Flag component of a scene node for tagging visual entities that require re-computation of ",
+      "type" : "text"
+    },
+    {
+      "identifier" : "doc:\/\/Diagramming\/documentation\/Diagramming\/TouchRegion",
+      "isActive" : true,
+      "type" : "reference"
+    }
+  ],
+  "fragments" : [
+    {
+      "kind" : "keyword",
+      "text" : "struct"
+    },
+    {
+      "kind" : "text",
+      "text" : " "
+    },
+    {
+      "kind" : "identifier",
+      "text" : "InteractionDirty"
+    }
+  ],
+  "identifier" : "doc:\/\/Diagramming\/documentation\/Diagramming\/InteractionDirty",
+  "kind" : "symbol",
+  "navigatorTitle" : [
+    {
+      "kind" : "identifier",
+      "text" : "InteractionDirty"
+    }
+  ],
+  "role" : "symbol",
+  "title" : "InteractionDirty",
+  "type" : "topic",
+  "url" : "\/documentation\/diagramming\/interactiondirty"
+},
+"doc://Diagramming/documentation/Diagramming/Interactivity": {
+  "abstract" : [
+    {
+      "text" : "Component stating interactivity of a scene node.",
+      "type" : "text"
+    }
+  ],
+  "fragments" : [
+    {
+      "kind" : "keyword",
+      "text" : "enum"
+    },
+    {
+      "kind" : "text",
+      "text" : " "
+    },
+    {
+      "kind" : "identifier",
+      "text" : "Interactivity"
+    }
+  ],
+  "identifier" : "doc:\/\/Diagramming\/documentation\/Diagramming\/Interactivity",
+  "kind" : "symbol",
+  "navigatorTitle" : [
+    {
+      "kind" : "identifier",
+      "text" : "Interactivity"
+    }
+  ],
+  "role" : "symbol",
+  "title" : "Interactivity",
+  "type" : "topic",
+  "url" : "\/documentation\/diagramming\/interactivity"
+},
+"doc://Diagramming/documentation/Diagramming/PositionComponent": {
+  "abstract" : [
+    {
+      "text" : "Position of an entity.",
+      "type" : "text"
+    }
+  ],
+  "fragments" : [
+    {
+      "kind" : "keyword",
+      "text" : "struct"
+    },
+    {
+      "kind" : "text",
+      "text" : " "
+    },
+    {
+      "kind" : "identifier",
+      "text" : "PositionComponent"
+    }
+  ],
+  "identifier" : "doc:\/\/Diagramming\/documentation\/Diagramming\/PositionComponent",
+  "kind" : "symbol",
+  "navigatorTitle" : [
+    {
+      "kind" : "identifier",
+      "text" : "PositionComponent"
+    }
+  ],
+  "role" : "symbol",
+  "title" : "PositionComponent",
+  "type" : "topic",
+  "url" : "\/documentation\/diagramming\/positioncomponent"
+},
+"doc://Diagramming/documentation/Diagramming/SceneCompositionSystem": {
+  "abstract" : [
+    {
+      "text" : "System that composes and updates diagram scenes.",
+      "type" : "text"
+    }
+  ],
+  "fragments" : [
+    {
+      "kind" : "keyword",
+      "text" : "struct"
+    },
+    {
+      "kind" : "text",
+      "text" : " "
+    },
+    {
+      "kind" : "identifier",
+      "text" : "SceneCompositionSystem"
+    }
+  ],
+  "identifier" : "doc:\/\/Diagramming\/documentation\/Diagramming\/SceneCompositionSystem",
+  "kind" : "symbol",
+  "navigatorTitle" : [
+    {
+      "kind" : "identifier",
+      "text" : "SceneCompositionSystem"
+    }
+  ],
+  "role" : "symbol",
+  "title" : "SceneCompositionSystem",
+  "type" : "topic",
+  "url" : "\/documentation\/diagramming\/scenecompositionsystem"
+},
+"doc://Diagramming/documentation/Diagramming/SceneInteractionSystem": {
+  "abstract" : [
+    {
+      "text" : "System that computes absolute touch regions for interactive scene nodes.",
+      "type" : "text"
+    }
+  ],
+  "fragments" : [
+    {
+      "kind" : "keyword",
+      "text" : "struct"
+    },
+    {
+      "kind" : "text",
+      "text" : " "
+    },
+    {
+      "kind" : "identifier",
+      "text" : "SceneInteractionSystem"
+    }
+  ],
+  "identifier" : "doc:\/\/Diagramming\/documentation\/Diagramming\/SceneInteractionSystem",
+  "kind" : "symbol",
+  "navigatorTitle" : [
+    {
+      "kind" : "identifier",
+      "text" : "SceneInteractionSystem"
+    }
+  ],
+  "role" : "symbol",
+  "title" : "SceneInteractionSystem",
+  "type" : "topic",
+  "url" : "\/documentation\/diagramming\/sceneinteractionsystem"
+},
+"doc://Diagramming/documentation/Diagramming/SceneInteractionSystem/System-Implementations": {
+  "abstract" : [
+
+  ],
+  "identifier" : "doc:\/\/Diagramming\/documentation\/Diagramming\/SceneInteractionSystem\/System-Implementations",
+  "kind" : "article",
+  "role" : "collectionGroup",
+  "title" : "System Implementations",
+  "type" : "topic",
+  "url" : "\/documentation\/diagramming\/sceneinteractionsystem\/system-implementations"
+},
+"doc://Diagramming/documentation/Diagramming/SceneInteractionSystem/dependencies": {
+  "abstract" : [
+
+  ],
+  "fragments" : [
+    {
+      "kind" : "keyword",
+      "text" : "static"
+    },
+    {
+      "kind" : "text",
+      "text" : " "
+    },
+    {
+      "kind" : "keyword",
+      "text" : "let"
+    },
+    {
+      "kind" : "text",
+      "text" : " "
+    },
+    {
+      "kind" : "identifier",
+      "text" : "dependencies"
+    },
+    {
+      "kind" : "text",
+      "text" : ": ["
+    },
+    {
+      "kind" : "typeIdentifier",
+      "preciseIdentifier" : "s:11PoieticCore16SystemDependencyO",
+      "text" : "SystemDependency"
+    },
+    {
+      "kind" : "text",
+      "text" : "]"
+    }
+  ],
+  "identifier" : "doc:\/\/Diagramming\/documentation\/Diagramming\/SceneInteractionSystem\/dependencies",
+  "kind" : "symbol",
+  "role" : "symbol",
+  "title" : "dependencies",
+  "type" : "topic",
+  "url" : "\/documentation\/diagramming\/sceneinteractionsystem\/dependencies"
+},
+"doc://Diagramming/documentation/Diagramming/SceneInteractionSystem/init(_:)": {
+  "abstract" : [
+
+  ],
+  "fragments" : [
+    {
+      "kind" : "identifier",
+      "text" : "init"
+    },
+    {
+      "kind" : "text",
+      "text" : "("
+    },
+    {
+      "kind" : "typeIdentifier",
+      "preciseIdentifier" : "s:11PoieticCore5WorldC",
+      "text" : "World"
+    },
+    {
+      "kind" : "text",
+      "text" : ")"
+    }
+  ],
+  "identifier" : "doc:\/\/Diagramming\/documentation\/Diagramming\/SceneInteractionSystem\/init(_:)",
+  "kind" : "symbol",
+  "role" : "symbol",
+  "title" : "init(_:)",
+  "type" : "topic",
+  "url" : "\/documentation\/diagramming\/sceneinteractionsystem\/init(_:)"
+},
+"doc://Diagramming/documentation/Diagramming/SceneInteractionSystem/update(_:)": {
+  "abstract" : [
+
+  ],
+  "fragments" : [
+    {
+      "kind" : "keyword",
+      "text" : "func"
+    },
+    {
+      "kind" : "text",
+      "text" : " "
+    },
+    {
+      "kind" : "identifier",
+      "text" : "update"
+    },
+    {
+      "kind" : "text",
+      "text" : "("
+    },
+    {
+      "kind" : "typeIdentifier",
+      "preciseIdentifier" : "s:11PoieticCore5WorldC",
+      "text" : "World"
+    },
+    {
+      "kind" : "text",
+      "text" : ") "
+    },
+    {
+      "kind" : "keyword",
+      "text" : "throws"
+    },
+    {
+      "kind" : "text",
+      "text" : "("
+    },
+    {
+      "kind" : "typeIdentifier",
+      "preciseIdentifier" : "s:11PoieticCore19InternalSystemErrorV",
+      "text" : "InternalSystemError"
+    },
+    {
+      "kind" : "text",
+      "text" : ")"
+    }
+  ],
+  "identifier" : "doc:\/\/Diagramming\/documentation\/Diagramming\/SceneInteractionSystem\/update(_:)",
+  "kind" : "symbol",
+  "role" : "symbol",
+  "title" : "update(_:)",
+  "type" : "topic",
+  "url" : "\/documentation\/diagramming\/sceneinteractionsystem\/update(_:)"
+},
+"doc://Diagramming/documentation/Diagramming/TouchRegion": {
+  "abstract" : [
+    {
+      "text" : "Scene node component specifying touch region of the component owning entity.",
+      "type" : "text"
+    }
+  ],
+  "fragments" : [
+    {
+      "kind" : "keyword",
+      "text" : "enum"
+    },
+    {
+      "kind" : "text",
+      "text" : " "
+    },
+    {
+      "kind" : "identifier",
+      "text" : "TouchRegion"
+    }
+  ],
+  "identifier" : "doc:\/\/Diagramming\/documentation\/Diagramming\/TouchRegion",
+  "kind" : "symbol",
+  "navigatorTitle" : [
+    {
+      "kind" : "identifier",
+      "text" : "TouchRegion"
+    }
+  ],
+  "role" : "symbol",
+  "title" : "TouchRegion",
+  "type" : "topic",
+  "url" : "\/documentation\/diagramming\/touchregion"
+}
+}
+}

@@ -1,0 +1,235 @@
+{
+  "hierarchy" : {
+    "paths" : [
+      [
+        "doc:\/\/Diagramming\/documentation\/Diagramming",
+        "doc:\/\/Diagramming\/documentation\/Diagramming\/DiagramSceneRenderer"
+      ]
+    ]
+  },
+  "identifier" : {
+    "interfaceLanguage" : "swift",
+    "url" : "doc:\/\/Diagramming\/documentation\/Diagramming\/DiagramSceneRenderer\/Context"
+  },
+  "kind" : "symbol",
+  "metadata" : {
+    "externalID" : "s:11Diagramming20DiagramSceneRendererP7ContextQa",
+    "fragments" : [
+      {
+        "kind" : "keyword",
+        "text" : "associatedtype"
+      },
+      {
+        "kind" : "text",
+        "text" : " "
+      },
+      {
+        "kind" : "identifier",
+        "text" : "Context"
+      },
+      {
+        "kind" : "text",
+        "text" : " : "
+      },
+      {
+        "kind" : "typeIdentifier",
+        "preciseIdentifier" : "s:11Diagramming24RenderingContextProtocolP",
+        "text" : "RenderingContextProtocol"
+      }
+    ],
+    "modules" : [
+      {
+        "name" : "Diagramming"
+      }
+    ],
+    "required" : true,
+    "role" : "symbol",
+    "roleHeading" : "Associated Type",
+    "symbolKind" : "associatedtype",
+    "title" : "Context"
+  },
+  "primaryContentSections" : [
+    {
+      "declarations" : [
+        {
+          "languages" : [
+            "swift"
+          ],
+          "platforms" : [
+            "macOS"
+          ],
+          "tokens" : [
+            {
+              "kind" : "keyword",
+              "text" : "associatedtype"
+            },
+            {
+              "kind" : "text",
+              "text" : " "
+            },
+            {
+              "kind" : "identifier",
+              "text" : "Context"
+            },
+            {
+              "kind" : "text",
+              "text" : " : "
+            },
+            {
+              "identifier" : "doc:\/\/Diagramming\/documentation\/Diagramming\/RenderingContextProtocol",
+              "kind" : "typeIdentifier",
+              "preciseIdentifier" : "s:11Diagramming24RenderingContextProtocolP",
+              "text" : "RenderingContextProtocol"
+            }
+          ]
+        }
+      ],
+      "kind" : "declarations"
+    }
+  ],
+  "schemaVersion" : {
+    "major" : 0,
+    "minor" : 3,
+    "patch" : 0
+  },
+  "sections" : [
+
+  ],
+  "variants" : [
+    {
+      "paths" : [
+        "\/documentation\/diagramming\/diagramscenerenderer\/context"
+      ],
+      "traits" : [
+        {
+          "interfaceLanguage" : "swift"
+        }
+      ]
+    }
+  ]
+, 
+"references": {
+"doc://Diagramming/documentation/Diagramming": {
+  "abstract" : [
+    {
+      "text" : "Diagramming is an OpenPoiesis project package for representing and composing diagrams from design",
+      "type" : "text"
+    },
+    {
+      "text" : " ",
+      "type" : "text"
+    },
+    {
+      "text" : "objects.",
+      "type" : "text"
+    }
+  ],
+  "identifier" : "doc:\/\/Diagramming\/documentation\/Diagramming",
+  "kind" : "symbol",
+  "role" : "collection",
+  "title" : "Diagramming",
+  "type" : "topic",
+  "url" : "\/documentation\/diagramming"
+},
+"doc://Diagramming/documentation/Diagramming/DiagramSceneRenderer": {
+  "abstract" : [
+    {
+      "text" : "Protocol for renderers of diagram scene.",
+      "type" : "text"
+    }
+  ],
+  "fragments" : [
+    {
+      "kind" : "keyword",
+      "text" : "protocol"
+    },
+    {
+      "kind" : "text",
+      "text" : " "
+    },
+    {
+      "kind" : "identifier",
+      "text" : "DiagramSceneRenderer"
+    }
+  ],
+  "identifier" : "doc:\/\/Diagramming\/documentation\/Diagramming\/DiagramSceneRenderer",
+  "kind" : "symbol",
+  "navigatorTitle" : [
+    {
+      "kind" : "identifier",
+      "text" : "DiagramSceneRenderer"
+    }
+  ],
+  "role" : "symbol",
+  "title" : "DiagramSceneRenderer",
+  "type" : "topic",
+  "url" : "\/documentation\/diagramming\/diagramscenerenderer"
+},
+"doc://Diagramming/documentation/Diagramming/DiagramSceneRenderer/Context": {
+  "abstract" : [
+
+  ],
+  "fragments" : [
+    {
+      "kind" : "keyword",
+      "text" : "associatedtype"
+    },
+    {
+      "kind" : "text",
+      "text" : " "
+    },
+    {
+      "kind" : "identifier",
+      "text" : "Context"
+    },
+    {
+      "kind" : "text",
+      "text" : " : "
+    },
+    {
+      "kind" : "typeIdentifier",
+      "preciseIdentifier" : "s:11Diagramming24RenderingContextProtocolP",
+      "text" : "RenderingContextProtocol"
+    }
+  ],
+  "identifier" : "doc:\/\/Diagramming\/documentation\/Diagramming\/DiagramSceneRenderer\/Context",
+  "kind" : "symbol",
+  "required" : true,
+  "role" : "symbol",
+  "title" : "Context",
+  "type" : "topic",
+  "url" : "\/documentation\/diagramming\/diagramscenerenderer\/context"
+},
+"doc://Diagramming/documentation/Diagramming/RenderingContextProtocol": {
+  "abstract" : [
+
+  ],
+  "fragments" : [
+    {
+      "kind" : "keyword",
+      "text" : "protocol"
+    },
+    {
+      "kind" : "text",
+      "text" : " "
+    },
+    {
+      "kind" : "identifier",
+      "text" : "RenderingContextProtocol"
+    }
+  ],
+  "identifier" : "doc:\/\/Diagramming\/documentation\/Diagramming\/RenderingContextProtocol",
+  "kind" : "symbol",
+  "navigatorTitle" : [
+    {
+      "kind" : "identifier",
+      "text" : "RenderingContextProtocol"
+    }
+  ],
+  "role" : "symbol",
+  "title" : "RenderingContextProtocol",
+  "type" : "topic",
+  "url" : "\/documentation\/diagramming\/renderingcontextprotocol"
+}
+}
+}

@@ -1,0 +1,821 @@
+{
+  "hierarchy" : {
+    "paths" : [
+      [
+        "doc:\/\/Diagramming\/documentation\/Diagramming"
+      ]
+    ]
+  },
+  "identifier" : {
+    "interfaceLanguage" : "swift",
+    "url" : "doc:\/\/Diagramming\/documentation\/Diagramming\/SVGGeometryElement"
+  },
+  "kind" : "symbol",
+  "metadata" : {
+    "externalID" : "s:11Diagramming18SVGGeometryElementC",
+    "fragments" : [
+      {
+        "kind" : "keyword",
+        "text" : "class"
+      },
+      {
+        "kind" : "text",
+        "text" : " "
+      },
+      {
+        "kind" : "identifier",
+        "text" : "SVGGeometryElement"
+      }
+    ],
+    "modules" : [
+      {
+        "name" : "Diagramming"
+      }
+    ],
+    "navigatorTitle" : [
+      {
+        "kind" : "identifier",
+        "text" : "SVGGeometryElement"
+      }
+    ],
+    "role" : "symbol",
+    "roleHeading" : "Class",
+    "symbolKind" : "class",
+    "title" : "SVGGeometryElement"
+  },
+  "primaryContentSections" : [
+    {
+      "declarations" : [
+        {
+          "languages" : [
+            "swift"
+          ],
+          "platforms" : [
+            "macOS"
+          ],
+          "tokens" : [
+            {
+              "kind" : "keyword",
+              "text" : "class"
+            },
+            {
+              "kind" : "text",
+              "text" : " "
+            },
+            {
+              "kind" : "identifier",
+              "text" : "SVGGeometryElement"
+            }
+          ]
+        }
+      ],
+      "kind" : "declarations"
+    }
+  ],
+  "relationshipsSections" : [
+    {
+      "identifiers" : [
+        "doc:\/\/Diagramming\/documentation\/Diagramming\/SVGGraphicElement"
+      ],
+      "kind" : "relationships",
+      "title" : "Inherits From",
+      "type" : "inheritsFrom"
+    },
+    {
+      "identifiers" : [
+        "doc:\/\/Diagramming\/documentation\/Diagramming\/SVGCircle",
+        "doc:\/\/Diagramming\/documentation\/Diagramming\/SVGEllipse",
+        "doc:\/\/Diagramming\/documentation\/Diagramming\/SVGLine",
+        "doc:\/\/Diagramming\/documentation\/Diagramming\/SVGPath",
+        "doc:\/\/Diagramming\/documentation\/Diagramming\/SVGPolygon",
+        "doc:\/\/Diagramming\/documentation\/Diagramming\/SVGPolyline",
+        "doc:\/\/Diagramming\/documentation\/Diagramming\/SVGRectangle"
+      ],
+      "kind" : "relationships",
+      "title" : "Inherited By",
+      "type" : "inheritedBy"
+    }
+  ],
+  "schemaVersion" : {
+    "major" : 0,
+    "minor" : 3,
+    "patch" : 0
+  },
+  "sections" : [
+
+  ],
+  "topicSections" : [
+    {
+      "anchor" : "Initializers",
+      "generated" : true,
+      "identifiers" : [
+        "doc:\/\/Diagramming\/documentation\/Diagramming\/SVGGeometryElement\/init(parent:attributes:)"
+      ],
+      "title" : "Initializers"
+    },
+    {
+      "anchor" : "Instance-Properties",
+      "generated" : true,
+      "identifiers" : [
+        "doc:\/\/Diagramming\/documentation\/Diagramming\/SVGGeometryElement\/elementName",
+        "doc:\/\/Diagramming\/documentation\/Diagramming\/SVGGeometryElement\/fill",
+        "doc:\/\/Diagramming\/documentation\/Diagramming\/SVGGeometryElement\/stroke",
+        "doc:\/\/Diagramming\/documentation\/Diagramming\/SVGGeometryElement\/strokeLineCap",
+        "doc:\/\/Diagramming\/documentation\/Diagramming\/SVGGeometryElement\/strokeLineJoin",
+        "doc:\/\/Diagramming\/documentation\/Diagramming\/SVGGeometryElement\/strokeWidth"
+      ],
+      "title" : "Instance Properties"
+    },
+    {
+      "anchor" : "Instance-Methods",
+      "generated" : true,
+      "identifiers" : [
+        "doc:\/\/Diagramming\/documentation\/Diagramming\/SVGGeometryElement\/setStyle(fill:stroke:strokeWidth:)"
+      ],
+      "title" : "Instance Methods"
+    }
+  ],
+  "variants" : [
+    {
+      "paths" : [
+        "\/documentation\/diagramming\/svggeometryelement"
+      ],
+      "traits" : [
+        {
+          "interfaceLanguage" : "swift"
+        }
+      ]
+    }
+  ]
+, 
+"references": {
+"doc://Diagramming/documentation/Diagramming": {
+  "abstract" : [
+    {
+      "text" : "Diagramming is an OpenPoiesis project package for representing and composing diagrams from design",
+      "type" : "text"
+    },
+    {
+      "text" : " ",
+      "type" : "text"
+    },
+    {
+      "text" : "objects.",
+      "type" : "text"
+    }
+  ],
+  "identifier" : "doc:\/\/Diagramming\/documentation\/Diagramming",
+  "kind" : "symbol",
+  "role" : "collection",
+  "title" : "Diagramming",
+  "type" : "topic",
+  "url" : "\/documentation\/diagramming"
+},
+"doc://Diagramming/documentation/Diagramming/SVGCircle": {
+  "abstract" : [
+
+  ],
+  "fragments" : [
+    {
+      "kind" : "keyword",
+      "text" : "class"
+    },
+    {
+      "kind" : "text",
+      "text" : " "
+    },
+    {
+      "kind" : "identifier",
+      "text" : "SVGCircle"
+    }
+  ],
+  "identifier" : "doc:\/\/Diagramming\/documentation\/Diagramming\/SVGCircle",
+  "kind" : "symbol",
+  "navigatorTitle" : [
+    {
+      "kind" : "identifier",
+      "text" : "SVGCircle"
+    }
+  ],
+  "role" : "symbol",
+  "title" : "SVGCircle",
+  "type" : "topic",
+  "url" : "\/documentation\/diagramming\/svgcircle"
+},
+"doc://Diagramming/documentation/Diagramming/SVGEllipse": {
+  "abstract" : [
+
+  ],
+  "fragments" : [
+    {
+      "kind" : "keyword",
+      "text" : "class"
+    },
+    {
+      "kind" : "text",
+      "text" : " "
+    },
+    {
+      "kind" : "identifier",
+      "text" : "SVGEllipse"
+    }
+  ],
+  "identifier" : "doc:\/\/Diagramming\/documentation\/Diagramming\/SVGEllipse",
+  "kind" : "symbol",
+  "navigatorTitle" : [
+    {
+      "kind" : "identifier",
+      "text" : "SVGEllipse"
+    }
+  ],
+  "role" : "symbol",
+  "title" : "SVGEllipse",
+  "type" : "topic",
+  "url" : "\/documentation\/diagramming\/svgellipse"
+},
+"doc://Diagramming/documentation/Diagramming/SVGGeometryElement": {
+  "abstract" : [
+
+  ],
+  "fragments" : [
+    {
+      "kind" : "keyword",
+      "text" : "class"
+    },
+    {
+      "kind" : "text",
+      "text" : " "
+    },
+    {
+      "kind" : "identifier",
+      "text" : "SVGGeometryElement"
+    }
+  ],
+  "identifier" : "doc:\/\/Diagramming\/documentation\/Diagramming\/SVGGeometryElement",
+  "kind" : "symbol",
+  "navigatorTitle" : [
+    {
+      "kind" : "identifier",
+      "text" : "SVGGeometryElement"
+    }
+  ],
+  "role" : "symbol",
+  "title" : "SVGGeometryElement",
+  "type" : "topic",
+  "url" : "\/documentation\/diagramming\/svggeometryelement"
+},
+"doc://Diagramming/documentation/Diagramming/SVGGeometryElement/elementName": {
+  "abstract" : [
+
+  ],
+  "fragments" : [
+    {
+      "kind" : "keyword",
+      "text" : "var"
+    },
+    {
+      "kind" : "text",
+      "text" : " "
+    },
+    {
+      "kind" : "identifier",
+      "text" : "elementName"
+    },
+    {
+      "kind" : "text",
+      "text" : ": "
+    },
+    {
+      "kind" : "typeIdentifier",
+      "preciseIdentifier" : "s:SS",
+      "text" : "String"
+    }
+  ],
+  "identifier" : "doc:\/\/Diagramming\/documentation\/Diagramming\/SVGGeometryElement\/elementName",
+  "kind" : "symbol",
+  "role" : "symbol",
+  "title" : "elementName",
+  "type" : "topic",
+  "url" : "\/documentation\/diagramming\/svggeometryelement\/elementname"
+},
+"doc://Diagramming/documentation/Diagramming/SVGGeometryElement/fill": {
+  "abstract" : [
+
+  ],
+  "fragments" : [
+    {
+      "kind" : "keyword",
+      "text" : "var"
+    },
+    {
+      "kind" : "text",
+      "text" : " "
+    },
+    {
+      "kind" : "identifier",
+      "text" : "fill"
+    },
+    {
+      "kind" : "text",
+      "text" : ": "
+    },
+    {
+      "kind" : "typeIdentifier",
+      "preciseIdentifier" : "s:SS",
+      "text" : "String"
+    },
+    {
+      "kind" : "text",
+      "text" : "?"
+    }
+  ],
+  "identifier" : "doc:\/\/Diagramming\/documentation\/Diagramming\/SVGGeometryElement\/fill",
+  "kind" : "symbol",
+  "role" : "symbol",
+  "title" : "fill",
+  "type" : "topic",
+  "url" : "\/documentation\/diagramming\/svggeometryelement\/fill"
+},
+"doc://Diagramming/documentation/Diagramming/SVGGeometryElement/init(parent:attributes:)": {
+  "abstract" : [
+
+  ],
+  "fragments" : [
+    {
+      "kind" : "identifier",
+      "text" : "init"
+    },
+    {
+      "kind" : "text",
+      "text" : "("
+    },
+    {
+      "kind" : "externalParam",
+      "text" : "parent"
+    },
+    {
+      "kind" : "text",
+      "text" : ": "
+    },
+    {
+      "kind" : "typeIdentifier",
+      "preciseIdentifier" : "s:11Diagramming10SVGElementC",
+      "text" : "SVGElement"
+    },
+    {
+      "kind" : "text",
+      "text" : "?, "
+    },
+    {
+      "kind" : "externalParam",
+      "text" : "attributes"
+    },
+    {
+      "kind" : "text",
+      "text" : ": ["
+    },
+    {
+      "kind" : "typeIdentifier",
+      "preciseIdentifier" : "s:SS",
+      "text" : "String"
+    },
+    {
+      "kind" : "text",
+      "text" : " : "
+    },
+    {
+      "kind" : "typeIdentifier",
+      "preciseIdentifier" : "s:SS",
+      "text" : "String"
+    },
+    {
+      "kind" : "text",
+      "text" : "])"
+    }
+  ],
+  "identifier" : "doc:\/\/Diagramming\/documentation\/Diagramming\/SVGGeometryElement\/init(parent:attributes:)",
+  "kind" : "symbol",
+  "role" : "symbol",
+  "title" : "init(parent:attributes:)",
+  "type" : "topic",
+  "url" : "\/documentation\/diagramming\/svggeometryelement\/init(parent:attributes:)"
+},
+"doc://Diagramming/documentation/Diagramming/SVGGeometryElement/setStyle(fill:stroke:strokeWidth:)": {
+  "abstract" : [
+
+  ],
+  "fragments" : [
+    {
+      "kind" : "keyword",
+      "text" : "func"
+    },
+    {
+      "kind" : "text",
+      "text" : " "
+    },
+    {
+      "kind" : "identifier",
+      "text" : "setStyle"
+    },
+    {
+      "kind" : "text",
+      "text" : "("
+    },
+    {
+      "kind" : "externalParam",
+      "text" : "fill"
+    },
+    {
+      "kind" : "text",
+      "text" : ": "
+    },
+    {
+      "kind" : "typeIdentifier",
+      "preciseIdentifier" : "s:SS",
+      "text" : "String"
+    },
+    {
+      "kind" : "text",
+      "text" : "?, "
+    },
+    {
+      "kind" : "externalParam",
+      "text" : "stroke"
+    },
+    {
+      "kind" : "text",
+      "text" : ": "
+    },
+    {
+      "kind" : "typeIdentifier",
+      "preciseIdentifier" : "s:SS",
+      "text" : "String"
+    },
+    {
+      "kind" : "text",
+      "text" : "?, "
+    },
+    {
+      "kind" : "externalParam",
+      "text" : "strokeWidth"
+    },
+    {
+      "kind" : "text",
+      "text" : ": "
+    },
+    {
+      "kind" : "typeIdentifier",
+      "preciseIdentifier" : "s:Sd",
+      "text" : "Double"
+    },
+    {
+      "kind" : "text",
+      "text" : "?)"
+    }
+  ],
+  "identifier" : "doc:\/\/Diagramming\/documentation\/Diagramming\/SVGGeometryElement\/setStyle(fill:stroke:strokeWidth:)",
+  "kind" : "symbol",
+  "role" : "symbol",
+  "title" : "setStyle(fill:stroke:strokeWidth:)",
+  "type" : "topic",
+  "url" : "\/documentation\/diagramming\/svggeometryelement\/setstyle(fill:stroke:strokewidth:)"
+},
+"doc://Diagramming/documentation/Diagramming/SVGGeometryElement/stroke": {
+  "abstract" : [
+
+  ],
+  "fragments" : [
+    {
+      "kind" : "keyword",
+      "text" : "var"
+    },
+    {
+      "kind" : "text",
+      "text" : " "
+    },
+    {
+      "kind" : "identifier",
+      "text" : "stroke"
+    },
+    {
+      "kind" : "text",
+      "text" : ": "
+    },
+    {
+      "kind" : "typeIdentifier",
+      "preciseIdentifier" : "s:SS",
+      "text" : "String"
+    },
+    {
+      "kind" : "text",
+      "text" : "?"
+    }
+  ],
+  "identifier" : "doc:\/\/Diagramming\/documentation\/Diagramming\/SVGGeometryElement\/stroke",
+  "kind" : "symbol",
+  "role" : "symbol",
+  "title" : "stroke",
+  "type" : "topic",
+  "url" : "\/documentation\/diagramming\/svggeometryelement\/stroke"
+},
+"doc://Diagramming/documentation/Diagramming/SVGGeometryElement/strokeLineCap": {
+  "abstract" : [
+
+  ],
+  "fragments" : [
+    {
+      "kind" : "keyword",
+      "text" : "var"
+    },
+    {
+      "kind" : "text",
+      "text" : " "
+    },
+    {
+      "kind" : "identifier",
+      "text" : "strokeLineCap"
+    },
+    {
+      "kind" : "text",
+      "text" : ": "
+    },
+    {
+      "kind" : "typeIdentifier",
+      "preciseIdentifier" : "s:SS",
+      "text" : "String"
+    },
+    {
+      "kind" : "text",
+      "text" : "?"
+    }
+  ],
+  "identifier" : "doc:\/\/Diagramming\/documentation\/Diagramming\/SVGGeometryElement\/strokeLineCap",
+  "kind" : "symbol",
+  "role" : "symbol",
+  "title" : "strokeLineCap",
+  "type" : "topic",
+  "url" : "\/documentation\/diagramming\/svggeometryelement\/strokelinecap"
+},
+"doc://Diagramming/documentation/Diagramming/SVGGeometryElement/strokeLineJoin": {
+  "abstract" : [
+
+  ],
+  "fragments" : [
+    {
+      "kind" : "keyword",
+      "text" : "var"
+    },
+    {
+      "kind" : "text",
+      "text" : " "
+    },
+    {
+      "kind" : "identifier",
+      "text" : "strokeLineJoin"
+    },
+    {
+      "kind" : "text",
+      "text" : ": "
+    },
+    {
+      "kind" : "typeIdentifier",
+      "preciseIdentifier" : "s:SS",
+      "text" : "String"
+    },
+    {
+      "kind" : "text",
+      "text" : "?"
+    }
+  ],
+  "identifier" : "doc:\/\/Diagramming\/documentation\/Diagramming\/SVGGeometryElement\/strokeLineJoin",
+  "kind" : "symbol",
+  "role" : "symbol",
+  "title" : "strokeLineJoin",
+  "type" : "topic",
+  "url" : "\/documentation\/diagramming\/svggeometryelement\/strokelinejoin"
+},
+"doc://Diagramming/documentation/Diagramming/SVGGeometryElement/strokeWidth": {
+  "abstract" : [
+
+  ],
+  "fragments" : [
+    {
+      "kind" : "keyword",
+      "text" : "var"
+    },
+    {
+      "kind" : "text",
+      "text" : " "
+    },
+    {
+      "kind" : "identifier",
+      "text" : "strokeWidth"
+    },
+    {
+      "kind" : "text",
+      "text" : ": "
+    },
+    {
+      "kind" : "typeIdentifier",
+      "preciseIdentifier" : "s:Sd",
+      "text" : "Double"
+    }
+  ],
+  "identifier" : "doc:\/\/Diagramming\/documentation\/Diagramming\/SVGGeometryElement\/strokeWidth",
+  "kind" : "symbol",
+  "role" : "symbol",
+  "title" : "strokeWidth",
+  "type" : "topic",
+  "url" : "\/documentation\/diagramming\/svggeometryelement\/strokewidth"
+},
+"doc://Diagramming/documentation/Diagramming/SVGGraphicElement": {
+  "abstract" : [
+    {
+      "text" : "Abstract base class for SVG elements that can have transforms (groups, shapes, use elements)",
+      "type" : "text"
+    }
+  ],
+  "fragments" : [
+    {
+      "kind" : "keyword",
+      "text" : "class"
+    },
+    {
+      "kind" : "text",
+      "text" : " "
+    },
+    {
+      "kind" : "identifier",
+      "text" : "SVGGraphicElement"
+    }
+  ],
+  "identifier" : "doc:\/\/Diagramming\/documentation\/Diagramming\/SVGGraphicElement",
+  "kind" : "symbol",
+  "navigatorTitle" : [
+    {
+      "kind" : "identifier",
+      "text" : "SVGGraphicElement"
+    }
+  ],
+  "role" : "symbol",
+  "title" : "SVGGraphicElement",
+  "type" : "topic",
+  "url" : "\/documentation\/diagramming\/svggraphicelement"
+},
+"doc://Diagramming/documentation/Diagramming/SVGLine": {
+  "abstract" : [
+
+  ],
+  "fragments" : [
+    {
+      "kind" : "keyword",
+      "text" : "class"
+    },
+    {
+      "kind" : "text",
+      "text" : " "
+    },
+    {
+      "kind" : "identifier",
+      "text" : "SVGLine"
+    }
+  ],
+  "identifier" : "doc:\/\/Diagramming\/documentation\/Diagramming\/SVGLine",
+  "kind" : "symbol",
+  "navigatorTitle" : [
+    {
+      "kind" : "identifier",
+      "text" : "SVGLine"
+    }
+  ],
+  "role" : "symbol",
+  "title" : "SVGLine",
+  "type" : "topic",
+  "url" : "\/documentation\/diagramming\/svgline"
+},
+"doc://Diagramming/documentation/Diagramming/SVGPath": {
+  "abstract" : [
+
+  ],
+  "fragments" : [
+    {
+      "kind" : "keyword",
+      "text" : "class"
+    },
+    {
+      "kind" : "text",
+      "text" : " "
+    },
+    {
+      "kind" : "identifier",
+      "text" : "SVGPath"
+    }
+  ],
+  "identifier" : "doc:\/\/Diagramming\/documentation\/Diagramming\/SVGPath",
+  "kind" : "symbol",
+  "navigatorTitle" : [
+    {
+      "kind" : "identifier",
+      "text" : "SVGPath"
+    }
+  ],
+  "role" : "symbol",
+  "title" : "SVGPath",
+  "type" : "topic",
+  "url" : "\/documentation\/diagramming\/svgpath"
+},
+"doc://Diagramming/documentation/Diagramming/SVGPolygon": {
+  "abstract" : [
+
+  ],
+  "fragments" : [
+    {
+      "kind" : "keyword",
+      "text" : "class"
+    },
+    {
+      "kind" : "text",
+      "text" : " "
+    },
+    {
+      "kind" : "identifier",
+      "text" : "SVGPolygon"
+    }
+  ],
+  "identifier" : "doc:\/\/Diagramming\/documentation\/Diagramming\/SVGPolygon",
+  "kind" : "symbol",
+  "navigatorTitle" : [
+    {
+      "kind" : "identifier",
+      "text" : "SVGPolygon"
+    }
+  ],
+  "role" : "symbol",
+  "title" : "SVGPolygon",
+  "type" : "topic",
+  "url" : "\/documentation\/diagramming\/svgpolygon"
+},
+"doc://Diagramming/documentation/Diagramming/SVGPolyline": {
+  "abstract" : [
+
+  ],
+  "fragments" : [
+    {
+      "kind" : "keyword",
+      "text" : "class"
+    },
+    {
+      "kind" : "text",
+      "text" : " "
+    },
+    {
+      "kind" : "identifier",
+      "text" : "SVGPolyline"
+    }
+  ],
+  "identifier" : "doc:\/\/Diagramming\/documentation\/Diagramming\/SVGPolyline",
+  "kind" : "symbol",
+  "navigatorTitle" : [
+    {
+      "kind" : "identifier",
+      "text" : "SVGPolyline"
+    }
+  ],
+  "role" : "symbol",
+  "title" : "SVGPolyline",
+  "type" : "topic",
+  "url" : "\/documentation\/diagramming\/svgpolyline"
+},
+"doc://Diagramming/documentation/Diagramming/SVGRectangle": {
+  "abstract" : [
+
+  ],
+  "fragments" : [
+    {
+      "kind" : "keyword",
+      "text" : "class"
+    },
+    {
+      "kind" : "text",
+      "text" : " "
+    },
+    {
+      "kind" : "identifier",
+      "text" : "SVGRectangle"
+    }
+  ],
+  "identifier" : "doc:\/\/Diagramming\/documentation\/Diagramming\/SVGRectangle",
+  "kind" : "symbol",
+  "navigatorTitle" : [
+    {
+      "kind" : "identifier",
+      "text" : "SVGRectangle"
+    }
+  ],
+  "role" : "symbol",
+  "title" : "SVGRectangle",
+  "type" : "topic",
+  "url" : "\/documentation\/diagramming\/svgrectangle"
+}
+}
+}

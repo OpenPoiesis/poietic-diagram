@@ -1,0 +1,763 @@
+{
+  "abstract" : [
+    {
+      "text" : "Primary geometry of a connector, regardless of connector glyph.",
+      "type" : "text"
+    }
+  ],
+  "hierarchy" : {
+    "paths" : [
+      [
+        "doc:\/\/Diagramming\/documentation\/Diagramming"
+      ]
+    ]
+  },
+  "identifier" : {
+    "interfaceLanguage" : "swift",
+    "url" : "doc:\/\/Diagramming\/documentation\/Diagramming\/ConnectorGeometry"
+  },
+  "kind" : "symbol",
+  "metadata" : {
+    "externalID" : "s:11Diagramming17ConnectorGeometryV",
+    "fragments" : [
+      {
+        "kind" : "keyword",
+        "text" : "struct"
+      },
+      {
+        "kind" : "text",
+        "text" : " "
+      },
+      {
+        "kind" : "identifier",
+        "text" : "ConnectorGeometry"
+      }
+    ],
+    "modules" : [
+      {
+        "name" : "Diagramming"
+      }
+    ],
+    "navigatorTitle" : [
+      {
+        "kind" : "identifier",
+        "text" : "ConnectorGeometry"
+      }
+    ],
+    "role" : "symbol",
+    "roleHeading" : "Structure",
+    "symbolKind" : "struct",
+    "title" : "ConnectorGeometry"
+  },
+  "primaryContentSections" : [
+    {
+      "declarations" : [
+        {
+          "languages" : [
+            "swift"
+          ],
+          "platforms" : [
+            "macOS"
+          ],
+          "tokens" : [
+            {
+              "kind" : "keyword",
+              "text" : "struct"
+            },
+            {
+              "kind" : "text",
+              "text" : " "
+            },
+            {
+              "kind" : "identifier",
+              "text" : "ConnectorGeometry"
+            }
+          ]
+        }
+      ],
+      "kind" : "declarations"
+    },
+    {
+      "content" : [
+        {
+          "anchor" : "overview",
+          "level" : 2,
+          "text" : "Overview",
+          "type" : "heading"
+        },
+        {
+          "inlineContent" : [
+            {
+              "text" : "Attached to entities with ",
+              "type" : "text"
+            },
+            {
+              "identifier" : "doc:\/\/Diagramming\/documentation\/Diagramming\/ConnectorSceneNode",
+              "isActive" : true,
+              "type" : "reference"
+            },
+            {
+              "text" : " by ",
+              "type" : "text"
+            },
+            {
+              "identifier" : "doc:\/\/Diagramming\/documentation\/Diagramming\/DiagramSceneComposer",
+              "isActive" : true,
+              "type" : "reference"
+            },
+            {
+              "text" : ".",
+              "type" : "text"
+            }
+          ],
+          "type" : "paragraph"
+        },
+        {
+          "content" : [
+            {
+              "inlineContent" : [
+                {
+                  "text" : "",
+                  "type" : "text"
+                },
+                {
+                  "identifier" : "doc:\/\/Diagramming\/documentation\/Diagramming\/ConnectorWire",
+                  "isActive" : true,
+                  "type" : "reference"
+                },
+                {
+                  "text" : " – used for hit testing and outlines,",
+                  "type" : "text"
+                },
+                {
+                  "text" : " ",
+                  "type" : "text"
+                },
+                {
+                  "identifier" : "doc:\/\/Diagramming\/documentation\/Diagramming\/ConnectorStroke",
+                  "isActive" : true,
+                  "type" : "reference"
+                },
+                {
+                  "text" : " – visual representation of a connector.",
+                  "type" : "text"
+                }
+              ],
+              "type" : "paragraph"
+            }
+          ],
+          "name" : "See Also",
+          "style" : "note",
+          "type" : "aside"
+        }
+      ],
+      "kind" : "content"
+    }
+  ],
+  "relationshipsSections" : [
+    {
+      "identifiers" : [
+        "doc:\/\/Diagramming\/11PoieticCore9ComponentP"
+      ],
+      "kind" : "relationships",
+      "title" : "Conforms To",
+      "type" : "conformsTo"
+    }
+  ],
+  "schemaVersion" : {
+    "major" : 0,
+    "minor" : 3,
+    "patch" : 0
+  },
+  "sections" : [
+
+  ],
+  "topicSections" : [
+    {
+      "anchor" : "Initializers",
+      "generated" : true,
+      "identifiers" : [
+        "doc:\/\/Diagramming\/documentation\/Diagramming\/ConnectorGeometry\/init(origin:originDirection:target:targetDirection:midpoints:)"
+      ],
+      "title" : "Initializers"
+    },
+    {
+      "anchor" : "Instance-Properties",
+      "generated" : true,
+      "identifiers" : [
+        "doc:\/\/Diagramming\/documentation\/Diagramming\/ConnectorGeometry\/midpoints",
+        "doc:\/\/Diagramming\/documentation\/Diagramming\/ConnectorGeometry\/originDirection",
+        "doc:\/\/Diagramming\/documentation\/Diagramming\/ConnectorGeometry\/originPoint",
+        "doc:\/\/Diagramming\/documentation\/Diagramming\/ConnectorGeometry\/targetDirection",
+        "doc:\/\/Diagramming\/documentation\/Diagramming\/ConnectorGeometry\/targetPoint"
+      ],
+      "title" : "Instance Properties"
+    }
+  ],
+  "variants" : [
+    {
+      "paths" : [
+        "\/documentation\/diagramming\/connectorgeometry"
+      ],
+      "traits" : [
+        {
+          "interfaceLanguage" : "swift"
+        }
+      ]
+    }
+  ]
+, 
+"references": {
+"doc://Diagramming/11PoieticCore9ComponentP": {
+  "identifier" : "doc:\/\/Diagramming\/11PoieticCore9ComponentP",
+  "title" : "PoieticCore.Component",
+  "type" : "unresolvable"
+},
+"doc://Diagramming/documentation/Diagramming": {
+  "abstract" : [
+    {
+      "text" : "Diagramming is an OpenPoiesis project package for representing and composing diagrams from design",
+      "type" : "text"
+    },
+    {
+      "text" : " ",
+      "type" : "text"
+    },
+    {
+      "text" : "objects.",
+      "type" : "text"
+    }
+  ],
+  "identifier" : "doc:\/\/Diagramming\/documentation\/Diagramming",
+  "kind" : "symbol",
+  "role" : "collection",
+  "title" : "Diagramming",
+  "type" : "topic",
+  "url" : "\/documentation\/diagramming"
+},
+"doc://Diagramming/documentation/Diagramming/ConnectorGeometry": {
+  "abstract" : [
+    {
+      "text" : "Primary geometry of a connector, regardless of connector glyph.",
+      "type" : "text"
+    }
+  ],
+  "fragments" : [
+    {
+      "kind" : "keyword",
+      "text" : "struct"
+    },
+    {
+      "kind" : "text",
+      "text" : " "
+    },
+    {
+      "kind" : "identifier",
+      "text" : "ConnectorGeometry"
+    }
+  ],
+  "identifier" : "doc:\/\/Diagramming\/documentation\/Diagramming\/ConnectorGeometry",
+  "kind" : "symbol",
+  "navigatorTitle" : [
+    {
+      "kind" : "identifier",
+      "text" : "ConnectorGeometry"
+    }
+  ],
+  "role" : "symbol",
+  "title" : "ConnectorGeometry",
+  "type" : "topic",
+  "url" : "\/documentation\/diagramming\/connectorgeometry"
+},
+"doc://Diagramming/documentation/Diagramming/ConnectorGeometry/init(origin:originDirection:target:targetDirection:midpoints:)": {
+  "abstract" : [
+
+  ],
+  "fragments" : [
+    {
+      "kind" : "identifier",
+      "text" : "init"
+    },
+    {
+      "kind" : "text",
+      "text" : "("
+    },
+    {
+      "kind" : "externalParam",
+      "text" : "origin"
+    },
+    {
+      "kind" : "text",
+      "text" : ": "
+    },
+    {
+      "kind" : "typeIdentifier",
+      "preciseIdentifier" : "s:11Diagramming8Vector2Da",
+      "text" : "Vector2D"
+    },
+    {
+      "kind" : "text",
+      "text" : ", "
+    },
+    {
+      "kind" : "externalParam",
+      "text" : "originDirection"
+    },
+    {
+      "kind" : "text",
+      "text" : ": "
+    },
+    {
+      "kind" : "typeIdentifier",
+      "preciseIdentifier" : "s:11Diagramming8Vector2Da",
+      "text" : "Vector2D"
+    },
+    {
+      "kind" : "text",
+      "text" : ", "
+    },
+    {
+      "kind" : "externalParam",
+      "text" : "target"
+    },
+    {
+      "kind" : "text",
+      "text" : ": "
+    },
+    {
+      "kind" : "typeIdentifier",
+      "preciseIdentifier" : "s:11Diagramming8Vector2Da",
+      "text" : "Vector2D"
+    },
+    {
+      "kind" : "text",
+      "text" : ", "
+    },
+    {
+      "kind" : "externalParam",
+      "text" : "targetDirection"
+    },
+    {
+      "kind" : "text",
+      "text" : ": "
+    },
+    {
+      "kind" : "typeIdentifier",
+      "preciseIdentifier" : "s:11Diagramming8Vector2Da",
+      "text" : "Vector2D"
+    },
+    {
+      "kind" : "text",
+      "text" : ", "
+    },
+    {
+      "kind" : "externalParam",
+      "text" : "midpoints"
+    },
+    {
+      "kind" : "text",
+      "text" : ": ["
+    },
+    {
+      "kind" : "typeIdentifier",
+      "preciseIdentifier" : "s:11Diagramming8Vector2Da",
+      "text" : "Vector2D"
+    },
+    {
+      "kind" : "text",
+      "text" : "])"
+    }
+  ],
+  "identifier" : "doc:\/\/Diagramming\/documentation\/Diagramming\/ConnectorGeometry\/init(origin:originDirection:target:targetDirection:midpoints:)",
+  "kind" : "symbol",
+  "role" : "symbol",
+  "title" : "init(origin:originDirection:target:targetDirection:midpoints:)",
+  "type" : "topic",
+  "url" : "\/documentation\/diagramming\/connectorgeometry\/init(origin:origindirection:target:targetdirection:midpoints:)"
+},
+"doc://Diagramming/documentation/Diagramming/ConnectorGeometry/midpoints": {
+  "abstract" : [
+    {
+      "text" : "Midpoints used for body routing. The body is constructed from midpoints and ",
+      "type" : "text"
+    },
+    {
+      "identifier" : "doc:\/\/Diagramming\/documentation\/Diagramming\/LineType",
+      "isActive" : true,
+      "type" : "reference"
+    },
+    {
+      "text" : ".",
+      "type" : "text"
+    }
+  ],
+  "fragments" : [
+    {
+      "kind" : "keyword",
+      "text" : "let"
+    },
+    {
+      "kind" : "text",
+      "text" : " "
+    },
+    {
+      "kind" : "identifier",
+      "text" : "midpoints"
+    },
+    {
+      "kind" : "text",
+      "text" : ": ["
+    },
+    {
+      "kind" : "typeIdentifier",
+      "preciseIdentifier" : "s:11Diagramming8Vector2Da",
+      "text" : "Vector2D"
+    },
+    {
+      "kind" : "text",
+      "text" : "]"
+    }
+  ],
+  "identifier" : "doc:\/\/Diagramming\/documentation\/Diagramming\/ConnectorGeometry\/midpoints",
+  "kind" : "symbol",
+  "role" : "symbol",
+  "title" : "midpoints",
+  "type" : "topic",
+  "url" : "\/documentation\/diagramming\/connectorgeometry\/midpoints"
+},
+"doc://Diagramming/documentation/Diagramming/ConnectorGeometry/originDirection": {
+  "abstract" : [
+    {
+      "text" : "Direction of an arrowhead towards the origin point.",
+      "type" : "text"
+    }
+  ],
+  "fragments" : [
+    {
+      "kind" : "keyword",
+      "text" : "let"
+    },
+    {
+      "kind" : "text",
+      "text" : " "
+    },
+    {
+      "kind" : "identifier",
+      "text" : "originDirection"
+    },
+    {
+      "kind" : "text",
+      "text" : ": "
+    },
+    {
+      "kind" : "typeIdentifier",
+      "preciseIdentifier" : "s:11Diagramming8Vector2Da",
+      "text" : "Vector2D"
+    }
+  ],
+  "identifier" : "doc:\/\/Diagramming\/documentation\/Diagramming\/ConnectorGeometry\/originDirection",
+  "kind" : "symbol",
+  "role" : "symbol",
+  "title" : "originDirection",
+  "type" : "topic",
+  "url" : "\/documentation\/diagramming\/connectorgeometry\/origindirection"
+},
+"doc://Diagramming/documentation/Diagramming/ConnectorGeometry/originPoint": {
+  "abstract" : [
+    {
+      "text" : "Points of a wire representation of the connector.",
+      "type" : "text"
+    },
+    {
+      "text" : " ",
+      "type" : "text"
+    },
+    {
+      "text" : "Point of connector origin, typically a touch point with a collision shape of a block.",
+      "type" : "text"
+    }
+  ],
+  "fragments" : [
+    {
+      "kind" : "keyword",
+      "text" : "let"
+    },
+    {
+      "kind" : "text",
+      "text" : " "
+    },
+    {
+      "kind" : "identifier",
+      "text" : "originPoint"
+    },
+    {
+      "kind" : "text",
+      "text" : ": "
+    },
+    {
+      "kind" : "typeIdentifier",
+      "preciseIdentifier" : "s:11Diagramming8Vector2Da",
+      "text" : "Vector2D"
+    }
+  ],
+  "identifier" : "doc:\/\/Diagramming\/documentation\/Diagramming\/ConnectorGeometry\/originPoint",
+  "kind" : "symbol",
+  "role" : "symbol",
+  "title" : "originPoint",
+  "type" : "topic",
+  "url" : "\/documentation\/diagramming\/connectorgeometry\/originpoint"
+},
+"doc://Diagramming/documentation/Diagramming/ConnectorGeometry/targetDirection": {
+  "abstract" : [
+    {
+      "text" : "Direction of an arrowhead towards the target point.",
+      "type" : "text"
+    }
+  ],
+  "fragments" : [
+    {
+      "kind" : "keyword",
+      "text" : "let"
+    },
+    {
+      "kind" : "text",
+      "text" : " "
+    },
+    {
+      "kind" : "identifier",
+      "text" : "targetDirection"
+    },
+    {
+      "kind" : "text",
+      "text" : ": "
+    },
+    {
+      "kind" : "typeIdentifier",
+      "preciseIdentifier" : "s:11Diagramming8Vector2Da",
+      "text" : "Vector2D"
+    }
+  ],
+  "identifier" : "doc:\/\/Diagramming\/documentation\/Diagramming\/ConnectorGeometry\/targetDirection",
+  "kind" : "symbol",
+  "role" : "symbol",
+  "title" : "targetDirection",
+  "type" : "topic",
+  "url" : "\/documentation\/diagramming\/connectorgeometry\/targetdirection"
+},
+"doc://Diagramming/documentation/Diagramming/ConnectorGeometry/targetPoint": {
+  "abstract" : [
+    {
+      "text" : "Point of connector target, typically a touch point with a collision shape of a block.",
+      "type" : "text"
+    }
+  ],
+  "fragments" : [
+    {
+      "kind" : "keyword",
+      "text" : "let"
+    },
+    {
+      "kind" : "text",
+      "text" : " "
+    },
+    {
+      "kind" : "identifier",
+      "text" : "targetPoint"
+    },
+    {
+      "kind" : "text",
+      "text" : ": "
+    },
+    {
+      "kind" : "typeIdentifier",
+      "preciseIdentifier" : "s:11Diagramming8Vector2Da",
+      "text" : "Vector2D"
+    }
+  ],
+  "identifier" : "doc:\/\/Diagramming\/documentation\/Diagramming\/ConnectorGeometry\/targetPoint",
+  "kind" : "symbol",
+  "role" : "symbol",
+  "title" : "targetPoint",
+  "type" : "topic",
+  "url" : "\/documentation\/diagramming\/connectorgeometry\/targetpoint"
+},
+"doc://Diagramming/documentation/Diagramming/ConnectorSceneNode": {
+  "abstract" : [
+    {
+      "text" : "Primary component of a canvas node representing a connector.",
+      "type" : "text"
+    }
+  ],
+  "fragments" : [
+    {
+      "kind" : "keyword",
+      "text" : "struct"
+    },
+    {
+      "kind" : "text",
+      "text" : " "
+    },
+    {
+      "kind" : "identifier",
+      "text" : "ConnectorSceneNode"
+    }
+  ],
+  "identifier" : "doc:\/\/Diagramming\/documentation\/Diagramming\/ConnectorSceneNode",
+  "kind" : "symbol",
+  "navigatorTitle" : [
+    {
+      "kind" : "identifier",
+      "text" : "ConnectorSceneNode"
+    }
+  ],
+  "role" : "symbol",
+  "title" : "ConnectorSceneNode",
+  "type" : "topic",
+  "url" : "\/documentation\/diagramming\/connectorscenenode"
+},
+"doc://Diagramming/documentation/Diagramming/ConnectorStroke": {
+  "abstract" : [
+    {
+      "text" : "Visual representation of a connector.",
+      "type" : "text"
+    }
+  ],
+  "fragments" : [
+    {
+      "kind" : "keyword",
+      "text" : "struct"
+    },
+    {
+      "kind" : "text",
+      "text" : " "
+    },
+    {
+      "kind" : "identifier",
+      "text" : "ConnectorStroke"
+    }
+  ],
+  "identifier" : "doc:\/\/Diagramming\/documentation\/Diagramming\/ConnectorStroke",
+  "kind" : "symbol",
+  "navigatorTitle" : [
+    {
+      "kind" : "identifier",
+      "text" : "ConnectorStroke"
+    }
+  ],
+  "role" : "symbol",
+  "title" : "ConnectorStroke",
+  "type" : "topic",
+  "url" : "\/documentation\/diagramming\/connectorstroke"
+},
+"doc://Diagramming/documentation/Diagramming/ConnectorWire": {
+  "abstract" : [
+    {
+      "text" : "Points of a connector wire used for hit testing and for selection outline.",
+      "type" : "text"
+    },
+    {
+      "text" : " ",
+      "type" : "text"
+    },
+    {
+      "text" : "Typically a tessellated points of a connector curve.",
+      "type" : "text"
+    }
+  ],
+  "fragments" : [
+    {
+      "kind" : "keyword",
+      "text" : "struct"
+    },
+    {
+      "kind" : "text",
+      "text" : " "
+    },
+    {
+      "kind" : "identifier",
+      "text" : "ConnectorWire"
+    }
+  ],
+  "identifier" : "doc:\/\/Diagramming\/documentation\/Diagramming\/ConnectorWire",
+  "kind" : "symbol",
+  "navigatorTitle" : [
+    {
+      "kind" : "identifier",
+      "text" : "ConnectorWire"
+    }
+  ],
+  "role" : "symbol",
+  "title" : "ConnectorWire",
+  "type" : "topic",
+  "url" : "\/documentation\/diagramming\/connectorwire"
+},
+"doc://Diagramming/documentation/Diagramming/DiagramSceneComposer": {
+  "abstract" : [
+    {
+      "text" : "Object responsible for creating and synchronising a diagram scene with model.",
+      "type" : "text"
+    }
+  ],
+  "fragments" : [
+    {
+      "kind" : "keyword",
+      "text" : "class"
+    },
+    {
+      "kind" : "text",
+      "text" : " "
+    },
+    {
+      "kind" : "identifier",
+      "text" : "DiagramSceneComposer"
+    }
+  ],
+  "identifier" : "doc:\/\/Diagramming\/documentation\/Diagramming\/DiagramSceneComposer",
+  "kind" : "symbol",
+  "navigatorTitle" : [
+    {
+      "kind" : "identifier",
+      "text" : "DiagramSceneComposer"
+    }
+  ],
+  "role" : "symbol",
+  "title" : "DiagramSceneComposer",
+  "type" : "topic",
+  "url" : "\/documentation\/diagramming\/diagramscenecomposer"
+},
+"doc://Diagramming/documentation/Diagramming/LineType": {
+  "abstract" : [
+    {
+      "text" : "Defines different line rendering styles for connectors.",
+      "type" : "text"
+    }
+  ],
+  "fragments" : [
+    {
+      "kind" : "keyword",
+      "text" : "enum"
+    },
+    {
+      "kind" : "text",
+      "text" : " "
+    },
+    {
+      "kind" : "identifier",
+      "text" : "LineType"
+    }
+  ],
+  "identifier" : "doc:\/\/Diagramming\/documentation\/Diagramming\/LineType",
+  "kind" : "symbol",
+  "navigatorTitle" : [
+    {
+      "kind" : "identifier",
+      "text" : "LineType"
+    }
+  ],
+  "role" : "symbol",
+  "title" : "LineType",
+  "type" : "topic",
+  "url" : "\/documentation\/diagramming\/linetype"
+}
+}
+}

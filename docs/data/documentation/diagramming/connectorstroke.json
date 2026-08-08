@@ -1,0 +1,612 @@
+{
+  "abstract" : [
+    {
+      "text" : "Visual representation of a connector.",
+      "type" : "text"
+    }
+  ],
+  "hierarchy" : {
+    "paths" : [
+      [
+        "doc:\/\/Diagramming\/documentation\/Diagramming"
+      ]
+    ]
+  },
+  "identifier" : {
+    "interfaceLanguage" : "swift",
+    "url" : "doc:\/\/Diagramming\/documentation\/Diagramming\/ConnectorStroke"
+  },
+  "kind" : "symbol",
+  "metadata" : {
+    "externalID" : "s:11Diagramming15ConnectorStrokeV",
+    "fragments" : [
+      {
+        "kind" : "keyword",
+        "text" : "struct"
+      },
+      {
+        "kind" : "text",
+        "text" : " "
+      },
+      {
+        "kind" : "identifier",
+        "text" : "ConnectorStroke"
+      }
+    ],
+    "modules" : [
+      {
+        "name" : "Diagramming"
+      }
+    ],
+    "navigatorTitle" : [
+      {
+        "kind" : "identifier",
+        "text" : "ConnectorStroke"
+      }
+    ],
+    "role" : "symbol",
+    "roleHeading" : "Structure",
+    "symbolKind" : "struct",
+    "title" : "ConnectorStroke"
+  },
+  "primaryContentSections" : [
+    {
+      "declarations" : [
+        {
+          "languages" : [
+            "swift"
+          ],
+          "platforms" : [
+            "macOS"
+          ],
+          "tokens" : [
+            {
+              "kind" : "keyword",
+              "text" : "struct"
+            },
+            {
+              "kind" : "text",
+              "text" : " "
+            },
+            {
+              "kind" : "identifier",
+              "text" : "ConnectorStroke"
+            }
+          ]
+        }
+      ],
+      "kind" : "declarations"
+    },
+    {
+      "content" : [
+        {
+          "anchor" : "overview",
+          "level" : 2,
+          "text" : "Overview",
+          "type" : "heading"
+        },
+        {
+          "inlineContent" : [
+            {
+              "text" : "Attached to entities with ",
+              "type" : "text"
+            },
+            {
+              "identifier" : "doc:\/\/Diagramming\/documentation\/Diagramming\/ConnectorSceneNode",
+              "isActive" : true,
+              "type" : "reference"
+            },
+            {
+              "text" : " by ",
+              "type" : "text"
+            },
+            {
+              "identifier" : "doc:\/\/Diagramming\/documentation\/Diagramming\/DiagramSceneComposer",
+              "isActive" : true,
+              "type" : "reference"
+            },
+            {
+              "text" : ".",
+              "type" : "text"
+            },
+            {
+              "text" : " ",
+              "type" : "text"
+            },
+            {
+              "text" : "Typically used by ",
+              "type" : "text"
+            },
+            {
+              "identifier" : "doc:\/\/Diagramming\/documentation\/Diagramming\/DiagramSceneRenderer",
+              "isActive" : true,
+              "type" : "reference"
+            },
+            {
+              "text" : ".",
+              "type" : "text"
+            }
+          ],
+          "type" : "paragraph"
+        },
+        {
+          "inlineContent" : [
+            {
+              "text" : "The connector stroke is created from ",
+              "type" : "text"
+            },
+            {
+              "identifier" : "doc:\/\/Diagramming\/documentation\/Diagramming\/ConnectorWire",
+              "isActive" : true,
+              "type" : "reference"
+            },
+            {
+              "text" : ", which describes basic connector",
+              "type" : "text"
+            },
+            {
+              "text" : " ",
+              "type" : "text"
+            },
+            {
+              "text" : "geometry and from ",
+              "type" : "text"
+            },
+            {
+              "identifier" : "doc:\/\/Diagramming\/documentation\/Diagramming\/ConnectorGlyph",
+              "isActive" : true,
+              "type" : "reference"
+            },
+            {
+              "text" : " which defines actual shape and visual features of the",
+              "type" : "text"
+            },
+            {
+              "text" : " ",
+              "type" : "text"
+            },
+            {
+              "text" : "connector.",
+              "type" : "text"
+            }
+          ],
+          "type" : "paragraph"
+        }
+      ],
+      "kind" : "content"
+    }
+  ],
+  "relationshipsSections" : [
+    {
+      "identifiers" : [
+        "doc:\/\/Diagramming\/11PoieticCore9ComponentP"
+      ],
+      "kind" : "relationships",
+      "title" : "Conforms To",
+      "type" : "conformsTo"
+    }
+  ],
+  "schemaVersion" : {
+    "major" : 0,
+    "minor" : 3,
+    "patch" : 0
+  },
+  "sections" : [
+
+  ],
+  "topicSections" : [
+    {
+      "anchor" : "Instance-Properties",
+      "generated" : true,
+      "identifiers" : [
+        "doc:\/\/Diagramming\/documentation\/Diagramming\/ConnectorStroke\/body",
+        "doc:\/\/Diagramming\/documentation\/Diagramming\/ConnectorStroke\/headArrowhead",
+        "doc:\/\/Diagramming\/documentation\/Diagramming\/ConnectorStroke\/isFilled",
+        "doc:\/\/Diagramming\/documentation\/Diagramming\/ConnectorStroke\/tailArrowhead"
+      ],
+      "title" : "Instance Properties"
+    }
+  ],
+  "variants" : [
+    {
+      "paths" : [
+        "\/documentation\/diagramming\/connectorstroke"
+      ],
+      "traits" : [
+        {
+          "interfaceLanguage" : "swift"
+        }
+      ]
+    }
+  ]
+, 
+"references": {
+"doc://Diagramming/11PoieticCore9ComponentP": {
+  "identifier" : "doc:\/\/Diagramming\/11PoieticCore9ComponentP",
+  "title" : "PoieticCore.Component",
+  "type" : "unresolvable"
+},
+"doc://Diagramming/documentation/Diagramming": {
+  "abstract" : [
+    {
+      "text" : "Diagramming is an OpenPoiesis project package for representing and composing diagrams from design",
+      "type" : "text"
+    },
+    {
+      "text" : " ",
+      "type" : "text"
+    },
+    {
+      "text" : "objects.",
+      "type" : "text"
+    }
+  ],
+  "identifier" : "doc:\/\/Diagramming\/documentation\/Diagramming",
+  "kind" : "symbol",
+  "role" : "collection",
+  "title" : "Diagramming",
+  "type" : "topic",
+  "url" : "\/documentation\/diagramming"
+},
+"doc://Diagramming/documentation/Diagramming/ConnectorGlyph": {
+  "abstract" : [
+    {
+      "text" : "Visual semantic definition of a connector.",
+      "type" : "text"
+    }
+  ],
+  "fragments" : [
+    {
+      "kind" : "keyword",
+      "text" : "class"
+    },
+    {
+      "kind" : "text",
+      "text" : " "
+    },
+    {
+      "kind" : "identifier",
+      "text" : "ConnectorGlyph"
+    }
+  ],
+  "identifier" : "doc:\/\/Diagramming\/documentation\/Diagramming\/ConnectorGlyph",
+  "kind" : "symbol",
+  "navigatorTitle" : [
+    {
+      "kind" : "identifier",
+      "text" : "ConnectorGlyph"
+    }
+  ],
+  "role" : "symbol",
+  "title" : "ConnectorGlyph",
+  "type" : "topic",
+  "url" : "\/documentation\/diagramming\/connectorglyph"
+},
+"doc://Diagramming/documentation/Diagramming/ConnectorSceneNode": {
+  "abstract" : [
+    {
+      "text" : "Primary component of a canvas node representing a connector.",
+      "type" : "text"
+    }
+  ],
+  "fragments" : [
+    {
+      "kind" : "keyword",
+      "text" : "struct"
+    },
+    {
+      "kind" : "text",
+      "text" : " "
+    },
+    {
+      "kind" : "identifier",
+      "text" : "ConnectorSceneNode"
+    }
+  ],
+  "identifier" : "doc:\/\/Diagramming\/documentation\/Diagramming\/ConnectorSceneNode",
+  "kind" : "symbol",
+  "navigatorTitle" : [
+    {
+      "kind" : "identifier",
+      "text" : "ConnectorSceneNode"
+    }
+  ],
+  "role" : "symbol",
+  "title" : "ConnectorSceneNode",
+  "type" : "topic",
+  "url" : "\/documentation\/diagramming\/connectorscenenode"
+},
+"doc://Diagramming/documentation/Diagramming/ConnectorStroke": {
+  "abstract" : [
+    {
+      "text" : "Visual representation of a connector.",
+      "type" : "text"
+    }
+  ],
+  "fragments" : [
+    {
+      "kind" : "keyword",
+      "text" : "struct"
+    },
+    {
+      "kind" : "text",
+      "text" : " "
+    },
+    {
+      "kind" : "identifier",
+      "text" : "ConnectorStroke"
+    }
+  ],
+  "identifier" : "doc:\/\/Diagramming\/documentation\/Diagramming\/ConnectorStroke",
+  "kind" : "symbol",
+  "navigatorTitle" : [
+    {
+      "kind" : "identifier",
+      "text" : "ConnectorStroke"
+    }
+  ],
+  "role" : "symbol",
+  "title" : "ConnectorStroke",
+  "type" : "topic",
+  "url" : "\/documentation\/diagramming\/connectorstroke"
+},
+"doc://Diagramming/documentation/Diagramming/ConnectorStroke/body": {
+  "abstract" : [
+
+  ],
+  "fragments" : [
+    {
+      "kind" : "keyword",
+      "text" : "let"
+    },
+    {
+      "kind" : "text",
+      "text" : " "
+    },
+    {
+      "kind" : "identifier",
+      "text" : "body"
+    },
+    {
+      "kind" : "text",
+      "text" : ": "
+    },
+    {
+      "kind" : "typeIdentifier",
+      "preciseIdentifier" : "s:11Diagramming10BezierPathV",
+      "text" : "BezierPath"
+    },
+    {
+      "kind" : "text",
+      "text" : "?"
+    }
+  ],
+  "identifier" : "doc:\/\/Diagramming\/documentation\/Diagramming\/ConnectorStroke\/body",
+  "kind" : "symbol",
+  "role" : "symbol",
+  "title" : "body",
+  "type" : "topic",
+  "url" : "\/documentation\/diagramming\/connectorstroke\/body"
+},
+"doc://Diagramming/documentation/Diagramming/ConnectorStroke/headArrowhead": {
+  "abstract" : [
+
+  ],
+  "fragments" : [
+    {
+      "kind" : "keyword",
+      "text" : "let"
+    },
+    {
+      "kind" : "text",
+      "text" : " "
+    },
+    {
+      "kind" : "identifier",
+      "text" : "headArrowhead"
+    },
+    {
+      "kind" : "text",
+      "text" : ": "
+    },
+    {
+      "kind" : "typeIdentifier",
+      "preciseIdentifier" : "s:11Diagramming10BezierPathV",
+      "text" : "BezierPath"
+    },
+    {
+      "kind" : "text",
+      "text" : "?"
+    }
+  ],
+  "identifier" : "doc:\/\/Diagramming\/documentation\/Diagramming\/ConnectorStroke\/headArrowhead",
+  "kind" : "symbol",
+  "role" : "symbol",
+  "title" : "headArrowhead",
+  "type" : "topic",
+  "url" : "\/documentation\/diagramming\/connectorstroke\/headarrowhead"
+},
+"doc://Diagramming/documentation/Diagramming/ConnectorStroke/isFilled": {
+  "abstract" : [
+
+  ],
+  "fragments" : [
+    {
+      "kind" : "keyword",
+      "text" : "let"
+    },
+    {
+      "kind" : "text",
+      "text" : " "
+    },
+    {
+      "kind" : "identifier",
+      "text" : "isFilled"
+    },
+    {
+      "kind" : "text",
+      "text" : ": "
+    },
+    {
+      "kind" : "typeIdentifier",
+      "preciseIdentifier" : "s:Sb",
+      "text" : "Bool"
+    }
+  ],
+  "identifier" : "doc:\/\/Diagramming\/documentation\/Diagramming\/ConnectorStroke\/isFilled",
+  "kind" : "symbol",
+  "role" : "symbol",
+  "title" : "isFilled",
+  "type" : "topic",
+  "url" : "\/documentation\/diagramming\/connectorstroke\/isfilled"
+},
+"doc://Diagramming/documentation/Diagramming/ConnectorStroke/tailArrowhead": {
+  "abstract" : [
+
+  ],
+  "fragments" : [
+    {
+      "kind" : "keyword",
+      "text" : "let"
+    },
+    {
+      "kind" : "text",
+      "text" : " "
+    },
+    {
+      "kind" : "identifier",
+      "text" : "tailArrowhead"
+    },
+    {
+      "kind" : "text",
+      "text" : ": "
+    },
+    {
+      "kind" : "typeIdentifier",
+      "preciseIdentifier" : "s:11Diagramming10BezierPathV",
+      "text" : "BezierPath"
+    },
+    {
+      "kind" : "text",
+      "text" : "?"
+    }
+  ],
+  "identifier" : "doc:\/\/Diagramming\/documentation\/Diagramming\/ConnectorStroke\/tailArrowhead",
+  "kind" : "symbol",
+  "role" : "symbol",
+  "title" : "tailArrowhead",
+  "type" : "topic",
+  "url" : "\/documentation\/diagramming\/connectorstroke\/tailarrowhead"
+},
+"doc://Diagramming/documentation/Diagramming/ConnectorWire": {
+  "abstract" : [
+    {
+      "text" : "Points of a connector wire used for hit testing and for selection outline.",
+      "type" : "text"
+    },
+    {
+      "text" : " ",
+      "type" : "text"
+    },
+    {
+      "text" : "Typically a tessellated points of a connector curve.",
+      "type" : "text"
+    }
+  ],
+  "fragments" : [
+    {
+      "kind" : "keyword",
+      "text" : "struct"
+    },
+    {
+      "kind" : "text",
+      "text" : " "
+    },
+    {
+      "kind" : "identifier",
+      "text" : "ConnectorWire"
+    }
+  ],
+  "identifier" : "doc:\/\/Diagramming\/documentation\/Diagramming\/ConnectorWire",
+  "kind" : "symbol",
+  "navigatorTitle" : [
+    {
+      "kind" : "identifier",
+      "text" : "ConnectorWire"
+    }
+  ],
+  "role" : "symbol",
+  "title" : "ConnectorWire",
+  "type" : "topic",
+  "url" : "\/documentation\/diagramming\/connectorwire"
+},
+"doc://Diagramming/documentation/Diagramming/DiagramSceneComposer": {
+  "abstract" : [
+    {
+      "text" : "Object responsible for creating and synchronising a diagram scene with model.",
+      "type" : "text"
+    }
+  ],
+  "fragments" : [
+    {
+      "kind" : "keyword",
+      "text" : "class"
+    },
+    {
+      "kind" : "text",
+      "text" : " "
+    },
+    {
+      "kind" : "identifier",
+      "text" : "DiagramSceneComposer"
+    }
+  ],
+  "identifier" : "doc:\/\/Diagramming\/documentation\/Diagramming\/DiagramSceneComposer",
+  "kind" : "symbol",
+  "navigatorTitle" : [
+    {
+      "kind" : "identifier",
+      "text" : "DiagramSceneComposer"
+    }
+  ],
+  "role" : "symbol",
+  "title" : "DiagramSceneComposer",
+  "type" : "topic",
+  "url" : "\/documentation\/diagramming\/diagramscenecomposer"
+},
+"doc://Diagramming/documentation/Diagramming/DiagramSceneRenderer": {
+  "abstract" : [
+    {
+      "text" : "Protocol for renderers of diagram scene.",
+      "type" : "text"
+    }
+  ],
+  "fragments" : [
+    {
+      "kind" : "keyword",
+      "text" : "protocol"
+    },
+    {
+      "kind" : "text",
+      "text" : " "
+    },
+    {
+      "kind" : "identifier",
+      "text" : "DiagramSceneRenderer"
+    }
+  ],
+  "identifier" : "doc:\/\/Diagramming\/documentation\/Diagramming\/DiagramSceneRenderer",
+  "kind" : "symbol",
+  "navigatorTitle" : [
+    {
+      "kind" : "identifier",
+      "text" : "DiagramSceneRenderer"
+    }
+  ],
+  "role" : "symbol",
+  "title" : "DiagramSceneRenderer",
+  "type" : "topic",
+  "url" : "\/documentation\/diagramming\/diagramscenerenderer"
+}
+}
+}

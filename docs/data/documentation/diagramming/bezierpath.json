@@ -1,0 +1,2411 @@
+{
+  "hierarchy" : {
+    "paths" : [
+      [
+        "doc:\/\/Diagramming\/documentation\/Diagramming"
+      ]
+    ]
+  },
+  "identifier" : {
+    "interfaceLanguage" : "swift",
+    "url" : "doc:\/\/Diagramming\/documentation\/Diagramming\/BezierPath"
+  },
+  "kind" : "symbol",
+  "metadata" : {
+    "externalID" : "s:11Diagramming10BezierPathV",
+    "fragments" : [
+      {
+        "kind" : "keyword",
+        "text" : "struct"
+      },
+      {
+        "kind" : "text",
+        "text" : " "
+      },
+      {
+        "kind" : "identifier",
+        "text" : "BezierPath"
+      }
+    ],
+    "modules" : [
+      {
+        "name" : "Diagramming"
+      }
+    ],
+    "navigatorTitle" : [
+      {
+        "kind" : "identifier",
+        "text" : "BezierPath"
+      }
+    ],
+    "role" : "symbol",
+    "roleHeading" : "Structure",
+    "symbolKind" : "struct",
+    "title" : "BezierPath"
+  },
+  "primaryContentSections" : [
+    {
+      "declarations" : [
+        {
+          "languages" : [
+            "swift"
+          ],
+          "platforms" : [
+            "macOS"
+          ],
+          "tokens" : [
+            {
+              "kind" : "keyword",
+              "text" : "struct"
+            },
+            {
+              "kind" : "text",
+              "text" : " "
+            },
+            {
+              "kind" : "identifier",
+              "text" : "BezierPath"
+            }
+          ]
+        }
+      ],
+      "kind" : "declarations"
+    }
+  ],
+  "relationshipsSections" : [
+    {
+      "identifiers" : [
+        "doc:\/\/Diagramming\/Se",
+        "doc:\/\/Diagramming\/SE",
+        "doc:\/\/Diagramming\/s8SendableP",
+        "doc:\/\/Diagramming\/s16SendableMetatypeP"
+      ],
+      "kind" : "relationships",
+      "title" : "Conforms To",
+      "type" : "conformsTo"
+    }
+  ],
+  "schemaVersion" : {
+    "major" : 0,
+    "minor" : 3,
+    "patch" : 0
+  },
+  "sections" : [
+
+  ],
+  "topicSections" : [
+    {
+      "anchor" : "Operators",
+      "generated" : true,
+      "identifiers" : [
+        "doc:\/\/Diagramming\/documentation\/Diagramming\/BezierPath\/+(_:_:)",
+        "doc:\/\/Diagramming\/documentation\/Diagramming\/BezierPath\/+=(_:_:)"
+      ],
+      "title" : "Operators"
+    },
+    {
+      "anchor" : "Initializers",
+      "generated" : true,
+      "identifiers" : [
+        "doc:\/\/Diagramming\/documentation\/Diagramming\/BezierPath\/init(_:)",
+        "doc:\/\/Diagramming\/documentation\/Diagramming\/BezierPath\/init(circle:radius:)",
+        "doc:\/\/Diagramming\/documentation\/Diagramming\/BezierPath\/init(curveThrough:tension:)",
+        "doc:\/\/Diagramming\/documentation\/Diagramming\/BezierPath\/init(ellipse:radiusX:radiusY:)",
+        "doc:\/\/Diagramming\/documentation\/Diagramming\/BezierPath\/init(from:)",
+        "doc:\/\/Diagramming\/documentation\/Diagramming\/BezierPath\/init(line:to:)",
+        "doc:\/\/Diagramming\/documentation\/Diagramming\/BezierPath\/init(orthogonalPolylineThrough:)",
+        "doc:\/\/Diagramming\/documentation\/Diagramming\/BezierPath\/init(polyline:)",
+        "doc:\/\/Diagramming\/documentation\/Diagramming\/BezierPath\/init(quadCurve:to:control:)",
+        "doc:\/\/Diagramming\/documentation\/Diagramming\/BezierPath\/init(rect:)",
+        "doc:\/\/Diagramming\/documentation\/Diagramming\/BezierPath\/init(string:)"
+      ],
+      "title" : "Initializers"
+    },
+    {
+      "anchor" : "Instance-Properties",
+      "generated" : true,
+      "identifiers" : [
+        "doc:\/\/Diagramming\/documentation\/Diagramming\/BezierPath\/boundingBox",
+        "doc:\/\/Diagramming\/documentation\/Diagramming\/BezierPath\/currentPoint",
+        "doc:\/\/Diagramming\/documentation\/Diagramming\/BezierPath\/elements",
+        "doc:\/\/Diagramming\/documentation\/Diagramming\/BezierPath\/isClosed",
+        "doc:\/\/Diagramming\/documentation\/Diagramming\/BezierPath\/isEmpty"
+      ],
+      "title" : "Instance Properties"
+    },
+    {
+      "anchor" : "Instance-Methods",
+      "generated" : true,
+      "identifiers" : [
+        "doc:\/\/Diagramming\/documentation\/Diagramming\/BezierPath\/addArc(center:radius:startAngle:endAngle:clockwise:)",
+        "doc:\/\/Diagramming\/documentation\/Diagramming\/BezierPath\/addCircle(center:radius:)",
+        "doc:\/\/Diagramming\/documentation\/Diagramming\/BezierPath\/addCurve(to:control1:control2:)",
+        "doc:\/\/Diagramming\/documentation\/Diagramming\/BezierPath\/addElements(_:)",
+        "doc:\/\/Diagramming\/documentation\/Diagramming\/BezierPath\/addEllipse(center:radiusX:radiusY:)",
+        "doc:\/\/Diagramming\/documentation\/Diagramming\/BezierPath\/addLine(to:)",
+        "doc:\/\/Diagramming\/documentation\/Diagramming\/BezierPath\/addLines(between:)",
+        "doc:\/\/Diagramming\/documentation\/Diagramming\/BezierPath\/addPath(_:)",
+        "doc:\/\/Diagramming\/documentation\/Diagramming\/BezierPath\/addQuadCurve(to:control:)",
+        "doc:\/\/Diagramming\/documentation\/Diagramming\/BezierPath\/addRect(_:)",
+        "doc:\/\/Diagramming\/documentation\/Diagramming\/BezierPath\/addingPath(_:)",
+        "doc:\/\/Diagramming\/documentation\/Diagramming\/BezierPath\/asStrictPolygon()",
+        "doc:\/\/Diagramming\/documentation\/Diagramming\/BezierPath\/asString()",
+        "doc:\/\/Diagramming\/documentation\/Diagramming\/BezierPath\/closeSubpath()",
+        "doc:\/\/Diagramming\/documentation\/Diagramming\/BezierPath\/encode(to:)",
+        "doc:\/\/Diagramming\/documentation\/Diagramming\/BezierPath\/inflated(by:tolerance:joinType:)",
+        "doc:\/\/Diagramming\/documentation\/Diagramming\/BezierPath\/isPolygon()",
+        "doc:\/\/Diagramming\/documentation\/Diagramming\/BezierPath\/move(to:)",
+        "doc:\/\/Diagramming\/documentation\/Diagramming\/BezierPath\/subpaths()",
+        "doc:\/\/Diagramming\/documentation\/Diagramming\/BezierPath\/tessellate(maxStages:tolerance:)",
+        "doc:\/\/Diagramming\/documentation\/Diagramming\/BezierPath\/toCubicCurves()",
+        "doc:\/\/Diagramming\/documentation\/Diagramming\/BezierPath\/transform(_:)"
+      ],
+      "title" : "Instance Methods"
+    },
+    {
+      "anchor" : "Enumerations",
+      "generated" : true,
+      "identifiers" : [
+        "doc:\/\/Diagramming\/documentation\/Diagramming\/BezierPath\/PathElement"
+      ],
+      "title" : "Enumerations"
+    }
+  ],
+  "variants" : [
+    {
+      "paths" : [
+        "\/documentation\/diagramming\/bezierpath"
+      ],
+      "traits" : [
+        {
+          "interfaceLanguage" : "swift"
+        }
+      ]
+    }
+  ]
+, 
+"references": {
+"doc://Diagramming/SE": {
+  "identifier" : "doc:\/\/Diagramming\/SE",
+  "title" : "Swift.Encodable",
+  "type" : "unresolvable"
+},
+"doc://Diagramming/Se": {
+  "identifier" : "doc:\/\/Diagramming\/Se",
+  "title" : "Swift.Decodable",
+  "type" : "unresolvable"
+},
+"doc://Diagramming/documentation/Diagramming": {
+  "abstract" : [
+    {
+      "text" : "Diagramming is an OpenPoiesis project package for representing and composing diagrams from design",
+      "type" : "text"
+    },
+    {
+      "text" : " ",
+      "type" : "text"
+    },
+    {
+      "text" : "objects.",
+      "type" : "text"
+    }
+  ],
+  "identifier" : "doc:\/\/Diagramming\/documentation\/Diagramming",
+  "kind" : "symbol",
+  "role" : "collection",
+  "title" : "Diagramming",
+  "type" : "topic",
+  "url" : "\/documentation\/diagramming"
+},
+"doc://Diagramming/documentation/Diagramming/BezierPath": {
+  "abstract" : [
+
+  ],
+  "fragments" : [
+    {
+      "kind" : "keyword",
+      "text" : "struct"
+    },
+    {
+      "kind" : "text",
+      "text" : " "
+    },
+    {
+      "kind" : "identifier",
+      "text" : "BezierPath"
+    }
+  ],
+  "identifier" : "doc:\/\/Diagramming\/documentation\/Diagramming\/BezierPath",
+  "kind" : "symbol",
+  "navigatorTitle" : [
+    {
+      "kind" : "identifier",
+      "text" : "BezierPath"
+    }
+  ],
+  "role" : "symbol",
+  "title" : "BezierPath",
+  "type" : "topic",
+  "url" : "\/documentation\/diagramming\/bezierpath"
+},
+"doc://Diagramming/documentation/Diagramming/BezierPath/+(_:_:)": {
+  "abstract" : [
+
+  ],
+  "fragments" : [
+    {
+      "kind" : "keyword",
+      "text" : "static"
+    },
+    {
+      "kind" : "text",
+      "text" : " "
+    },
+    {
+      "kind" : "keyword",
+      "text" : "func"
+    },
+    {
+      "kind" : "text",
+      "text" : " "
+    },
+    {
+      "kind" : "identifier",
+      "text" : "+"
+    },
+    {
+      "kind" : "text",
+      "text" : " "
+    },
+    {
+      "kind" : "text",
+      "text" : "("
+    },
+    {
+      "kind" : "typeIdentifier",
+      "preciseIdentifier" : "s:11Diagramming10BezierPathV",
+      "text" : "BezierPath"
+    },
+    {
+      "kind" : "text",
+      "text" : ", "
+    },
+    {
+      "kind" : "typeIdentifier",
+      "preciseIdentifier" : "s:11Diagramming10BezierPathV",
+      "text" : "BezierPath"
+    },
+    {
+      "kind" : "text",
+      "text" : ") -> "
+    },
+    {
+      "kind" : "typeIdentifier",
+      "preciseIdentifier" : "s:11Diagramming10BezierPathV",
+      "text" : "BezierPath"
+    }
+  ],
+  "identifier" : "doc:\/\/Diagramming\/documentation\/Diagramming\/BezierPath\/+(_:_:)",
+  "kind" : "symbol",
+  "role" : "symbol",
+  "title" : "+(_:_:)",
+  "type" : "topic",
+  "url" : "\/documentation\/diagramming\/bezierpath\/+(_:_:)"
+},
+"doc://Diagramming/documentation/Diagramming/BezierPath/+=(_:_:)": {
+  "abstract" : [
+
+  ],
+  "fragments" : [
+    {
+      "kind" : "keyword",
+      "text" : "static"
+    },
+    {
+      "kind" : "text",
+      "text" : " "
+    },
+    {
+      "kind" : "keyword",
+      "text" : "func"
+    },
+    {
+      "kind" : "text",
+      "text" : " "
+    },
+    {
+      "kind" : "identifier",
+      "text" : "+="
+    },
+    {
+      "kind" : "text",
+      "text" : " "
+    },
+    {
+      "kind" : "text",
+      "text" : "("
+    },
+    {
+      "kind" : "keyword",
+      "text" : "inout"
+    },
+    {
+      "kind" : "text",
+      "text" : " "
+    },
+    {
+      "kind" : "typeIdentifier",
+      "preciseIdentifier" : "s:11Diagramming10BezierPathV",
+      "text" : "BezierPath"
+    },
+    {
+      "kind" : "text",
+      "text" : ", "
+    },
+    {
+      "kind" : "typeIdentifier",
+      "preciseIdentifier" : "s:11Diagramming10BezierPathV",
+      "text" : "BezierPath"
+    },
+    {
+      "kind" : "text",
+      "text" : ")"
+    }
+  ],
+  "identifier" : "doc:\/\/Diagramming\/documentation\/Diagramming\/BezierPath\/+=(_:_:)",
+  "kind" : "symbol",
+  "role" : "symbol",
+  "title" : "+=(_:_:)",
+  "type" : "topic",
+  "url" : "\/documentation\/diagramming\/bezierpath\/+=(_:_:)"
+},
+"doc://Diagramming/documentation/Diagramming/BezierPath/PathElement": {
+  "abstract" : [
+
+  ],
+  "fragments" : [
+    {
+      "kind" : "keyword",
+      "text" : "enum"
+    },
+    {
+      "kind" : "text",
+      "text" : " "
+    },
+    {
+      "kind" : "identifier",
+      "text" : "PathElement"
+    }
+  ],
+  "identifier" : "doc:\/\/Diagramming\/documentation\/Diagramming\/BezierPath\/PathElement",
+  "kind" : "symbol",
+  "navigatorTitle" : [
+    {
+      "kind" : "identifier",
+      "text" : "PathElement"
+    }
+  ],
+  "role" : "symbol",
+  "title" : "BezierPath.PathElement",
+  "type" : "topic",
+  "url" : "\/documentation\/diagramming\/bezierpath\/pathelement"
+},
+"doc://Diagramming/documentation/Diagramming/BezierPath/addArc(center:radius:startAngle:endAngle:clockwise:)": {
+  "abstract" : [
+
+  ],
+  "fragments" : [
+    {
+      "kind" : "keyword",
+      "text" : "func"
+    },
+    {
+      "kind" : "text",
+      "text" : " "
+    },
+    {
+      "kind" : "identifier",
+      "text" : "addArc"
+    },
+    {
+      "kind" : "text",
+      "text" : "("
+    },
+    {
+      "kind" : "externalParam",
+      "text" : "center"
+    },
+    {
+      "kind" : "text",
+      "text" : ": "
+    },
+    {
+      "kind" : "typeIdentifier",
+      "preciseIdentifier" : "s:11Diagramming8Vector2Da",
+      "text" : "Vector2D"
+    },
+    {
+      "kind" : "text",
+      "text" : ", "
+    },
+    {
+      "kind" : "externalParam",
+      "text" : "radius"
+    },
+    {
+      "kind" : "text",
+      "text" : ": "
+    },
+    {
+      "kind" : "typeIdentifier",
+      "preciseIdentifier" : "s:Sd",
+      "text" : "Double"
+    },
+    {
+      "kind" : "text",
+      "text" : ", "
+    },
+    {
+      "kind" : "externalParam",
+      "text" : "startAngle"
+    },
+    {
+      "kind" : "text",
+      "text" : ": "
+    },
+    {
+      "kind" : "typeIdentifier",
+      "preciseIdentifier" : "s:Sd",
+      "text" : "Double"
+    },
+    {
+      "kind" : "text",
+      "text" : ", "
+    },
+    {
+      "kind" : "externalParam",
+      "text" : "endAngle"
+    },
+    {
+      "kind" : "text",
+      "text" : ": "
+    },
+    {
+      "kind" : "typeIdentifier",
+      "preciseIdentifier" : "s:Sd",
+      "text" : "Double"
+    },
+    {
+      "kind" : "text",
+      "text" : ", "
+    },
+    {
+      "kind" : "externalParam",
+      "text" : "clockwise"
+    },
+    {
+      "kind" : "text",
+      "text" : ": "
+    },
+    {
+      "kind" : "typeIdentifier",
+      "preciseIdentifier" : "s:Sb",
+      "text" : "Bool"
+    },
+    {
+      "kind" : "text",
+      "text" : ")"
+    }
+  ],
+  "identifier" : "doc:\/\/Diagramming\/documentation\/Diagramming\/BezierPath\/addArc(center:radius:startAngle:endAngle:clockwise:)",
+  "kind" : "symbol",
+  "role" : "symbol",
+  "title" : "addArc(center:radius:startAngle:endAngle:clockwise:)",
+  "type" : "topic",
+  "url" : "\/documentation\/diagramming\/bezierpath\/addarc(center:radius:startangle:endangle:clockwise:)"
+},
+"doc://Diagramming/documentation/Diagramming/BezierPath/addCircle(center:radius:)": {
+  "abstract" : [
+    {
+      "text" : "Add a circle.",
+      "type" : "text"
+    }
+  ],
+  "fragments" : [
+    {
+      "kind" : "keyword",
+      "text" : "func"
+    },
+    {
+      "kind" : "text",
+      "text" : " "
+    },
+    {
+      "kind" : "identifier",
+      "text" : "addCircle"
+    },
+    {
+      "kind" : "text",
+      "text" : "("
+    },
+    {
+      "kind" : "externalParam",
+      "text" : "center"
+    },
+    {
+      "kind" : "text",
+      "text" : ": "
+    },
+    {
+      "kind" : "typeIdentifier",
+      "preciseIdentifier" : "s:11Diagramming8Vector2Da",
+      "text" : "Vector2D"
+    },
+    {
+      "kind" : "text",
+      "text" : ", "
+    },
+    {
+      "kind" : "externalParam",
+      "text" : "radius"
+    },
+    {
+      "kind" : "text",
+      "text" : ": "
+    },
+    {
+      "kind" : "typeIdentifier",
+      "preciseIdentifier" : "s:Sd",
+      "text" : "Double"
+    },
+    {
+      "kind" : "text",
+      "text" : ")"
+    }
+  ],
+  "identifier" : "doc:\/\/Diagramming\/documentation\/Diagramming\/BezierPath\/addCircle(center:radius:)",
+  "kind" : "symbol",
+  "role" : "symbol",
+  "title" : "addCircle(center:radius:)",
+  "type" : "topic",
+  "url" : "\/documentation\/diagramming\/bezierpath\/addcircle(center:radius:)"
+},
+"doc://Diagramming/documentation/Diagramming/BezierPath/addCurve(to:control1:control2:)": {
+  "abstract" : [
+    {
+      "text" : "Add a cubic Bezier curve (converted from quadratic)",
+      "type" : "text"
+    }
+  ],
+  "fragments" : [
+    {
+      "kind" : "keyword",
+      "text" : "func"
+    },
+    {
+      "kind" : "text",
+      "text" : " "
+    },
+    {
+      "kind" : "identifier",
+      "text" : "addCurve"
+    },
+    {
+      "kind" : "text",
+      "text" : "("
+    },
+    {
+      "kind" : "externalParam",
+      "text" : "to"
+    },
+    {
+      "kind" : "text",
+      "text" : ": "
+    },
+    {
+      "kind" : "typeIdentifier",
+      "preciseIdentifier" : "s:11Diagramming8Vector2Da",
+      "text" : "Vector2D"
+    },
+    {
+      "kind" : "text",
+      "text" : ", "
+    },
+    {
+      "kind" : "externalParam",
+      "text" : "control1"
+    },
+    {
+      "kind" : "text",
+      "text" : ": "
+    },
+    {
+      "kind" : "typeIdentifier",
+      "preciseIdentifier" : "s:11Diagramming8Vector2Da",
+      "text" : "Vector2D"
+    },
+    {
+      "kind" : "text",
+      "text" : ", "
+    },
+    {
+      "kind" : "externalParam",
+      "text" : "control2"
+    },
+    {
+      "kind" : "text",
+      "text" : ": "
+    },
+    {
+      "kind" : "typeIdentifier",
+      "preciseIdentifier" : "s:11Diagramming8Vector2Da",
+      "text" : "Vector2D"
+    },
+    {
+      "kind" : "text",
+      "text" : ")"
+    }
+  ],
+  "identifier" : "doc:\/\/Diagramming\/documentation\/Diagramming\/BezierPath\/addCurve(to:control1:control2:)",
+  "kind" : "symbol",
+  "role" : "symbol",
+  "title" : "addCurve(to:control1:control2:)",
+  "type" : "topic",
+  "url" : "\/documentation\/diagramming\/bezierpath\/addcurve(to:control1:control2:)"
+},
+"doc://Diagramming/documentation/Diagramming/BezierPath/addElements(_:)": {
+  "abstract" : [
+
+  ],
+  "fragments" : [
+    {
+      "kind" : "keyword",
+      "text" : "func"
+    },
+    {
+      "kind" : "text",
+      "text" : " "
+    },
+    {
+      "kind" : "identifier",
+      "text" : "addElements"
+    },
+    {
+      "kind" : "text",
+      "text" : "(["
+    },
+    {
+      "kind" : "typeIdentifier",
+      "preciseIdentifier" : "s:11Diagramming10BezierPathV",
+      "text" : "BezierPath"
+    },
+    {
+      "kind" : "text",
+      "text" : "."
+    },
+    {
+      "kind" : "typeIdentifier",
+      "preciseIdentifier" : "s:11Diagramming10BezierPathV0C7ElementO",
+      "text" : "PathElement"
+    },
+    {
+      "kind" : "text",
+      "text" : "])"
+    }
+  ],
+  "identifier" : "doc:\/\/Diagramming\/documentation\/Diagramming\/BezierPath\/addElements(_:)",
+  "kind" : "symbol",
+  "role" : "symbol",
+  "title" : "addElements(_:)",
+  "type" : "topic",
+  "url" : "\/documentation\/diagramming\/bezierpath\/addelements(_:)"
+},
+"doc://Diagramming/documentation/Diagramming/BezierPath/addEllipse(center:radiusX:radiusY:)": {
+  "abstract" : [
+    {
+      "text" : "Add an ellipse.",
+      "type" : "text"
+    }
+  ],
+  "fragments" : [
+    {
+      "kind" : "keyword",
+      "text" : "func"
+    },
+    {
+      "kind" : "text",
+      "text" : " "
+    },
+    {
+      "kind" : "identifier",
+      "text" : "addEllipse"
+    },
+    {
+      "kind" : "text",
+      "text" : "("
+    },
+    {
+      "kind" : "externalParam",
+      "text" : "center"
+    },
+    {
+      "kind" : "text",
+      "text" : ": "
+    },
+    {
+      "kind" : "typeIdentifier",
+      "preciseIdentifier" : "s:11Diagramming8Vector2Da",
+      "text" : "Vector2D"
+    },
+    {
+      "kind" : "text",
+      "text" : ", "
+    },
+    {
+      "kind" : "externalParam",
+      "text" : "radiusX"
+    },
+    {
+      "kind" : "text",
+      "text" : ": "
+    },
+    {
+      "kind" : "typeIdentifier",
+      "preciseIdentifier" : "s:Sd",
+      "text" : "Double"
+    },
+    {
+      "kind" : "text",
+      "text" : ", "
+    },
+    {
+      "kind" : "externalParam",
+      "text" : "radiusY"
+    },
+    {
+      "kind" : "text",
+      "text" : ": "
+    },
+    {
+      "kind" : "typeIdentifier",
+      "preciseIdentifier" : "s:Sd",
+      "text" : "Double"
+    },
+    {
+      "kind" : "text",
+      "text" : ")"
+    }
+  ],
+  "identifier" : "doc:\/\/Diagramming\/documentation\/Diagramming\/BezierPath\/addEllipse(center:radiusX:radiusY:)",
+  "kind" : "symbol",
+  "role" : "symbol",
+  "title" : "addEllipse(center:radiusX:radiusY:)",
+  "type" : "topic",
+  "url" : "\/documentation\/diagramming\/bezierpath\/addellipse(center:radiusx:radiusy:)"
+},
+"doc://Diagramming/documentation/Diagramming/BezierPath/addLine(to:)": {
+  "abstract" : [
+    {
+      "text" : "Add a line to the specified point",
+      "type" : "text"
+    }
+  ],
+  "fragments" : [
+    {
+      "kind" : "keyword",
+      "text" : "func"
+    },
+    {
+      "kind" : "text",
+      "text" : " "
+    },
+    {
+      "kind" : "identifier",
+      "text" : "addLine"
+    },
+    {
+      "kind" : "text",
+      "text" : "("
+    },
+    {
+      "kind" : "externalParam",
+      "text" : "to"
+    },
+    {
+      "kind" : "text",
+      "text" : ": "
+    },
+    {
+      "kind" : "typeIdentifier",
+      "preciseIdentifier" : "s:11Diagramming8Vector2Da",
+      "text" : "Vector2D"
+    },
+    {
+      "kind" : "text",
+      "text" : ")"
+    }
+  ],
+  "identifier" : "doc:\/\/Diagramming\/documentation\/Diagramming\/BezierPath\/addLine(to:)",
+  "kind" : "symbol",
+  "role" : "symbol",
+  "title" : "addLine(to:)",
+  "type" : "topic",
+  "url" : "\/documentation\/diagramming\/bezierpath\/addline(to:)"
+},
+"doc://Diagramming/documentation/Diagramming/BezierPath/addLines(between:)": {
+  "abstract" : [
+    {
+      "text" : "Add lines between consecutive points",
+      "type" : "text"
+    }
+  ],
+  "fragments" : [
+    {
+      "kind" : "keyword",
+      "text" : "func"
+    },
+    {
+      "kind" : "text",
+      "text" : " "
+    },
+    {
+      "kind" : "identifier",
+      "text" : "addLines"
+    },
+    {
+      "kind" : "text",
+      "text" : "("
+    },
+    {
+      "kind" : "externalParam",
+      "text" : "between"
+    },
+    {
+      "kind" : "text",
+      "text" : ": ["
+    },
+    {
+      "kind" : "typeIdentifier",
+      "preciseIdentifier" : "s:11Diagramming8Vector2Da",
+      "text" : "Vector2D"
+    },
+    {
+      "kind" : "text",
+      "text" : "])"
+    }
+  ],
+  "identifier" : "doc:\/\/Diagramming\/documentation\/Diagramming\/BezierPath\/addLines(between:)",
+  "kind" : "symbol",
+  "role" : "symbol",
+  "title" : "addLines(between:)",
+  "type" : "topic",
+  "url" : "\/documentation\/diagramming\/bezierpath\/addlines(between:)"
+},
+"doc://Diagramming/documentation/Diagramming/BezierPath/addPath(_:)": {
+  "abstract" : [
+    {
+      "text" : "Add another bezier path to this one",
+      "type" : "text"
+    }
+  ],
+  "fragments" : [
+    {
+      "kind" : "keyword",
+      "text" : "func"
+    },
+    {
+      "kind" : "text",
+      "text" : " "
+    },
+    {
+      "kind" : "identifier",
+      "text" : "addPath"
+    },
+    {
+      "kind" : "text",
+      "text" : "("
+    },
+    {
+      "kind" : "typeIdentifier",
+      "preciseIdentifier" : "s:11Diagramming10BezierPathV",
+      "text" : "BezierPath"
+    },
+    {
+      "kind" : "text",
+      "text" : ")"
+    }
+  ],
+  "identifier" : "doc:\/\/Diagramming\/documentation\/Diagramming\/BezierPath\/addPath(_:)",
+  "kind" : "symbol",
+  "role" : "symbol",
+  "title" : "addPath(_:)",
+  "type" : "topic",
+  "url" : "\/documentation\/diagramming\/bezierpath\/addpath(_:)"
+},
+"doc://Diagramming/documentation/Diagramming/BezierPath/addQuadCurve(to:control:)": {
+  "abstract" : [
+    {
+      "text" : "Add a quadratic Bezier curve",
+      "type" : "text"
+    }
+  ],
+  "fragments" : [
+    {
+      "kind" : "keyword",
+      "text" : "func"
+    },
+    {
+      "kind" : "text",
+      "text" : " "
+    },
+    {
+      "kind" : "identifier",
+      "text" : "addQuadCurve"
+    },
+    {
+      "kind" : "text",
+      "text" : "("
+    },
+    {
+      "kind" : "externalParam",
+      "text" : "to"
+    },
+    {
+      "kind" : "text",
+      "text" : ": "
+    },
+    {
+      "kind" : "typeIdentifier",
+      "preciseIdentifier" : "s:11Diagramming8Vector2Da",
+      "text" : "Vector2D"
+    },
+    {
+      "kind" : "text",
+      "text" : ", "
+    },
+    {
+      "kind" : "externalParam",
+      "text" : "control"
+    },
+    {
+      "kind" : "text",
+      "text" : ": "
+    },
+    {
+      "kind" : "typeIdentifier",
+      "preciseIdentifier" : "s:11Diagramming8Vector2Da",
+      "text" : "Vector2D"
+    },
+    {
+      "kind" : "text",
+      "text" : ")"
+    }
+  ],
+  "identifier" : "doc:\/\/Diagramming\/documentation\/Diagramming\/BezierPath\/addQuadCurve(to:control:)",
+  "kind" : "symbol",
+  "role" : "symbol",
+  "title" : "addQuadCurve(to:control:)",
+  "type" : "topic",
+  "url" : "\/documentation\/diagramming\/bezierpath\/addquadcurve(to:control:)"
+},
+"doc://Diagramming/documentation/Diagramming/BezierPath/addRect(_:)": {
+  "abstract" : [
+    {
+      "text" : "Add a rectangle",
+      "type" : "text"
+    }
+  ],
+  "fragments" : [
+    {
+      "kind" : "keyword",
+      "text" : "func"
+    },
+    {
+      "kind" : "text",
+      "text" : " "
+    },
+    {
+      "kind" : "identifier",
+      "text" : "addRect"
+    },
+    {
+      "kind" : "text",
+      "text" : "("
+    },
+    {
+      "kind" : "typeIdentifier",
+      "preciseIdentifier" : "s:11Diagramming6Rect2DV",
+      "text" : "Rect2D"
+    },
+    {
+      "kind" : "text",
+      "text" : ")"
+    }
+  ],
+  "identifier" : "doc:\/\/Diagramming\/documentation\/Diagramming\/BezierPath\/addRect(_:)",
+  "kind" : "symbol",
+  "role" : "symbol",
+  "title" : "addRect(_:)",
+  "type" : "topic",
+  "url" : "\/documentation\/diagramming\/bezierpath\/addrect(_:)"
+},
+"doc://Diagramming/documentation/Diagramming/BezierPath/addingPath(_:)": {
+  "abstract" : [
+
+  ],
+  "fragments" : [
+    {
+      "kind" : "keyword",
+      "text" : "func"
+    },
+    {
+      "kind" : "text",
+      "text" : " "
+    },
+    {
+      "kind" : "identifier",
+      "text" : "addingPath"
+    },
+    {
+      "kind" : "text",
+      "text" : "("
+    },
+    {
+      "kind" : "typeIdentifier",
+      "preciseIdentifier" : "s:11Diagramming10BezierPathV",
+      "text" : "BezierPath"
+    },
+    {
+      "kind" : "text",
+      "text" : ") -> "
+    },
+    {
+      "kind" : "typeIdentifier",
+      "preciseIdentifier" : "s:11Diagramming10BezierPathV",
+      "text" : "BezierPath"
+    }
+  ],
+  "identifier" : "doc:\/\/Diagramming\/documentation\/Diagramming\/BezierPath\/addingPath(_:)",
+  "kind" : "symbol",
+  "role" : "symbol",
+  "title" : "addingPath(_:)",
+  "type" : "topic",
+  "url" : "\/documentation\/diagramming\/bezierpath\/addingpath(_:)"
+},
+"doc://Diagramming/documentation/Diagramming/BezierPath/asStrictPolygon()": {
+  "abstract" : [
+    {
+      "text" : "Extract polygon points from path that contains only lines.",
+      "type" : "text"
+    }
+  ],
+  "fragments" : [
+    {
+      "kind" : "keyword",
+      "text" : "func"
+    },
+    {
+      "kind" : "text",
+      "text" : " "
+    },
+    {
+      "kind" : "identifier",
+      "text" : "asStrictPolygon"
+    },
+    {
+      "kind" : "text",
+      "text" : "() -> ["
+    },
+    {
+      "kind" : "typeIdentifier",
+      "preciseIdentifier" : "s:11Diagramming8Vector2Da",
+      "text" : "Vector2D"
+    },
+    {
+      "kind" : "text",
+      "text" : "]?"
+    }
+  ],
+  "identifier" : "doc:\/\/Diagramming\/documentation\/Diagramming\/BezierPath\/asStrictPolygon()",
+  "kind" : "symbol",
+  "role" : "symbol",
+  "title" : "asStrictPolygon()",
+  "type" : "topic",
+  "url" : "\/documentation\/diagramming\/bezierpath\/asstrictpolygon()"
+},
+"doc://Diagramming/documentation/Diagramming/BezierPath/asString()": {
+  "abstract" : [
+
+  ],
+  "fragments" : [
+    {
+      "kind" : "keyword",
+      "text" : "func"
+    },
+    {
+      "kind" : "text",
+      "text" : " "
+    },
+    {
+      "kind" : "identifier",
+      "text" : "asString"
+    },
+    {
+      "kind" : "text",
+      "text" : "() -> "
+    },
+    {
+      "kind" : "typeIdentifier",
+      "preciseIdentifier" : "s:SS",
+      "text" : "String"
+    }
+  ],
+  "identifier" : "doc:\/\/Diagramming\/documentation\/Diagramming\/BezierPath\/asString()",
+  "kind" : "symbol",
+  "role" : "symbol",
+  "title" : "asString()",
+  "type" : "topic",
+  "url" : "\/documentation\/diagramming\/bezierpath\/asstring()"
+},
+"doc://Diagramming/documentation/Diagramming/BezierPath/boundingBox": {
+  "abstract" : [
+    {
+      "text" : "A box that encapsulates the whole path.",
+      "type" : "text"
+    }
+  ],
+  "fragments" : [
+    {
+      "kind" : "keyword",
+      "text" : "var"
+    },
+    {
+      "kind" : "text",
+      "text" : " "
+    },
+    {
+      "kind" : "identifier",
+      "text" : "boundingBox"
+    },
+    {
+      "kind" : "text",
+      "text" : ": "
+    },
+    {
+      "kind" : "typeIdentifier",
+      "preciseIdentifier" : "s:11Diagramming6Rect2DV",
+      "text" : "Rect2D"
+    },
+    {
+      "kind" : "text",
+      "text" : "?"
+    }
+  ],
+  "identifier" : "doc:\/\/Diagramming\/documentation\/Diagramming\/BezierPath\/boundingBox",
+  "kind" : "symbol",
+  "role" : "symbol",
+  "title" : "boundingBox",
+  "type" : "topic",
+  "url" : "\/documentation\/diagramming\/bezierpath\/boundingbox"
+},
+"doc://Diagramming/documentation/Diagramming/BezierPath/closeSubpath()": {
+  "abstract" : [
+    {
+      "text" : "Close the current subpath",
+      "type" : "text"
+    }
+  ],
+  "fragments" : [
+    {
+      "kind" : "keyword",
+      "text" : "func"
+    },
+    {
+      "kind" : "text",
+      "text" : " "
+    },
+    {
+      "kind" : "identifier",
+      "text" : "closeSubpath"
+    },
+    {
+      "kind" : "text",
+      "text" : "()"
+    }
+  ],
+  "identifier" : "doc:\/\/Diagramming\/documentation\/Diagramming\/BezierPath\/closeSubpath()",
+  "kind" : "symbol",
+  "role" : "symbol",
+  "title" : "closeSubpath()",
+  "type" : "topic",
+  "url" : "\/documentation\/diagramming\/bezierpath\/closesubpath()"
+},
+"doc://Diagramming/documentation/Diagramming/BezierPath/currentPoint": {
+  "abstract" : [
+
+  ],
+  "fragments" : [
+    {
+      "kind" : "keyword",
+      "text" : "var"
+    },
+    {
+      "kind" : "text",
+      "text" : " "
+    },
+    {
+      "kind" : "identifier",
+      "text" : "currentPoint"
+    },
+    {
+      "kind" : "text",
+      "text" : ": "
+    },
+    {
+      "kind" : "typeIdentifier",
+      "preciseIdentifier" : "s:11Diagramming8Vector2Da",
+      "text" : "Vector2D"
+    },
+    {
+      "kind" : "text",
+      "text" : "?"
+    }
+  ],
+  "identifier" : "doc:\/\/Diagramming\/documentation\/Diagramming\/BezierPath\/currentPoint",
+  "kind" : "symbol",
+  "role" : "symbol",
+  "title" : "currentPoint",
+  "type" : "topic",
+  "url" : "\/documentation\/diagramming\/bezierpath\/currentpoint"
+},
+"doc://Diagramming/documentation/Diagramming/BezierPath/elements": {
+  "abstract" : [
+
+  ],
+  "fragments" : [
+    {
+      "kind" : "keyword",
+      "text" : "var"
+    },
+    {
+      "kind" : "text",
+      "text" : " "
+    },
+    {
+      "kind" : "identifier",
+      "text" : "elements"
+    },
+    {
+      "kind" : "text",
+      "text" : ": ["
+    },
+    {
+      "kind" : "typeIdentifier",
+      "preciseIdentifier" : "s:11Diagramming10BezierPathV",
+      "text" : "BezierPath"
+    },
+    {
+      "kind" : "text",
+      "text" : "."
+    },
+    {
+      "kind" : "typeIdentifier",
+      "preciseIdentifier" : "s:11Diagramming10BezierPathV0C7ElementO",
+      "text" : "PathElement"
+    },
+    {
+      "kind" : "text",
+      "text" : "]"
+    }
+  ],
+  "identifier" : "doc:\/\/Diagramming\/documentation\/Diagramming\/BezierPath\/elements",
+  "kind" : "symbol",
+  "role" : "symbol",
+  "title" : "elements",
+  "type" : "topic",
+  "url" : "\/documentation\/diagramming\/bezierpath\/elements"
+},
+"doc://Diagramming/documentation/Diagramming/BezierPath/encode(to:)": {
+  "abstract" : [
+
+  ],
+  "fragments" : [
+    {
+      "kind" : "keyword",
+      "text" : "func"
+    },
+    {
+      "kind" : "text",
+      "text" : " "
+    },
+    {
+      "kind" : "identifier",
+      "text" : "encode"
+    },
+    {
+      "kind" : "text",
+      "text" : "("
+    },
+    {
+      "kind" : "externalParam",
+      "text" : "to"
+    },
+    {
+      "kind" : "text",
+      "text" : ": any "
+    },
+    {
+      "kind" : "typeIdentifier",
+      "preciseIdentifier" : "s:s7EncoderP",
+      "text" : "Encoder"
+    },
+    {
+      "kind" : "text",
+      "text" : ") "
+    },
+    {
+      "kind" : "keyword",
+      "text" : "throws"
+    }
+  ],
+  "identifier" : "doc:\/\/Diagramming\/documentation\/Diagramming\/BezierPath\/encode(to:)",
+  "kind" : "symbol",
+  "role" : "symbol",
+  "title" : "encode(to:)",
+  "type" : "topic",
+  "url" : "\/documentation\/diagramming\/bezierpath\/encode(to:)"
+},
+"doc://Diagramming/documentation/Diagramming/BezierPath/inflated(by:tolerance:joinType:)": {
+  "abstract" : [
+    {
+      "text" : "Creates a new path that is inflated by the specified margin, creating a rounded outline.",
+      "type" : "text"
+    }
+  ],
+  "fragments" : [
+    {
+      "kind" : "keyword",
+      "text" : "func"
+    },
+    {
+      "kind" : "text",
+      "text" : " "
+    },
+    {
+      "kind" : "identifier",
+      "text" : "inflated"
+    },
+    {
+      "kind" : "text",
+      "text" : "("
+    },
+    {
+      "kind" : "externalParam",
+      "text" : "by"
+    },
+    {
+      "kind" : "text",
+      "text" : ": "
+    },
+    {
+      "kind" : "typeIdentifier",
+      "preciseIdentifier" : "s:Sd",
+      "text" : "Double"
+    },
+    {
+      "kind" : "text",
+      "text" : ", "
+    },
+    {
+      "kind" : "externalParam",
+      "text" : "tolerance"
+    },
+    {
+      "kind" : "text",
+      "text" : ": "
+    },
+    {
+      "kind" : "typeIdentifier",
+      "preciseIdentifier" : "s:Sd",
+      "text" : "Double"
+    },
+    {
+      "kind" : "text",
+      "text" : ", "
+    },
+    {
+      "kind" : "externalParam",
+      "text" : "joinType"
+    },
+    {
+      "kind" : "text",
+      "text" : ": "
+    },
+    {
+      "kind" : "typeIdentifier",
+      "preciseIdentifier" : "s:11Diagramming8JoinTypeO",
+      "text" : "JoinType"
+    },
+    {
+      "kind" : "text",
+      "text" : ") -> "
+    },
+    {
+      "kind" : "typeIdentifier",
+      "preciseIdentifier" : "s:11Diagramming10BezierPathV",
+      "text" : "BezierPath"
+    }
+  ],
+  "identifier" : "doc:\/\/Diagramming\/documentation\/Diagramming\/BezierPath\/inflated(by:tolerance:joinType:)",
+  "kind" : "symbol",
+  "role" : "symbol",
+  "title" : "inflated(by:tolerance:joinType:)",
+  "type" : "topic",
+  "url" : "\/documentation\/diagramming\/bezierpath\/inflated(by:tolerance:jointype:)"
+},
+"doc://Diagramming/documentation/Diagramming/BezierPath/init(_:)": {
+  "abstract" : [
+    {
+      "text" : "Create an empty path.",
+      "type" : "text"
+    }
+  ],
+  "fragments" : [
+    {
+      "kind" : "identifier",
+      "text" : "init"
+    },
+    {
+      "kind" : "text",
+      "text" : "(["
+    },
+    {
+      "kind" : "typeIdentifier",
+      "preciseIdentifier" : "s:11Diagramming10BezierPathV",
+      "text" : "BezierPath"
+    },
+    {
+      "kind" : "text",
+      "text" : "."
+    },
+    {
+      "kind" : "typeIdentifier",
+      "preciseIdentifier" : "s:11Diagramming10BezierPathV0C7ElementO",
+      "text" : "PathElement"
+    },
+    {
+      "kind" : "text",
+      "text" : "])"
+    }
+  ],
+  "identifier" : "doc:\/\/Diagramming\/documentation\/Diagramming\/BezierPath\/init(_:)",
+  "kind" : "symbol",
+  "role" : "symbol",
+  "title" : "init(_:)",
+  "type" : "topic",
+  "url" : "\/documentation\/diagramming\/bezierpath\/init(_:)"
+},
+"doc://Diagramming/documentation/Diagramming/BezierPath/init(circle:radius:)": {
+  "abstract" : [
+    {
+      "text" : "Create a circle",
+      "type" : "text"
+    }
+  ],
+  "fragments" : [
+    {
+      "kind" : "identifier",
+      "text" : "init"
+    },
+    {
+      "kind" : "text",
+      "text" : "("
+    },
+    {
+      "kind" : "externalParam",
+      "text" : "circle"
+    },
+    {
+      "kind" : "text",
+      "text" : ": "
+    },
+    {
+      "kind" : "typeIdentifier",
+      "preciseIdentifier" : "s:11Diagramming8Vector2Da",
+      "text" : "Vector2D"
+    },
+    {
+      "kind" : "text",
+      "text" : ", "
+    },
+    {
+      "kind" : "externalParam",
+      "text" : "radius"
+    },
+    {
+      "kind" : "text",
+      "text" : ": "
+    },
+    {
+      "kind" : "typeIdentifier",
+      "preciseIdentifier" : "s:Sd",
+      "text" : "Double"
+    },
+    {
+      "kind" : "text",
+      "text" : ")"
+    }
+  ],
+  "identifier" : "doc:\/\/Diagramming\/documentation\/Diagramming\/BezierPath\/init(circle:radius:)",
+  "kind" : "symbol",
+  "role" : "symbol",
+  "title" : "init(circle:radius:)",
+  "type" : "topic",
+  "url" : "\/documentation\/diagramming\/bezierpath\/init(circle:radius:)"
+},
+"doc://Diagramming/documentation/Diagramming/BezierPath/init(curveThrough:tension:)": {
+  "abstract" : [
+    {
+      "text" : "Create a curved line through multiple points using Catmull-Rom style interpolation.",
+      "type" : "text"
+    }
+  ],
+  "fragments" : [
+    {
+      "kind" : "identifier",
+      "text" : "init"
+    },
+    {
+      "kind" : "text",
+      "text" : "("
+    },
+    {
+      "kind" : "externalParam",
+      "text" : "curveThrough"
+    },
+    {
+      "kind" : "text",
+      "text" : ": ["
+    },
+    {
+      "kind" : "typeIdentifier",
+      "preciseIdentifier" : "s:11Diagramming8Vector2Da",
+      "text" : "Vector2D"
+    },
+    {
+      "kind" : "text",
+      "text" : "], "
+    },
+    {
+      "kind" : "externalParam",
+      "text" : "tension"
+    },
+    {
+      "kind" : "text",
+      "text" : ": "
+    },
+    {
+      "kind" : "typeIdentifier",
+      "preciseIdentifier" : "s:Sd",
+      "text" : "Double"
+    },
+    {
+      "kind" : "text",
+      "text" : ")"
+    }
+  ],
+  "identifier" : "doc:\/\/Diagramming\/documentation\/Diagramming\/BezierPath\/init(curveThrough:tension:)",
+  "kind" : "symbol",
+  "role" : "symbol",
+  "title" : "init(curveThrough:tension:)",
+  "type" : "topic",
+  "url" : "\/documentation\/diagramming\/bezierpath\/init(curvethrough:tension:)"
+},
+"doc://Diagramming/documentation/Diagramming/BezierPath/init(ellipse:radiusX:radiusY:)": {
+  "abstract" : [
+
+  ],
+  "fragments" : [
+    {
+      "kind" : "identifier",
+      "text" : "init"
+    },
+    {
+      "kind" : "text",
+      "text" : "("
+    },
+    {
+      "kind" : "externalParam",
+      "text" : "ellipse"
+    },
+    {
+      "kind" : "text",
+      "text" : ": "
+    },
+    {
+      "kind" : "typeIdentifier",
+      "preciseIdentifier" : "s:11Diagramming8Vector2Da",
+      "text" : "Vector2D"
+    },
+    {
+      "kind" : "text",
+      "text" : ", "
+    },
+    {
+      "kind" : "externalParam",
+      "text" : "radiusX"
+    },
+    {
+      "kind" : "text",
+      "text" : ": "
+    },
+    {
+      "kind" : "typeIdentifier",
+      "preciseIdentifier" : "s:Sd",
+      "text" : "Double"
+    },
+    {
+      "kind" : "text",
+      "text" : ", "
+    },
+    {
+      "kind" : "externalParam",
+      "text" : "radiusY"
+    },
+    {
+      "kind" : "text",
+      "text" : ": "
+    },
+    {
+      "kind" : "typeIdentifier",
+      "preciseIdentifier" : "s:Sd",
+      "text" : "Double"
+    },
+    {
+      "kind" : "text",
+      "text" : ")"
+    }
+  ],
+  "identifier" : "doc:\/\/Diagramming\/documentation\/Diagramming\/BezierPath\/init(ellipse:radiusX:radiusY:)",
+  "kind" : "symbol",
+  "role" : "symbol",
+  "title" : "init(ellipse:radiusX:radiusY:)",
+  "type" : "topic",
+  "url" : "\/documentation\/diagramming\/bezierpath\/init(ellipse:radiusx:radiusy:)"
+},
+"doc://Diagramming/documentation/Diagramming/BezierPath/init(from:)": {
+  "abstract" : [
+
+  ],
+  "fragments" : [
+    {
+      "kind" : "identifier",
+      "text" : "init"
+    },
+    {
+      "kind" : "text",
+      "text" : "("
+    },
+    {
+      "kind" : "externalParam",
+      "text" : "from"
+    },
+    {
+      "kind" : "text",
+      "text" : ": any "
+    },
+    {
+      "kind" : "typeIdentifier",
+      "preciseIdentifier" : "s:s7DecoderP",
+      "text" : "Decoder"
+    },
+    {
+      "kind" : "text",
+      "text" : ") "
+    },
+    {
+      "kind" : "keyword",
+      "text" : "throws"
+    }
+  ],
+  "identifier" : "doc:\/\/Diagramming\/documentation\/Diagramming\/BezierPath\/init(from:)",
+  "kind" : "symbol",
+  "role" : "symbol",
+  "title" : "init(from:)",
+  "type" : "topic",
+  "url" : "\/documentation\/diagramming\/bezierpath\/init(from:)"
+},
+"doc://Diagramming/documentation/Diagramming/BezierPath/init(line:to:)": {
+  "abstract" : [
+    {
+      "text" : "Create a line between two points",
+      "type" : "text"
+    }
+  ],
+  "fragments" : [
+    {
+      "kind" : "identifier",
+      "text" : "init"
+    },
+    {
+      "kind" : "text",
+      "text" : "("
+    },
+    {
+      "kind" : "externalParam",
+      "text" : "line"
+    },
+    {
+      "kind" : "text",
+      "text" : ": "
+    },
+    {
+      "kind" : "typeIdentifier",
+      "preciseIdentifier" : "s:11Diagramming8Vector2Da",
+      "text" : "Vector2D"
+    },
+    {
+      "kind" : "text",
+      "text" : ", "
+    },
+    {
+      "kind" : "externalParam",
+      "text" : "to"
+    },
+    {
+      "kind" : "text",
+      "text" : ": "
+    },
+    {
+      "kind" : "typeIdentifier",
+      "preciseIdentifier" : "s:11Diagramming8Vector2Da",
+      "text" : "Vector2D"
+    },
+    {
+      "kind" : "text",
+      "text" : ")"
+    }
+  ],
+  "identifier" : "doc:\/\/Diagramming\/documentation\/Diagramming\/BezierPath\/init(line:to:)",
+  "kind" : "symbol",
+  "role" : "symbol",
+  "title" : "init(line:to:)",
+  "type" : "topic",
+  "url" : "\/documentation\/diagramming\/bezierpath\/init(line:to:)"
+},
+"doc://Diagramming/documentation/Diagramming/BezierPath/init(orthogonalPolylineThrough:)": {
+  "abstract" : [
+    {
+      "text" : "Create a poly-line from the first point in the list through the remaining points in the",
+      "type" : "text"
+    },
+    {
+      "text" : " ",
+      "type" : "text"
+    },
+    {
+      "text" : "list. If the list contains only one point returns an empty path.",
+      "type" : "text"
+    }
+  ],
+  "fragments" : [
+    {
+      "kind" : "identifier",
+      "text" : "init"
+    },
+    {
+      "kind" : "text",
+      "text" : "("
+    },
+    {
+      "kind" : "externalParam",
+      "text" : "orthogonalPolylineThrough"
+    },
+    {
+      "kind" : "text",
+      "text" : ": ["
+    },
+    {
+      "kind" : "typeIdentifier",
+      "preciseIdentifier" : "s:11Diagramming8Vector2Da",
+      "text" : "Vector2D"
+    },
+    {
+      "kind" : "text",
+      "text" : "])"
+    }
+  ],
+  "identifier" : "doc:\/\/Diagramming\/documentation\/Diagramming\/BezierPath\/init(orthogonalPolylineThrough:)",
+  "kind" : "symbol",
+  "role" : "symbol",
+  "title" : "init(orthogonalPolylineThrough:)",
+  "type" : "topic",
+  "url" : "\/documentation\/diagramming\/bezierpath\/init(orthogonalpolylinethrough:)"
+},
+"doc://Diagramming/documentation/Diagramming/BezierPath/init(polyline:)": {
+  "abstract" : [
+
+  ],
+  "fragments" : [
+    {
+      "kind" : "identifier",
+      "text" : "init"
+    },
+    {
+      "kind" : "text",
+      "text" : "("
+    },
+    {
+      "kind" : "externalParam",
+      "text" : "polyline"
+    },
+    {
+      "kind" : "text",
+      "text" : ": ["
+    },
+    {
+      "kind" : "typeIdentifier",
+      "preciseIdentifier" : "s:11Diagramming8Vector2Da",
+      "text" : "Vector2D"
+    },
+    {
+      "kind" : "text",
+      "text" : "])"
+    }
+  ],
+  "identifier" : "doc:\/\/Diagramming\/documentation\/Diagramming\/BezierPath\/init(polyline:)",
+  "kind" : "symbol",
+  "role" : "symbol",
+  "title" : "init(polyline:)",
+  "type" : "topic",
+  "url" : "\/documentation\/diagramming\/bezierpath\/init(polyline:)"
+},
+"doc://Diagramming/documentation/Diagramming/BezierPath/init(quadCurve:to:control:)": {
+  "abstract" : [
+    {
+      "text" : "Create a quadratic curve between two points with a control point",
+      "type" : "text"
+    }
+  ],
+  "fragments" : [
+    {
+      "kind" : "identifier",
+      "text" : "init"
+    },
+    {
+      "kind" : "text",
+      "text" : "("
+    },
+    {
+      "kind" : "externalParam",
+      "text" : "quadCurve"
+    },
+    {
+      "kind" : "text",
+      "text" : ": "
+    },
+    {
+      "kind" : "typeIdentifier",
+      "preciseIdentifier" : "s:11Diagramming8Vector2Da",
+      "text" : "Vector2D"
+    },
+    {
+      "kind" : "text",
+      "text" : ", "
+    },
+    {
+      "kind" : "externalParam",
+      "text" : "to"
+    },
+    {
+      "kind" : "text",
+      "text" : ": "
+    },
+    {
+      "kind" : "typeIdentifier",
+      "preciseIdentifier" : "s:11Diagramming8Vector2Da",
+      "text" : "Vector2D"
+    },
+    {
+      "kind" : "text",
+      "text" : ", "
+    },
+    {
+      "kind" : "externalParam",
+      "text" : "control"
+    },
+    {
+      "kind" : "text",
+      "text" : ": "
+    },
+    {
+      "kind" : "typeIdentifier",
+      "preciseIdentifier" : "s:11Diagramming8Vector2Da",
+      "text" : "Vector2D"
+    },
+    {
+      "kind" : "text",
+      "text" : ")"
+    }
+  ],
+  "identifier" : "doc:\/\/Diagramming\/documentation\/Diagramming\/BezierPath\/init(quadCurve:to:control:)",
+  "kind" : "symbol",
+  "role" : "symbol",
+  "title" : "init(quadCurve:to:control:)",
+  "type" : "topic",
+  "url" : "\/documentation\/diagramming\/bezierpath\/init(quadcurve:to:control:)"
+},
+"doc://Diagramming/documentation/Diagramming/BezierPath/init(rect:)": {
+  "abstract" : [
+    {
+      "text" : "Create a rectangle",
+      "type" : "text"
+    }
+  ],
+  "fragments" : [
+    {
+      "kind" : "identifier",
+      "text" : "init"
+    },
+    {
+      "kind" : "text",
+      "text" : "("
+    },
+    {
+      "kind" : "externalParam",
+      "text" : "rect"
+    },
+    {
+      "kind" : "text",
+      "text" : ": "
+    },
+    {
+      "kind" : "typeIdentifier",
+      "preciseIdentifier" : "s:11Diagramming6Rect2DV",
+      "text" : "Rect2D"
+    },
+    {
+      "kind" : "text",
+      "text" : ")"
+    }
+  ],
+  "identifier" : "doc:\/\/Diagramming\/documentation\/Diagramming\/BezierPath\/init(rect:)",
+  "kind" : "symbol",
+  "role" : "symbol",
+  "title" : "init(rect:)",
+  "type" : "topic",
+  "url" : "\/documentation\/diagramming\/bezierpath\/init(rect:)"
+},
+"doc://Diagramming/documentation/Diagramming/BezierPath/init(string:)": {
+  "abstract" : [
+    {
+      "text" : "Create a path from a string.",
+      "type" : "text"
+    }
+  ],
+  "fragments" : [
+    {
+      "kind" : "identifier",
+      "text" : "init"
+    },
+    {
+      "kind" : "text",
+      "text" : "?("
+    },
+    {
+      "kind" : "externalParam",
+      "text" : "string"
+    },
+    {
+      "kind" : "text",
+      "text" : ": "
+    },
+    {
+      "kind" : "typeIdentifier",
+      "preciseIdentifier" : "s:SS",
+      "text" : "String"
+    },
+    {
+      "kind" : "text",
+      "text" : ")"
+    }
+  ],
+  "identifier" : "doc:\/\/Diagramming\/documentation\/Diagramming\/BezierPath\/init(string:)",
+  "kind" : "symbol",
+  "role" : "symbol",
+  "title" : "init(string:)",
+  "type" : "topic",
+  "url" : "\/documentation\/diagramming\/bezierpath\/init(string:)"
+},
+"doc://Diagramming/documentation/Diagramming/BezierPath/isClosed": {
+  "abstract" : [
+    {
+      "text" : "Check if path is closed – ends where it started.",
+      "type" : "text"
+    }
+  ],
+  "fragments" : [
+    {
+      "kind" : "keyword",
+      "text" : "var"
+    },
+    {
+      "kind" : "text",
+      "text" : " "
+    },
+    {
+      "kind" : "identifier",
+      "text" : "isClosed"
+    },
+    {
+      "kind" : "text",
+      "text" : ": "
+    },
+    {
+      "kind" : "typeIdentifier",
+      "preciseIdentifier" : "s:Sb",
+      "text" : "Bool"
+    }
+  ],
+  "identifier" : "doc:\/\/Diagramming\/documentation\/Diagramming\/BezierPath\/isClosed",
+  "kind" : "symbol",
+  "role" : "symbol",
+  "title" : "isClosed",
+  "type" : "topic",
+  "url" : "\/documentation\/diagramming\/bezierpath\/isclosed"
+},
+"doc://Diagramming/documentation/Diagramming/BezierPath/isEmpty": {
+  "abstract" : [
+
+  ],
+  "fragments" : [
+    {
+      "kind" : "keyword",
+      "text" : "var"
+    },
+    {
+      "kind" : "text",
+      "text" : " "
+    },
+    {
+      "kind" : "identifier",
+      "text" : "isEmpty"
+    },
+    {
+      "kind" : "text",
+      "text" : ": "
+    },
+    {
+      "kind" : "typeIdentifier",
+      "preciseIdentifier" : "s:Sb",
+      "text" : "Bool"
+    }
+  ],
+  "identifier" : "doc:\/\/Diagramming\/documentation\/Diagramming\/BezierPath\/isEmpty",
+  "kind" : "symbol",
+  "role" : "symbol",
+  "title" : "isEmpty",
+  "type" : "topic",
+  "url" : "\/documentation\/diagramming\/bezierpath\/isempty"
+},
+"doc://Diagramming/documentation/Diagramming/BezierPath/isPolygon()": {
+  "abstract" : [
+    {
+      "text" : "Check if path contains only straight lines (no curves).",
+      "type" : "text"
+    }
+  ],
+  "fragments" : [
+    {
+      "kind" : "keyword",
+      "text" : "func"
+    },
+    {
+      "kind" : "text",
+      "text" : " "
+    },
+    {
+      "kind" : "identifier",
+      "text" : "isPolygon"
+    },
+    {
+      "kind" : "text",
+      "text" : "() -> "
+    },
+    {
+      "kind" : "typeIdentifier",
+      "preciseIdentifier" : "s:Sb",
+      "text" : "Bool"
+    }
+  ],
+  "identifier" : "doc:\/\/Diagramming\/documentation\/Diagramming\/BezierPath\/isPolygon()",
+  "kind" : "symbol",
+  "role" : "symbol",
+  "title" : "isPolygon()",
+  "type" : "topic",
+  "url" : "\/documentation\/diagramming\/bezierpath\/ispolygon()"
+},
+"doc://Diagramming/documentation/Diagramming/BezierPath/move(to:)": {
+  "abstract" : [
+    {
+      "text" : "Move to a point without drawing",
+      "type" : "text"
+    }
+  ],
+  "fragments" : [
+    {
+      "kind" : "keyword",
+      "text" : "func"
+    },
+    {
+      "kind" : "text",
+      "text" : " "
+    },
+    {
+      "kind" : "identifier",
+      "text" : "move"
+    },
+    {
+      "kind" : "text",
+      "text" : "("
+    },
+    {
+      "kind" : "externalParam",
+      "text" : "to"
+    },
+    {
+      "kind" : "text",
+      "text" : ": "
+    },
+    {
+      "kind" : "typeIdentifier",
+      "preciseIdentifier" : "s:11Diagramming8Vector2Da",
+      "text" : "Vector2D"
+    },
+    {
+      "kind" : "text",
+      "text" : ")"
+    }
+  ],
+  "identifier" : "doc:\/\/Diagramming\/documentation\/Diagramming\/BezierPath\/move(to:)",
+  "kind" : "symbol",
+  "role" : "symbol",
+  "title" : "move(to:)",
+  "type" : "topic",
+  "url" : "\/documentation\/diagramming\/bezierpath\/move(to:)"
+},
+"doc://Diagramming/documentation/Diagramming/BezierPath/subpaths()": {
+  "abstract" : [
+    {
+      "text" : "Split the path into individual subpaths.",
+      "type" : "text"
+    }
+  ],
+  "fragments" : [
+    {
+      "kind" : "keyword",
+      "text" : "func"
+    },
+    {
+      "kind" : "text",
+      "text" : " "
+    },
+    {
+      "kind" : "identifier",
+      "text" : "subpaths"
+    },
+    {
+      "kind" : "text",
+      "text" : "() -> ["
+    },
+    {
+      "kind" : "typeIdentifier",
+      "preciseIdentifier" : "s:11Diagramming10BezierPathV",
+      "text" : "BezierPath"
+    },
+    {
+      "kind" : "text",
+      "text" : "]"
+    }
+  ],
+  "identifier" : "doc:\/\/Diagramming\/documentation\/Diagramming\/BezierPath\/subpaths()",
+  "kind" : "symbol",
+  "role" : "symbol",
+  "title" : "subpaths()",
+  "type" : "topic",
+  "url" : "\/documentation\/diagramming\/bezierpath\/subpaths()"
+},
+"doc://Diagramming/documentation/Diagramming/BezierPath/tessellate(maxStages:tolerance:)": {
+  "abstract" : [
+    {
+      "text" : "Tessellate the path into line segments with adaptive point density",
+      "type" : "text"
+    }
+  ],
+  "fragments" : [
+    {
+      "kind" : "keyword",
+      "text" : "func"
+    },
+    {
+      "kind" : "text",
+      "text" : " "
+    },
+    {
+      "kind" : "identifier",
+      "text" : "tessellate"
+    },
+    {
+      "kind" : "text",
+      "text" : "("
+    },
+    {
+      "kind" : "externalParam",
+      "text" : "maxStages"
+    },
+    {
+      "kind" : "text",
+      "text" : ": "
+    },
+    {
+      "kind" : "typeIdentifier",
+      "preciseIdentifier" : "s:Si",
+      "text" : "Int"
+    },
+    {
+      "kind" : "text",
+      "text" : ", "
+    },
+    {
+      "kind" : "externalParam",
+      "text" : "tolerance"
+    },
+    {
+      "kind" : "text",
+      "text" : ": "
+    },
+    {
+      "kind" : "typeIdentifier",
+      "preciseIdentifier" : "s:Sd",
+      "text" : "Double"
+    },
+    {
+      "kind" : "text",
+      "text" : ") -> ["
+    },
+    {
+      "kind" : "typeIdentifier",
+      "preciseIdentifier" : "s:11Diagramming8Vector2Da",
+      "text" : "Vector2D"
+    },
+    {
+      "kind" : "text",
+      "text" : "]"
+    }
+  ],
+  "identifier" : "doc:\/\/Diagramming\/documentation\/Diagramming\/BezierPath\/tessellate(maxStages:tolerance:)",
+  "kind" : "symbol",
+  "role" : "symbol",
+  "title" : "tessellate(maxStages:tolerance:)",
+  "type" : "topic",
+  "url" : "\/documentation\/diagramming\/bezierpath\/tessellate(maxstages:tolerance:)"
+},
+"doc://Diagramming/documentation/Diagramming/BezierPath/toCubicCurves()": {
+  "abstract" : [
+    {
+      "text" : "Convert bezier path to a collection of cubic bezier curves.",
+      "type" : "text"
+    }
+  ],
+  "fragments" : [
+    {
+      "kind" : "keyword",
+      "text" : "func"
+    },
+    {
+      "kind" : "text",
+      "text" : " "
+    },
+    {
+      "kind" : "identifier",
+      "text" : "toCubicCurves"
+    },
+    {
+      "kind" : "text",
+      "text" : "() -> [["
+    },
+    {
+      "kind" : "typeIdentifier",
+      "preciseIdentifier" : "s:11Diagramming15CubicCurvePointV",
+      "text" : "CubicCurvePoint"
+    },
+    {
+      "kind" : "text",
+      "text" : "]]"
+    }
+  ],
+  "identifier" : "doc:\/\/Diagramming\/documentation\/Diagramming\/BezierPath\/toCubicCurves()",
+  "kind" : "symbol",
+  "role" : "symbol",
+  "title" : "toCubicCurves()",
+  "type" : "topic",
+  "url" : "\/documentation\/diagramming\/bezierpath\/tocubiccurves()"
+},
+"doc://Diagramming/documentation/Diagramming/BezierPath/transform(_:)": {
+  "abstract" : [
+    {
+      "text" : "Get a copy of the bezier path transformed using the given affine transform.",
+      "type" : "text"
+    }
+  ],
+  "fragments" : [
+    {
+      "kind" : "keyword",
+      "text" : "func"
+    },
+    {
+      "kind" : "text",
+      "text" : " "
+    },
+    {
+      "kind" : "identifier",
+      "text" : "transform"
+    },
+    {
+      "kind" : "text",
+      "text" : "("
+    },
+    {
+      "kind" : "typeIdentifier",
+      "preciseIdentifier" : "s:11Diagramming15AffineTransformV",
+      "text" : "AffineTransform"
+    },
+    {
+      "kind" : "text",
+      "text" : ") -> "
+    },
+    {
+      "kind" : "typeIdentifier",
+      "preciseIdentifier" : "s:11Diagramming10BezierPathV",
+      "text" : "BezierPath"
+    }
+  ],
+  "identifier" : "doc:\/\/Diagramming\/documentation\/Diagramming\/BezierPath\/transform(_:)",
+  "kind" : "symbol",
+  "role" : "symbol",
+  "title" : "transform(_:)",
+  "type" : "topic",
+  "url" : "\/documentation\/diagramming\/bezierpath\/transform(_:)"
+},
+"doc://Diagramming/s16SendableMetatypeP": {
+  "identifier" : "doc:\/\/Diagramming\/s16SendableMetatypeP",
+  "title" : "Swift.SendableMetatype",
+  "type" : "unresolvable"
+},
+"doc://Diagramming/s8SendableP": {
+  "identifier" : "doc:\/\/Diagramming\/s8SendableP",
+  "title" : "Swift.Sendable",
+  "type" : "unresolvable"
+}
+}
+}

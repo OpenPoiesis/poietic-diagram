@@ -1,0 +1,674 @@
+{
+  "abstract" : [
+    {
+      "text" : "Offset for label rendering position relative to label node position.",
+      "type" : "text"
+    }
+  ],
+  "defaultImplementationsSections" : [
+    {
+      "anchor" : "LayoutProvider-Implementations",
+      "identifiers" : [
+        "doc:\/\/Diagramming\/documentation\/Diagramming\/LayoutProvider\/labelRenderingOffset(extents:anchor:)-3jmqm"
+      ],
+      "title" : "LayoutProvider Implementations"
+    }
+  ],
+  "hierarchy" : {
+    "paths" : [
+      [
+        "doc:\/\/Diagramming\/documentation\/Diagramming",
+        "doc:\/\/Diagramming\/documentation\/Diagramming\/LayoutProvider"
+      ]
+    ]
+  },
+  "identifier" : {
+    "interfaceLanguage" : "swift",
+    "url" : "doc:\/\/Diagramming\/documentation\/Diagramming\/LayoutProvider\/labelRenderingOffset(extents:anchor:)"
+  },
+  "kind" : "symbol",
+  "metadata" : {
+    "externalID" : "s:11Diagramming14LayoutProviderP20labelRenderingOffset7extents6anchors5SIMD2VySdGAA6Rect2DV_AItF",
+    "fragments" : [
+      {
+        "kind" : "keyword",
+        "text" : "func"
+      },
+      {
+        "kind" : "text",
+        "text" : " "
+      },
+      {
+        "kind" : "identifier",
+        "text" : "labelRenderingOffset"
+      },
+      {
+        "kind" : "text",
+        "text" : "("
+      },
+      {
+        "kind" : "externalParam",
+        "text" : "extents"
+      },
+      {
+        "kind" : "text",
+        "text" : ": "
+      },
+      {
+        "kind" : "typeIdentifier",
+        "preciseIdentifier" : "s:11Diagramming6Rect2DV",
+        "text" : "Rect2D"
+      },
+      {
+        "kind" : "text",
+        "text" : ", "
+      },
+      {
+        "kind" : "externalParam",
+        "text" : "anchor"
+      },
+      {
+        "kind" : "text",
+        "text" : ": "
+      },
+      {
+        "kind" : "typeIdentifier",
+        "preciseIdentifier" : "s:11Diagramming8Vector2Da",
+        "text" : "Vector2D"
+      },
+      {
+        "kind" : "text",
+        "text" : ") -> "
+      },
+      {
+        "kind" : "typeIdentifier",
+        "preciseIdentifier" : "s:11Diagramming8Vector2Da",
+        "text" : "Vector2D"
+      }
+    ],
+    "modules" : [
+      {
+        "name" : "Diagramming"
+      }
+    ],
+    "required" : true,
+    "role" : "symbol",
+    "roleHeading" : "Instance Method",
+    "symbolKind" : "method",
+    "title" : "labelRenderingOffset(extents:anchor:)"
+  },
+  "primaryContentSections" : [
+    {
+      "declarations" : [
+        {
+          "languages" : [
+            "swift"
+          ],
+          "platforms" : [
+            "macOS"
+          ],
+          "tokens" : [
+            {
+              "kind" : "keyword",
+              "text" : "func"
+            },
+            {
+              "kind" : "text",
+              "text" : " "
+            },
+            {
+              "kind" : "identifier",
+              "text" : "labelRenderingOffset"
+            },
+            {
+              "kind" : "text",
+              "text" : "("
+            },
+            {
+              "kind" : "externalParam",
+              "text" : "extents"
+            },
+            {
+              "kind" : "text",
+              "text" : ": "
+            },
+            {
+              "identifier" : "doc:\/\/Diagramming\/documentation\/Diagramming\/Rect2D",
+              "kind" : "typeIdentifier",
+              "preciseIdentifier" : "s:11Diagramming6Rect2DV",
+              "text" : "Rect2D"
+            },
+            {
+              "kind" : "text",
+              "text" : ", "
+            },
+            {
+              "kind" : "externalParam",
+              "text" : "anchor"
+            },
+            {
+              "kind" : "text",
+              "text" : ": "
+            },
+            {
+              "identifier" : "doc:\/\/Diagramming\/documentation\/Diagramming\/Vector2D",
+              "kind" : "typeIdentifier",
+              "preciseIdentifier" : "s:11Diagramming8Vector2Da",
+              "text" : "Vector2D"
+            },
+            {
+              "kind" : "text",
+              "text" : ") -> "
+            },
+            {
+              "identifier" : "doc:\/\/Diagramming\/documentation\/Diagramming\/Vector2D",
+              "kind" : "typeIdentifier",
+              "preciseIdentifier" : "s:11Diagramming8Vector2Da",
+              "text" : "Vector2D"
+            }
+          ]
+        }
+      ],
+      "kind" : "declarations"
+    },
+    {
+      "content" : [
+        {
+          "anchor" : "discussion",
+          "level" : 2,
+          "text" : "Discussion",
+          "type" : "heading"
+        },
+        {
+          "inlineContent" : [
+            {
+              "text" : "Different backends might use different positions for label rendering. Typically",
+              "type" : "text"
+            },
+            {
+              "text" : " ",
+              "type" : "text"
+            },
+            {
+              "text" : "backends use lower left point. SVG can use centre point (using ",
+              "type" : "text"
+            },
+            {
+              "code" : "\"middle\"",
+              "type" : "codeVoice"
+            },
+            {
+              "text" : " positioning",
+              "type" : "text"
+            },
+            {
+              "text" : " ",
+              "type" : "text"
+            },
+            {
+              "text" : "attribute). This method give opportunity to the rendering backend to compute correct offset",
+              "type" : "text"
+            },
+            {
+              "text" : " ",
+              "type" : "text"
+            },
+            {
+              "text" : "without affecting the actual node position.",
+              "type" : "text"
+            }
+          ],
+          "type" : "paragraph"
+        },
+        {
+          "inlineContent" : [
+            {
+              "text" : "Default implementation returns nil – default backend behaviour.",
+              "type" : "text"
+            }
+          ],
+          "type" : "paragraph"
+        },
+        {
+          "inlineContent" : [
+            {
+              "text" : "The return value is used by the ",
+              "type" : "text"
+            },
+            {
+              "identifier" : "doc:\/\/Diagramming\/documentation\/Diagramming\/DiagramSceneComposer",
+              "isActive" : true,
+              "type" : "reference"
+            },
+            {
+              "text" : " during layout phase to create",
+              "type" : "text"
+            },
+            {
+              "text" : " ",
+              "type" : "text"
+            },
+            {
+              "identifier" : "doc:\/\/Diagramming\/documentation\/Diagramming\/RenderingOffset",
+              "isActive" : true,
+              "type" : "reference"
+            },
+            {
+              "text" : " component on ",
+              "type" : "text"
+            },
+            {
+              "identifier" : "doc:\/\/Diagramming\/documentation\/Diagramming\/LabelSceneNode",
+              "isActive" : true,
+              "type" : "reference"
+            },
+            {
+              "text" : ".",
+              "type" : "text"
+            }
+          ],
+          "type" : "paragraph"
+        }
+      ],
+      "kind" : "content"
+    }
+  ],
+  "schemaVersion" : {
+    "major" : 0,
+    "minor" : 3,
+    "patch" : 0
+  },
+  "sections" : [
+
+  ],
+  "variants" : [
+    {
+      "paths" : [
+        "\/documentation\/diagramming\/layoutprovider\/labelrenderingoffset(extents:anchor:)"
+      ],
+      "traits" : [
+        {
+          "interfaceLanguage" : "swift"
+        }
+      ]
+    }
+  ]
+, 
+"references": {
+"doc://Diagramming/documentation/Diagramming": {
+  "abstract" : [
+    {
+      "text" : "Diagramming is an OpenPoiesis project package for representing and composing diagrams from design",
+      "type" : "text"
+    },
+    {
+      "text" : " ",
+      "type" : "text"
+    },
+    {
+      "text" : "objects.",
+      "type" : "text"
+    }
+  ],
+  "identifier" : "doc:\/\/Diagramming\/documentation\/Diagramming",
+  "kind" : "symbol",
+  "role" : "collection",
+  "title" : "Diagramming",
+  "type" : "topic",
+  "url" : "\/documentation\/diagramming"
+},
+"doc://Diagramming/documentation/Diagramming/DiagramSceneComposer": {
+  "abstract" : [
+    {
+      "text" : "Object responsible for creating and synchronising a diagram scene with model.",
+      "type" : "text"
+    }
+  ],
+  "fragments" : [
+    {
+      "kind" : "keyword",
+      "text" : "class"
+    },
+    {
+      "kind" : "text",
+      "text" : " "
+    },
+    {
+      "kind" : "identifier",
+      "text" : "DiagramSceneComposer"
+    }
+  ],
+  "identifier" : "doc:\/\/Diagramming\/documentation\/Diagramming\/DiagramSceneComposer",
+  "kind" : "symbol",
+  "navigatorTitle" : [
+    {
+      "kind" : "identifier",
+      "text" : "DiagramSceneComposer"
+    }
+  ],
+  "role" : "symbol",
+  "title" : "DiagramSceneComposer",
+  "type" : "topic",
+  "url" : "\/documentation\/diagramming\/diagramscenecomposer"
+},
+"doc://Diagramming/documentation/Diagramming/LabelSceneNode": {
+  "abstract" : [
+    {
+      "text" : "Text label node.",
+      "type" : "text"
+    }
+  ],
+  "fragments" : [
+    {
+      "kind" : "keyword",
+      "text" : "struct"
+    },
+    {
+      "kind" : "text",
+      "text" : " "
+    },
+    {
+      "kind" : "identifier",
+      "text" : "LabelSceneNode"
+    }
+  ],
+  "identifier" : "doc:\/\/Diagramming\/documentation\/Diagramming\/LabelSceneNode",
+  "kind" : "symbol",
+  "navigatorTitle" : [
+    {
+      "kind" : "identifier",
+      "text" : "LabelSceneNode"
+    }
+  ],
+  "role" : "symbol",
+  "title" : "LabelSceneNode",
+  "type" : "topic",
+  "url" : "\/documentation\/diagramming\/labelscenenode"
+},
+"doc://Diagramming/documentation/Diagramming/LayoutProvider": {
+  "abstract" : [
+    {
+      "text" : "Provider of a diagram layout geometry.",
+      "type" : "text"
+    }
+  ],
+  "fragments" : [
+    {
+      "kind" : "keyword",
+      "text" : "protocol"
+    },
+    {
+      "kind" : "text",
+      "text" : " "
+    },
+    {
+      "kind" : "identifier",
+      "text" : "LayoutProvider"
+    }
+  ],
+  "identifier" : "doc:\/\/Diagramming\/documentation\/Diagramming\/LayoutProvider",
+  "kind" : "symbol",
+  "navigatorTitle" : [
+    {
+      "kind" : "identifier",
+      "text" : "LayoutProvider"
+    }
+  ],
+  "role" : "symbol",
+  "title" : "LayoutProvider",
+  "type" : "topic",
+  "url" : "\/documentation\/diagramming\/layoutprovider"
+},
+"doc://Diagramming/documentation/Diagramming/LayoutProvider/labelRenderingOffset(extents:anchor:)": {
+  "abstract" : [
+    {
+      "text" : "Offset for label rendering position relative to label node position.",
+      "type" : "text"
+    }
+  ],
+  "defaultImplementations" : 1,
+  "fragments" : [
+    {
+      "kind" : "keyword",
+      "text" : "func"
+    },
+    {
+      "kind" : "text",
+      "text" : " "
+    },
+    {
+      "kind" : "identifier",
+      "text" : "labelRenderingOffset"
+    },
+    {
+      "kind" : "text",
+      "text" : "("
+    },
+    {
+      "kind" : "externalParam",
+      "text" : "extents"
+    },
+    {
+      "kind" : "text",
+      "text" : ": "
+    },
+    {
+      "kind" : "typeIdentifier",
+      "preciseIdentifier" : "s:11Diagramming6Rect2DV",
+      "text" : "Rect2D"
+    },
+    {
+      "kind" : "text",
+      "text" : ", "
+    },
+    {
+      "kind" : "externalParam",
+      "text" : "anchor"
+    },
+    {
+      "kind" : "text",
+      "text" : ": "
+    },
+    {
+      "kind" : "typeIdentifier",
+      "preciseIdentifier" : "s:11Diagramming8Vector2Da",
+      "text" : "Vector2D"
+    },
+    {
+      "kind" : "text",
+      "text" : ") -> "
+    },
+    {
+      "kind" : "typeIdentifier",
+      "preciseIdentifier" : "s:11Diagramming8Vector2Da",
+      "text" : "Vector2D"
+    }
+  ],
+  "identifier" : "doc:\/\/Diagramming\/documentation\/Diagramming\/LayoutProvider\/labelRenderingOffset(extents:anchor:)",
+  "kind" : "symbol",
+  "required" : true,
+  "role" : "symbol",
+  "title" : "labelRenderingOffset(extents:anchor:)",
+  "type" : "topic",
+  "url" : "\/documentation\/diagramming\/layoutprovider\/labelrenderingoffset(extents:anchor:)"
+},
+"doc://Diagramming/documentation/Diagramming/LayoutProvider/labelRenderingOffset(extents:anchor:)-3jmqm": {
+  "abstract" : [
+    {
+      "text" : "Offset for label rendering position relative to label node position.",
+      "type" : "text"
+    }
+  ],
+  "fragments" : [
+    {
+      "kind" : "keyword",
+      "text" : "func"
+    },
+    {
+      "kind" : "text",
+      "text" : " "
+    },
+    {
+      "kind" : "identifier",
+      "text" : "labelRenderingOffset"
+    },
+    {
+      "kind" : "text",
+      "text" : "("
+    },
+    {
+      "kind" : "externalParam",
+      "text" : "extents"
+    },
+    {
+      "kind" : "text",
+      "text" : ": "
+    },
+    {
+      "kind" : "typeIdentifier",
+      "preciseIdentifier" : "s:11Diagramming6Rect2DV",
+      "text" : "Rect2D"
+    },
+    {
+      "kind" : "text",
+      "text" : ", "
+    },
+    {
+      "kind" : "externalParam",
+      "text" : "anchor"
+    },
+    {
+      "kind" : "text",
+      "text" : ": "
+    },
+    {
+      "kind" : "typeIdentifier",
+      "preciseIdentifier" : "s:11Diagramming8Vector2Da",
+      "text" : "Vector2D"
+    },
+    {
+      "kind" : "text",
+      "text" : ") -> "
+    },
+    {
+      "kind" : "typeIdentifier",
+      "preciseIdentifier" : "s:11Diagramming8Vector2Da",
+      "text" : "Vector2D"
+    }
+  ],
+  "identifier" : "doc:\/\/Diagramming\/documentation\/Diagramming\/LayoutProvider\/labelRenderingOffset(extents:anchor:)-3jmqm",
+  "kind" : "symbol",
+  "role" : "symbol",
+  "title" : "labelRenderingOffset(extents:anchor:)",
+  "type" : "topic",
+  "url" : "\/documentation\/diagramming\/layoutprovider\/labelrenderingoffset(extents:anchor:)-3jmqm"
+},
+"doc://Diagramming/documentation/Diagramming/Rect2D": {
+  "abstract" : [
+    {
+      "text" : "A 2D rectangle represented by an origin point and size dimensions.",
+      "type" : "text"
+    }
+  ],
+  "fragments" : [
+    {
+      "kind" : "keyword",
+      "text" : "struct"
+    },
+    {
+      "kind" : "text",
+      "text" : " "
+    },
+    {
+      "kind" : "identifier",
+      "text" : "Rect2D"
+    }
+  ],
+  "identifier" : "doc:\/\/Diagramming\/documentation\/Diagramming\/Rect2D",
+  "kind" : "symbol",
+  "navigatorTitle" : [
+    {
+      "kind" : "identifier",
+      "text" : "Rect2D"
+    }
+  ],
+  "role" : "symbol",
+  "title" : "Rect2D",
+  "type" : "topic",
+  "url" : "\/documentation\/diagramming\/rect2d"
+},
+"doc://Diagramming/documentation/Diagramming/RenderingOffset": {
+  "abstract" : [
+    {
+      "text" : "Scene node component containing offset used as an adjustment by renderers (presenters) for",
+      "type" : "text"
+    },
+    {
+      "text" : " ",
+      "type" : "text"
+    },
+    {
+      "text" : "positions computed by backend-agnostic functions.",
+      "type" : "text"
+    }
+  ],
+  "fragments" : [
+    {
+      "kind" : "keyword",
+      "text" : "struct"
+    },
+    {
+      "kind" : "text",
+      "text" : " "
+    },
+    {
+      "kind" : "identifier",
+      "text" : "RenderingOffset"
+    }
+  ],
+  "identifier" : "doc:\/\/Diagramming\/documentation\/Diagramming\/RenderingOffset",
+  "kind" : "symbol",
+  "navigatorTitle" : [
+    {
+      "kind" : "identifier",
+      "text" : "RenderingOffset"
+    }
+  ],
+  "role" : "symbol",
+  "title" : "RenderingOffset",
+  "type" : "topic",
+  "url" : "\/documentation\/diagramming\/renderingoffset"
+},
+"doc://Diagramming/documentation/Diagramming/Vector2D": {
+  "abstract" : [
+
+  ],
+  "fragments" : [
+    {
+      "kind" : "keyword",
+      "text" : "typealias"
+    },
+    {
+      "kind" : "text",
+      "text" : " "
+    },
+    {
+      "kind" : "identifier",
+      "text" : "Vector2D"
+    }
+  ],
+  "identifier" : "doc:\/\/Diagramming\/documentation\/Diagramming\/Vector2D",
+  "kind" : "symbol",
+  "navigatorTitle" : [
+    {
+      "kind" : "identifier",
+      "text" : "Vector2D"
+    }
+  ],
+  "role" : "symbol",
+  "title" : "Vector2D",
+  "type" : "topic",
+  "url" : "\/documentation\/diagramming\/vector2d"
+}
+}
+}

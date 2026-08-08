@@ -1,0 +1,287 @@
+{
+  "hierarchy" : {
+    "paths" : [
+      [
+        "doc:\/\/Diagramming\/documentation\/Diagramming",
+        "doc:\/\/Diagramming\/documentation\/Diagramming\/ValueIndicatorSceneNode"
+      ]
+    ]
+  },
+  "identifier" : {
+    "interfaceLanguage" : "swift",
+    "url" : "doc:\/\/Diagramming\/documentation\/Diagramming\/ValueIndicatorSceneNode\/Orientation-swift.enum"
+  },
+  "kind" : "symbol",
+  "metadata" : {
+    "externalID" : "s:11Diagramming23ValueIndicatorSceneNodeV11OrientationO",
+    "fragments" : [
+      {
+        "kind" : "keyword",
+        "text" : "enum"
+      },
+      {
+        "kind" : "text",
+        "text" : " "
+      },
+      {
+        "kind" : "identifier",
+        "text" : "Orientation"
+      }
+    ],
+    "modules" : [
+      {
+        "name" : "Diagramming"
+      }
+    ],
+    "navigatorTitle" : [
+      {
+        "kind" : "identifier",
+        "text" : "Orientation"
+      }
+    ],
+    "role" : "symbol",
+    "roleHeading" : "Enumeration",
+    "symbolKind" : "enum",
+    "title" : "ValueIndicatorSceneNode.Orientation"
+  },
+  "primaryContentSections" : [
+    {
+      "declarations" : [
+        {
+          "languages" : [
+            "swift"
+          ],
+          "platforms" : [
+            "macOS"
+          ],
+          "tokens" : [
+            {
+              "kind" : "keyword",
+              "text" : "enum"
+            },
+            {
+              "kind" : "text",
+              "text" : " "
+            },
+            {
+              "kind" : "identifier",
+              "text" : "Orientation"
+            }
+          ]
+        }
+      ],
+      "kind" : "declarations"
+    }
+  ],
+  "relationshipsSections" : [
+    {
+      "identifiers" : [
+        "doc:\/\/Diagramming\/SQ",
+        "doc:\/\/Diagramming\/SH"
+      ],
+      "kind" : "relationships",
+      "title" : "Conforms To",
+      "type" : "conformsTo"
+    }
+  ],
+  "schemaVersion" : {
+    "major" : 0,
+    "minor" : 3,
+    "patch" : 0
+  },
+  "sections" : [
+
+  ],
+  "topicSections" : [
+    {
+      "anchor" : "Enumeration-Cases",
+      "generated" : true,
+      "identifiers" : [
+        "doc:\/\/Diagramming\/documentation\/Diagramming\/ValueIndicatorSceneNode\/Orientation-swift.enum\/horizontal",
+        "doc:\/\/Diagramming\/documentation\/Diagramming\/ValueIndicatorSceneNode\/Orientation-swift.enum\/vertical"
+      ],
+      "title" : "Enumeration Cases"
+    },
+    {
+      "anchor" : "Default-Implementations",
+      "generated" : true,
+      "identifiers" : [
+        "doc:\/\/Diagramming\/documentation\/Diagramming\/ValueIndicatorSceneNode\/Orientation-swift.enum\/Equatable-Implementations"
+      ],
+      "title" : "Default Implementations"
+    }
+  ],
+  "variants" : [
+    {
+      "paths" : [
+        "\/documentation\/diagramming\/valueindicatorscenenode\/orientation-swift.enum"
+      ],
+      "traits" : [
+        {
+          "interfaceLanguage" : "swift"
+        }
+      ]
+    }
+  ]
+, 
+"references": {
+"doc://Diagramming/SH": {
+  "identifier" : "doc:\/\/Diagramming\/SH",
+  "title" : "Swift.Hashable",
+  "type" : "unresolvable"
+},
+"doc://Diagramming/SQ": {
+  "identifier" : "doc:\/\/Diagramming\/SQ",
+  "title" : "Swift.Equatable",
+  "type" : "unresolvable"
+},
+"doc://Diagramming/documentation/Diagramming": {
+  "abstract" : [
+    {
+      "text" : "Diagramming is an OpenPoiesis project package for representing and composing diagrams from design",
+      "type" : "text"
+    },
+    {
+      "text" : " ",
+      "type" : "text"
+    },
+    {
+      "text" : "objects.",
+      "type" : "text"
+    }
+  ],
+  "identifier" : "doc:\/\/Diagramming\/documentation\/Diagramming",
+  "kind" : "symbol",
+  "role" : "collection",
+  "title" : "Diagramming",
+  "type" : "topic",
+  "url" : "\/documentation\/diagramming"
+},
+"doc://Diagramming/documentation/Diagramming/ValueIndicatorSceneNode": {
+  "abstract" : [
+    {
+      "text" : "Visual indicator of a numeric value in form of a bar.",
+      "type" : "text"
+    }
+  ],
+  "fragments" : [
+    {
+      "kind" : "keyword",
+      "text" : "struct"
+    },
+    {
+      "kind" : "text",
+      "text" : " "
+    },
+    {
+      "kind" : "identifier",
+      "text" : "ValueIndicatorSceneNode"
+    }
+  ],
+  "identifier" : "doc:\/\/Diagramming\/documentation\/Diagramming\/ValueIndicatorSceneNode",
+  "kind" : "symbol",
+  "navigatorTitle" : [
+    {
+      "kind" : "identifier",
+      "text" : "ValueIndicatorSceneNode"
+    }
+  ],
+  "role" : "symbol",
+  "title" : "ValueIndicatorSceneNode",
+  "type" : "topic",
+  "url" : "\/documentation\/diagramming\/valueindicatorscenenode"
+},
+"doc://Diagramming/documentation/Diagramming/ValueIndicatorSceneNode/Orientation-swift.enum": {
+  "abstract" : [
+
+  ],
+  "fragments" : [
+    {
+      "kind" : "keyword",
+      "text" : "enum"
+    },
+    {
+      "kind" : "text",
+      "text" : " "
+    },
+    {
+      "kind" : "identifier",
+      "text" : "Orientation"
+    }
+  ],
+  "identifier" : "doc:\/\/Diagramming\/documentation\/Diagramming\/ValueIndicatorSceneNode\/Orientation-swift.enum",
+  "kind" : "symbol",
+  "navigatorTitle" : [
+    {
+      "kind" : "identifier",
+      "text" : "Orientation"
+    }
+  ],
+  "role" : "symbol",
+  "title" : "ValueIndicatorSceneNode.Orientation",
+  "type" : "topic",
+  "url" : "\/documentation\/diagramming\/valueindicatorscenenode\/orientation-swift.enum"
+},
+"doc://Diagramming/documentation/Diagramming/ValueIndicatorSceneNode/Orientation-swift.enum/Equatable-Implementations": {
+  "abstract" : [
+
+  ],
+  "identifier" : "doc:\/\/Diagramming\/documentation\/Diagramming\/ValueIndicatorSceneNode\/Orientation-swift.enum\/Equatable-Implementations",
+  "kind" : "article",
+  "role" : "collectionGroup",
+  "title" : "Equatable Implementations",
+  "type" : "topic",
+  "url" : "\/documentation\/diagramming\/valueindicatorscenenode\/orientation-swift.enum\/equatable-implementations"
+},
+"doc://Diagramming/documentation/Diagramming/ValueIndicatorSceneNode/Orientation-swift.enum/horizontal": {
+  "abstract" : [
+
+  ],
+  "fragments" : [
+    {
+      "kind" : "keyword",
+      "text" : "case"
+    },
+    {
+      "kind" : "text",
+      "text" : " "
+    },
+    {
+      "kind" : "identifier",
+      "text" : "horizontal"
+    }
+  ],
+  "identifier" : "doc:\/\/Diagramming\/documentation\/Diagramming\/ValueIndicatorSceneNode\/Orientation-swift.enum\/horizontal",
+  "kind" : "symbol",
+  "role" : "symbol",
+  "title" : "ValueIndicatorSceneNode.Orientation.horizontal",
+  "type" : "topic",
+  "url" : "\/documentation\/diagramming\/valueindicatorscenenode\/orientation-swift.enum\/horizontal"
+},
+"doc://Diagramming/documentation/Diagramming/ValueIndicatorSceneNode/Orientation-swift.enum/vertical": {
+  "abstract" : [
+
+  ],
+  "fragments" : [
+    {
+      "kind" : "keyword",
+      "text" : "case"
+    },
+    {
+      "kind" : "text",
+      "text" : " "
+    },
+    {
+      "kind" : "identifier",
+      "text" : "vertical"
+    }
+  ],
+  "identifier" : "doc:\/\/Diagramming\/documentation\/Diagramming\/ValueIndicatorSceneNode\/Orientation-swift.enum\/vertical",
+  "kind" : "symbol",
+  "role" : "symbol",
+  "title" : "ValueIndicatorSceneNode.Orientation.vertical",
+  "type" : "topic",
+  "url" : "\/documentation\/diagramming\/valueindicatorscenenode\/orientation-swift.enum\/vertical"
+}
+}
+}

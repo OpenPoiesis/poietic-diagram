@@ -1,0 +1,923 @@
+{
+  "abstract" : [
+    {
+      "text" : "Arrowhead style for thin (stroke-based) connectors.",
+      "type" : "text"
+    }
+  ],
+  "hierarchy" : {
+    "paths" : [
+      [
+        "doc:\/\/Diagramming\/documentation\/Diagramming"
+      ]
+    ]
+  },
+  "identifier" : {
+    "interfaceLanguage" : "swift",
+    "url" : "doc:\/\/Diagramming\/documentation\/Diagramming\/ThinArrowheadType"
+  },
+  "kind" : "symbol",
+  "metadata" : {
+    "externalID" : "s:11Diagramming17ThinArrowheadTypeO",
+    "fragments" : [
+      {
+        "kind" : "keyword",
+        "text" : "enum"
+      },
+      {
+        "kind" : "text",
+        "text" : " "
+      },
+      {
+        "kind" : "identifier",
+        "text" : "ThinArrowheadType"
+      }
+    ],
+    "modules" : [
+      {
+        "name" : "Diagramming"
+      }
+    ],
+    "navigatorTitle" : [
+      {
+        "kind" : "identifier",
+        "text" : "ThinArrowheadType"
+      }
+    ],
+    "role" : "symbol",
+    "roleHeading" : "Enumeration",
+    "symbolKind" : "enum",
+    "title" : "ThinArrowheadType"
+  },
+  "primaryContentSections" : [
+    {
+      "declarations" : [
+        {
+          "languages" : [
+            "swift"
+          ],
+          "platforms" : [
+            "macOS"
+          ],
+          "tokens" : [
+            {
+              "kind" : "keyword",
+              "text" : "enum"
+            },
+            {
+              "kind" : "text",
+              "text" : " "
+            },
+            {
+              "kind" : "identifier",
+              "text" : "ThinArrowheadType"
+            }
+          ]
+        }
+      ],
+      "kind" : "declarations"
+    },
+    {
+      "content" : [
+        {
+          "anchor" : "overview",
+          "level" : 2,
+          "text" : "Overview",
+          "type" : "heading"
+        },
+        {
+          "inlineContent" : [
+            {
+              "text" : "Each arrowhead type provides different visual representations for connector endpoints.",
+              "type" : "text"
+            },
+            {
+              "text" : " ",
+              "type" : "text"
+            },
+            {
+              "text" : "The arrowheads are drawn as separate stroke paths and can have different sizes at head and tail.",
+              "type" : "text"
+            }
+          ],
+          "type" : "paragraph"
+        }
+      ],
+      "kind" : "content"
+    }
+  ],
+  "relationshipsSections" : [
+    {
+      "identifiers" : [
+        "doc:\/\/Diagramming\/s12CaseIterableP",
+        "doc:\/\/Diagramming\/SQ",
+        "doc:\/\/Diagramming\/SH",
+        "doc:\/\/Diagramming\/s8SendableP",
+        "doc:\/\/Diagramming\/s16SendableMetatypeP"
+      ],
+      "kind" : "relationships",
+      "title" : "Conforms To",
+      "type" : "conformsTo"
+    }
+  ],
+  "schemaVersion" : {
+    "major" : 0,
+    "minor" : 3,
+    "patch" : 0
+  },
+  "sections" : [
+
+  ],
+  "seeAlsoSections" : [
+    {
+      "anchor" : "Notation",
+      "generated" : true,
+      "identifiers" : [
+        "doc:\/\/Diagramming\/documentation\/Diagramming\/Notation",
+        "doc:\/\/Diagramming\/documentation\/Diagramming\/Pictogram",
+        "doc:\/\/Diagramming\/documentation\/Diagramming\/ConnectorGlyph",
+        "doc:\/\/Diagramming\/documentation\/Diagramming\/NotationRules",
+        "doc:\/\/Diagramming\/documentation\/Diagramming\/PictogramCollection",
+        "doc:\/\/Diagramming\/documentation\/Diagramming\/LineType",
+        "doc:\/\/Diagramming\/documentation\/Diagramming\/JoinType",
+        "doc:\/\/Diagramming\/documentation\/Diagramming\/CollisionShape",
+        "doc:\/\/Diagramming\/documentation\/Diagramming\/FatArrowheadType",
+        "doc:\/\/Diagramming\/documentation\/Diagramming\/Arrowhead"
+      ],
+      "title" : "Notation"
+    }
+  ],
+  "topicSections" : [
+    {
+      "anchor" : "Enumeration-Cases",
+      "generated" : true,
+      "identifiers" : [
+        "doc:\/\/Diagramming\/documentation\/Diagramming\/ThinArrowheadType\/ball",
+        "doc:\/\/Diagramming\/documentation\/Diagramming\/ThinArrowheadType\/ballCenter",
+        "doc:\/\/Diagramming\/documentation\/Diagramming\/ThinArrowheadType\/bar",
+        "doc:\/\/Diagramming\/documentation\/Diagramming\/ThinArrowheadType\/box",
+        "doc:\/\/Diagramming\/documentation\/Diagramming\/ThinArrowheadType\/diamond",
+        "doc:\/\/Diagramming\/documentation\/Diagramming\/ThinArrowheadType\/negative",
+        "doc:\/\/Diagramming\/documentation\/Diagramming\/ThinArrowheadType\/nonNavigable",
+        "doc:\/\/Diagramming\/documentation\/Diagramming\/ThinArrowheadType\/none",
+        "doc:\/\/Diagramming\/documentation\/Diagramming\/ThinArrowheadType\/stick"
+      ],
+      "title" : "Enumeration Cases"
+    },
+    {
+      "anchor" : "Instance-Methods",
+      "generated" : true,
+      "identifiers" : [
+        "doc:\/\/Diagramming\/documentation\/Diagramming\/ThinArrowheadType\/touchPointOffset(_:)"
+      ],
+      "title" : "Instance Methods"
+    },
+    {
+      "anchor" : "Default-Implementations",
+      "generated" : true,
+      "identifiers" : [
+        "doc:\/\/Diagramming\/documentation\/Diagramming\/ThinArrowheadType\/Equatable-Implementations"
+      ],
+      "title" : "Default Implementations"
+    }
+  ],
+  "variants" : [
+    {
+      "paths" : [
+        "\/documentation\/diagramming\/thinarrowheadtype"
+      ],
+      "traits" : [
+        {
+          "interfaceLanguage" : "swift"
+        }
+      ]
+    }
+  ]
+, 
+"references": {
+"doc://Diagramming/SH": {
+  "identifier" : "doc:\/\/Diagramming\/SH",
+  "title" : "Swift.Hashable",
+  "type" : "unresolvable"
+},
+"doc://Diagramming/SQ": {
+  "identifier" : "doc:\/\/Diagramming\/SQ",
+  "title" : "Swift.Equatable",
+  "type" : "unresolvable"
+},
+"doc://Diagramming/documentation/Diagramming": {
+  "abstract" : [
+    {
+      "text" : "Diagramming is an OpenPoiesis project package for representing and composing diagrams from design",
+      "type" : "text"
+    },
+    {
+      "text" : " ",
+      "type" : "text"
+    },
+    {
+      "text" : "objects.",
+      "type" : "text"
+    }
+  ],
+  "identifier" : "doc:\/\/Diagramming\/documentation\/Diagramming",
+  "kind" : "symbol",
+  "role" : "collection",
+  "title" : "Diagramming",
+  "type" : "topic",
+  "url" : "\/documentation\/diagramming"
+},
+"doc://Diagramming/documentation/Diagramming/Arrowhead": {
+  "abstract" : [
+    {
+      "text" : "A thin arrowhead represented as a stroke path with connection offset.",
+      "type" : "text"
+    }
+  ],
+  "fragments" : [
+    {
+      "kind" : "keyword",
+      "text" : "struct"
+    },
+    {
+      "kind" : "text",
+      "text" : " "
+    },
+    {
+      "kind" : "identifier",
+      "text" : "Arrowhead"
+    }
+  ],
+  "identifier" : "doc:\/\/Diagramming\/documentation\/Diagramming\/Arrowhead",
+  "kind" : "symbol",
+  "navigatorTitle" : [
+    {
+      "kind" : "identifier",
+      "text" : "Arrowhead"
+    }
+  ],
+  "role" : "symbol",
+  "title" : "Arrowhead",
+  "type" : "topic",
+  "url" : "\/documentation\/diagramming\/arrowhead"
+},
+"doc://Diagramming/documentation/Diagramming/CollisionShape": {
+  "abstract" : [
+
+  ],
+  "fragments" : [
+    {
+      "kind" : "keyword",
+      "text" : "struct"
+    },
+    {
+      "kind" : "text",
+      "text" : " "
+    },
+    {
+      "kind" : "identifier",
+      "text" : "CollisionShape"
+    }
+  ],
+  "identifier" : "doc:\/\/Diagramming\/documentation\/Diagramming\/CollisionShape",
+  "kind" : "symbol",
+  "navigatorTitle" : [
+    {
+      "kind" : "identifier",
+      "text" : "CollisionShape"
+    }
+  ],
+  "role" : "symbol",
+  "title" : "CollisionShape",
+  "type" : "topic",
+  "url" : "\/documentation\/diagramming\/collisionshape"
+},
+"doc://Diagramming/documentation/Diagramming/ConnectorGlyph": {
+  "abstract" : [
+    {
+      "text" : "Visual semantic definition of a connector.",
+      "type" : "text"
+    }
+  ],
+  "fragments" : [
+    {
+      "kind" : "keyword",
+      "text" : "class"
+    },
+    {
+      "kind" : "text",
+      "text" : " "
+    },
+    {
+      "kind" : "identifier",
+      "text" : "ConnectorGlyph"
+    }
+  ],
+  "identifier" : "doc:\/\/Diagramming\/documentation\/Diagramming\/ConnectorGlyph",
+  "kind" : "symbol",
+  "navigatorTitle" : [
+    {
+      "kind" : "identifier",
+      "text" : "ConnectorGlyph"
+    }
+  ],
+  "role" : "symbol",
+  "title" : "ConnectorGlyph",
+  "type" : "topic",
+  "url" : "\/documentation\/diagramming\/connectorglyph"
+},
+"doc://Diagramming/documentation/Diagramming/FatArrowheadType": {
+  "abstract" : [
+    {
+      "text" : "Arrowhead styles for fat (filled polygon) connectors.",
+      "type" : "text"
+    }
+  ],
+  "fragments" : [
+    {
+      "kind" : "keyword",
+      "text" : "enum"
+    },
+    {
+      "kind" : "text",
+      "text" : " "
+    },
+    {
+      "kind" : "identifier",
+      "text" : "FatArrowheadType"
+    }
+  ],
+  "identifier" : "doc:\/\/Diagramming\/documentation\/Diagramming\/FatArrowheadType",
+  "kind" : "symbol",
+  "navigatorTitle" : [
+    {
+      "kind" : "identifier",
+      "text" : "FatArrowheadType"
+    }
+  ],
+  "role" : "symbol",
+  "title" : "FatArrowheadType",
+  "type" : "topic",
+  "url" : "\/documentation\/diagramming\/fatarrowheadtype"
+},
+"doc://Diagramming/documentation/Diagramming/JoinType": {
+  "abstract" : [
+    {
+      "text" : "Defines how line segments are joined together at corners.",
+      "type" : "text"
+    }
+  ],
+  "fragments" : [
+    {
+      "kind" : "keyword",
+      "text" : "enum"
+    },
+    {
+      "kind" : "text",
+      "text" : " "
+    },
+    {
+      "kind" : "identifier",
+      "text" : "JoinType"
+    }
+  ],
+  "identifier" : "doc:\/\/Diagramming\/documentation\/Diagramming\/JoinType",
+  "kind" : "symbol",
+  "navigatorTitle" : [
+    {
+      "kind" : "identifier",
+      "text" : "JoinType"
+    }
+  ],
+  "role" : "symbol",
+  "title" : "JoinType",
+  "type" : "topic",
+  "url" : "\/documentation\/diagramming\/jointype"
+},
+"doc://Diagramming/documentation/Diagramming/LineType": {
+  "abstract" : [
+    {
+      "text" : "Defines different line rendering styles for connectors.",
+      "type" : "text"
+    }
+  ],
+  "fragments" : [
+    {
+      "kind" : "keyword",
+      "text" : "enum"
+    },
+    {
+      "kind" : "text",
+      "text" : " "
+    },
+    {
+      "kind" : "identifier",
+      "text" : "LineType"
+    }
+  ],
+  "identifier" : "doc:\/\/Diagramming\/documentation\/Diagramming\/LineType",
+  "kind" : "symbol",
+  "navigatorTitle" : [
+    {
+      "kind" : "identifier",
+      "text" : "LineType"
+    }
+  ],
+  "role" : "symbol",
+  "title" : "LineType",
+  "type" : "topic",
+  "url" : "\/documentation\/diagramming\/linetype"
+},
+"doc://Diagramming/documentation/Diagramming/Notation": {
+  "abstract" : [
+    {
+      "text" : "Collection of pictograms and connector glyphs.",
+      "type" : "text"
+    }
+  ],
+  "fragments" : [
+    {
+      "kind" : "keyword",
+      "text" : "class"
+    },
+    {
+      "kind" : "text",
+      "text" : " "
+    },
+    {
+      "kind" : "identifier",
+      "text" : "Notation"
+    }
+  ],
+  "identifier" : "doc:\/\/Diagramming\/documentation\/Diagramming\/Notation",
+  "kind" : "symbol",
+  "navigatorTitle" : [
+    {
+      "kind" : "identifier",
+      "text" : "Notation"
+    }
+  ],
+  "role" : "symbol",
+  "title" : "Notation",
+  "type" : "topic",
+  "url" : "\/documentation\/diagramming\/notation"
+},
+"doc://Diagramming/documentation/Diagramming/NotationRules": {
+  "abstract" : [
+    {
+      "text" : "Rules for mapping between object types and notation elements.",
+      "type" : "text"
+    }
+  ],
+  "fragments" : [
+    {
+      "kind" : "keyword",
+      "text" : "struct"
+    },
+    {
+      "kind" : "text",
+      "text" : " "
+    },
+    {
+      "kind" : "identifier",
+      "text" : "NotationRules"
+    }
+  ],
+  "identifier" : "doc:\/\/Diagramming\/documentation\/Diagramming\/NotationRules",
+  "kind" : "symbol",
+  "navigatorTitle" : [
+    {
+      "kind" : "identifier",
+      "text" : "NotationRules"
+    }
+  ],
+  "role" : "symbol",
+  "title" : "NotationRules",
+  "type" : "topic",
+  "url" : "\/documentation\/diagramming\/notationrules"
+},
+"doc://Diagramming/documentation/Diagramming/Pictogram": {
+  "abstract" : [
+    {
+      "text" : "Visual representation of an object in a diagram.",
+      "type" : "text"
+    }
+  ],
+  "fragments" : [
+    {
+      "kind" : "keyword",
+      "text" : "class"
+    },
+    {
+      "kind" : "text",
+      "text" : " "
+    },
+    {
+      "kind" : "identifier",
+      "text" : "Pictogram"
+    }
+  ],
+  "identifier" : "doc:\/\/Diagramming\/documentation\/Diagramming\/Pictogram",
+  "kind" : "symbol",
+  "navigatorTitle" : [
+    {
+      "kind" : "identifier",
+      "text" : "Pictogram"
+    }
+  ],
+  "role" : "symbol",
+  "title" : "Pictogram",
+  "type" : "topic",
+  "url" : "\/documentation\/diagramming\/pictogram"
+},
+"doc://Diagramming/documentation/Diagramming/PictogramCollection": {
+  "abstract" : [
+
+  ],
+  "fragments" : [
+    {
+      "kind" : "keyword",
+      "text" : "class"
+    },
+    {
+      "kind" : "text",
+      "text" : " "
+    },
+    {
+      "kind" : "identifier",
+      "text" : "PictogramCollection"
+    }
+  ],
+  "identifier" : "doc:\/\/Diagramming\/documentation\/Diagramming\/PictogramCollection",
+  "kind" : "symbol",
+  "navigatorTitle" : [
+    {
+      "kind" : "identifier",
+      "text" : "PictogramCollection"
+    }
+  ],
+  "role" : "symbol",
+  "title" : "PictogramCollection",
+  "type" : "topic",
+  "url" : "\/documentation\/diagramming\/pictogramcollection"
+},
+"doc://Diagramming/documentation/Diagramming/ThinArrowheadType": {
+  "abstract" : [
+    {
+      "text" : "Arrowhead style for thin (stroke-based) connectors.",
+      "type" : "text"
+    }
+  ],
+  "fragments" : [
+    {
+      "kind" : "keyword",
+      "text" : "enum"
+    },
+    {
+      "kind" : "text",
+      "text" : " "
+    },
+    {
+      "kind" : "identifier",
+      "text" : "ThinArrowheadType"
+    }
+  ],
+  "identifier" : "doc:\/\/Diagramming\/documentation\/Diagramming\/ThinArrowheadType",
+  "kind" : "symbol",
+  "navigatorTitle" : [
+    {
+      "kind" : "identifier",
+      "text" : "ThinArrowheadType"
+    }
+  ],
+  "role" : "symbol",
+  "title" : "ThinArrowheadType",
+  "type" : "topic",
+  "url" : "\/documentation\/diagramming\/thinarrowheadtype"
+},
+"doc://Diagramming/documentation/Diagramming/ThinArrowheadType/Equatable-Implementations": {
+  "abstract" : [
+
+  ],
+  "identifier" : "doc:\/\/Diagramming\/documentation\/Diagramming\/ThinArrowheadType\/Equatable-Implementations",
+  "kind" : "article",
+  "role" : "collectionGroup",
+  "title" : "Equatable Implementations",
+  "type" : "topic",
+  "url" : "\/documentation\/diagramming\/thinarrowheadtype\/equatable-implementations"
+},
+"doc://Diagramming/documentation/Diagramming/ThinArrowheadType/ball": {
+  "abstract" : [
+    {
+      "text" : "Ball touching the endpoint",
+      "type" : "text"
+    }
+  ],
+  "fragments" : [
+    {
+      "kind" : "keyword",
+      "text" : "case"
+    },
+    {
+      "kind" : "text",
+      "text" : " "
+    },
+    {
+      "kind" : "identifier",
+      "text" : "ball"
+    }
+  ],
+  "identifier" : "doc:\/\/Diagramming\/documentation\/Diagramming\/ThinArrowheadType\/ball",
+  "kind" : "symbol",
+  "role" : "symbol",
+  "title" : "ThinArrowheadType.ball",
+  "type" : "topic",
+  "url" : "\/documentation\/diagramming\/thinarrowheadtype\/ball"
+},
+"doc://Diagramming/documentation/Diagramming/ThinArrowheadType/ballCenter": {
+  "abstract" : [
+    {
+      "text" : "Ball centred at the endpoint",
+      "type" : "text"
+    }
+  ],
+  "fragments" : [
+    {
+      "kind" : "keyword",
+      "text" : "case"
+    },
+    {
+      "kind" : "text",
+      "text" : " "
+    },
+    {
+      "kind" : "identifier",
+      "text" : "ballCenter"
+    }
+  ],
+  "identifier" : "doc:\/\/Diagramming\/documentation\/Diagramming\/ThinArrowheadType\/ballCenter",
+  "kind" : "symbol",
+  "role" : "symbol",
+  "title" : "ThinArrowheadType.ballCenter",
+  "type" : "topic",
+  "url" : "\/documentation\/diagramming\/thinarrowheadtype\/ballcenter"
+},
+"doc://Diagramming/documentation/Diagramming/ThinArrowheadType/bar": {
+  "abstract" : [
+    {
+      "text" : "Bar or tee-shaped arrowhead (negative control)",
+      "type" : "text"
+    }
+  ],
+  "fragments" : [
+    {
+      "kind" : "keyword",
+      "text" : "case"
+    },
+    {
+      "kind" : "text",
+      "text" : " "
+    },
+    {
+      "kind" : "identifier",
+      "text" : "bar"
+    }
+  ],
+  "identifier" : "doc:\/\/Diagramming\/documentation\/Diagramming\/ThinArrowheadType\/bar",
+  "kind" : "symbol",
+  "role" : "symbol",
+  "title" : "ThinArrowheadType.bar",
+  "type" : "topic",
+  "url" : "\/documentation\/diagramming\/thinarrowheadtype\/bar"
+},
+"doc://Diagramming/documentation/Diagramming/ThinArrowheadType/box": {
+  "abstract" : [
+    {
+      "text" : "Box-shaped arrowhead, a square",
+      "type" : "text"
+    }
+  ],
+  "fragments" : [
+    {
+      "kind" : "keyword",
+      "text" : "case"
+    },
+    {
+      "kind" : "text",
+      "text" : " "
+    },
+    {
+      "kind" : "identifier",
+      "text" : "box"
+    }
+  ],
+  "identifier" : "doc:\/\/Diagramming\/documentation\/Diagramming\/ThinArrowheadType\/box",
+  "kind" : "symbol",
+  "role" : "symbol",
+  "title" : "ThinArrowheadType.box",
+  "type" : "topic",
+  "url" : "\/documentation\/diagramming\/thinarrowheadtype\/box"
+},
+"doc://Diagramming/documentation/Diagramming/ThinArrowheadType/diamond": {
+  "abstract" : [
+    {
+      "text" : "Diamond-shaped arrowhead",
+      "type" : "text"
+    }
+  ],
+  "fragments" : [
+    {
+      "kind" : "keyword",
+      "text" : "case"
+    },
+    {
+      "kind" : "text",
+      "text" : " "
+    },
+    {
+      "kind" : "identifier",
+      "text" : "diamond"
+    }
+  ],
+  "identifier" : "doc:\/\/Diagramming\/documentation\/Diagramming\/ThinArrowheadType\/diamond",
+  "kind" : "symbol",
+  "role" : "symbol",
+  "title" : "ThinArrowheadType.diamond",
+  "type" : "topic",
+  "url" : "\/documentation\/diagramming\/thinarrowheadtype\/diamond"
+},
+"doc://Diagramming/documentation/Diagramming/ThinArrowheadType/negative": {
+  "abstract" : [
+    {
+      "text" : "Negative control (a bar at the endpoint)",
+      "type" : "text"
+    }
+  ],
+  "fragments" : [
+    {
+      "kind" : "keyword",
+      "text" : "case"
+    },
+    {
+      "kind" : "text",
+      "text" : " "
+    },
+    {
+      "kind" : "identifier",
+      "text" : "negative"
+    }
+  ],
+  "identifier" : "doc:\/\/Diagramming\/documentation\/Diagramming\/ThinArrowheadType\/negative",
+  "kind" : "symbol",
+  "role" : "symbol",
+  "title" : "ThinArrowheadType.negative",
+  "type" : "topic",
+  "url" : "\/documentation\/diagramming\/thinarrowheadtype\/negative"
+},
+"doc://Diagramming/documentation/Diagramming/ThinArrowheadType/nonNavigable": {
+  "abstract" : [
+    {
+      "text" : "X-like cross",
+      "type" : "text"
+    }
+  ],
+  "fragments" : [
+    {
+      "kind" : "keyword",
+      "text" : "case"
+    },
+    {
+      "kind" : "text",
+      "text" : " "
+    },
+    {
+      "kind" : "identifier",
+      "text" : "nonNavigable"
+    }
+  ],
+  "identifier" : "doc:\/\/Diagramming\/documentation\/Diagramming\/ThinArrowheadType\/nonNavigable",
+  "kind" : "symbol",
+  "role" : "symbol",
+  "title" : "ThinArrowheadType.nonNavigable",
+  "type" : "topic",
+  "url" : "\/documentation\/diagramming\/thinarrowheadtype\/nonnavigable"
+},
+"doc://Diagramming/documentation/Diagramming/ThinArrowheadType/none": {
+  "abstract" : [
+    {
+      "text" : "No arrow-head",
+      "type" : "text"
+    }
+  ],
+  "fragments" : [
+    {
+      "kind" : "keyword",
+      "text" : "case"
+    },
+    {
+      "kind" : "text",
+      "text" : " "
+    },
+    {
+      "kind" : "identifier",
+      "text" : "none"
+    }
+  ],
+  "identifier" : "doc:\/\/Diagramming\/documentation\/Diagramming\/ThinArrowheadType\/none",
+  "kind" : "symbol",
+  "role" : "symbol",
+  "title" : "ThinArrowheadType.none",
+  "type" : "topic",
+  "url" : "\/documentation\/diagramming\/thinarrowheadtype\/none"
+},
+"doc://Diagramming/documentation/Diagramming/ThinArrowheadType/stick": {
+  "abstract" : [
+    {
+      "text" : "Simple stick arrowhead",
+      "type" : "text"
+    }
+  ],
+  "fragments" : [
+    {
+      "kind" : "keyword",
+      "text" : "case"
+    },
+    {
+      "kind" : "text",
+      "text" : " "
+    },
+    {
+      "kind" : "identifier",
+      "text" : "stick"
+    }
+  ],
+  "identifier" : "doc:\/\/Diagramming\/documentation\/Diagramming\/ThinArrowheadType\/stick",
+  "kind" : "symbol",
+  "role" : "symbol",
+  "title" : "ThinArrowheadType.stick",
+  "type" : "topic",
+  "url" : "\/documentation\/diagramming\/thinarrowheadtype\/stick"
+},
+"doc://Diagramming/documentation/Diagramming/ThinArrowheadType/touchPointOffset(_:)": {
+  "abstract" : [
+    {
+      "text" : "Returns the offset distance from the arrow endpoint to where the line should connect to the arrowhead.",
+      "type" : "text"
+    }
+  ],
+  "fragments" : [
+    {
+      "kind" : "keyword",
+      "text" : "func"
+    },
+    {
+      "kind" : "text",
+      "text" : " "
+    },
+    {
+      "kind" : "identifier",
+      "text" : "touchPointOffset"
+    },
+    {
+      "kind" : "text",
+      "text" : "("
+    },
+    {
+      "kind" : "typeIdentifier",
+      "preciseIdentifier" : "s:Sd",
+      "text" : "Double"
+    },
+    {
+      "kind" : "text",
+      "text" : ") -> "
+    },
+    {
+      "kind" : "typeIdentifier",
+      "preciseIdentifier" : "s:Sd",
+      "text" : "Double"
+    }
+  ],
+  "identifier" : "doc:\/\/Diagramming\/documentation\/Diagramming\/ThinArrowheadType\/touchPointOffset(_:)",
+  "kind" : "symbol",
+  "role" : "symbol",
+  "title" : "touchPointOffset(_:)",
+  "type" : "topic",
+  "url" : "\/documentation\/diagramming\/thinarrowheadtype\/touchpointoffset(_:)"
+},
+"doc://Diagramming/s12CaseIterableP": {
+  "identifier" : "doc:\/\/Diagramming\/s12CaseIterableP",
+  "title" : "Swift.CaseIterable",
+  "type" : "unresolvable"
+},
+"doc://Diagramming/s16SendableMetatypeP": {
+  "identifier" : "doc:\/\/Diagramming\/s16SendableMetatypeP",
+  "title" : "Swift.SendableMetatype",
+  "type" : "unresolvable"
+},
+"doc://Diagramming/s8SendableP": {
+  "identifier" : "doc:\/\/Diagramming\/s8SendableP",
+  "title" : "Swift.Sendable",
+  "type" : "unresolvable"
+}
+}
+}

@@ -1,0 +1,1051 @@
+{
+  "hierarchy" : {
+    "paths" : [
+      [
+        "doc:\/\/Diagramming\/documentation\/Diagramming"
+      ]
+    ]
+  },
+  "identifier" : {
+    "interfaceLanguage" : "swift",
+    "url" : "doc:\/\/Diagramming\/documentation\/Diagramming\/SceneNode"
+  },
+  "kind" : "symbol",
+  "metadata" : {
+    "externalID" : "s:11Diagramming9SceneNodeV",
+    "fragments" : [
+      {
+        "kind" : "keyword",
+        "text" : "struct"
+      },
+      {
+        "kind" : "text",
+        "text" : " "
+      },
+      {
+        "kind" : "identifier",
+        "text" : "SceneNode"
+      }
+    ],
+    "modules" : [
+      {
+        "name" : "Diagramming"
+      }
+    ],
+    "navigatorTitle" : [
+      {
+        "kind" : "identifier",
+        "text" : "SceneNode"
+      }
+    ],
+    "role" : "symbol",
+    "roleHeading" : "Structure",
+    "symbolKind" : "struct",
+    "title" : "SceneNode"
+  },
+  "primaryContentSections" : [
+    {
+      "declarations" : [
+        {
+          "languages" : [
+            "swift"
+          ],
+          "platforms" : [
+            "macOS"
+          ],
+          "tokens" : [
+            {
+              "kind" : "keyword",
+              "text" : "struct"
+            },
+            {
+              "kind" : "text",
+              "text" : " "
+            },
+            {
+              "kind" : "identifier",
+              "text" : "SceneNode"
+            }
+          ]
+        }
+      ],
+      "kind" : "declarations"
+    },
+    {
+      "content" : [
+        {
+          "anchor" : "overview",
+          "level" : 2,
+          "text" : "Overview",
+          "type" : "heading"
+        },
+        {
+          "content" : [
+            {
+              "inlineContent" : [
+                {
+                  "text" : "",
+                  "type" : "text"
+                },
+                {
+                  "inlineContent" : [
+                    {
+                      "text" : "PositionComponent",
+                      "type" : "text"
+                    }
+                  ],
+                  "type" : "strong"
+                },
+                {
+                  "text" : " for connectors is usually zero, as connectors use midpoints which",
+                  "type" : "text"
+                },
+                {
+                  "text" : " ",
+                  "type" : "text"
+                },
+                {
+                  "text" : "are analogy to their position.",
+                  "type" : "text"
+                }
+              ],
+              "type" : "paragraph"
+            }
+          ],
+          "name" : "Note",
+          "style" : "note",
+          "type" : "aside"
+        },
+        {
+          "inlineContent" : [
+            {
+              "text" : "Relationships:",
+              "type" : "text"
+            }
+          ],
+          "type" : "paragraph"
+        },
+        {
+          "items" : [
+            {
+              "content" : [
+                {
+                  "inlineContent" : [
+                    {
+                      "code" : "ChildOf",
+                      "type" : "codeVoice"
+                    },
+                    {
+                      "text" : " – parent node or ",
+                      "type" : "text"
+                    },
+                    {
+                      "identifier" : "doc:\/\/Diagramming\/documentation\/Diagramming\/DiagramScene",
+                      "isActive" : true,
+                      "type" : "reference"
+                    }
+                  ],
+                  "type" : "paragraph"
+                }
+              ]
+            },
+            {
+              "content" : [
+                {
+                  "inlineContent" : [
+                    {
+                      "code" : "Owner",
+                      "type" : "codeVoice"
+                    },
+                    {
+                      "text" : " – root of the canvas – ",
+                      "type" : "text"
+                    },
+                    {
+                      "identifier" : "doc:\/\/Diagramming\/documentation\/Diagramming\/DiagramScene",
+                      "isActive" : true,
+                      "type" : "reference"
+                    },
+                    {
+                      "text" : " entity",
+                      "type" : "text"
+                    }
+                  ],
+                  "type" : "paragraph"
+                }
+              ]
+            }
+          ],
+          "type" : "unorderedList"
+        }
+      ],
+      "kind" : "content"
+    }
+  ],
+  "relationshipsSections" : [
+    {
+      "identifiers" : [
+        "doc:\/\/Diagramming\/11PoieticCore9ComponentP"
+      ],
+      "kind" : "relationships",
+      "title" : "Conforms To",
+      "type" : "conformsTo"
+    }
+  ],
+  "schemaVersion" : {
+    "major" : 0,
+    "minor" : 3,
+    "patch" : 0
+  },
+  "sections" : [
+
+  ],
+  "seeAlsoSections" : [
+    {
+      "anchor" : "Scene",
+      "generated" : true,
+      "identifiers" : [
+        "doc:\/\/Diagramming\/documentation\/Diagramming\/DiagramScene",
+        "doc:\/\/Diagramming\/documentation\/Diagramming\/ViewportState",
+        "doc:\/\/Diagramming\/documentation\/Diagramming\/BlockSceneNode",
+        "doc:\/\/Diagramming\/documentation\/Diagramming\/ConnectorSceneNode",
+        "doc:\/\/Diagramming\/documentation\/Diagramming\/PictogramSceneNode",
+        "doc:\/\/Diagramming\/documentation\/Diagramming\/ColorSwatchSceneNode",
+        "doc:\/\/Diagramming\/documentation\/Diagramming\/LabelSceneNode",
+        "doc:\/\/Diagramming\/documentation\/Diagramming\/IssueIndicatorSceneNode",
+        "doc:\/\/Diagramming\/documentation\/Diagramming\/ValueIndicatorSceneNode",
+        "doc:\/\/Diagramming\/documentation\/Diagramming\/Visibility",
+        "doc:\/\/Diagramming\/documentation\/Diagramming\/Interactivity",
+        "doc:\/\/Diagramming\/documentation\/Diagramming\/TouchRegion",
+        "doc:\/\/Diagramming\/documentation\/Diagramming\/LayoutDirty",
+        "doc:\/\/Diagramming\/documentation\/Diagramming\/ViewportDirty",
+        "doc:\/\/Diagramming\/documentation\/Diagramming\/InteractionDirty"
+      ],
+      "title" : "Scene"
+    }
+  ],
+  "topicSections" : [
+    {
+      "anchor" : "Structures",
+      "generated" : true,
+      "identifiers" : [
+        "doc:\/\/Diagramming\/documentation\/Diagramming\/SceneNode\/ColorSwatch",
+        "doc:\/\/Diagramming\/documentation\/Diagramming\/SceneNode\/IssueIndicator",
+        "doc:\/\/Diagramming\/documentation\/Diagramming\/SceneNode\/Pictogram",
+        "doc:\/\/Diagramming\/documentation\/Diagramming\/SceneNode\/PrimaryLabel",
+        "doc:\/\/Diagramming\/documentation\/Diagramming\/SceneNode\/SecondaryLabel",
+        "doc:\/\/Diagramming\/documentation\/Diagramming\/SceneNode\/ValueIndicator"
+      ],
+      "title" : "Structures"
+    },
+    {
+      "anchor" : "Initializers",
+      "generated" : true,
+      "identifiers" : [
+        "doc:\/\/Diagramming\/documentation\/Diagramming\/SceneNode\/init()"
+      ],
+      "title" : "Initializers"
+    }
+  ],
+  "variants" : [
+    {
+      "paths" : [
+        "\/documentation\/diagramming\/scenenode"
+      ],
+      "traits" : [
+        {
+          "interfaceLanguage" : "swift"
+        }
+      ]
+    }
+  ]
+, 
+"references": {
+"doc://Diagramming/11PoieticCore9ComponentP": {
+  "identifier" : "doc:\/\/Diagramming\/11PoieticCore9ComponentP",
+  "title" : "PoieticCore.Component",
+  "type" : "unresolvable"
+},
+"doc://Diagramming/documentation/Diagramming": {
+  "abstract" : [
+    {
+      "text" : "Diagramming is an OpenPoiesis project package for representing and composing diagrams from design",
+      "type" : "text"
+    },
+    {
+      "text" : " ",
+      "type" : "text"
+    },
+    {
+      "text" : "objects.",
+      "type" : "text"
+    }
+  ],
+  "identifier" : "doc:\/\/Diagramming\/documentation\/Diagramming",
+  "kind" : "symbol",
+  "role" : "collection",
+  "title" : "Diagramming",
+  "type" : "topic",
+  "url" : "\/documentation\/diagramming"
+},
+"doc://Diagramming/documentation/Diagramming/BlockSceneNode": {
+  "abstract" : [
+    {
+      "text" : "Primary component of an entity representing a block diagram scene node.",
+      "type" : "text"
+    }
+  ],
+  "fragments" : [
+    {
+      "kind" : "keyword",
+      "text" : "struct"
+    },
+    {
+      "kind" : "text",
+      "text" : " "
+    },
+    {
+      "kind" : "identifier",
+      "text" : "BlockSceneNode"
+    }
+  ],
+  "identifier" : "doc:\/\/Diagramming\/documentation\/Diagramming\/BlockSceneNode",
+  "kind" : "symbol",
+  "navigatorTitle" : [
+    {
+      "kind" : "identifier",
+      "text" : "BlockSceneNode"
+    }
+  ],
+  "role" : "symbol",
+  "title" : "BlockSceneNode",
+  "type" : "topic",
+  "url" : "\/documentation\/diagramming\/blockscenenode"
+},
+"doc://Diagramming/documentation/Diagramming/ColorSwatchSceneNode": {
+  "abstract" : [
+
+  ],
+  "fragments" : [
+    {
+      "kind" : "keyword",
+      "text" : "struct"
+    },
+    {
+      "kind" : "text",
+      "text" : " "
+    },
+    {
+      "kind" : "identifier",
+      "text" : "ColorSwatchSceneNode"
+    }
+  ],
+  "identifier" : "doc:\/\/Diagramming\/documentation\/Diagramming\/ColorSwatchSceneNode",
+  "kind" : "symbol",
+  "navigatorTitle" : [
+    {
+      "kind" : "identifier",
+      "text" : "ColorSwatchSceneNode"
+    }
+  ],
+  "role" : "symbol",
+  "title" : "ColorSwatchSceneNode",
+  "type" : "topic",
+  "url" : "\/documentation\/diagramming\/colorswatchscenenode"
+},
+"doc://Diagramming/documentation/Diagramming/ConnectorSceneNode": {
+  "abstract" : [
+    {
+      "text" : "Primary component of a canvas node representing a connector.",
+      "type" : "text"
+    }
+  ],
+  "fragments" : [
+    {
+      "kind" : "keyword",
+      "text" : "struct"
+    },
+    {
+      "kind" : "text",
+      "text" : " "
+    },
+    {
+      "kind" : "identifier",
+      "text" : "ConnectorSceneNode"
+    }
+  ],
+  "identifier" : "doc:\/\/Diagramming\/documentation\/Diagramming\/ConnectorSceneNode",
+  "kind" : "symbol",
+  "navigatorTitle" : [
+    {
+      "kind" : "identifier",
+      "text" : "ConnectorSceneNode"
+    }
+  ],
+  "role" : "symbol",
+  "title" : "ConnectorSceneNode",
+  "type" : "topic",
+  "url" : "\/documentation\/diagramming\/connectorscenenode"
+},
+"doc://Diagramming/documentation/Diagramming/DiagramScene": {
+  "abstract" : [
+    {
+      "text" : "Tag component for a diagram scene root.",
+      "type" : "text"
+    }
+  ],
+  "fragments" : [
+    {
+      "kind" : "keyword",
+      "text" : "struct"
+    },
+    {
+      "kind" : "text",
+      "text" : " "
+    },
+    {
+      "kind" : "identifier",
+      "text" : "DiagramScene"
+    }
+  ],
+  "identifier" : "doc:\/\/Diagramming\/documentation\/Diagramming\/DiagramScene",
+  "kind" : "symbol",
+  "navigatorTitle" : [
+    {
+      "kind" : "identifier",
+      "text" : "DiagramScene"
+    }
+  ],
+  "role" : "symbol",
+  "title" : "DiagramScene",
+  "type" : "topic",
+  "url" : "\/documentation\/diagramming\/diagramscene"
+},
+"doc://Diagramming/documentation/Diagramming/InteractionDirty": {
+  "abstract" : [
+    {
+      "text" : "Flag component of a scene node for tagging visual entities that require re-computation of ",
+      "type" : "text"
+    },
+    {
+      "identifier" : "doc:\/\/Diagramming\/documentation\/Diagramming\/TouchRegion",
+      "isActive" : true,
+      "type" : "reference"
+    }
+  ],
+  "fragments" : [
+    {
+      "kind" : "keyword",
+      "text" : "struct"
+    },
+    {
+      "kind" : "text",
+      "text" : " "
+    },
+    {
+      "kind" : "identifier",
+      "text" : "InteractionDirty"
+    }
+  ],
+  "identifier" : "doc:\/\/Diagramming\/documentation\/Diagramming\/InteractionDirty",
+  "kind" : "symbol",
+  "navigatorTitle" : [
+    {
+      "kind" : "identifier",
+      "text" : "InteractionDirty"
+    }
+  ],
+  "role" : "symbol",
+  "title" : "InteractionDirty",
+  "type" : "topic",
+  "url" : "\/documentation\/diagramming\/interactiondirty"
+},
+"doc://Diagramming/documentation/Diagramming/Interactivity": {
+  "abstract" : [
+    {
+      "text" : "Component stating interactivity of a scene node.",
+      "type" : "text"
+    }
+  ],
+  "fragments" : [
+    {
+      "kind" : "keyword",
+      "text" : "enum"
+    },
+    {
+      "kind" : "text",
+      "text" : " "
+    },
+    {
+      "kind" : "identifier",
+      "text" : "Interactivity"
+    }
+  ],
+  "identifier" : "doc:\/\/Diagramming\/documentation\/Diagramming\/Interactivity",
+  "kind" : "symbol",
+  "navigatorTitle" : [
+    {
+      "kind" : "identifier",
+      "text" : "Interactivity"
+    }
+  ],
+  "role" : "symbol",
+  "title" : "Interactivity",
+  "type" : "topic",
+  "url" : "\/documentation\/diagramming\/interactivity"
+},
+"doc://Diagramming/documentation/Diagramming/IssueIndicatorSceneNode": {
+  "abstract" : [
+
+  ],
+  "fragments" : [
+    {
+      "kind" : "keyword",
+      "text" : "struct"
+    },
+    {
+      "kind" : "text",
+      "text" : " "
+    },
+    {
+      "kind" : "identifier",
+      "text" : "IssueIndicatorSceneNode"
+    }
+  ],
+  "identifier" : "doc:\/\/Diagramming\/documentation\/Diagramming\/IssueIndicatorSceneNode",
+  "kind" : "symbol",
+  "navigatorTitle" : [
+    {
+      "kind" : "identifier",
+      "text" : "IssueIndicatorSceneNode"
+    }
+  ],
+  "role" : "symbol",
+  "title" : "IssueIndicatorSceneNode",
+  "type" : "topic",
+  "url" : "\/documentation\/diagramming\/issueindicatorscenenode"
+},
+"doc://Diagramming/documentation/Diagramming/LabelSceneNode": {
+  "abstract" : [
+    {
+      "text" : "Text label node.",
+      "type" : "text"
+    }
+  ],
+  "fragments" : [
+    {
+      "kind" : "keyword",
+      "text" : "struct"
+    },
+    {
+      "kind" : "text",
+      "text" : " "
+    },
+    {
+      "kind" : "identifier",
+      "text" : "LabelSceneNode"
+    }
+  ],
+  "identifier" : "doc:\/\/Diagramming\/documentation\/Diagramming\/LabelSceneNode",
+  "kind" : "symbol",
+  "navigatorTitle" : [
+    {
+      "kind" : "identifier",
+      "text" : "LabelSceneNode"
+    }
+  ],
+  "role" : "symbol",
+  "title" : "LabelSceneNode",
+  "type" : "topic",
+  "url" : "\/documentation\/diagramming\/labelscenenode"
+},
+"doc://Diagramming/documentation/Diagramming/LayoutDirty": {
+  "abstract" : [
+    {
+      "text" : "Flag component of a scene node stating that the diagram scene requires re-layout.",
+      "type" : "text"
+    }
+  ],
+  "fragments" : [
+    {
+      "kind" : "keyword",
+      "text" : "struct"
+    },
+    {
+      "kind" : "text",
+      "text" : " "
+    },
+    {
+      "kind" : "identifier",
+      "text" : "LayoutDirty"
+    }
+  ],
+  "identifier" : "doc:\/\/Diagramming\/documentation\/Diagramming\/LayoutDirty",
+  "kind" : "symbol",
+  "navigatorTitle" : [
+    {
+      "kind" : "identifier",
+      "text" : "LayoutDirty"
+    }
+  ],
+  "role" : "symbol",
+  "title" : "LayoutDirty",
+  "type" : "topic",
+  "url" : "\/documentation\/diagramming\/layoutdirty"
+},
+"doc://Diagramming/documentation/Diagramming/PictogramSceneNode": {
+  "abstract" : [
+
+  ],
+  "fragments" : [
+    {
+      "kind" : "keyword",
+      "text" : "struct"
+    },
+    {
+      "kind" : "text",
+      "text" : " "
+    },
+    {
+      "kind" : "identifier",
+      "text" : "PictogramSceneNode"
+    }
+  ],
+  "identifier" : "doc:\/\/Diagramming\/documentation\/Diagramming\/PictogramSceneNode",
+  "kind" : "symbol",
+  "navigatorTitle" : [
+    {
+      "kind" : "identifier",
+      "text" : "PictogramSceneNode"
+    }
+  ],
+  "role" : "symbol",
+  "title" : "PictogramSceneNode",
+  "type" : "topic",
+  "url" : "\/documentation\/diagramming\/pictogramscenenode"
+},
+"doc://Diagramming/documentation/Diagramming/SceneNode": {
+  "abstract" : [
+
+  ],
+  "fragments" : [
+    {
+      "kind" : "keyword",
+      "text" : "struct"
+    },
+    {
+      "kind" : "text",
+      "text" : " "
+    },
+    {
+      "kind" : "identifier",
+      "text" : "SceneNode"
+    }
+  ],
+  "identifier" : "doc:\/\/Diagramming\/documentation\/Diagramming\/SceneNode",
+  "kind" : "symbol",
+  "navigatorTitle" : [
+    {
+      "kind" : "identifier",
+      "text" : "SceneNode"
+    }
+  ],
+  "role" : "symbol",
+  "title" : "SceneNode",
+  "type" : "topic",
+  "url" : "\/documentation\/diagramming\/scenenode"
+},
+"doc://Diagramming/documentation/Diagramming/SceneNode/ColorSwatch": {
+  "abstract" : [
+    {
+      "text" : "Relationship tag for a colour swatch node of a diagram scene node.",
+      "type" : "text"
+    }
+  ],
+  "fragments" : [
+    {
+      "kind" : "keyword",
+      "text" : "struct"
+    },
+    {
+      "kind" : "text",
+      "text" : " "
+    },
+    {
+      "kind" : "identifier",
+      "text" : "ColorSwatch"
+    }
+  ],
+  "identifier" : "doc:\/\/Diagramming\/documentation\/Diagramming\/SceneNode\/ColorSwatch",
+  "kind" : "symbol",
+  "navigatorTitle" : [
+    {
+      "kind" : "identifier",
+      "text" : "ColorSwatch"
+    }
+  ],
+  "role" : "symbol",
+  "title" : "SceneNode.ColorSwatch",
+  "type" : "topic",
+  "url" : "\/documentation\/diagramming\/scenenode\/colorswatch"
+},
+"doc://Diagramming/documentation/Diagramming/SceneNode/IssueIndicator": {
+  "abstract" : [
+    {
+      "text" : "Relationship tag for a issue indicator scene node.",
+      "type" : "text"
+    }
+  ],
+  "fragments" : [
+    {
+      "kind" : "keyword",
+      "text" : "struct"
+    },
+    {
+      "kind" : "text",
+      "text" : " "
+    },
+    {
+      "kind" : "identifier",
+      "text" : "IssueIndicator"
+    }
+  ],
+  "identifier" : "doc:\/\/Diagramming\/documentation\/Diagramming\/SceneNode\/IssueIndicator",
+  "kind" : "symbol",
+  "navigatorTitle" : [
+    {
+      "kind" : "identifier",
+      "text" : "IssueIndicator"
+    }
+  ],
+  "role" : "symbol",
+  "title" : "SceneNode.IssueIndicator",
+  "type" : "topic",
+  "url" : "\/documentation\/diagramming\/scenenode\/issueindicator"
+},
+"doc://Diagramming/documentation/Diagramming/SceneNode/Pictogram": {
+  "abstract" : [
+    {
+      "text" : "Relationship tag for a pictogram scene node.",
+      "type" : "text"
+    }
+  ],
+  "fragments" : [
+    {
+      "kind" : "keyword",
+      "text" : "struct"
+    },
+    {
+      "kind" : "text",
+      "text" : " "
+    },
+    {
+      "kind" : "identifier",
+      "text" : "Pictogram"
+    }
+  ],
+  "identifier" : "doc:\/\/Diagramming\/documentation\/Diagramming\/SceneNode\/Pictogram",
+  "kind" : "symbol",
+  "navigatorTitle" : [
+    {
+      "kind" : "identifier",
+      "text" : "Pictogram"
+    }
+  ],
+  "role" : "symbol",
+  "title" : "SceneNode.Pictogram",
+  "type" : "topic",
+  "url" : "\/documentation\/diagramming\/scenenode\/pictogram"
+},
+"doc://Diagramming/documentation/Diagramming/SceneNode/PrimaryLabel": {
+  "abstract" : [
+    {
+      "text" : "Relationship tag for primary label of a diagram scene node.",
+      "type" : "text"
+    }
+  ],
+  "fragments" : [
+    {
+      "kind" : "keyword",
+      "text" : "struct"
+    },
+    {
+      "kind" : "text",
+      "text" : " "
+    },
+    {
+      "kind" : "identifier",
+      "text" : "PrimaryLabel"
+    }
+  ],
+  "identifier" : "doc:\/\/Diagramming\/documentation\/Diagramming\/SceneNode\/PrimaryLabel",
+  "kind" : "symbol",
+  "navigatorTitle" : [
+    {
+      "kind" : "identifier",
+      "text" : "PrimaryLabel"
+    }
+  ],
+  "role" : "symbol",
+  "title" : "SceneNode.PrimaryLabel",
+  "type" : "topic",
+  "url" : "\/documentation\/diagramming\/scenenode\/primarylabel"
+},
+"doc://Diagramming/documentation/Diagramming/SceneNode/SecondaryLabel": {
+  "abstract" : [
+    {
+      "text" : "Relationship tag for secondary label of a diagram scene node.",
+      "type" : "text"
+    }
+  ],
+  "fragments" : [
+    {
+      "kind" : "keyword",
+      "text" : "struct"
+    },
+    {
+      "kind" : "text",
+      "text" : " "
+    },
+    {
+      "kind" : "identifier",
+      "text" : "SecondaryLabel"
+    }
+  ],
+  "identifier" : "doc:\/\/Diagramming\/documentation\/Diagramming\/SceneNode\/SecondaryLabel",
+  "kind" : "symbol",
+  "navigatorTitle" : [
+    {
+      "kind" : "identifier",
+      "text" : "SecondaryLabel"
+    }
+  ],
+  "role" : "symbol",
+  "title" : "SceneNode.SecondaryLabel",
+  "type" : "topic",
+  "url" : "\/documentation\/diagramming\/scenenode\/secondarylabel"
+},
+"doc://Diagramming/documentation/Diagramming/SceneNode/ValueIndicator": {
+  "abstract" : [
+    {
+      "text" : "Relationship tag for a value indicator scene node.",
+      "type" : "text"
+    }
+  ],
+  "fragments" : [
+    {
+      "kind" : "keyword",
+      "text" : "struct"
+    },
+    {
+      "kind" : "text",
+      "text" : " "
+    },
+    {
+      "kind" : "identifier",
+      "text" : "ValueIndicator"
+    }
+  ],
+  "identifier" : "doc:\/\/Diagramming\/documentation\/Diagramming\/SceneNode\/ValueIndicator",
+  "kind" : "symbol",
+  "navigatorTitle" : [
+    {
+      "kind" : "identifier",
+      "text" : "ValueIndicator"
+    }
+  ],
+  "role" : "symbol",
+  "title" : "SceneNode.ValueIndicator",
+  "type" : "topic",
+  "url" : "\/documentation\/diagramming\/scenenode\/valueindicator"
+},
+"doc://Diagramming/documentation/Diagramming/SceneNode/init()": {
+  "abstract" : [
+
+  ],
+  "fragments" : [
+    {
+      "kind" : "identifier",
+      "text" : "init"
+    },
+    {
+      "kind" : "text",
+      "text" : "()"
+    }
+  ],
+  "identifier" : "doc:\/\/Diagramming\/documentation\/Diagramming\/SceneNode\/init()",
+  "kind" : "symbol",
+  "role" : "symbol",
+  "title" : "init()",
+  "type" : "topic",
+  "url" : "\/documentation\/diagramming\/scenenode\/init()"
+},
+"doc://Diagramming/documentation/Diagramming/TouchRegion": {
+  "abstract" : [
+    {
+      "text" : "Scene node component specifying touch region of the component owning entity.",
+      "type" : "text"
+    }
+  ],
+  "fragments" : [
+    {
+      "kind" : "keyword",
+      "text" : "enum"
+    },
+    {
+      "kind" : "text",
+      "text" : " "
+    },
+    {
+      "kind" : "identifier",
+      "text" : "TouchRegion"
+    }
+  ],
+  "identifier" : "doc:\/\/Diagramming\/documentation\/Diagramming\/TouchRegion",
+  "kind" : "symbol",
+  "navigatorTitle" : [
+    {
+      "kind" : "identifier",
+      "text" : "TouchRegion"
+    }
+  ],
+  "role" : "symbol",
+  "title" : "TouchRegion",
+  "type" : "topic",
+  "url" : "\/documentation\/diagramming\/touchregion"
+},
+"doc://Diagramming/documentation/Diagramming/ValueIndicatorSceneNode": {
+  "abstract" : [
+    {
+      "text" : "Visual indicator of a numeric value in form of a bar.",
+      "type" : "text"
+    }
+  ],
+  "fragments" : [
+    {
+      "kind" : "keyword",
+      "text" : "struct"
+    },
+    {
+      "kind" : "text",
+      "text" : " "
+    },
+    {
+      "kind" : "identifier",
+      "text" : "ValueIndicatorSceneNode"
+    }
+  ],
+  "identifier" : "doc:\/\/Diagramming\/documentation\/Diagramming\/ValueIndicatorSceneNode",
+  "kind" : "symbol",
+  "navigatorTitle" : [
+    {
+      "kind" : "identifier",
+      "text" : "ValueIndicatorSceneNode"
+    }
+  ],
+  "role" : "symbol",
+  "title" : "ValueIndicatorSceneNode",
+  "type" : "topic",
+  "url" : "\/documentation\/diagramming\/valueindicatorscenenode"
+},
+"doc://Diagramming/documentation/Diagramming/ViewportDirty": {
+  "abstract" : [
+    {
+      "text" : "Flag component of a scene node stating that the viewport of a given scene was changed.",
+      "type" : "text"
+    }
+  ],
+  "fragments" : [
+    {
+      "kind" : "keyword",
+      "text" : "struct"
+    },
+    {
+      "kind" : "text",
+      "text" : " "
+    },
+    {
+      "kind" : "identifier",
+      "text" : "ViewportDirty"
+    }
+  ],
+  "identifier" : "doc:\/\/Diagramming\/documentation\/Diagramming\/ViewportDirty",
+  "kind" : "symbol",
+  "navigatorTitle" : [
+    {
+      "kind" : "identifier",
+      "text" : "ViewportDirty"
+    }
+  ],
+  "role" : "symbol",
+  "title" : "ViewportDirty",
+  "type" : "topic",
+  "url" : "\/documentation\/diagramming\/viewportdirty"
+},
+"doc://Diagramming/documentation/Diagramming/ViewportState": {
+  "abstract" : [
+
+  ],
+  "fragments" : [
+    {
+      "kind" : "keyword",
+      "text" : "struct"
+    },
+    {
+      "kind" : "text",
+      "text" : " "
+    },
+    {
+      "kind" : "identifier",
+      "text" : "ViewportState"
+    }
+  ],
+  "identifier" : "doc:\/\/Diagramming\/documentation\/Diagramming\/ViewportState",
+  "kind" : "symbol",
+  "navigatorTitle" : [
+    {
+      "kind" : "identifier",
+      "text" : "ViewportState"
+    }
+  ],
+  "role" : "symbol",
+  "title" : "ViewportState",
+  "type" : "topic",
+  "url" : "\/documentation\/diagramming\/viewportstate"
+},
+"doc://Diagramming/documentation/Diagramming/Visibility": {
+  "abstract" : [
+    {
+      "text" : "A scene node component stating visibility of a scene node.",
+      "type" : "text"
+    }
+  ],
+  "fragments" : [
+    {
+      "kind" : "keyword",
+      "text" : "enum"
+    },
+    {
+      "kind" : "text",
+      "text" : " "
+    },
+    {
+      "kind" : "identifier",
+      "text" : "Visibility"
+    }
+  ],
+  "identifier" : "doc:\/\/Diagramming\/documentation\/Diagramming\/Visibility",
+  "kind" : "symbol",
+  "navigatorTitle" : [
+    {
+      "kind" : "identifier",
+      "text" : "Visibility"
+    }
+  ],
+  "role" : "symbol",
+  "title" : "Visibility",
+  "type" : "topic",
+  "url" : "\/documentation\/diagramming\/visibility"
+}
+}
+}

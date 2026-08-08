@@ -1,0 +1,390 @@
+{
+  "abstract" : [
+    {
+      "text" : "SVG reader that parses XML data and creates SVG element tree",
+      "type" : "text"
+    }
+  ],
+  "hierarchy" : {
+    "paths" : [
+      [
+        "doc:\/\/Diagramming\/documentation\/Diagramming"
+      ]
+    ]
+  },
+  "identifier" : {
+    "interfaceLanguage" : "swift",
+    "url" : "doc:\/\/Diagramming\/documentation\/Diagramming\/SVGReader"
+  },
+  "kind" : "symbol",
+  "metadata" : {
+    "externalID" : "c:@M@Diagramming@objc(cs)SVGReader",
+    "fragments" : [
+      {
+        "kind" : "keyword",
+        "text" : "class"
+      },
+      {
+        "kind" : "text",
+        "text" : " "
+      },
+      {
+        "kind" : "identifier",
+        "text" : "SVGReader"
+      }
+    ],
+    "modules" : [
+      {
+        "name" : "Diagramming"
+      }
+    ],
+    "navigatorTitle" : [
+      {
+        "kind" : "identifier",
+        "text" : "SVGReader"
+      }
+    ],
+    "role" : "symbol",
+    "roleHeading" : "Class",
+    "symbolKind" : "class",
+    "title" : "SVGReader"
+  },
+  "primaryContentSections" : [
+    {
+      "declarations" : [
+        {
+          "languages" : [
+            "swift"
+          ],
+          "platforms" : [
+            "macOS"
+          ],
+          "tokens" : [
+            {
+              "kind" : "keyword",
+              "text" : "class"
+            },
+            {
+              "kind" : "text",
+              "text" : " "
+            },
+            {
+              "kind" : "identifier",
+              "text" : "SVGReader"
+            }
+          ]
+        }
+      ],
+      "kind" : "declarations"
+    }
+  ],
+  "relationshipsSections" : [
+    {
+      "identifiers" : [
+        "doc:\/\/Diagramming\/objc(cs)NSObject"
+      ],
+      "kind" : "relationships",
+      "title" : "Inherits From",
+      "type" : "inheritsFrom"
+    },
+    {
+      "identifiers" : [
+        "doc:\/\/Diagramming\/objc(pl)NSXMLParserDelegate",
+        "doc:\/\/Diagramming\/objc(pl)NSObject",
+        "doc:\/\/Diagramming\/s7CVarArgP",
+        "doc:\/\/Diagramming\/s8CopyableP",
+        "doc:\/\/Diagramming\/s28CustomDebugStringConvertibleP",
+        "doc:\/\/Diagramming\/s23CustomStringConvertibleP",
+        "doc:\/\/Diagramming\/SQ",
+        "doc:\/\/Diagramming\/s9EscapableP",
+        "doc:\/\/Diagramming\/SH"
+      ],
+      "kind" : "relationships",
+      "title" : "Conforms To",
+      "type" : "conformsTo"
+    }
+  ],
+  "schemaVersion" : {
+    "major" : 0,
+    "minor" : 3,
+    "patch" : 0
+  },
+  "sections" : [
+
+  ],
+  "topicSections" : [
+    {
+      "anchor" : "Instance-Methods",
+      "generated" : true,
+      "identifiers" : [
+        "doc:\/\/Diagramming\/documentation\/Diagramming\/SVGReader\/read(data:)",
+        "doc:\/\/Diagramming\/documentation\/Diagramming\/SVGReader\/read(string:)"
+      ],
+      "title" : "Instance Methods"
+    },
+    {
+      "anchor" : "Default-Implementations",
+      "generated" : true,
+      "identifiers" : [
+        "doc:\/\/Diagramming\/documentation\/Diagramming\/SVGReader\/XMLParserDelegate-Implementations"
+      ],
+      "title" : "Default Implementations"
+    }
+  ],
+  "variants" : [
+    {
+      "paths" : [
+        "\/documentation\/diagramming\/svgreader"
+      ],
+      "traits" : [
+        {
+          "interfaceLanguage" : "swift"
+        }
+      ]
+    }
+  ]
+, 
+"references": {
+"doc://Diagramming/SH": {
+  "identifier" : "doc:\/\/Diagramming\/SH",
+  "title" : "Swift.Hashable",
+  "type" : "unresolvable"
+},
+"doc://Diagramming/SQ": {
+  "identifier" : "doc:\/\/Diagramming\/SQ",
+  "title" : "Swift.Equatable",
+  "type" : "unresolvable"
+},
+"doc://Diagramming/documentation/Diagramming": {
+  "abstract" : [
+    {
+      "text" : "Diagramming is an OpenPoiesis project package for representing and composing diagrams from design",
+      "type" : "text"
+    },
+    {
+      "text" : " ",
+      "type" : "text"
+    },
+    {
+      "text" : "objects.",
+      "type" : "text"
+    }
+  ],
+  "identifier" : "doc:\/\/Diagramming\/documentation\/Diagramming",
+  "kind" : "symbol",
+  "role" : "collection",
+  "title" : "Diagramming",
+  "type" : "topic",
+  "url" : "\/documentation\/diagramming"
+},
+"doc://Diagramming/documentation/Diagramming/SVGReader": {
+  "abstract" : [
+    {
+      "text" : "SVG reader that parses XML data and creates SVG element tree",
+      "type" : "text"
+    }
+  ],
+  "fragments" : [
+    {
+      "kind" : "keyword",
+      "text" : "class"
+    },
+    {
+      "kind" : "text",
+      "text" : " "
+    },
+    {
+      "kind" : "identifier",
+      "text" : "SVGReader"
+    }
+  ],
+  "identifier" : "doc:\/\/Diagramming\/documentation\/Diagramming\/SVGReader",
+  "kind" : "symbol",
+  "navigatorTitle" : [
+    {
+      "kind" : "identifier",
+      "text" : "SVGReader"
+    }
+  ],
+  "role" : "symbol",
+  "title" : "SVGReader",
+  "type" : "topic",
+  "url" : "\/documentation\/diagramming\/svgreader"
+},
+"doc://Diagramming/documentation/Diagramming/SVGReader/XMLParserDelegate-Implementations": {
+  "abstract" : [
+
+  ],
+  "identifier" : "doc:\/\/Diagramming\/documentation\/Diagramming\/SVGReader\/XMLParserDelegate-Implementations",
+  "kind" : "article",
+  "role" : "collectionGroup",
+  "title" : "XMLParserDelegate Implementations",
+  "type" : "topic",
+  "url" : "\/documentation\/diagramming\/svgreader\/xmlparserdelegate-implementations"
+},
+"doc://Diagramming/documentation/Diagramming/SVGReader/read(data:)": {
+  "abstract" : [
+    {
+      "text" : "Parse SVG data and return the root element",
+      "type" : "text"
+    }
+  ],
+  "fragments" : [
+    {
+      "kind" : "keyword",
+      "text" : "func"
+    },
+    {
+      "kind" : "text",
+      "text" : " "
+    },
+    {
+      "kind" : "identifier",
+      "text" : "read"
+    },
+    {
+      "kind" : "text",
+      "text" : "("
+    },
+    {
+      "kind" : "externalParam",
+      "text" : "data"
+    },
+    {
+      "kind" : "text",
+      "text" : ": "
+    },
+    {
+      "kind" : "typeIdentifier",
+      "preciseIdentifier" : "s:10Foundation4DataV",
+      "text" : "Data"
+    },
+    {
+      "kind" : "text",
+      "text" : ") "
+    },
+    {
+      "kind" : "keyword",
+      "text" : "throws"
+    },
+    {
+      "kind" : "text",
+      "text" : " -> "
+    },
+    {
+      "kind" : "typeIdentifier",
+      "preciseIdentifier" : "s:11Diagramming10SVGElementC",
+      "text" : "SVGElement"
+    }
+  ],
+  "identifier" : "doc:\/\/Diagramming\/documentation\/Diagramming\/SVGReader\/read(data:)",
+  "kind" : "symbol",
+  "role" : "symbol",
+  "title" : "read(data:)",
+  "type" : "topic",
+  "url" : "\/documentation\/diagramming\/svgreader\/read(data:)"
+},
+"doc://Diagramming/documentation/Diagramming/SVGReader/read(string:)": {
+  "abstract" : [
+    {
+      "text" : "Parse SVG string and return the root element",
+      "type" : "text"
+    }
+  ],
+  "fragments" : [
+    {
+      "kind" : "keyword",
+      "text" : "func"
+    },
+    {
+      "kind" : "text",
+      "text" : " "
+    },
+    {
+      "kind" : "identifier",
+      "text" : "read"
+    },
+    {
+      "kind" : "text",
+      "text" : "("
+    },
+    {
+      "kind" : "externalParam",
+      "text" : "string"
+    },
+    {
+      "kind" : "text",
+      "text" : ": "
+    },
+    {
+      "kind" : "typeIdentifier",
+      "preciseIdentifier" : "s:SS",
+      "text" : "String"
+    },
+    {
+      "kind" : "text",
+      "text" : ") "
+    },
+    {
+      "kind" : "keyword",
+      "text" : "throws"
+    },
+    {
+      "kind" : "text",
+      "text" : " -> "
+    },
+    {
+      "kind" : "typeIdentifier",
+      "preciseIdentifier" : "s:11Diagramming10SVGElementC",
+      "text" : "SVGElement"
+    }
+  ],
+  "identifier" : "doc:\/\/Diagramming\/documentation\/Diagramming\/SVGReader\/read(string:)",
+  "kind" : "symbol",
+  "role" : "symbol",
+  "title" : "read(string:)",
+  "type" : "topic",
+  "url" : "\/documentation\/diagramming\/svgreader\/read(string:)"
+},
+"doc://Diagramming/objc(cs)NSObject": {
+  "identifier" : "doc:\/\/Diagramming\/objc(cs)NSObject",
+  "title" : "ObjectiveC.NSObject",
+  "type" : "unresolvable"
+},
+"doc://Diagramming/objc(pl)NSObject": {
+  "identifier" : "doc:\/\/Diagramming\/objc(pl)NSObject",
+  "title" : "ObjectiveC.NSObjectProtocol",
+  "type" : "unresolvable"
+},
+"doc://Diagramming/objc(pl)NSXMLParserDelegate": {
+  "identifier" : "doc:\/\/Diagramming\/objc(pl)NSXMLParserDelegate",
+  "title" : "Foundation.XMLParserDelegate",
+  "type" : "unresolvable"
+},
+"doc://Diagramming/s23CustomStringConvertibleP": {
+  "identifier" : "doc:\/\/Diagramming\/s23CustomStringConvertibleP",
+  "title" : "Swift.CustomStringConvertible",
+  "type" : "unresolvable"
+},
+"doc://Diagramming/s28CustomDebugStringConvertibleP": {
+  "identifier" : "doc:\/\/Diagramming\/s28CustomDebugStringConvertibleP",
+  "title" : "Swift.CustomDebugStringConvertible",
+  "type" : "unresolvable"
+},
+"doc://Diagramming/s7CVarArgP": {
+  "identifier" : "doc:\/\/Diagramming\/s7CVarArgP",
+  "title" : "Swift.CVarArg",
+  "type" : "unresolvable"
+},
+"doc://Diagramming/s8CopyableP": {
+  "identifier" : "doc:\/\/Diagramming\/s8CopyableP",
+  "title" : "Swift.Copyable",
+  "type" : "unresolvable"
+},
+"doc://Diagramming/s9EscapableP": {
+  "identifier" : "doc:\/\/Diagramming\/s9EscapableP",
+  "title" : "Swift.Escapable",
+  "type" : "unresolvable"
+}
+}
+}

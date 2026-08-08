@@ -1,0 +1,565 @@
+{
+  "hierarchy" : {
+    "paths" : [
+      [
+        "doc:\/\/Diagramming\/documentation\/Diagramming"
+      ]
+    ]
+  },
+  "identifier" : {
+    "interfaceLanguage" : "swift",
+    "url" : "doc:\/\/Diagramming\/documentation\/Diagramming\/SVGDiagramSceneRendererContext"
+  },
+  "kind" : "symbol",
+  "metadata" : {
+    "externalID" : "s:11Diagramming30SVGDiagramSceneRendererContextC",
+    "fragments" : [
+      {
+        "kind" : "keyword",
+        "text" : "class"
+      },
+      {
+        "kind" : "text",
+        "text" : " "
+      },
+      {
+        "kind" : "identifier",
+        "text" : "SVGDiagramSceneRendererContext"
+      }
+    ],
+    "modules" : [
+      {
+        "name" : "Diagramming"
+      }
+    ],
+    "navigatorTitle" : [
+      {
+        "kind" : "identifier",
+        "text" : "SVGDiagramSceneRendererContext"
+      }
+    ],
+    "role" : "symbol",
+    "roleHeading" : "Class",
+    "symbolKind" : "class",
+    "title" : "SVGDiagramSceneRendererContext"
+  },
+  "primaryContentSections" : [
+    {
+      "declarations" : [
+        {
+          "languages" : [
+            "swift"
+          ],
+          "platforms" : [
+            "macOS"
+          ],
+          "tokens" : [
+            {
+              "kind" : "keyword",
+              "text" : "class"
+            },
+            {
+              "kind" : "text",
+              "text" : " "
+            },
+            {
+              "kind" : "identifier",
+              "text" : "SVGDiagramSceneRendererContext"
+            }
+          ]
+        }
+      ],
+      "kind" : "declarations"
+    }
+  ],
+  "relationshipsSections" : [
+    {
+      "identifiers" : [
+        "doc:\/\/Diagramming\/documentation\/Diagramming\/RenderingContextProtocol"
+      ],
+      "kind" : "relationships",
+      "title" : "Conforms To",
+      "type" : "conformsTo"
+    }
+  ],
+  "schemaVersion" : {
+    "major" : 0,
+    "minor" : 3,
+    "patch" : 0
+  },
+  "sections" : [
+
+  ],
+  "topicSections" : [
+    {
+      "anchor" : "Instance-Properties",
+      "generated" : true,
+      "identifiers" : [
+        "doc:\/\/Diagramming\/documentation\/Diagramming\/SVGDiagramSceneRendererContext\/objectIDPrefix",
+        "doc:\/\/Diagramming\/documentation\/Diagramming\/SVGDiagramSceneRendererContext\/pictogramSymbolIDPrefix",
+        "doc:\/\/Diagramming\/documentation\/Diagramming\/SVGDiagramSceneRendererContext\/transform"
+      ],
+      "title" : "Instance Properties"
+    },
+    {
+      "anchor" : "Instance-Methods",
+      "generated" : true,
+      "identifiers" : [
+        "doc:\/\/Diagramming\/documentation\/Diagramming\/SVGDiagramSceneRendererContext\/append(_:)",
+        "doc:\/\/Diagramming\/documentation\/Diagramming\/SVGDiagramSceneRendererContext\/extendBoundingBox(_:)",
+        "doc:\/\/Diagramming\/documentation\/Diagramming\/SVGDiagramSceneRendererContext\/restore()",
+        "doc:\/\/Diagramming\/documentation\/Diagramming\/SVGDiagramSceneRendererContext\/save()",
+        "doc:\/\/Diagramming\/documentation\/Diagramming\/SVGDiagramSceneRendererContext\/setTransform(_:)",
+        "doc:\/\/Diagramming\/documentation\/Diagramming\/SVGDiagramSceneRendererContext\/symbolForPictogram(_:)"
+      ],
+      "title" : "Instance Methods"
+    }
+  ],
+  "variants" : [
+    {
+      "paths" : [
+        "\/documentation\/diagramming\/svgdiagramscenerenderercontext"
+      ],
+      "traits" : [
+        {
+          "interfaceLanguage" : "swift"
+        }
+      ]
+    }
+  ]
+, 
+"references": {
+"doc://Diagramming/documentation/Diagramming": {
+  "abstract" : [
+    {
+      "text" : "Diagramming is an OpenPoiesis project package for representing and composing diagrams from design",
+      "type" : "text"
+    },
+    {
+      "text" : " ",
+      "type" : "text"
+    },
+    {
+      "text" : "objects.",
+      "type" : "text"
+    }
+  ],
+  "identifier" : "doc:\/\/Diagramming\/documentation\/Diagramming",
+  "kind" : "symbol",
+  "role" : "collection",
+  "title" : "Diagramming",
+  "type" : "topic",
+  "url" : "\/documentation\/diagramming"
+},
+"doc://Diagramming/documentation/Diagramming/RenderingContextProtocol": {
+  "abstract" : [
+
+  ],
+  "fragments" : [
+    {
+      "kind" : "keyword",
+      "text" : "protocol"
+    },
+    {
+      "kind" : "text",
+      "text" : " "
+    },
+    {
+      "kind" : "identifier",
+      "text" : "RenderingContextProtocol"
+    }
+  ],
+  "identifier" : "doc:\/\/Diagramming\/documentation\/Diagramming\/RenderingContextProtocol",
+  "kind" : "symbol",
+  "navigatorTitle" : [
+    {
+      "kind" : "identifier",
+      "text" : "RenderingContextProtocol"
+    }
+  ],
+  "role" : "symbol",
+  "title" : "RenderingContextProtocol",
+  "type" : "topic",
+  "url" : "\/documentation\/diagramming\/renderingcontextprotocol"
+},
+"doc://Diagramming/documentation/Diagramming/SVGDiagramSceneRendererContext": {
+  "abstract" : [
+
+  ],
+  "fragments" : [
+    {
+      "kind" : "keyword",
+      "text" : "class"
+    },
+    {
+      "kind" : "text",
+      "text" : " "
+    },
+    {
+      "kind" : "identifier",
+      "text" : "SVGDiagramSceneRendererContext"
+    }
+  ],
+  "identifier" : "doc:\/\/Diagramming\/documentation\/Diagramming\/SVGDiagramSceneRendererContext",
+  "kind" : "symbol",
+  "navigatorTitle" : [
+    {
+      "kind" : "identifier",
+      "text" : "SVGDiagramSceneRendererContext"
+    }
+  ],
+  "role" : "symbol",
+  "title" : "SVGDiagramSceneRendererContext",
+  "type" : "topic",
+  "url" : "\/documentation\/diagramming\/svgdiagramscenerenderercontext"
+},
+"doc://Diagramming/documentation/Diagramming/SVGDiagramSceneRendererContext/append(_:)": {
+  "abstract" : [
+
+  ],
+  "fragments" : [
+    {
+      "kind" : "keyword",
+      "text" : "func"
+    },
+    {
+      "kind" : "text",
+      "text" : " "
+    },
+    {
+      "kind" : "identifier",
+      "text" : "append"
+    },
+    {
+      "kind" : "text",
+      "text" : "("
+    },
+    {
+      "kind" : "typeIdentifier",
+      "preciseIdentifier" : "s:11Diagramming10SVGElementC",
+      "text" : "SVGElement"
+    },
+    {
+      "kind" : "text",
+      "text" : ")"
+    }
+  ],
+  "identifier" : "doc:\/\/Diagramming\/documentation\/Diagramming\/SVGDiagramSceneRendererContext\/append(_:)",
+  "kind" : "symbol",
+  "role" : "symbol",
+  "title" : "append(_:)",
+  "type" : "topic",
+  "url" : "\/documentation\/diagramming\/svgdiagramscenerenderercontext\/append(_:)"
+},
+"doc://Diagramming/documentation/Diagramming/SVGDiagramSceneRendererContext/extendBoundingBox(_:)": {
+  "abstract" : [
+
+  ],
+  "fragments" : [
+    {
+      "kind" : "keyword",
+      "text" : "func"
+    },
+    {
+      "kind" : "text",
+      "text" : " "
+    },
+    {
+      "kind" : "identifier",
+      "text" : "extendBoundingBox"
+    },
+    {
+      "kind" : "text",
+      "text" : "("
+    },
+    {
+      "kind" : "typeIdentifier",
+      "preciseIdentifier" : "s:11Diagramming6Rect2DV",
+      "text" : "Rect2D"
+    },
+    {
+      "kind" : "text",
+      "text" : ")"
+    }
+  ],
+  "identifier" : "doc:\/\/Diagramming\/documentation\/Diagramming\/SVGDiagramSceneRendererContext\/extendBoundingBox(_:)",
+  "kind" : "symbol",
+  "role" : "symbol",
+  "title" : "extendBoundingBox(_:)",
+  "type" : "topic",
+  "url" : "\/documentation\/diagramming\/svgdiagramscenerenderercontext\/extendboundingbox(_:)"
+},
+"doc://Diagramming/documentation/Diagramming/SVGDiagramSceneRendererContext/objectIDPrefix": {
+  "abstract" : [
+
+  ],
+  "fragments" : [
+    {
+      "kind" : "keyword",
+      "text" : "var"
+    },
+    {
+      "kind" : "text",
+      "text" : " "
+    },
+    {
+      "kind" : "identifier",
+      "text" : "objectIDPrefix"
+    },
+    {
+      "kind" : "text",
+      "text" : ": "
+    },
+    {
+      "kind" : "typeIdentifier",
+      "preciseIdentifier" : "s:SS",
+      "text" : "String"
+    }
+  ],
+  "identifier" : "doc:\/\/Diagramming\/documentation\/Diagramming\/SVGDiagramSceneRendererContext\/objectIDPrefix",
+  "kind" : "symbol",
+  "role" : "symbol",
+  "title" : "objectIDPrefix",
+  "type" : "topic",
+  "url" : "\/documentation\/diagramming\/svgdiagramscenerenderercontext\/objectidprefix"
+},
+"doc://Diagramming/documentation/Diagramming/SVGDiagramSceneRendererContext/pictogramSymbolIDPrefix": {
+  "abstract" : [
+    {
+      "text" : "Prefix for ",
+      "type" : "text"
+    },
+    {
+      "code" : "id",
+      "type" : "codeVoice"
+    },
+    {
+      "text" : " attribute of SVG symbols representing a pictogram.",
+      "type" : "text"
+    }
+  ],
+  "fragments" : [
+    {
+      "kind" : "keyword",
+      "text" : "var"
+    },
+    {
+      "kind" : "text",
+      "text" : " "
+    },
+    {
+      "kind" : "identifier",
+      "text" : "pictogramSymbolIDPrefix"
+    },
+    {
+      "kind" : "text",
+      "text" : ": "
+    },
+    {
+      "kind" : "typeIdentifier",
+      "preciseIdentifier" : "s:SS",
+      "text" : "String"
+    }
+  ],
+  "identifier" : "doc:\/\/Diagramming\/documentation\/Diagramming\/SVGDiagramSceneRendererContext\/pictogramSymbolIDPrefix",
+  "kind" : "symbol",
+  "role" : "symbol",
+  "title" : "pictogramSymbolIDPrefix",
+  "type" : "topic",
+  "url" : "\/documentation\/diagramming\/svgdiagramscenerenderercontext\/pictogramsymbolidprefix"
+},
+"doc://Diagramming/documentation/Diagramming/SVGDiagramSceneRendererContext/restore()": {
+  "abstract" : [
+    {
+      "text" : "Restore previously saved context state stack. If there is no saved state in the stack,",
+      "type" : "text"
+    },
+    {
+      "text" : " ",
+      "type" : "text"
+    },
+    {
+      "text" : "nothing happens.",
+      "type" : "text"
+    }
+  ],
+  "fragments" : [
+    {
+      "kind" : "keyword",
+      "text" : "func"
+    },
+    {
+      "kind" : "text",
+      "text" : " "
+    },
+    {
+      "kind" : "identifier",
+      "text" : "restore"
+    },
+    {
+      "kind" : "text",
+      "text" : "()"
+    }
+  ],
+  "identifier" : "doc:\/\/Diagramming\/documentation\/Diagramming\/SVGDiagramSceneRendererContext\/restore()",
+  "kind" : "symbol",
+  "role" : "symbol",
+  "title" : "restore()",
+  "type" : "topic",
+  "url" : "\/documentation\/diagramming\/svgdiagramscenerenderercontext\/restore()"
+},
+"doc://Diagramming/documentation/Diagramming/SVGDiagramSceneRendererContext/save()": {
+  "abstract" : [
+    {
+      "text" : "Save context state onto a state stack.",
+      "type" : "text"
+    }
+  ],
+  "fragments" : [
+    {
+      "kind" : "keyword",
+      "text" : "func"
+    },
+    {
+      "kind" : "text",
+      "text" : " "
+    },
+    {
+      "kind" : "identifier",
+      "text" : "save"
+    },
+    {
+      "kind" : "text",
+      "text" : "()"
+    }
+  ],
+  "identifier" : "doc:\/\/Diagramming\/documentation\/Diagramming\/SVGDiagramSceneRendererContext\/save()",
+  "kind" : "symbol",
+  "role" : "symbol",
+  "title" : "save()",
+  "type" : "topic",
+  "url" : "\/documentation\/diagramming\/svgdiagramscenerenderercontext\/save()"
+},
+"doc://Diagramming/documentation/Diagramming/SVGDiagramSceneRendererContext/setTransform(_:)": {
+  "abstract" : [
+
+  ],
+  "fragments" : [
+    {
+      "kind" : "keyword",
+      "text" : "func"
+    },
+    {
+      "kind" : "text",
+      "text" : " "
+    },
+    {
+      "kind" : "identifier",
+      "text" : "setTransform"
+    },
+    {
+      "kind" : "text",
+      "text" : "("
+    },
+    {
+      "kind" : "typeIdentifier",
+      "preciseIdentifier" : "s:11Diagramming15AffineTransformV",
+      "text" : "AffineTransform"
+    },
+    {
+      "kind" : "text",
+      "text" : ")"
+    }
+  ],
+  "identifier" : "doc:\/\/Diagramming\/documentation\/Diagramming\/SVGDiagramSceneRendererContext\/setTransform(_:)",
+  "kind" : "symbol",
+  "role" : "symbol",
+  "title" : "setTransform(_:)",
+  "type" : "topic",
+  "url" : "\/documentation\/diagramming\/svgdiagramscenerenderercontext\/settransform(_:)"
+},
+"doc://Diagramming/documentation/Diagramming/SVGDiagramSceneRendererContext/symbolForPictogram(_:)": {
+  "abstract" : [
+    {
+      "text" : "Return symbol ID for given pictogram.",
+      "type" : "text"
+    }
+  ],
+  "fragments" : [
+    {
+      "kind" : "keyword",
+      "text" : "func"
+    },
+    {
+      "kind" : "text",
+      "text" : " "
+    },
+    {
+      "kind" : "identifier",
+      "text" : "symbolForPictogram"
+    },
+    {
+      "kind" : "text",
+      "text" : "("
+    },
+    {
+      "kind" : "typeIdentifier",
+      "preciseIdentifier" : "s:11Diagramming9PictogramC",
+      "text" : "Pictogram"
+    },
+    {
+      "kind" : "text",
+      "text" : ") -> "
+    },
+    {
+      "kind" : "typeIdentifier",
+      "preciseIdentifier" : "s:SS",
+      "text" : "String"
+    }
+  ],
+  "identifier" : "doc:\/\/Diagramming\/documentation\/Diagramming\/SVGDiagramSceneRendererContext\/symbolForPictogram(_:)",
+  "kind" : "symbol",
+  "role" : "symbol",
+  "title" : "symbolForPictogram(_:)",
+  "type" : "topic",
+  "url" : "\/documentation\/diagramming\/svgdiagramscenerenderercontext\/symbolforpictogram(_:)"
+},
+"doc://Diagramming/documentation/Diagramming/SVGDiagramSceneRendererContext/transform": {
+  "abstract" : [
+    {
+      "text" : "Current affine transform of the rendering context",
+      "type" : "text"
+    }
+  ],
+  "fragments" : [
+    {
+      "kind" : "keyword",
+      "text" : "var"
+    },
+    {
+      "kind" : "text",
+      "text" : " "
+    },
+    {
+      "kind" : "identifier",
+      "text" : "transform"
+    },
+    {
+      "kind" : "text",
+      "text" : ": "
+    },
+    {
+      "kind" : "typeIdentifier",
+      "preciseIdentifier" : "s:11Diagramming15AffineTransformV",
+      "text" : "AffineTransform"
+    }
+  ],
+  "identifier" : "doc:\/\/Diagramming\/documentation\/Diagramming\/SVGDiagramSceneRendererContext\/transform",
+  "kind" : "symbol",
+  "role" : "symbol",
+  "title" : "transform",
+  "type" : "topic",
+  "url" : "\/documentation\/diagramming\/svgdiagramscenerenderercontext\/transform"
+}
+}
+}

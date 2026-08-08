@@ -1,0 +1,1088 @@
+{
+  "abstract" : [
+    {
+      "text" : "The ",
+      "type" : "text"
+    },
+    {
+      "inlineContent" : [
+        {
+          "text" : "Diagramming",
+          "type" : "text"
+        }
+      ],
+      "type" : "emphasis"
+    },
+    {
+      "text" : " package comes with a command-line utility ",
+      "type" : "text"
+    },
+    {
+      "code" : "pictogram",
+      "type" : "codeVoice"
+    },
+    {
+      "text" : " that is used to extract",
+      "type" : "text"
+    },
+    {
+      "text" : " ",
+      "type" : "text"
+    },
+    {
+      "text" : "pictograms from SVG files and to build notations (pictogram collections).",
+      "type" : "text"
+    }
+  ],
+  "hierarchy" : {
+    "paths" : [
+      [
+        "doc:\/\/Diagramming\/documentation\/Diagramming"
+      ]
+    ]
+  },
+  "identifier" : {
+    "interfaceLanguage" : "swift",
+    "url" : "doc:\/\/Diagramming\/documentation\/Diagramming\/PictogramTool"
+  },
+  "kind" : "article",
+  "metadata" : {
+    "modules" : [
+      {
+        "name" : "Diagramming"
+      }
+    ],
+    "role" : "article",
+    "roleHeading" : "Article",
+    "title" : "Pictogram Command-line Tool"
+  },
+  "primaryContentSections" : [
+    {
+      "content" : [
+        {
+          "anchor" : "overview",
+          "level" : 2,
+          "text" : "Overview",
+          "type" : "heading"
+        },
+        {
+          "inlineContent" : [
+            {
+              "text" : "Functionality:",
+              "type" : "text"
+            }
+          ],
+          "type" : "paragraph"
+        },
+        {
+          "items" : [
+            {
+              "content" : [
+                {
+                  "inlineContent" : [
+                    {
+                      "text" : "Extract pictogram from a SVG file",
+                      "type" : "text"
+                    }
+                  ],
+                  "type" : "paragraph"
+                }
+              ]
+            },
+            {
+              "content" : [
+                {
+                  "inlineContent" : [
+                    {
+                      "text" : "Create a pictogram collection (used by Poietic applications)",
+                      "type" : "text"
+                    }
+                  ],
+                  "type" : "paragraph"
+                }
+              ]
+            },
+            {
+              "content" : [
+                {
+                  "inlineContent" : [
+                    {
+                      "text" : "Preview a pictogram (convert it to a SVG file)",
+                      "type" : "text"
+                    }
+                  ],
+                  "type" : "paragraph"
+                }
+              ]
+            },
+            {
+              "content" : [
+                {
+                  "inlineContent" : [
+                    {
+                      "text" : "Create a pictogram catalog sheet for previewing",
+                      "type" : "text"
+                    }
+                  ],
+                  "type" : "paragraph"
+                }
+              ]
+            }
+          ],
+          "type" : "unorderedList"
+        },
+        {
+          "anchor" : "Notes-on-Pictograms",
+          "level" : 2,
+          "text" : "Notes on Pictograms",
+          "type" : "heading"
+        },
+        {
+          "inlineContent" : [
+            {
+              "text" : "Pictograms here are single line symbols without filled shapes. They are intended to be used for",
+              "type" : "text"
+            },
+            {
+              "text" : " ",
+              "type" : "text"
+            },
+            {
+              "text" : "screen rendering, vector graphics and for pen-plotting.",
+              "type" : "text"
+            }
+          ],
+          "type" : "paragraph"
+        },
+        {
+          "anchor" : "Commands",
+          "level" : 2,
+          "text" : "Commands",
+          "type" : "heading"
+        },
+        {
+          "inlineContent" : [
+            {
+              "text" : "| Command | Description |",
+              "type" : "text"
+            },
+            {
+              "text" : " ",
+              "type" : "text"
+            },
+            {
+              "text" : "+—+—+",
+              "type" : "text"
+            },
+            {
+              "text" : " ",
+              "type" : "text"
+            },
+            {
+              "text" : "| ",
+              "type" : "text"
+            },
+            {
+              "code" : "extract",
+              "type" : "codeVoice"
+            },
+            {
+              "text" : " | Extract a single pictogram from a SVG file into a pictogram JSON file |",
+              "type" : "text"
+            },
+            {
+              "text" : " ",
+              "type" : "text"
+            },
+            {
+              "text" : "| ",
+              "type" : "text"
+            },
+            {
+              "code" : "collect",
+              "type" : "codeVoice"
+            },
+            {
+              "text" : " | Create a collection of pictograms from multiple pictogram JSON files |",
+              "type" : "text"
+            },
+            {
+              "text" : " ",
+              "type" : "text"
+            },
+            {
+              "text" : "| ",
+              "type" : "text"
+            },
+            {
+              "code" : "preview",
+              "type" : "codeVoice"
+            },
+            {
+              "text" : " | Create a SVG preview of a pictogram |",
+              "type" : "text"
+            },
+            {
+              "text" : " ",
+              "type" : "text"
+            },
+            {
+              "text" : "| ",
+              "type" : "text"
+            },
+            {
+              "code" : "catalog",
+              "type" : "codeVoice"
+            },
+            {
+              "text" : " | Create a SVG catalog preview of multiple pictograms |",
+              "type" : "text"
+            },
+            {
+              "text" : " ",
+              "type" : "text"
+            },
+            {
+              "text" : "| ",
+              "type" : "text"
+            },
+            {
+              "code" : "help",
+              "type" : "codeVoice"
+            },
+            {
+              "text" : " | See all available commands |",
+              "type" : "text"
+            }
+          ],
+          "type" : "paragraph"
+        },
+        {
+          "anchor" : "Pictogram-Creation",
+          "level" : 2,
+          "text" : "Pictogram Creation",
+          "type" : "heading"
+        },
+        {
+          "inlineContent" : [
+            {
+              "text" : "To create a pictogram from a SVG file use the ",
+              "type" : "text"
+            },
+            {
+              "code" : "extract",
+              "type" : "codeVoice"
+            },
+            {
+              "text" : " command:",
+              "type" : "text"
+            }
+          ],
+          "type" : "paragraph"
+        },
+        {
+          "code" : [
+            "pictogram extract block.svg"
+          ],
+          "syntax" : "bash",
+          "type" : "codeListing"
+        },
+        {
+          "inlineContent" : [
+            {
+              "text" : "Pictogram is described by:",
+              "type" : "text"
+            }
+          ],
+          "type" : "paragraph"
+        },
+        {
+          "items" : [
+            {
+              "content" : [
+                {
+                  "inlineContent" : [
+                    {
+                      "text" : "Bezier path",
+                      "type" : "text"
+                    }
+                  ],
+                  "type" : "paragraph"
+                }
+              ]
+            },
+            {
+              "content" : [
+                {
+                  "inlineContent" : [
+                    {
+                      "text" : "Mask shape",
+                      "type" : "text"
+                    }
+                  ],
+                  "type" : "paragraph"
+                }
+              ]
+            },
+            {
+              "content" : [
+                {
+                  "inlineContent" : [
+                    {
+                      "text" : "Collision shape",
+                      "type" : "text"
+                    }
+                  ],
+                  "type" : "paragraph"
+                }
+              ]
+            },
+            {
+              "content" : [
+                {
+                  "inlineContent" : [
+                    {
+                      "text" : "Origin point",
+                      "type" : "text"
+                    }
+                  ],
+                  "type" : "paragraph"
+                }
+              ]
+            },
+            {
+              "content" : [
+                {
+                  "inlineContent" : [
+                    {
+                      "text" : "Bounding box",
+                      "type" : "text"
+                    }
+                  ],
+                  "type" : "paragraph"
+                }
+              ]
+            }
+          ],
+          "type" : "unorderedList"
+        },
+        {
+          "inlineContent" : [
+            {
+              "text" : "The SVG must contain elements (groups) with the following IDs (",
+              "type" : "text"
+            },
+            {
+              "code" : "id",
+              "type" : "codeVoice"
+            },
+            {
+              "text" : " property):",
+              "type" : "text"
+            }
+          ],
+          "type" : "paragraph"
+        },
+        {
+          "items" : [
+            {
+              "content" : [
+                {
+                  "inlineContent" : [
+                    {
+                      "code" : "pictogram",
+                      "type" : "codeVoice"
+                    },
+                    {
+                      "text" : " (required) - Pictogram path",
+                      "type" : "text"
+                    }
+                  ],
+                  "type" : "paragraph"
+                },
+                {
+                  "items" : [
+                    {
+                      "content" : [
+                        {
+                          "inlineContent" : [
+                            {
+                              "text" : "Can be a ",
+                              "type" : "text"
+                            },
+                            {
+                              "code" : "g",
+                              "type" : "codeVoice"
+                            },
+                            {
+                              "text" : " group element or any direct graphic element, no ",
+                              "type" : "text"
+                            },
+                            {
+                              "code" : "use",
+                              "type" : "codeVoice"
+                            },
+                            {
+                              "text" : ", no ",
+                              "type" : "text"
+                            },
+                            {
+                              "code" : "text",
+                              "type" : "codeVoice"
+                            },
+                            {
+                              "text" : ".",
+                              "type" : "text"
+                            }
+                          ],
+                          "type" : "paragraph"
+                        }
+                      ]
+                    },
+                    {
+                      "content" : [
+                        {
+                          "inlineContent" : [
+                            {
+                              "text" : "All style (fill, line) is ignored",
+                              "type" : "text"
+                            }
+                          ],
+                          "type" : "paragraph"
+                        }
+                      ]
+                    },
+                    {
+                      "content" : [
+                        {
+                          "inlineContent" : [
+                            {
+                              "text" : "Path is considered a wire-frame",
+                              "type" : "text"
+                            }
+                          ],
+                          "type" : "paragraph"
+                        }
+                      ]
+                    }
+                  ],
+                  "type" : "unorderedList"
+                }
+              ]
+            },
+            {
+              "content" : [
+                {
+                  "inlineContent" : [
+                    {
+                      "code" : "collision",
+                      "type" : "codeVoice"
+                    },
+                    {
+                      "text" : " (required) - Collision shape",
+                      "type" : "text"
+                    }
+                  ],
+                  "type" : "paragraph"
+                },
+                {
+                  "items" : [
+                    {
+                      "content" : [
+                        {
+                          "inlineContent" : [
+                            {
+                              "text" : "Must be either a group ",
+                              "type" : "text"
+                            },
+                            {
+                              "code" : "g",
+                              "type" : "codeVoice"
+                            },
+                            {
+                              "text" : " element or a simple shape element.",
+                              "type" : "text"
+                            }
+                          ],
+                          "type" : "paragraph"
+                        }
+                      ]
+                    },
+                    {
+                      "content" : [
+                        {
+                          "inlineContent" : [
+                            {
+                              "text" : "Allowed shapes: ",
+                              "type" : "text"
+                            },
+                            {
+                              "code" : "circle",
+                              "type" : "codeVoice"
+                            },
+                            {
+                              "text" : ", ",
+                              "type" : "text"
+                            },
+                            {
+                              "code" : "ellipse",
+                              "type" : "codeVoice"
+                            },
+                            {
+                              "text" : " (converted to rectangle), ",
+                              "type" : "text"
+                            },
+                            {
+                              "code" : "rectangle",
+                              "type" : "codeVoice"
+                            },
+                            {
+                              "text" : ",",
+                              "type" : "text"
+                            },
+                            {
+                              "text" : " ",
+                              "type" : "text"
+                            },
+                            {
+                              "code" : "polygon",
+                              "type" : "codeVoice"
+                            },
+                            {
+                              "text" : ", ",
+                              "type" : "text"
+                            },
+                            {
+                              "code" : "polyline",
+                              "type" : "codeVoice"
+                            },
+                            {
+                              "text" : " (treated as polygon), ",
+                              "type" : "text"
+                            },
+                            {
+                              "code" : "path",
+                              "type" : "codeVoice"
+                            },
+                            {
+                              "text" : " (must contain only line-to elements)",
+                              "type" : "text"
+                            }
+                          ],
+                          "type" : "paragraph"
+                        }
+                      ]
+                    }
+                  ],
+                  "type" : "unorderedList"
+                }
+              ]
+            },
+            {
+              "content" : [
+                {
+                  "inlineContent" : [
+                    {
+                      "code" : "origin",
+                      "type" : "codeVoice"
+                    },
+                    {
+                      "text" : " – Origin point",
+                      "type" : "text"
+                    }
+                  ],
+                  "type" : "paragraph"
+                },
+                {
+                  "items" : [
+                    {
+                      "content" : [
+                        {
+                          "inlineContent" : [
+                            {
+                              "text" : "Must be a circle element, where the origin will be the circle center",
+                              "type" : "text"
+                            }
+                          ],
+                          "type" : "paragraph"
+                        }
+                      ]
+                    },
+                    {
+                      "content" : [
+                        {
+                          "inlineContent" : [
+                            {
+                              "text" : "Specifies pictogram origin. If not provided, then center of the collision shape is used.",
+                              "type" : "text"
+                            }
+                          ],
+                          "type" : "paragraph"
+                        }
+                      ]
+                    }
+                  ],
+                  "type" : "unorderedList"
+                }
+              ]
+            },
+            {
+              "content" : [
+                {
+                  "inlineContent" : [
+                    {
+                      "code" : "mask",
+                      "type" : "codeVoice"
+                    },
+                    {
+                      "text" : " – Selection outline mask",
+                      "type" : "text"
+                    }
+                  ],
+                  "type" : "paragraph"
+                },
+                {
+                  "items" : [
+                    {
+                      "content" : [
+                        {
+                          "inlineContent" : [
+                            {
+                              "text" : "Can be a ",
+                              "type" : "text"
+                            },
+                            {
+                              "code" : "g",
+                              "type" : "codeVoice"
+                            },
+                            {
+                              "text" : " group element or any direct graphic element, no ",
+                              "type" : "text"
+                            },
+                            {
+                              "code" : "use",
+                              "type" : "codeVoice"
+                            },
+                            {
+                              "text" : ", no ",
+                              "type" : "text"
+                            },
+                            {
+                              "code" : "text",
+                              "type" : "codeVoice"
+                            },
+                            {
+                              "text" : ".",
+                              "type" : "text"
+                            }
+                          ],
+                          "type" : "paragraph"
+                        }
+                      ]
+                    },
+                    {
+                      "content" : [
+                        {
+                          "inlineContent" : [
+                            {
+                              "text" : "All style (fill, line) is ignored",
+                              "type" : "text"
+                            }
+                          ],
+                          "type" : "paragraph"
+                        }
+                      ]
+                    },
+                    {
+                      "content" : [
+                        {
+                          "inlineContent" : [
+                            {
+                              "text" : "Path is considered a filled curve",
+                              "type" : "text"
+                            }
+                          ],
+                          "type" : "paragraph"
+                        }
+                      ]
+                    }
+                  ],
+                  "type" : "unorderedList"
+                }
+              ]
+            }
+          ],
+          "type" : "unorderedList"
+        },
+        {
+          "inlineContent" : [
+            {
+              "text" : "The pictogram is extracted from SVG as follows:",
+              "type" : "text"
+            }
+          ],
+          "type" : "paragraph"
+        },
+        {
+          "items" : [
+            {
+              "content" : [
+                {
+                  "inlineContent" : [
+                    {
+                      "text" : "Path is extracted from element with ID ",
+                      "type" : "text"
+                    },
+                    {
+                      "code" : "pictogram",
+                      "type" : "codeVoice"
+                    },
+                    {
+                      "text" : " by converting the element and its children to",
+                      "type" : "text"
+                    },
+                    {
+                      "text" : " ",
+                      "type" : "text"
+                    },
+                    {
+                      "text" : "bezier path.",
+                      "type" : "text"
+                    }
+                  ],
+                  "type" : "paragraph"
+                },
+                {
+                  "items" : [
+                    {
+                      "content" : [
+                        {
+                          "inlineContent" : [
+                            {
+                              "text" : "Element is converted to bezier path",
+                              "type" : "text"
+                            }
+                          ],
+                          "type" : "paragraph"
+                        }
+                      ]
+                    },
+                    {
+                      "content" : [
+                        {
+                          "inlineContent" : [
+                            {
+                              "text" : "All transformations from the root element will be combined and applied to the path",
+                              "type" : "text"
+                            }
+                          ],
+                          "type" : "paragraph"
+                        }
+                      ]
+                    },
+                    {
+                      "content" : [
+                        {
+                          "inlineContent" : [
+                            {
+                              "text" : "For group elements all paths will be combined into a single path.",
+                              "type" : "text"
+                            }
+                          ],
+                          "type" : "paragraph"
+                        }
+                      ]
+                    }
+                  ],
+                  "type" : "orderedList"
+                }
+              ]
+            },
+            {
+              "content" : [
+                {
+                  "inlineContent" : [
+                    {
+                      "text" : "Collision is extracted from element with ID ",
+                      "type" : "text"
+                    },
+                    {
+                      "code" : "collision",
+                      "type" : "codeVoice"
+                    },
+                    {
+                      "text" : ".",
+                      "type" : "text"
+                    }
+                  ],
+                  "type" : "paragraph"
+                }
+              ]
+            },
+            {
+              "content" : [
+                {
+                  "inlineContent" : [
+                    {
+                      "text" : "Mask is extracted from element with ID ",
+                      "type" : "text"
+                    },
+                    {
+                      "code" : "collision",
+                      "type" : "codeVoice"
+                    },
+                    {
+                      "text" : ".",
+                      "type" : "text"
+                    }
+                  ],
+                  "type" : "paragraph"
+                }
+              ]
+            },
+            {
+              "content" : [
+                {
+                  "inlineContent" : [
+                    {
+                      "text" : "Origin point is extracted from element with ID ",
+                      "type" : "text"
+                    },
+                    {
+                      "code" : "origin",
+                      "type" : "codeVoice"
+                    },
+                    {
+                      "text" : ".",
+                      "type" : "text"
+                    }
+                  ],
+                  "type" : "paragraph"
+                },
+                {
+                  "items" : [
+                    {
+                      "content" : [
+                        {
+                          "inlineContent" : [
+                            {
+                              "text" : "If origin is not present, then center of the shape is used.",
+                              "type" : "text"
+                            }
+                          ],
+                          "type" : "paragraph"
+                        }
+                      ]
+                    },
+                    {
+                      "content" : [
+                        {
+                          "inlineContent" : [
+                            {
+                              "text" : "If the shape is a polygon, then centroid of the polygon is used.",
+                              "type" : "text"
+                            }
+                          ],
+                          "type" : "paragraph"
+                        }
+                      ]
+                    }
+                  ],
+                  "type" : "unorderedList"
+                }
+              ]
+            },
+            {
+              "content" : [
+                {
+                  "inlineContent" : [
+                    {
+                      "text" : "Path, mask and collision shape are offset by the origin.",
+                      "type" : "text"
+                    }
+                  ],
+                  "type" : "paragraph"
+                }
+              ]
+            }
+          ],
+          "type" : "orderedList"
+        },
+        {
+          "anchor" : "Example",
+          "level" : 2,
+          "text" : "Example",
+          "type" : "heading"
+        },
+        {
+          "inlineContent" : [
+            {
+              "text" : "A pictogram of a rectangle with a circle, let us call it ",
+              "type" : "text"
+            },
+            {
+              "code" : "pictogram.svg",
+              "type" : "codeVoice"
+            },
+            {
+              "text" : ":",
+              "type" : "text"
+            }
+          ],
+          "type" : "paragraph"
+        },
+        {
+          "code" : [
+            "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>",
+            "<!DOCTYPE svg PUBLIC \"-\/\/W3C\/\/DTD SVG 1.1\/\/EN\" \"http:\/\/www.w3.org\/Graphics\/SVG\/1.1\/DTD\/svg11.dtd\">",
+            "<svg width=\"320\" height=\"220\" version=\"1.1\" xmlns=\"http:\/\/www.w3.org\/2000\/svg\" xmlns:xlink=\"http:\/\/www.w3.org\/1999\/xlink\" xml:space=\"preserve\" xmlns:serif=\"http:\/\/www.serif.com\/\" style=\"fill-rule:evenodd;clip-rule:evenodd;stroke-linecap:round;stroke-linejoin:round;\">",
+            "    <g id=\"Stock\">",
+            "        <g id=\"pictogram\">",
+            "            <rect x=\"0.0\" y=\"0.0\" width=\"300\" height=\"200\"\/>",
+            "            <circle cx=\"150\" cy=\"100\" r=\"50\"\/>",
+            "        <\/g>",
+            "        <g id=\"mask\">",
+            "            <rect x=\"-10.0\" y=\"-10.0\" width=\"320\" height=\"220\"\/>",
+            "        <\/g>",
+            "        <g id=\"collision\">",
+            "            <rect x=\"0.0\" y=\"0.0\" width=\"300\" height=\"200\"\/>",
+            "        <\/g>",
+            "    <\/g>",
+            "<\/svg>"
+          ],
+          "syntax" : "svg",
+          "type" : "codeListing"
+        },
+        {
+          "inlineContent" : [
+            {
+              "text" : "The following will create a pictogram file and then back pictogram preview from the pictogram file:",
+              "type" : "text"
+            }
+          ],
+          "type" : "paragraph"
+        },
+        {
+          "code" : [
+            "pictogram extract --pretty -o pictogram.json pictogram.svg",
+            "pictogram preview -o pictogram-preview.svg pictogram.json"
+          ],
+          "syntax" : "sh",
+          "type" : "codeListing"
+        },
+        {
+          "inlineContent" : [
+            {
+              "text" : "Look at ",
+              "type" : "text"
+            },
+            {
+              "code" : "pictogram-preview.svg",
+              "type" : "codeVoice"
+            },
+            {
+              "text" : " to see annotated pictogram.",
+              "type" : "text"
+            }
+          ],
+          "type" : "paragraph"
+        },
+        {
+          "anchor" : "See-Also",
+          "level" : 2,
+          "text" : "See Also:",
+          "type" : "heading"
+        },
+        {
+          "items" : [
+            {
+              "content" : [
+                {
+                  "inlineContent" : [
+                    {
+                      "identifier" : "https:\/\/github.com\/OpenPoiesis\/poietic-assets",
+                      "isActive" : true,
+                      "type" : "reference"
+                    },
+                    {
+                      "text" : " – collection of sources for",
+                      "type" : "text"
+                    },
+                    {
+                      "text" : " ",
+                      "type" : "text"
+                    },
+                    {
+                      "text" : "assets used in the Open Poiesis project",
+                      "type" : "text"
+                    }
+                  ],
+                  "type" : "paragraph"
+                }
+              ]
+            }
+          ],
+          "type" : "unorderedList"
+        }
+      ],
+      "kind" : "content"
+    }
+  ],
+  "schemaVersion" : {
+    "major" : 0,
+    "minor" : 3,
+    "patch" : 0
+  },
+  "sections" : [
+
+  ],
+  "variants" : [
+    {
+      "paths" : [
+        "\/documentation\/diagramming\/pictogramtool"
+      ],
+      "traits" : [
+        {
+          "interfaceLanguage" : "swift"
+        }
+      ]
+    }
+  ]
+, 
+"references": {
+"doc://Diagramming/documentation/Diagramming": {
+  "abstract" : [
+    {
+      "text" : "Diagramming is an OpenPoiesis project package for representing and composing diagrams from design",
+      "type" : "text"
+    },
+    {
+      "text" : " ",
+      "type" : "text"
+    },
+    {
+      "text" : "objects.",
+      "type" : "text"
+    }
+  ],
+  "identifier" : "doc:\/\/Diagramming\/documentation\/Diagramming",
+  "kind" : "symbol",
+  "role" : "collection",
+  "title" : "Diagramming",
+  "type" : "topic",
+  "url" : "\/documentation\/diagramming"
+},
+"https://github.com/OpenPoiesis/poietic-assets": {
+  "identifier" : "https:\/\/github.com\/OpenPoiesis\/poietic-assets",
+  "title" : "Poietic Assets",
+  "titleInlineContent" : [
+    {
+      "text" : "Poietic Assets",
+      "type" : "text"
+    }
+  ],
+  "type" : "link",
+  "url" : "https:\/\/github.com\/OpenPoiesis\/poietic-assets"
+}
+}
+}

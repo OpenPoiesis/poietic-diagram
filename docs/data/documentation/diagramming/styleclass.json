@@ -1,0 +1,943 @@
+{
+  "abstract" : [
+    {
+      "text" : "Role of the diagram element in the visual vocabulary.",
+      "type" : "text"
+    }
+  ],
+  "hierarchy" : {
+    "paths" : [
+      [
+        "doc:\/\/Diagramming\/documentation\/Diagramming"
+      ]
+    ]
+  },
+  "identifier" : {
+    "interfaceLanguage" : "swift",
+    "url" : "doc:\/\/Diagramming\/documentation\/Diagramming\/StyleClass"
+  },
+  "kind" : "symbol",
+  "metadata" : {
+    "externalID" : "s:11Diagramming10StyleClassO",
+    "fragments" : [
+      {
+        "kind" : "keyword",
+        "text" : "enum"
+      },
+      {
+        "kind" : "text",
+        "text" : " "
+      },
+      {
+        "kind" : "identifier",
+        "text" : "StyleClass"
+      }
+    ],
+    "modules" : [
+      {
+        "name" : "Diagramming"
+      }
+    ],
+    "navigatorTitle" : [
+      {
+        "kind" : "identifier",
+        "text" : "StyleClass"
+      }
+    ],
+    "role" : "symbol",
+    "roleHeading" : "Enumeration",
+    "symbolKind" : "enum",
+    "title" : "StyleClass"
+  },
+  "primaryContentSections" : [
+    {
+      "declarations" : [
+        {
+          "languages" : [
+            "swift"
+          ],
+          "platforms" : [
+            "macOS"
+          ],
+          "tokens" : [
+            {
+              "kind" : "keyword",
+              "text" : "enum"
+            },
+            {
+              "kind" : "text",
+              "text" : " "
+            },
+            {
+              "kind" : "identifier",
+              "text" : "StyleClass"
+            }
+          ]
+        }
+      ],
+      "kind" : "declarations"
+    }
+  ],
+  "relationshipsSections" : [
+    {
+      "identifiers" : [
+        "doc:\/\/Diagramming\/SQ",
+        "doc:\/\/Diagramming\/SH",
+        "doc:\/\/Diagramming\/SY",
+        "doc:\/\/Diagramming\/s8SendableP",
+        "doc:\/\/Diagramming\/s16SendableMetatypeP"
+      ],
+      "kind" : "relationships",
+      "title" : "Conforms To",
+      "type" : "conformsTo"
+    }
+  ],
+  "schemaVersion" : {
+    "major" : 0,
+    "minor" : 3,
+    "patch" : 0
+  },
+  "sections" : [
+
+  ],
+  "seeAlsoSections" : [
+    {
+      "anchor" : "Style",
+      "generated" : true,
+      "identifiers" : [
+        "doc:\/\/Diagramming\/documentation\/Diagramming\/CanvasNodeStyle",
+        "doc:\/\/Diagramming\/documentation\/Diagramming\/StyleModifierSet"
+      ],
+      "title" : "Style"
+    }
+  ],
+  "topicSections" : [
+    {
+      "anchor" : "Enumeration-Cases",
+      "generated" : true,
+      "identifiers" : [
+        "doc:\/\/Diagramming\/documentation\/Diagramming\/StyleClass\/block",
+        "doc:\/\/Diagramming\/documentation\/Diagramming\/StyleClass\/canvas",
+        "doc:\/\/Diagramming\/documentation\/Diagramming\/StyleClass\/colorSwatch",
+        "doc:\/\/Diagramming\/documentation\/Diagramming\/StyleClass\/connector",
+        "doc:\/\/Diagramming\/documentation\/Diagramming\/StyleClass\/fatConnector",
+        "doc:\/\/Diagramming\/documentation\/Diagramming\/StyleClass\/grid",
+        "doc:\/\/Diagramming\/documentation\/Diagramming\/StyleClass\/handle",
+        "doc:\/\/Diagramming\/documentation\/Diagramming\/StyleClass\/highlight",
+        "doc:\/\/Diagramming\/documentation\/Diagramming\/StyleClass\/intentShadow",
+        "doc:\/\/Diagramming\/documentation\/Diagramming\/StyleClass\/issueIndicator",
+        "doc:\/\/Diagramming\/documentation\/Diagramming\/StyleClass\/label",
+        "doc:\/\/Diagramming\/documentation\/Diagramming\/StyleClass\/normal",
+        "doc:\/\/Diagramming\/documentation\/Diagramming\/StyleClass\/pictogram",
+        "doc:\/\/Diagramming\/documentation\/Diagramming\/StyleClass\/primaryLabel",
+        "doc:\/\/Diagramming\/documentation\/Diagramming\/StyleClass\/secondaryLabel",
+        "doc:\/\/Diagramming\/documentation\/Diagramming\/StyleClass\/thinConnector",
+        "doc:\/\/Diagramming\/documentation\/Diagramming\/StyleClass\/valueIndicator",
+        "doc:\/\/Diagramming\/documentation\/Diagramming\/StyleClass\/valueIndicatorLine",
+        "doc:\/\/Diagramming\/documentation\/Diagramming\/StyleClass\/valueLabel"
+      ],
+      "title" : "Enumeration Cases"
+    },
+    {
+      "anchor" : "Initializers",
+      "generated" : true,
+      "identifiers" : [
+        "doc:\/\/Diagramming\/documentation\/Diagramming\/StyleClass\/init(rawValue:)"
+      ],
+      "title" : "Initializers"
+    },
+    {
+      "anchor" : "Instance-Properties",
+      "generated" : true,
+      "identifiers" : [
+        "doc:\/\/Diagramming\/documentation\/Diagramming\/StyleClass\/stringValue"
+      ],
+      "title" : "Instance Properties"
+    },
+    {
+      "anchor" : "Default-Implementations",
+      "generated" : true,
+      "identifiers" : [
+        "doc:\/\/Diagramming\/documentation\/Diagramming\/StyleClass\/Equatable-Implementations",
+        "doc:\/\/Diagramming\/documentation\/Diagramming\/StyleClass\/RawRepresentable-Implementations"
+      ],
+      "title" : "Default Implementations"
+    }
+  ],
+  "variants" : [
+    {
+      "paths" : [
+        "\/documentation\/diagramming\/styleclass"
+      ],
+      "traits" : [
+        {
+          "interfaceLanguage" : "swift"
+        }
+      ]
+    }
+  ]
+, 
+"references": {
+"doc://Diagramming/SH": {
+  "identifier" : "doc:\/\/Diagramming\/SH",
+  "title" : "Swift.Hashable",
+  "type" : "unresolvable"
+},
+"doc://Diagramming/SQ": {
+  "identifier" : "doc:\/\/Diagramming\/SQ",
+  "title" : "Swift.Equatable",
+  "type" : "unresolvable"
+},
+"doc://Diagramming/SY": {
+  "identifier" : "doc:\/\/Diagramming\/SY",
+  "title" : "Swift.RawRepresentable",
+  "type" : "unresolvable"
+},
+"doc://Diagramming/documentation/Diagramming": {
+  "abstract" : [
+    {
+      "text" : "Diagramming is an OpenPoiesis project package for representing and composing diagrams from design",
+      "type" : "text"
+    },
+    {
+      "text" : " ",
+      "type" : "text"
+    },
+    {
+      "text" : "objects.",
+      "type" : "text"
+    }
+  ],
+  "identifier" : "doc:\/\/Diagramming\/documentation\/Diagramming",
+  "kind" : "symbol",
+  "role" : "collection",
+  "title" : "Diagramming",
+  "type" : "topic",
+  "url" : "\/documentation\/diagramming"
+},
+"doc://Diagramming/documentation/Diagramming/CanvasNodeStyle": {
+  "abstract" : [
+    {
+      "text" : "Style how canvas node should be presented.",
+      "type" : "text"
+    }
+  ],
+  "fragments" : [
+    {
+      "kind" : "keyword",
+      "text" : "struct"
+    },
+    {
+      "kind" : "text",
+      "text" : " "
+    },
+    {
+      "kind" : "identifier",
+      "text" : "CanvasNodeStyle"
+    }
+  ],
+  "identifier" : "doc:\/\/Diagramming\/documentation\/Diagramming\/CanvasNodeStyle",
+  "kind" : "symbol",
+  "navigatorTitle" : [
+    {
+      "kind" : "identifier",
+      "text" : "CanvasNodeStyle"
+    }
+  ],
+  "role" : "symbol",
+  "title" : "CanvasNodeStyle",
+  "type" : "topic",
+  "url" : "\/documentation\/diagramming\/canvasnodestyle"
+},
+"doc://Diagramming/documentation/Diagramming/StyleClass": {
+  "abstract" : [
+    {
+      "text" : "Role of the diagram element in the visual vocabulary.",
+      "type" : "text"
+    }
+  ],
+  "fragments" : [
+    {
+      "kind" : "keyword",
+      "text" : "enum"
+    },
+    {
+      "kind" : "text",
+      "text" : " "
+    },
+    {
+      "kind" : "identifier",
+      "text" : "StyleClass"
+    }
+  ],
+  "identifier" : "doc:\/\/Diagramming\/documentation\/Diagramming\/StyleClass",
+  "kind" : "symbol",
+  "navigatorTitle" : [
+    {
+      "kind" : "identifier",
+      "text" : "StyleClass"
+    }
+  ],
+  "role" : "symbol",
+  "title" : "StyleClass",
+  "type" : "topic",
+  "url" : "\/documentation\/diagramming\/styleclass"
+},
+"doc://Diagramming/documentation/Diagramming/StyleClass/Equatable-Implementations": {
+  "abstract" : [
+
+  ],
+  "identifier" : "doc:\/\/Diagramming\/documentation\/Diagramming\/StyleClass\/Equatable-Implementations",
+  "kind" : "article",
+  "role" : "collectionGroup",
+  "title" : "Equatable Implementations",
+  "type" : "topic",
+  "url" : "\/documentation\/diagramming\/styleclass\/equatable-implementations"
+},
+"doc://Diagramming/documentation/Diagramming/StyleClass/RawRepresentable-Implementations": {
+  "abstract" : [
+
+  ],
+  "identifier" : "doc:\/\/Diagramming\/documentation\/Diagramming\/StyleClass\/RawRepresentable-Implementations",
+  "kind" : "article",
+  "role" : "collectionGroup",
+  "title" : "RawRepresentable Implementations",
+  "type" : "topic",
+  "url" : "\/documentation\/diagramming\/styleclass\/rawrepresentable-implementations"
+},
+"doc://Diagramming/documentation/Diagramming/StyleClass/block": {
+  "abstract" : [
+    {
+      "text" : "Non-specific block",
+      "type" : "text"
+    }
+  ],
+  "fragments" : [
+    {
+      "kind" : "keyword",
+      "text" : "case"
+    },
+    {
+      "kind" : "text",
+      "text" : " "
+    },
+    {
+      "kind" : "identifier",
+      "text" : "block"
+    }
+  ],
+  "identifier" : "doc:\/\/Diagramming\/documentation\/Diagramming\/StyleClass\/block",
+  "kind" : "symbol",
+  "role" : "symbol",
+  "title" : "StyleClass.block",
+  "type" : "topic",
+  "url" : "\/documentation\/diagramming\/styleclass\/block"
+},
+"doc://Diagramming/documentation/Diagramming/StyleClass/canvas": {
+  "abstract" : [
+
+  ],
+  "fragments" : [
+    {
+      "kind" : "keyword",
+      "text" : "case"
+    },
+    {
+      "kind" : "text",
+      "text" : " "
+    },
+    {
+      "kind" : "identifier",
+      "text" : "canvas"
+    }
+  ],
+  "identifier" : "doc:\/\/Diagramming\/documentation\/Diagramming\/StyleClass\/canvas",
+  "kind" : "symbol",
+  "role" : "symbol",
+  "title" : "StyleClass.canvas",
+  "type" : "topic",
+  "url" : "\/documentation\/diagramming\/styleclass\/canvas"
+},
+"doc://Diagramming/documentation/Diagramming/StyleClass/colorSwatch": {
+  "abstract" : [
+    {
+      "text" : "Colour of colour swatch border.",
+      "type" : "text"
+    }
+  ],
+  "fragments" : [
+    {
+      "kind" : "keyword",
+      "text" : "case"
+    },
+    {
+      "kind" : "text",
+      "text" : " "
+    },
+    {
+      "kind" : "identifier",
+      "text" : "colorSwatch"
+    }
+  ],
+  "identifier" : "doc:\/\/Diagramming\/documentation\/Diagramming\/StyleClass\/colorSwatch",
+  "kind" : "symbol",
+  "role" : "symbol",
+  "title" : "StyleClass.colorSwatch",
+  "type" : "topic",
+  "url" : "\/documentation\/diagramming\/styleclass\/colorswatch"
+},
+"doc://Diagramming/documentation/Diagramming/StyleClass/connector": {
+  "abstract" : [
+    {
+      "text" : "Non-specific connector",
+      "type" : "text"
+    }
+  ],
+  "fragments" : [
+    {
+      "kind" : "keyword",
+      "text" : "case"
+    },
+    {
+      "kind" : "text",
+      "text" : " "
+    },
+    {
+      "kind" : "identifier",
+      "text" : "connector"
+    }
+  ],
+  "identifier" : "doc:\/\/Diagramming\/documentation\/Diagramming\/StyleClass\/connector",
+  "kind" : "symbol",
+  "role" : "symbol",
+  "title" : "StyleClass.connector",
+  "type" : "topic",
+  "url" : "\/documentation\/diagramming\/styleclass\/connector"
+},
+"doc://Diagramming/documentation/Diagramming/StyleClass/fatConnector": {
+  "abstract" : [
+    {
+      "text" : "Fat outlined connector.",
+      "type" : "text"
+    }
+  ],
+  "fragments" : [
+    {
+      "kind" : "keyword",
+      "text" : "case"
+    },
+    {
+      "kind" : "text",
+      "text" : " "
+    },
+    {
+      "kind" : "identifier",
+      "text" : "fatConnector"
+    }
+  ],
+  "identifier" : "doc:\/\/Diagramming\/documentation\/Diagramming\/StyleClass\/fatConnector",
+  "kind" : "symbol",
+  "role" : "symbol",
+  "title" : "StyleClass.fatConnector",
+  "type" : "topic",
+  "url" : "\/documentation\/diagramming\/styleclass\/fatconnector"
+},
+"doc://Diagramming/documentation/Diagramming/StyleClass/grid": {
+  "abstract" : [
+
+  ],
+  "fragments" : [
+    {
+      "kind" : "keyword",
+      "text" : "case"
+    },
+    {
+      "kind" : "text",
+      "text" : " "
+    },
+    {
+      "kind" : "identifier",
+      "text" : "grid"
+    }
+  ],
+  "identifier" : "doc:\/\/Diagramming\/documentation\/Diagramming\/StyleClass\/grid",
+  "kind" : "symbol",
+  "role" : "symbol",
+  "title" : "StyleClass.grid",
+  "type" : "topic",
+  "url" : "\/documentation\/diagramming\/styleclass\/grid"
+},
+"doc://Diagramming/documentation/Diagramming/StyleClass/handle": {
+  "abstract" : [
+    {
+      "text" : "Colour of mid-point or other handle.",
+      "type" : "text"
+    }
+  ],
+  "fragments" : [
+    {
+      "kind" : "keyword",
+      "text" : "case"
+    },
+    {
+      "kind" : "text",
+      "text" : " "
+    },
+    {
+      "kind" : "identifier",
+      "text" : "handle"
+    }
+  ],
+  "identifier" : "doc:\/\/Diagramming\/documentation\/Diagramming\/StyleClass\/handle",
+  "kind" : "symbol",
+  "role" : "symbol",
+  "title" : "StyleClass.handle",
+  "type" : "topic",
+  "url" : "\/documentation\/diagramming\/styleclass\/handle"
+},
+"doc://Diagramming/documentation/Diagramming/StyleClass/highlight": {
+  "abstract" : [
+    {
+      "text" : "Colour of highlight, such as selection. Concrete highlight is to be specified with",
+      "type" : "text"
+    },
+    {
+      "text" : " ",
+      "type" : "text"
+    },
+    {
+      "identifier" : "doc:\/\/Diagramming\/documentation\/Diagramming\/StyleModifierSet",
+      "isActive" : true,
+      "type" : "reference"
+    },
+    {
+      "text" : ".",
+      "type" : "text"
+    }
+  ],
+  "fragments" : [
+    {
+      "kind" : "keyword",
+      "text" : "case"
+    },
+    {
+      "kind" : "text",
+      "text" : " "
+    },
+    {
+      "kind" : "identifier",
+      "text" : "highlight"
+    }
+  ],
+  "identifier" : "doc:\/\/Diagramming\/documentation\/Diagramming\/StyleClass\/highlight",
+  "kind" : "symbol",
+  "role" : "symbol",
+  "title" : "StyleClass.highlight",
+  "type" : "topic",
+  "url" : "\/documentation\/diagramming\/styleclass\/highlight"
+},
+"doc://Diagramming/documentation/Diagramming/StyleClass/init(rawValue:)": {
+  "abstract" : [
+
+  ],
+  "fragments" : [
+    {
+      "kind" : "identifier",
+      "text" : "init"
+    },
+    {
+      "kind" : "text",
+      "text" : "?("
+    },
+    {
+      "kind" : "externalParam",
+      "text" : "rawValue"
+    },
+    {
+      "kind" : "text",
+      "text" : ": "
+    },
+    {
+      "kind" : "typeIdentifier",
+      "preciseIdentifier" : "s:SS",
+      "text" : "String"
+    },
+    {
+      "kind" : "text",
+      "text" : ")"
+    }
+  ],
+  "identifier" : "doc:\/\/Diagramming\/documentation\/Diagramming\/StyleClass\/init(rawValue:)",
+  "kind" : "symbol",
+  "role" : "symbol",
+  "title" : "init(rawValue:)",
+  "type" : "topic",
+  "url" : "\/documentation\/diagramming\/styleclass\/init(rawvalue:)"
+},
+"doc://Diagramming/documentation/Diagramming/StyleClass/intentShadow": {
+  "abstract" : [
+    {
+      "text" : "Colour of interactive intent such as new object to be placed.",
+      "type" : "text"
+    }
+  ],
+  "fragments" : [
+    {
+      "kind" : "keyword",
+      "text" : "case"
+    },
+    {
+      "kind" : "text",
+      "text" : " "
+    },
+    {
+      "kind" : "identifier",
+      "text" : "intentShadow"
+    }
+  ],
+  "identifier" : "doc:\/\/Diagramming\/documentation\/Diagramming\/StyleClass\/intentShadow",
+  "kind" : "symbol",
+  "role" : "symbol",
+  "title" : "StyleClass.intentShadow",
+  "type" : "topic",
+  "url" : "\/documentation\/diagramming\/styleclass\/intentshadow"
+},
+"doc://Diagramming/documentation/Diagramming/StyleClass/issueIndicator": {
+  "abstract" : [
+    {
+      "text" : "Foreground colour of error indicator.",
+      "type" : "text"
+    }
+  ],
+  "fragments" : [
+    {
+      "kind" : "keyword",
+      "text" : "case"
+    },
+    {
+      "kind" : "text",
+      "text" : " "
+    },
+    {
+      "kind" : "identifier",
+      "text" : "issueIndicator"
+    }
+  ],
+  "identifier" : "doc:\/\/Diagramming\/documentation\/Diagramming\/StyleClass\/issueIndicator",
+  "kind" : "symbol",
+  "role" : "symbol",
+  "title" : "StyleClass.issueIndicator",
+  "type" : "topic",
+  "url" : "\/documentation\/diagramming\/styleclass\/issueindicator"
+},
+"doc://Diagramming/documentation/Diagramming/StyleClass/label": {
+  "abstract" : [
+    {
+      "text" : "Color for labels and other text if not specified otherwise.",
+      "type" : "text"
+    }
+  ],
+  "fragments" : [
+    {
+      "kind" : "keyword",
+      "text" : "case"
+    },
+    {
+      "kind" : "text",
+      "text" : " "
+    },
+    {
+      "kind" : "identifier",
+      "text" : "label"
+    }
+  ],
+  "identifier" : "doc:\/\/Diagramming\/documentation\/Diagramming\/StyleClass\/label",
+  "kind" : "symbol",
+  "role" : "symbol",
+  "title" : "StyleClass.label",
+  "type" : "topic",
+  "url" : "\/documentation\/diagramming\/styleclass\/label"
+},
+"doc://Diagramming/documentation/Diagramming/StyleClass/normal": {
+  "abstract" : [
+    {
+      "text" : "Color for strokes if not specified otherwise.",
+      "type" : "text"
+    }
+  ],
+  "fragments" : [
+    {
+      "kind" : "keyword",
+      "text" : "case"
+    },
+    {
+      "kind" : "text",
+      "text" : " "
+    },
+    {
+      "kind" : "identifier",
+      "text" : "normal"
+    }
+  ],
+  "identifier" : "doc:\/\/Diagramming\/documentation\/Diagramming\/StyleClass\/normal",
+  "kind" : "symbol",
+  "role" : "symbol",
+  "title" : "StyleClass.normal",
+  "type" : "topic",
+  "url" : "\/documentation\/diagramming\/styleclass\/normal"
+},
+"doc://Diagramming/documentation/Diagramming/StyleClass/pictogram": {
+  "abstract" : [
+
+  ],
+  "fragments" : [
+    {
+      "kind" : "keyword",
+      "text" : "case"
+    },
+    {
+      "kind" : "text",
+      "text" : " "
+    },
+    {
+      "kind" : "identifier",
+      "text" : "pictogram"
+    }
+  ],
+  "identifier" : "doc:\/\/Diagramming\/documentation\/Diagramming\/StyleClass\/pictogram",
+  "kind" : "symbol",
+  "role" : "symbol",
+  "title" : "StyleClass.pictogram",
+  "type" : "topic",
+  "url" : "\/documentation\/diagramming\/styleclass\/pictogram"
+},
+"doc://Diagramming/documentation/Diagramming/StyleClass/primaryLabel": {
+  "abstract" : [
+
+  ],
+  "fragments" : [
+    {
+      "kind" : "keyword",
+      "text" : "case"
+    },
+    {
+      "kind" : "text",
+      "text" : " "
+    },
+    {
+      "kind" : "identifier",
+      "text" : "primaryLabel"
+    }
+  ],
+  "identifier" : "doc:\/\/Diagramming\/documentation\/Diagramming\/StyleClass\/primaryLabel",
+  "kind" : "symbol",
+  "role" : "symbol",
+  "title" : "StyleClass.primaryLabel",
+  "type" : "topic",
+  "url" : "\/documentation\/diagramming\/styleclass\/primarylabel"
+},
+"doc://Diagramming/documentation/Diagramming/StyleClass/secondaryLabel": {
+  "abstract" : [
+
+  ],
+  "fragments" : [
+    {
+      "kind" : "keyword",
+      "text" : "case"
+    },
+    {
+      "kind" : "text",
+      "text" : " "
+    },
+    {
+      "kind" : "identifier",
+      "text" : "secondaryLabel"
+    }
+  ],
+  "identifier" : "doc:\/\/Diagramming\/documentation\/Diagramming\/StyleClass\/secondaryLabel",
+  "kind" : "symbol",
+  "role" : "symbol",
+  "title" : "StyleClass.secondaryLabel",
+  "type" : "topic",
+  "url" : "\/documentation\/diagramming\/styleclass\/secondarylabel"
+},
+"doc://Diagramming/documentation/Diagramming/StyleClass/stringValue": {
+  "abstract" : [
+
+  ],
+  "fragments" : [
+    {
+      "kind" : "keyword",
+      "text" : "var"
+    },
+    {
+      "kind" : "text",
+      "text" : " "
+    },
+    {
+      "kind" : "identifier",
+      "text" : "stringValue"
+    },
+    {
+      "kind" : "text",
+      "text" : ": "
+    },
+    {
+      "kind" : "typeIdentifier",
+      "preciseIdentifier" : "s:SS",
+      "text" : "String"
+    }
+  ],
+  "identifier" : "doc:\/\/Diagramming\/documentation\/Diagramming\/StyleClass\/stringValue",
+  "kind" : "symbol",
+  "role" : "symbol",
+  "title" : "stringValue",
+  "type" : "topic",
+  "url" : "\/documentation\/diagramming\/styleclass\/stringvalue"
+},
+"doc://Diagramming/documentation/Diagramming/StyleClass/thinConnector": {
+  "abstract" : [
+    {
+      "text" : "Thin wire connector.",
+      "type" : "text"
+    }
+  ],
+  "fragments" : [
+    {
+      "kind" : "keyword",
+      "text" : "case"
+    },
+    {
+      "kind" : "text",
+      "text" : " "
+    },
+    {
+      "kind" : "identifier",
+      "text" : "thinConnector"
+    }
+  ],
+  "identifier" : "doc:\/\/Diagramming\/documentation\/Diagramming\/StyleClass\/thinConnector",
+  "kind" : "symbol",
+  "role" : "symbol",
+  "title" : "StyleClass.thinConnector",
+  "type" : "topic",
+  "url" : "\/documentation\/diagramming\/styleclass\/thinconnector"
+},
+"doc://Diagramming/documentation/Diagramming/StyleClass/valueIndicator": {
+  "abstract" : [
+
+  ],
+  "fragments" : [
+    {
+      "kind" : "keyword",
+      "text" : "case"
+    },
+    {
+      "kind" : "text",
+      "text" : " "
+    },
+    {
+      "kind" : "identifier",
+      "text" : "valueIndicator"
+    }
+  ],
+  "identifier" : "doc:\/\/Diagramming\/documentation\/Diagramming\/StyleClass\/valueIndicator",
+  "kind" : "symbol",
+  "role" : "symbol",
+  "title" : "StyleClass.valueIndicator",
+  "type" : "topic",
+  "url" : "\/documentation\/diagramming\/styleclass\/valueindicator"
+},
+"doc://Diagramming/documentation/Diagramming/StyleClass/valueIndicatorLine": {
+  "abstract" : [
+
+  ],
+  "fragments" : [
+    {
+      "kind" : "keyword",
+      "text" : "case"
+    },
+    {
+      "kind" : "text",
+      "text" : " "
+    },
+    {
+      "kind" : "identifier",
+      "text" : "valueIndicatorLine"
+    }
+  ],
+  "identifier" : "doc:\/\/Diagramming\/documentation\/Diagramming\/StyleClass\/valueIndicatorLine",
+  "kind" : "symbol",
+  "role" : "symbol",
+  "title" : "StyleClass.valueIndicatorLine",
+  "type" : "topic",
+  "url" : "\/documentation\/diagramming\/styleclass\/valueindicatorline"
+},
+"doc://Diagramming/documentation/Diagramming/StyleClass/valueLabel": {
+  "abstract" : [
+
+  ],
+  "fragments" : [
+    {
+      "kind" : "keyword",
+      "text" : "case"
+    },
+    {
+      "kind" : "text",
+      "text" : " "
+    },
+    {
+      "kind" : "identifier",
+      "text" : "valueLabel"
+    }
+  ],
+  "identifier" : "doc:\/\/Diagramming\/documentation\/Diagramming\/StyleClass\/valueLabel",
+  "kind" : "symbol",
+  "role" : "symbol",
+  "title" : "StyleClass.valueLabel",
+  "type" : "topic",
+  "url" : "\/documentation\/diagramming\/styleclass\/valuelabel"
+},
+"doc://Diagramming/documentation/Diagramming/StyleModifierSet": {
+  "abstract" : [
+
+  ],
+  "fragments" : [
+    {
+      "kind" : "keyword",
+      "text" : "struct"
+    },
+    {
+      "kind" : "text",
+      "text" : " "
+    },
+    {
+      "kind" : "identifier",
+      "text" : "StyleModifierSet"
+    }
+  ],
+  "identifier" : "doc:\/\/Diagramming\/documentation\/Diagramming\/StyleModifierSet",
+  "kind" : "symbol",
+  "navigatorTitle" : [
+    {
+      "kind" : "identifier",
+      "text" : "StyleModifierSet"
+    }
+  ],
+  "role" : "symbol",
+  "title" : "StyleModifierSet",
+  "type" : "topic",
+  "url" : "\/documentation\/diagramming\/stylemodifierset"
+},
+"doc://Diagramming/s16SendableMetatypeP": {
+  "identifier" : "doc:\/\/Diagramming\/s16SendableMetatypeP",
+  "title" : "Swift.SendableMetatype",
+  "type" : "unresolvable"
+},
+"doc://Diagramming/s8SendableP": {
+  "identifier" : "doc:\/\/Diagramming\/s8SendableP",
+  "title" : "Swift.Sendable",
+  "type" : "unresolvable"
+}
+}
+}

@@ -1,0 +1,1456 @@
+{
+  "abstract" : [
+    {
+      "text" : "String utility for simple character or common token type parsing.",
+      "type" : "text"
+    }
+  ],
+  "hierarchy" : {
+    "paths" : [
+      [
+        "doc:\/\/Diagramming\/documentation\/Diagramming"
+      ]
+    ]
+  },
+  "identifier" : {
+    "interfaceLanguage" : "swift",
+    "url" : "doc:\/\/Diagramming\/documentation\/Diagramming\/StringScanner"
+  },
+  "kind" : "symbol",
+  "metadata" : {
+    "externalID" : "s:11Diagramming13StringScannerV",
+    "fragments" : [
+      {
+        "kind" : "keyword",
+        "text" : "struct"
+      },
+      {
+        "kind" : "text",
+        "text" : " "
+      },
+      {
+        "kind" : "identifier",
+        "text" : "StringScanner"
+      }
+    ],
+    "modules" : [
+      {
+        "name" : "Diagramming"
+      }
+    ],
+    "navigatorTitle" : [
+      {
+        "kind" : "identifier",
+        "text" : "StringScanner"
+      }
+    ],
+    "role" : "symbol",
+    "roleHeading" : "Structure",
+    "symbolKind" : "struct",
+    "title" : "StringScanner"
+  },
+  "primaryContentSections" : [
+    {
+      "declarations" : [
+        {
+          "languages" : [
+            "swift"
+          ],
+          "platforms" : [
+            "macOS"
+          ],
+          "tokens" : [
+            {
+              "kind" : "keyword",
+              "text" : "struct"
+            },
+            {
+              "kind" : "text",
+              "text" : " "
+            },
+            {
+              "kind" : "identifier",
+              "text" : "StringScanner"
+            }
+          ]
+        }
+      ],
+      "kind" : "declarations"
+    },
+    {
+      "content" : [
+        {
+          "anchor" : "overview",
+          "level" : 2,
+          "text" : "Overview",
+          "type" : "heading"
+        },
+        {
+          "inlineContent" : [
+            {
+              "text" : "StringScanner offers string parsing capabilities for implementing simple parsers and tokenisers.",
+              "type" : "text"
+            },
+            {
+              "text" : " ",
+              "type" : "text"
+            },
+            {
+              "text" : "It provides methods for:",
+              "type" : "text"
+            }
+          ],
+          "type" : "paragraph"
+        },
+        {
+          "items" : [
+            {
+              "content" : [
+                {
+                  "inlineContent" : [
+                    {
+                      "text" : "Character-by-character advancement and peeking: ",
+                      "type" : "text"
+                    },
+                    {
+                      "identifier" : "doc:\/\/Diagramming\/documentation\/Diagramming\/StringScanner\/peek(offset:)",
+                      "isActive" : true,
+                      "type" : "reference"
+                    }
+                  ],
+                  "type" : "paragraph"
+                }
+              ]
+            },
+            {
+              "content" : [
+                {
+                  "inlineContent" : [
+                    {
+                      "text" : "Pattern matching and acceptance ",
+                      "type" : "text"
+                    },
+                    {
+                      "identifier" : "doc:\/\/Diagramming\/documentation\/Diagramming\/StringScanner\/accept(_:)-mtvr",
+                      "isActive" : true,
+                      "type" : "reference"
+                    },
+                    {
+                      "text" : ", ",
+                      "type" : "text"
+                    },
+                    {
+                      "identifier" : "doc:\/\/Diagramming\/documentation\/Diagramming\/StringScanner\/accept(_:)-mr3b",
+                      "isActive" : true,
+                      "type" : "reference"
+                    },
+                    {
+                      "text" : ".",
+                      "type" : "text"
+                    }
+                  ],
+                  "type" : "paragraph"
+                }
+              ]
+            },
+            {
+              "content" : [
+                {
+                  "inlineContent" : [
+                    {
+                      "text" : "Number parsing (integers and doubles with scientific notation): ",
+                      "type" : "text"
+                    },
+                    {
+                      "identifier" : "doc:\/\/Diagramming\/documentation\/Diagramming\/StringScanner\/scanDouble()",
+                      "isActive" : true,
+                      "type" : "reference"
+                    },
+                    {
+                      "text" : ", ",
+                      "type" : "text"
+                    },
+                    {
+                      "identifier" : "doc:\/\/Diagramming\/documentation\/Diagramming\/StringScanner\/scanInteger()",
+                      "isActive" : true,
+                      "type" : "reference"
+                    },
+                    {
+                      "text" : ".",
+                      "type" : "text"
+                    }
+                  ],
+                  "type" : "paragraph"
+                }
+              ]
+            },
+            {
+              "content" : [
+                {
+                  "inlineContent" : [
+                    {
+                      "text" : "Identifier scanning (alphanumeric with underscores): ",
+                      "type" : "text"
+                    },
+                    {
+                      "identifier" : "doc:\/\/Diagramming\/documentation\/Diagramming\/StringScanner\/scanIdentifier()",
+                      "isActive" : true,
+                      "type" : "reference"
+                    }
+                  ],
+                  "type" : "paragraph"
+                }
+              ]
+            },
+            {
+              "content" : [
+                {
+                  "inlineContent" : [
+                    {
+                      "text" : "Text extraction up to specified characters or character sets: ",
+                      "type" : "text"
+                    },
+                    {
+                      "identifier" : "doc:\/\/Diagramming\/documentation\/Diagramming\/StringScanner\/scanUpToCharacter(_:)",
+                      "isActive" : true,
+                      "type" : "reference"
+                    },
+                    {
+                      "text" : ", ",
+                      "type" : "text"
+                    },
+                    {
+                      "identifier" : "doc:\/\/Diagramming\/documentation\/Diagramming\/StringScanner\/scanUpToCharacter(from:)",
+                      "isActive" : true,
+                      "type" : "reference"
+                    }
+                  ],
+                  "type" : "paragraph"
+                }
+              ]
+            }
+          ],
+          "type" : "unorderedList"
+        },
+        {
+          "inlineContent" : [
+            {
+              "text" : "All parsing methods are non-destructive - they either succeed and advance the position,",
+              "type" : "text"
+            },
+            {
+              "text" : " ",
+              "type" : "text"
+            },
+            {
+              "text" : "or fail and leave the position unchanged.",
+              "type" : "text"
+            }
+          ],
+          "type" : "paragraph"
+        },
+        {
+          "inlineContent" : [
+            {
+              "text" : "Example usage:",
+              "type" : "text"
+            }
+          ],
+          "type" : "paragraph"
+        },
+        {
+          "code" : [
+            "var scanner = StringScanner(\"hello 123 world\")",
+            "scanner.scanIdentifier() \/\/ Returns \"hello\"",
+            "scanner.skipWhitespace()",
+            "scanner.scanInteger()     \/\/ Returns 123"
+          ],
+          "syntax" : "swift",
+          "type" : "codeListing"
+        }
+      ],
+      "kind" : "content"
+    }
+  ],
+  "schemaVersion" : {
+    "major" : 0,
+    "minor" : 3,
+    "patch" : 0
+  },
+  "sections" : [
+
+  ],
+  "topicSections" : [
+    {
+      "anchor" : "Initializers",
+      "generated" : true,
+      "identifiers" : [
+        "doc:\/\/Diagramming\/documentation\/Diagramming\/StringScanner\/init(_:)"
+      ],
+      "title" : "Initializers"
+    },
+    {
+      "anchor" : "Instance-Properties",
+      "generated" : true,
+      "identifiers" : [
+        "doc:\/\/Diagramming\/documentation\/Diagramming\/StringScanner\/atEnd",
+        "doc:\/\/Diagramming\/documentation\/Diagramming\/StringScanner\/source"
+      ],
+      "title" : "Instance Properties"
+    },
+    {
+      "anchor" : "Instance-Methods",
+      "generated" : true,
+      "identifiers" : [
+        "doc:\/\/Diagramming\/documentation\/Diagramming\/StringScanner\/accept(_:)-mr3b",
+        "doc:\/\/Diagramming\/documentation\/Diagramming\/StringScanner\/accept(_:)-mtvr",
+        "doc:\/\/Diagramming\/documentation\/Diagramming\/StringScanner\/acceptDouble()",
+        "doc:\/\/Diagramming\/documentation\/Diagramming\/StringScanner\/acceptInteger()",
+        "doc:\/\/Diagramming\/documentation\/Diagramming\/StringScanner\/advance()",
+        "doc:\/\/Diagramming\/documentation\/Diagramming\/StringScanner\/peek(offset:)",
+        "doc:\/\/Diagramming\/documentation\/Diagramming\/StringScanner\/scanBezierPathElements()",
+        "doc:\/\/Diagramming\/documentation\/Diagramming\/StringScanner\/scanCharacter()",
+        "doc:\/\/Diagramming\/documentation\/Diagramming\/StringScanner\/scanDouble()",
+        "doc:\/\/Diagramming\/documentation\/Diagramming\/StringScanner\/scanIdentifier()",
+        "doc:\/\/Diagramming\/documentation\/Diagramming\/StringScanner\/scanInteger()",
+        "doc:\/\/Diagramming\/documentation\/Diagramming\/StringScanner\/scanPoint()",
+        "doc:\/\/Diagramming\/documentation\/Diagramming\/StringScanner\/scanSVGCommaSeparatedLengths(dpi:)",
+        "doc:\/\/Diagramming\/documentation\/Diagramming\/StringScanner\/scanSVGLength(dpi:)",
+        "doc:\/\/Diagramming\/documentation\/Diagramming\/StringScanner\/scanSVGPathComponents(dpi:)",
+        "doc:\/\/Diagramming\/documentation\/Diagramming\/StringScanner\/scanSVGPoint(dpi:)",
+        "doc:\/\/Diagramming\/documentation\/Diagramming\/StringScanner\/scanUpToCharacter(_:)",
+        "doc:\/\/Diagramming\/documentation\/Diagramming\/StringScanner\/scanUpToCharacter(from:)",
+        "doc:\/\/Diagramming\/documentation\/Diagramming\/StringScanner\/skipSVGListSeparator()",
+        "doc:\/\/Diagramming\/documentation\/Diagramming\/StringScanner\/skipWhitespace()"
+      ],
+      "title" : "Instance Methods"
+    }
+  ],
+  "variants" : [
+    {
+      "paths" : [
+        "\/documentation\/diagramming\/stringscanner"
+      ],
+      "traits" : [
+        {
+          "interfaceLanguage" : "swift"
+        }
+      ]
+    }
+  ]
+, 
+"references": {
+"doc://Diagramming/documentation/Diagramming": {
+  "abstract" : [
+    {
+      "text" : "Diagramming is an OpenPoiesis project package for representing and composing diagrams from design",
+      "type" : "text"
+    },
+    {
+      "text" : " ",
+      "type" : "text"
+    },
+    {
+      "text" : "objects.",
+      "type" : "text"
+    }
+  ],
+  "identifier" : "doc:\/\/Diagramming\/documentation\/Diagramming",
+  "kind" : "symbol",
+  "role" : "collection",
+  "title" : "Diagramming",
+  "type" : "topic",
+  "url" : "\/documentation\/diagramming"
+},
+"doc://Diagramming/documentation/Diagramming/StringScanner": {
+  "abstract" : [
+    {
+      "text" : "String utility for simple character or common token type parsing.",
+      "type" : "text"
+    }
+  ],
+  "fragments" : [
+    {
+      "kind" : "keyword",
+      "text" : "struct"
+    },
+    {
+      "kind" : "text",
+      "text" : " "
+    },
+    {
+      "kind" : "identifier",
+      "text" : "StringScanner"
+    }
+  ],
+  "identifier" : "doc:\/\/Diagramming\/documentation\/Diagramming\/StringScanner",
+  "kind" : "symbol",
+  "navigatorTitle" : [
+    {
+      "kind" : "identifier",
+      "text" : "StringScanner"
+    }
+  ],
+  "role" : "symbol",
+  "title" : "StringScanner",
+  "type" : "topic",
+  "url" : "\/documentation\/diagramming\/stringscanner"
+},
+"doc://Diagramming/documentation/Diagramming/StringScanner/accept(_:)-mr3b": {
+  "abstract" : [
+    {
+      "text" : "Attempts to match and consume the specified character.",
+      "type" : "text"
+    }
+  ],
+  "fragments" : [
+    {
+      "kind" : "keyword",
+      "text" : "func"
+    },
+    {
+      "kind" : "text",
+      "text" : " "
+    },
+    {
+      "kind" : "identifier",
+      "text" : "accept"
+    },
+    {
+      "kind" : "text",
+      "text" : "("
+    },
+    {
+      "kind" : "typeIdentifier",
+      "preciseIdentifier" : "s:SJ",
+      "text" : "Character"
+    },
+    {
+      "kind" : "text",
+      "text" : ") -> "
+    },
+    {
+      "kind" : "typeIdentifier",
+      "preciseIdentifier" : "s:Sb",
+      "text" : "Bool"
+    }
+  ],
+  "identifier" : "doc:\/\/Diagramming\/documentation\/Diagramming\/StringScanner\/accept(_:)-mr3b",
+  "kind" : "symbol",
+  "role" : "symbol",
+  "title" : "accept(_:)",
+  "type" : "topic",
+  "url" : "\/documentation\/diagramming\/stringscanner\/accept(_:)-mr3b"
+},
+"doc://Diagramming/documentation/Diagramming/StringScanner/accept(_:)-mtvr": {
+  "abstract" : [
+    {
+      "text" : "Attempts to match and consume the specified string.",
+      "type" : "text"
+    }
+  ],
+  "fragments" : [
+    {
+      "kind" : "keyword",
+      "text" : "func"
+    },
+    {
+      "kind" : "text",
+      "text" : " "
+    },
+    {
+      "kind" : "identifier",
+      "text" : "accept"
+    },
+    {
+      "kind" : "text",
+      "text" : "("
+    },
+    {
+      "kind" : "typeIdentifier",
+      "preciseIdentifier" : "s:SS",
+      "text" : "String"
+    },
+    {
+      "kind" : "text",
+      "text" : ") -> "
+    },
+    {
+      "kind" : "typeIdentifier",
+      "preciseIdentifier" : "s:Sb",
+      "text" : "Bool"
+    }
+  ],
+  "identifier" : "doc:\/\/Diagramming\/documentation\/Diagramming\/StringScanner\/accept(_:)-mtvr",
+  "kind" : "symbol",
+  "role" : "symbol",
+  "title" : "accept(_:)",
+  "type" : "topic",
+  "url" : "\/documentation\/diagramming\/stringscanner\/accept(_:)-mtvr"
+},
+"doc://Diagramming/documentation/Diagramming/StringScanner/acceptDouble()": {
+  "abstract" : [
+    {
+      "text" : "Attempts to match and consume a double value.",
+      "type" : "text"
+    }
+  ],
+  "fragments" : [
+    {
+      "kind" : "keyword",
+      "text" : "func"
+    },
+    {
+      "kind" : "text",
+      "text" : " "
+    },
+    {
+      "kind" : "identifier",
+      "text" : "acceptDouble"
+    },
+    {
+      "kind" : "text",
+      "text" : "() -> "
+    },
+    {
+      "kind" : "typeIdentifier",
+      "preciseIdentifier" : "s:Sb",
+      "text" : "Bool"
+    }
+  ],
+  "identifier" : "doc:\/\/Diagramming\/documentation\/Diagramming\/StringScanner\/acceptDouble()",
+  "kind" : "symbol",
+  "role" : "symbol",
+  "title" : "acceptDouble()",
+  "type" : "topic",
+  "url" : "\/documentation\/diagramming\/stringscanner\/acceptdouble()"
+},
+"doc://Diagramming/documentation/Diagramming/StringScanner/acceptInteger()": {
+  "abstract" : [
+    {
+      "text" : "Attempts to match and consume an integer (with optional minus sign).",
+      "type" : "text"
+    }
+  ],
+  "fragments" : [
+    {
+      "kind" : "keyword",
+      "text" : "func"
+    },
+    {
+      "kind" : "text",
+      "text" : " "
+    },
+    {
+      "kind" : "identifier",
+      "text" : "acceptInteger"
+    },
+    {
+      "kind" : "text",
+      "text" : "() -> "
+    },
+    {
+      "kind" : "typeIdentifier",
+      "preciseIdentifier" : "s:Sb",
+      "text" : "Bool"
+    }
+  ],
+  "identifier" : "doc:\/\/Diagramming\/documentation\/Diagramming\/StringScanner\/acceptInteger()",
+  "kind" : "symbol",
+  "role" : "symbol",
+  "title" : "acceptInteger()",
+  "type" : "topic",
+  "url" : "\/documentation\/diagramming\/stringscanner\/acceptinteger()"
+},
+"doc://Diagramming/documentation/Diagramming/StringScanner/advance()": {
+  "abstract" : [
+    {
+      "text" : "Advances the scanner position by one character.",
+      "type" : "text"
+    }
+  ],
+  "fragments" : [
+    {
+      "kind" : "keyword",
+      "text" : "func"
+    },
+    {
+      "kind" : "text",
+      "text" : " "
+    },
+    {
+      "kind" : "identifier",
+      "text" : "advance"
+    },
+    {
+      "kind" : "text",
+      "text" : "()"
+    }
+  ],
+  "identifier" : "doc:\/\/Diagramming\/documentation\/Diagramming\/StringScanner\/advance()",
+  "kind" : "symbol",
+  "role" : "symbol",
+  "title" : "advance()",
+  "type" : "topic",
+  "url" : "\/documentation\/diagramming\/stringscanner\/advance()"
+},
+"doc://Diagramming/documentation/Diagramming/StringScanner/atEnd": {
+  "abstract" : [
+    {
+      "text" : "Returns true if the scanner has reached the end of the source string.",
+      "type" : "text"
+    }
+  ],
+  "fragments" : [
+    {
+      "kind" : "keyword",
+      "text" : "var"
+    },
+    {
+      "kind" : "text",
+      "text" : " "
+    },
+    {
+      "kind" : "identifier",
+      "text" : "atEnd"
+    },
+    {
+      "kind" : "text",
+      "text" : ": "
+    },
+    {
+      "kind" : "typeIdentifier",
+      "preciseIdentifier" : "s:Sb",
+      "text" : "Bool"
+    }
+  ],
+  "identifier" : "doc:\/\/Diagramming\/documentation\/Diagramming\/StringScanner\/atEnd",
+  "kind" : "symbol",
+  "role" : "symbol",
+  "title" : "atEnd",
+  "type" : "topic",
+  "url" : "\/documentation\/diagramming\/stringscanner\/atend"
+},
+"doc://Diagramming/documentation/Diagramming/StringScanner/init(_:)": {
+  "abstract" : [
+    {
+      "text" : "Creates a new StringScanner for the given source string.",
+      "type" : "text"
+    }
+  ],
+  "fragments" : [
+    {
+      "kind" : "identifier",
+      "text" : "init"
+    },
+    {
+      "kind" : "text",
+      "text" : "("
+    },
+    {
+      "kind" : "typeIdentifier",
+      "preciseIdentifier" : "s:SS",
+      "text" : "String"
+    },
+    {
+      "kind" : "text",
+      "text" : ")"
+    }
+  ],
+  "identifier" : "doc:\/\/Diagramming\/documentation\/Diagramming\/StringScanner\/init(_:)",
+  "kind" : "symbol",
+  "role" : "symbol",
+  "title" : "init(_:)",
+  "type" : "topic",
+  "url" : "\/documentation\/diagramming\/stringscanner\/init(_:)"
+},
+"doc://Diagramming/documentation/Diagramming/StringScanner/peek(offset:)": {
+  "abstract" : [
+    {
+      "text" : "Returns the character at the current position plus the given offset without advancing.",
+      "type" : "text"
+    }
+  ],
+  "fragments" : [
+    {
+      "kind" : "keyword",
+      "text" : "func"
+    },
+    {
+      "kind" : "text",
+      "text" : " "
+    },
+    {
+      "kind" : "identifier",
+      "text" : "peek"
+    },
+    {
+      "kind" : "text",
+      "text" : "("
+    },
+    {
+      "kind" : "externalParam",
+      "text" : "offset"
+    },
+    {
+      "kind" : "text",
+      "text" : ": "
+    },
+    {
+      "kind" : "typeIdentifier",
+      "preciseIdentifier" : "s:Si",
+      "text" : "Int"
+    },
+    {
+      "kind" : "text",
+      "text" : ") -> "
+    },
+    {
+      "kind" : "typeIdentifier",
+      "preciseIdentifier" : "s:SJ",
+      "text" : "Character"
+    },
+    {
+      "kind" : "text",
+      "text" : "?"
+    }
+  ],
+  "identifier" : "doc:\/\/Diagramming\/documentation\/Diagramming\/StringScanner\/peek(offset:)",
+  "kind" : "symbol",
+  "role" : "symbol",
+  "title" : "peek(offset:)",
+  "type" : "topic",
+  "url" : "\/documentation\/diagramming\/stringscanner\/peek(offset:)"
+},
+"doc://Diagramming/documentation/Diagramming/StringScanner/scanBezierPathElements()": {
+  "abstract" : [
+
+  ],
+  "fragments" : [
+    {
+      "kind" : "keyword",
+      "text" : "func"
+    },
+    {
+      "kind" : "text",
+      "text" : " "
+    },
+    {
+      "kind" : "identifier",
+      "text" : "scanBezierPathElements"
+    },
+    {
+      "kind" : "text",
+      "text" : "() -> ["
+    },
+    {
+      "kind" : "typeIdentifier",
+      "preciseIdentifier" : "s:11Diagramming10BezierPathV",
+      "text" : "BezierPath"
+    },
+    {
+      "kind" : "text",
+      "text" : "."
+    },
+    {
+      "kind" : "typeIdentifier",
+      "preciseIdentifier" : "s:11Diagramming10BezierPathV0C7ElementO",
+      "text" : "PathElement"
+    },
+    {
+      "kind" : "text",
+      "text" : "]?"
+    }
+  ],
+  "identifier" : "doc:\/\/Diagramming\/documentation\/Diagramming\/StringScanner\/scanBezierPathElements()",
+  "kind" : "symbol",
+  "role" : "symbol",
+  "title" : "scanBezierPathElements()",
+  "type" : "topic",
+  "url" : "\/documentation\/diagramming\/stringscanner\/scanbezierpathelements()"
+},
+"doc://Diagramming/documentation/Diagramming/StringScanner/scanCharacter()": {
+  "abstract" : [
+    {
+      "text" : "Scans and returns the next character, advancing the position.",
+      "type" : "text"
+    }
+  ],
+  "fragments" : [
+    {
+      "kind" : "keyword",
+      "text" : "func"
+    },
+    {
+      "kind" : "text",
+      "text" : " "
+    },
+    {
+      "kind" : "identifier",
+      "text" : "scanCharacter"
+    },
+    {
+      "kind" : "text",
+      "text" : "() -> "
+    },
+    {
+      "kind" : "typeIdentifier",
+      "preciseIdentifier" : "s:SJ",
+      "text" : "Character"
+    },
+    {
+      "kind" : "text",
+      "text" : "?"
+    }
+  ],
+  "identifier" : "doc:\/\/Diagramming\/documentation\/Diagramming\/StringScanner\/scanCharacter()",
+  "kind" : "symbol",
+  "role" : "symbol",
+  "title" : "scanCharacter()",
+  "type" : "topic",
+  "url" : "\/documentation\/diagramming\/stringscanner\/scancharacter()"
+},
+"doc://Diagramming/documentation/Diagramming/StringScanner/scanDouble()": {
+  "abstract" : [
+    {
+      "text" : "Scans and returns a double value.",
+      "type" : "text"
+    }
+  ],
+  "fragments" : [
+    {
+      "kind" : "keyword",
+      "text" : "func"
+    },
+    {
+      "kind" : "text",
+      "text" : " "
+    },
+    {
+      "kind" : "identifier",
+      "text" : "scanDouble"
+    },
+    {
+      "kind" : "text",
+      "text" : "() -> "
+    },
+    {
+      "kind" : "typeIdentifier",
+      "preciseIdentifier" : "s:Sd",
+      "text" : "Double"
+    },
+    {
+      "kind" : "text",
+      "text" : "?"
+    }
+  ],
+  "identifier" : "doc:\/\/Diagramming\/documentation\/Diagramming\/StringScanner\/scanDouble()",
+  "kind" : "symbol",
+  "role" : "symbol",
+  "title" : "scanDouble()",
+  "type" : "topic",
+  "url" : "\/documentation\/diagramming\/stringscanner\/scandouble()"
+},
+"doc://Diagramming/documentation/Diagramming/StringScanner/scanIdentifier()": {
+  "abstract" : [
+    {
+      "text" : "Scan an identifier (letter or underscore, followed by alphanumeric or underscore characters).",
+      "type" : "text"
+    },
+    {
+      "text" : " ",
+      "type" : "text"
+    },
+    {
+      "text" : "Returns the identifier string, or nil if no valid identifier is found at the current position.",
+      "type" : "text"
+    }
+  ],
+  "fragments" : [
+    {
+      "kind" : "keyword",
+      "text" : "func"
+    },
+    {
+      "kind" : "text",
+      "text" : " "
+    },
+    {
+      "kind" : "identifier",
+      "text" : "scanIdentifier"
+    },
+    {
+      "kind" : "text",
+      "text" : "() -> "
+    },
+    {
+      "kind" : "typeIdentifier",
+      "preciseIdentifier" : "s:SS",
+      "text" : "String"
+    },
+    {
+      "kind" : "text",
+      "text" : "?"
+    }
+  ],
+  "identifier" : "doc:\/\/Diagramming\/documentation\/Diagramming\/StringScanner\/scanIdentifier()",
+  "kind" : "symbol",
+  "role" : "symbol",
+  "title" : "scanIdentifier()",
+  "type" : "topic",
+  "url" : "\/documentation\/diagramming\/stringscanner\/scanidentifier()"
+},
+"doc://Diagramming/documentation/Diagramming/StringScanner/scanInteger()": {
+  "abstract" : [
+    {
+      "text" : "Scans and returns an integer value.",
+      "type" : "text"
+    }
+  ],
+  "fragments" : [
+    {
+      "kind" : "keyword",
+      "text" : "func"
+    },
+    {
+      "kind" : "text",
+      "text" : " "
+    },
+    {
+      "kind" : "identifier",
+      "text" : "scanInteger"
+    },
+    {
+      "kind" : "text",
+      "text" : "() -> "
+    },
+    {
+      "kind" : "typeIdentifier",
+      "preciseIdentifier" : "s:Si",
+      "text" : "Int"
+    },
+    {
+      "kind" : "text",
+      "text" : "?"
+    }
+  ],
+  "identifier" : "doc:\/\/Diagramming\/documentation\/Diagramming\/StringScanner\/scanInteger()",
+  "kind" : "symbol",
+  "role" : "symbol",
+  "title" : "scanInteger()",
+  "type" : "topic",
+  "url" : "\/documentation\/diagramming\/stringscanner\/scaninteger()"
+},
+"doc://Diagramming/documentation/Diagramming/StringScanner/scanPoint()": {
+  "abstract" : [
+    {
+      "text" : "Scan two comma-separated floating point number (double) values as a 2D vector.",
+      "type" : "text"
+    }
+  ],
+  "fragments" : [
+    {
+      "kind" : "keyword",
+      "text" : "func"
+    },
+    {
+      "kind" : "text",
+      "text" : " "
+    },
+    {
+      "kind" : "identifier",
+      "text" : "scanPoint"
+    },
+    {
+      "kind" : "text",
+      "text" : "() -> "
+    },
+    {
+      "kind" : "typeIdentifier",
+      "preciseIdentifier" : "s:11Diagramming8Vector2Da",
+      "text" : "Vector2D"
+    },
+    {
+      "kind" : "text",
+      "text" : "?"
+    }
+  ],
+  "identifier" : "doc:\/\/Diagramming\/documentation\/Diagramming\/StringScanner\/scanPoint()",
+  "kind" : "symbol",
+  "role" : "symbol",
+  "title" : "scanPoint()",
+  "type" : "topic",
+  "url" : "\/documentation\/diagramming\/stringscanner\/scanpoint()"
+},
+"doc://Diagramming/documentation/Diagramming/StringScanner/scanSVGCommaSeparatedLengths(dpi:)": {
+  "abstract" : [
+
+  ],
+  "fragments" : [
+    {
+      "kind" : "keyword",
+      "text" : "func"
+    },
+    {
+      "kind" : "text",
+      "text" : " "
+    },
+    {
+      "kind" : "identifier",
+      "text" : "scanSVGCommaSeparatedLengths"
+    },
+    {
+      "kind" : "text",
+      "text" : "("
+    },
+    {
+      "kind" : "externalParam",
+      "text" : "dpi"
+    },
+    {
+      "kind" : "text",
+      "text" : ": "
+    },
+    {
+      "kind" : "typeIdentifier",
+      "preciseIdentifier" : "s:Sd",
+      "text" : "Double"
+    },
+    {
+      "kind" : "text",
+      "text" : ") -> ["
+    },
+    {
+      "kind" : "typeIdentifier",
+      "preciseIdentifier" : "s:Sd",
+      "text" : "Double"
+    },
+    {
+      "kind" : "text",
+      "text" : "]?"
+    }
+  ],
+  "identifier" : "doc:\/\/Diagramming\/documentation\/Diagramming\/StringScanner\/scanSVGCommaSeparatedLengths(dpi:)",
+  "kind" : "symbol",
+  "role" : "symbol",
+  "title" : "scanSVGCommaSeparatedLengths(dpi:)",
+  "type" : "topic",
+  "url" : "\/documentation\/diagramming\/stringscanner\/scansvgcommaseparatedlengths(dpi:)"
+},
+"doc://Diagramming/documentation/Diagramming/StringScanner/scanSVGLength(dpi:)": {
+  "abstract" : [
+
+  ],
+  "fragments" : [
+    {
+      "kind" : "keyword",
+      "text" : "func"
+    },
+    {
+      "kind" : "text",
+      "text" : " "
+    },
+    {
+      "kind" : "identifier",
+      "text" : "scanSVGLength"
+    },
+    {
+      "kind" : "text",
+      "text" : "("
+    },
+    {
+      "kind" : "externalParam",
+      "text" : "dpi"
+    },
+    {
+      "kind" : "text",
+      "text" : ": "
+    },
+    {
+      "kind" : "typeIdentifier",
+      "preciseIdentifier" : "s:Sd",
+      "text" : "Double"
+    },
+    {
+      "kind" : "text",
+      "text" : ") -> "
+    },
+    {
+      "kind" : "typeIdentifier",
+      "preciseIdentifier" : "s:Sd",
+      "text" : "Double"
+    },
+    {
+      "kind" : "text",
+      "text" : "?"
+    }
+  ],
+  "identifier" : "doc:\/\/Diagramming\/documentation\/Diagramming\/StringScanner\/scanSVGLength(dpi:)",
+  "kind" : "symbol",
+  "role" : "symbol",
+  "title" : "scanSVGLength(dpi:)",
+  "type" : "topic",
+  "url" : "\/documentation\/diagramming\/stringscanner\/scansvglength(dpi:)"
+},
+"doc://Diagramming/documentation/Diagramming/StringScanner/scanSVGPathComponents(dpi:)": {
+  "abstract" : [
+
+  ],
+  "fragments" : [
+    {
+      "kind" : "keyword",
+      "text" : "func"
+    },
+    {
+      "kind" : "text",
+      "text" : " "
+    },
+    {
+      "kind" : "identifier",
+      "text" : "scanSVGPathComponents"
+    },
+    {
+      "kind" : "text",
+      "text" : "("
+    },
+    {
+      "kind" : "externalParam",
+      "text" : "dpi"
+    },
+    {
+      "kind" : "text",
+      "text" : ": "
+    },
+    {
+      "kind" : "typeIdentifier",
+      "preciseIdentifier" : "s:Sd",
+      "text" : "Double"
+    },
+    {
+      "kind" : "text",
+      "text" : ") -> ["
+    },
+    {
+      "kind" : "typeIdentifier",
+      "preciseIdentifier" : "s:11Diagramming7SVGPathC",
+      "text" : "SVGPath"
+    },
+    {
+      "kind" : "text",
+      "text" : "."
+    },
+    {
+      "kind" : "typeIdentifier",
+      "preciseIdentifier" : "s:11Diagramming7SVGPathC9ComponentO",
+      "text" : "Component"
+    },
+    {
+      "kind" : "text",
+      "text" : "]?"
+    }
+  ],
+  "identifier" : "doc:\/\/Diagramming\/documentation\/Diagramming\/StringScanner\/scanSVGPathComponents(dpi:)",
+  "kind" : "symbol",
+  "role" : "symbol",
+  "title" : "scanSVGPathComponents(dpi:)",
+  "type" : "topic",
+  "url" : "\/documentation\/diagramming\/stringscanner\/scansvgpathcomponents(dpi:)"
+},
+"doc://Diagramming/documentation/Diagramming/StringScanner/scanSVGPoint(dpi:)": {
+  "abstract" : [
+
+  ],
+  "fragments" : [
+    {
+      "kind" : "keyword",
+      "text" : "func"
+    },
+    {
+      "kind" : "text",
+      "text" : " "
+    },
+    {
+      "kind" : "identifier",
+      "text" : "scanSVGPoint"
+    },
+    {
+      "kind" : "text",
+      "text" : "("
+    },
+    {
+      "kind" : "externalParam",
+      "text" : "dpi"
+    },
+    {
+      "kind" : "text",
+      "text" : ": "
+    },
+    {
+      "kind" : "typeIdentifier",
+      "preciseIdentifier" : "s:Sd",
+      "text" : "Double"
+    },
+    {
+      "kind" : "text",
+      "text" : ") -> "
+    },
+    {
+      "kind" : "typeIdentifier",
+      "preciseIdentifier" : "s:11Diagramming8Vector2Da",
+      "text" : "Vector2D"
+    },
+    {
+      "kind" : "text",
+      "text" : "?"
+    }
+  ],
+  "identifier" : "doc:\/\/Diagramming\/documentation\/Diagramming\/StringScanner\/scanSVGPoint(dpi:)",
+  "kind" : "symbol",
+  "role" : "symbol",
+  "title" : "scanSVGPoint(dpi:)",
+  "type" : "topic",
+  "url" : "\/documentation\/diagramming\/stringscanner\/scansvgpoint(dpi:)"
+},
+"doc://Diagramming/documentation/Diagramming/StringScanner/scanUpToCharacter(_:)": {
+  "abstract" : [
+    {
+      "text" : "Scan up to (but not including) the specified character.",
+      "type" : "text"
+    },
+    {
+      "text" : " ",
+      "type" : "text"
+    },
+    {
+      "text" : "Returns the scanned string, or nil if the character is not found.",
+      "type" : "text"
+    },
+    {
+      "text" : " ",
+      "type" : "text"
+    },
+    {
+      "text" : "The scanner position will be at the terminating character if found, or at the end if not found.",
+      "type" : "text"
+    }
+  ],
+  "fragments" : [
+    {
+      "kind" : "keyword",
+      "text" : "func"
+    },
+    {
+      "kind" : "text",
+      "text" : " "
+    },
+    {
+      "kind" : "identifier",
+      "text" : "scanUpToCharacter"
+    },
+    {
+      "kind" : "text",
+      "text" : "("
+    },
+    {
+      "kind" : "typeIdentifier",
+      "preciseIdentifier" : "s:SJ",
+      "text" : "Character"
+    },
+    {
+      "kind" : "text",
+      "text" : ") -> "
+    },
+    {
+      "kind" : "typeIdentifier",
+      "preciseIdentifier" : "s:SS",
+      "text" : "String"
+    },
+    {
+      "kind" : "text",
+      "text" : "?"
+    }
+  ],
+  "identifier" : "doc:\/\/Diagramming\/documentation\/Diagramming\/StringScanner\/scanUpToCharacter(_:)",
+  "kind" : "symbol",
+  "role" : "symbol",
+  "title" : "scanUpToCharacter(_:)",
+  "type" : "topic",
+  "url" : "\/documentation\/diagramming\/stringscanner\/scanuptocharacter(_:)"
+},
+"doc://Diagramming/documentation/Diagramming/StringScanner/scanUpToCharacter(from:)": {
+  "abstract" : [
+    {
+      "text" : "Scan up to (but not including) any character from the specified character set.",
+      "type" : "text"
+    },
+    {
+      "text" : " ",
+      "type" : "text"
+    },
+    {
+      "text" : "Returns the scanned string, or nil if no characters from the set are found.",
+      "type" : "text"
+    },
+    {
+      "text" : " ",
+      "type" : "text"
+    },
+    {
+      "text" : "The scanner position will be at the first matching character if found, or at the end if not found.",
+      "type" : "text"
+    }
+  ],
+  "fragments" : [
+    {
+      "kind" : "keyword",
+      "text" : "func"
+    },
+    {
+      "kind" : "text",
+      "text" : " "
+    },
+    {
+      "kind" : "identifier",
+      "text" : "scanUpToCharacter"
+    },
+    {
+      "kind" : "text",
+      "text" : "("
+    },
+    {
+      "kind" : "externalParam",
+      "text" : "from"
+    },
+    {
+      "kind" : "text",
+      "text" : ": "
+    },
+    {
+      "kind" : "typeIdentifier",
+      "preciseIdentifier" : "s:10Foundation12CharacterSetV",
+      "text" : "CharacterSet"
+    },
+    {
+      "kind" : "text",
+      "text" : ") -> "
+    },
+    {
+      "kind" : "typeIdentifier",
+      "preciseIdentifier" : "s:SS",
+      "text" : "String"
+    },
+    {
+      "kind" : "text",
+      "text" : "?"
+    }
+  ],
+  "identifier" : "doc:\/\/Diagramming\/documentation\/Diagramming\/StringScanner\/scanUpToCharacter(from:)",
+  "kind" : "symbol",
+  "role" : "symbol",
+  "title" : "scanUpToCharacter(from:)",
+  "type" : "topic",
+  "url" : "\/documentation\/diagramming\/stringscanner\/scanuptocharacter(from:)"
+},
+"doc://Diagramming/documentation/Diagramming/StringScanner/skipSVGListSeparator()": {
+  "abstract" : [
+    {
+      "text" : "Skip whitespace, optional comma, and whitespace again - common pattern in SVG parsing",
+      "type" : "text"
+    }
+  ],
+  "fragments" : [
+    {
+      "kind" : "keyword",
+      "text" : "func"
+    },
+    {
+      "kind" : "text",
+      "text" : " "
+    },
+    {
+      "kind" : "identifier",
+      "text" : "skipSVGListSeparator"
+    },
+    {
+      "kind" : "text",
+      "text" : "()"
+    }
+  ],
+  "identifier" : "doc:\/\/Diagramming\/documentation\/Diagramming\/StringScanner\/skipSVGListSeparator()",
+  "kind" : "symbol",
+  "role" : "symbol",
+  "title" : "skipSVGListSeparator()",
+  "type" : "topic",
+  "url" : "\/documentation\/diagramming\/stringscanner\/skipsvglistseparator()"
+},
+"doc://Diagramming/documentation/Diagramming/StringScanner/skipWhitespace()": {
+  "abstract" : [
+    {
+      "text" : "Advances the scanner position past any whitespace and newline characters.",
+      "type" : "text"
+    }
+  ],
+  "fragments" : [
+    {
+      "kind" : "keyword",
+      "text" : "func"
+    },
+    {
+      "kind" : "text",
+      "text" : " "
+    },
+    {
+      "kind" : "identifier",
+      "text" : "skipWhitespace"
+    },
+    {
+      "kind" : "text",
+      "text" : "()"
+    }
+  ],
+  "identifier" : "doc:\/\/Diagramming\/documentation\/Diagramming\/StringScanner\/skipWhitespace()",
+  "kind" : "symbol",
+  "role" : "symbol",
+  "title" : "skipWhitespace()",
+  "type" : "topic",
+  "url" : "\/documentation\/diagramming\/stringscanner\/skipwhitespace()"
+},
+"doc://Diagramming/documentation/Diagramming/StringScanner/source": {
+  "abstract" : [
+    {
+      "text" : "The source string being scanned.",
+      "type" : "text"
+    }
+  ],
+  "fragments" : [
+    {
+      "kind" : "keyword",
+      "text" : "let"
+    },
+    {
+      "kind" : "text",
+      "text" : " "
+    },
+    {
+      "kind" : "identifier",
+      "text" : "source"
+    },
+    {
+      "kind" : "text",
+      "text" : ": "
+    },
+    {
+      "kind" : "typeIdentifier",
+      "preciseIdentifier" : "s:SS",
+      "text" : "String"
+    }
+  ],
+  "identifier" : "doc:\/\/Diagramming\/documentation\/Diagramming\/StringScanner\/source",
+  "kind" : "symbol",
+  "role" : "symbol",
+  "title" : "source",
+  "type" : "topic",
+  "url" : "\/documentation\/diagramming\/stringscanner\/source"
+}
+}
+}
