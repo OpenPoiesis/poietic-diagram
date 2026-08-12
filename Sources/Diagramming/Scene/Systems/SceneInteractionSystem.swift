@@ -17,7 +17,7 @@ import PoieticCore
 /// component requirements above.
 ///
 /// This system is intended to be run when:
-/// - frame changes (on transaction)
+/// - plane changes (on transaction)
 /// - viewport changes
 /// - style or notation changes
 ///
