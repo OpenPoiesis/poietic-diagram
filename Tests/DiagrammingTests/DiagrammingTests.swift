@@ -23,10 +23,10 @@ let DiagramTestNotation = Notation(
 
         self.design = Design(metamodel: Metamodel())
         
-        let trans = design.createFrame()
-        let frame = try design.accept(trans)
+        let trans = design.createPlane()
+        let plane = try design.accept(trans)
         
-        self.world = World(frame: frame)
+        self.world = World(plane: plane)
         
         // Set up notation
         //        world.setSingleton(DiagramTestNotation)

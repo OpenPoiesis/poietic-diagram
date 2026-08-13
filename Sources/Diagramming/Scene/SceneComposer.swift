@@ -11,7 +11,7 @@ import PoieticCore
  
   Document Event        | data | geometry | layout
  ────────────────────────+──────+---───────+---------
-  Frame change          | yes  | yes      | yes
+  Plane change          | yes  | yes      | yes
   Viewport change       | -    | yes(1)   | -
   Interactive preview   | -    | yes      | -
   Style change          | -    | -        | yes
@@ -36,7 +36,7 @@ import PoieticCore
 ///
 /// The typical calls:
 ///
-/// - _Create_: on new design frame, new entities. Creation is free from layout.
+/// - _Create_: on new design plane, new entities. Creation is free from layout.
 /// - _Update_: during interaction or on a simulation step.
 /// - _Layout_: during interaction or style change which affects layout metrics,
 ///             including fonts and their sizes. Typically no need to call during interaction.
