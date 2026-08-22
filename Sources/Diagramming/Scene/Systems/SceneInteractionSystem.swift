@@ -51,13 +51,11 @@ import PoieticCore
 ///   schedule.
 ///
 public struct SceneInteractionSystem: System {
-    nonisolated(unsafe) public static let dependencies: [SystemDependency] = [
+    public static let dependencies: [SystemDependency] = [
         .after(SceneCompositionSystem.self),
     ]
     
-    public init(_ world: World) {  /* Nothing here for now */  }
-    
-    public func update(_ world: World) throws(InternalSystemError) {
+    public static func update(_ world: World) throws(InternalSystemError) {
         for scene: RuntimeEntity in world.query(DiagramScene.self) {
             guard scene.contains(InteractionDirty.self) else { continue }
             computeTouchRegions(scene: scene)
@@ -70,11 +68,11 @@ public struct SceneInteractionSystem: System {
         }
     }
     
-    func computeTouchRegions(scene: RuntimeEntity) {
+    static func computeTouchRegions(scene: RuntimeEntity) {
         computeTouchRegions(node: scene, parentPosition: .zero)
     }
     
-    func computeTouchRegions(node: RuntimeEntity, parentPosition: Vector2D) {
+    static func computeTouchRegions(node: RuntimeEntity, parentPosition: Vector2D) {
         let positionComponent: PositionComponent? = node.component()
         let positionOffset = parentPosition + (positionComponent?.position ?? .zero)
 

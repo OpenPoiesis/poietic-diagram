@@ -23,9 +23,7 @@ import PoieticCore
 /// - **Issues collected:** No issues generated.
 ///
 public struct TraitsToDiagramObjectsSystem: System {
-    public init(_ world: World) {}
-
-    public func update(_ world: World) throws (InternalSystemError) {
+    public static func update(_ world: World) throws (InternalSystemError) {
         guard let frame = world.plane else { return }
         let notation: Notation = world.singleton() ?? Notation.DefaultNotation
         let rules: NotationRules = world.singleton() ?? NotationRules()
@@ -40,7 +38,7 @@ public struct TraitsToDiagramObjectsSystem: System {
         }
     }
     
-    public func updateBlock(object: ObjectSnapshot,
+    public static func updateBlock(object: ObjectSnapshot,
                             notation: Notation,
                             rules: NotationRules,
                             in world: World)
@@ -65,7 +63,7 @@ public struct TraitsToDiagramObjectsSystem: System {
         entity.setComponent(DirtyContent.all)
     }
     
-    public func updateConnector(edge: DesignObjectEdge,
+    public static func updateConnector(edge: DesignObjectEdge,
                                 notation: Notation,
                                 rules: NotationRules,
                                 in world: World)

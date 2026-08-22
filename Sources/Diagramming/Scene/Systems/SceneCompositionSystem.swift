@@ -32,13 +32,11 @@ import PoieticCore
 /// - **Issues collected:** No issues generated.
 ///
 public struct SceneCompositionSystem: System {
-    nonisolated(unsafe) public static let dependencies: [SystemDependency] = [
+    public static let dependencies: [SystemDependency] = [
         .after(TraitsToDiagramObjectsSystem.self),
     ]
     
-    public init(_ world: World) {  /* Nothing here for now */  }
-    
-    public func update(_ world: World) throws(InternalSystemError) {
+    public static func update(_ world: World) throws(InternalSystemError) {
         let composer = DiagramSceneComposer(world: world)
         flagTouchedObjects(world)
         updateData(world, composer: composer)
@@ -48,7 +46,7 @@ public struct SceneCompositionSystem: System {
 
     }
     /// Transform ``ObjectTouched`` flag into dirty content.
-    func flagTouchedObjects(_ world: World) {
+    static func flagTouchedObjects(_ world: World) {
         for entity: RuntimeEntity in world.query(ObjectTouched.self) {
             // TODO: Filter only diagram object entities. Enable once we know for sure the component is set.
             // guard entity.contains(DiagramObject.self) else { continue }
@@ -56,7 +54,7 @@ public struct SceneCompositionSystem: System {
         }
     }
     
-    func updateData(_ world: World, composer: DiagramSceneComposer) {
+    static func updateData(_ world: World, composer: DiagramSceneComposer) {
         for sceneNode: RuntimeEntity in world.query(BlockSceneNode.self) {
             guard let represented: RuntimeEntity = sceneNode.target(RepresentationOf.self),
                   let flags: DirtyContent = represented.component(),
@@ -67,7 +65,7 @@ public struct SceneCompositionSystem: System {
         // No connector data to be updated here yet.
     }
 
-    func updateHighlights(_ world: World) {
+    static func updateHighlights(_ world: World) {
         // TODO: Use something like SelectionDirty world singleton
         for sceneNode: RuntimeEntity in world.query(SceneNode.self) {
             guard let represented: RuntimeEntity = sceneNode.target(RepresentationOf.self)
@@ -90,7 +88,7 @@ public struct SceneCompositionSystem: System {
     ///     - when represented entity is dirty
     ///     - when scene has ``ViewportDirty``
     ///     - when either origin or target
-    func updateGeometry(_ world: World, composer: DiagramSceneComposer) {
+    static func updateGeometry(_ world: World, composer: DiagramSceneComposer) {
         var dirtyBlocks: Set<RuntimeID> = Set()
         
         // TODO: Update WHEN: original is geometry dirty OR scene is geometry dirty
@@ -145,7 +143,7 @@ public struct SceneCompositionSystem: System {
         }
     }
 
-    func updateLayout(_ world: World, composer: DiagramSceneComposer) {
+    static func updateLayout(_ world: World, composer: DiagramSceneComposer) {
         for (scene, _, provider) in world.query(DiagramScene.self, SceneLayoutProvider.self) {
             guard scene.contains(LayoutDirty.self)
             else { continue }

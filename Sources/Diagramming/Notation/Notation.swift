@@ -58,7 +58,7 @@ public final class Notation: Component, Sendable {
     ///
     /// - SeeAlso: ``ReplacementPictogram``, ``ReplacementConnectorGlyph``
     ///
-    nonisolated(unsafe) public static let DefaultNotation = Notation(
+    public static let DefaultNotation = Notation(
         pictograms: [Notation.ReplacementPictogram],
         defaultPictogram: Notation.ReplacementPictogram,
         connectorGlyphs: [Notation.ReplacementConnectorGlyph],
