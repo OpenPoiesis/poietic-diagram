@@ -23,6 +23,9 @@ import PoieticCore
 /// - **Issues collected:** No issues generated.
 ///
 public struct TraitsToDiagramObjectsSystem: System {
+    public static let dependencies: [SystemDependency] = [
+        .after(VisualMetadataSystem.self),
+    ]
     public static func update(_ world: World) throws (InternalSystemError) {
         guard let frame = world.plane else { return }
         let notation: Notation = world.singleton() ?? Notation.DefaultNotation
@@ -44,9 +47,14 @@ public struct TraitsToDiagramObjectsSystem: System {
                             in world: World)
     {
         guard let entity = world.entity(object.objectID) else { return }
-        
-        let accentColorName: String? = object["color"]
-        let accentColor = accentColorName.map { AdaptableColorKey(rawValue: $0) } ?? nil
+       
+        let accentColor: AdaptableColorKey?
+        if let colorComponent: AdaptableColor = entity.component() {
+            accentColor = colorComponent.key
+        }
+        else {
+            accentColor = nil
+        }
         let pictogramName = rules.pictogramName(for: object.type)
         let pictogram = notation.pictogram(pictogramName)
         let block = DiagramBlock(
