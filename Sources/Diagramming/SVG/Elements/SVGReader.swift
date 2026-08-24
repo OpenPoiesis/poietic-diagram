@@ -6,6 +6,9 @@
 //
 
 import Foundation
+#if canImport(FoundationXML)
+    import FoundationXML
+#endif
 
 /// Error types for SVG reading operations
 public enum SVGReaderError: Error {
