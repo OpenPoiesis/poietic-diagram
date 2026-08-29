@@ -171,8 +171,7 @@ public class SVGDiagramSceneRenderer: DiagramSceneRenderer {
     }
     
     public func renderPictogram(_ entity: PoieticCore.RuntimeEntity, context: Context) {
-        // TODO: Move code from render block here.
-        debugPrint("WARNING: \(#function) not implemented")
+        // TODO: Move code from render block here. We are actually rendering the pictogram, it is just in the renderBlock(...)
     }
     public func renderConnector(_ entity: PoieticCore.RuntimeEntity, context: Context) {
         guard let stroke: ConnectorStroke = entity.component()

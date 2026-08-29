@@ -19,7 +19,7 @@ let package = Package(
     ],
     dependencies: [
         .package(url: "https://github.com/apple/swift-argument-parser.git", from: "1.2.0"),
-        .package(url: "https://github.com/openpoiesis/poietic-core", branch: "main"),
+        .package(url: "https://github.com/openpoiesis/poietic-core", from: "0.8.0"),
         .package(url: "https://github.com/apple/swift-docc-plugin", from: "1.5.0"),
     ],
 
