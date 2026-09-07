@@ -274,7 +274,7 @@ public class SVGDiagramSceneRenderer: DiagramSceneRenderer {
         let length = style.metric(.colorSwatchSize, default: ColorSwatchSceneNode.DefaultSize)
         let size = Vector2D(x: length, y: length)
         
-        let element = SVGRectangle(rect: Rect2D(center: .zero, size: size))
+        let element = SVGRectangle(rect: Rect2D(center: context.currentTransform.origin, size: size))
         element.stroke = style.classes[styleClass]?.stroke
         element.fill = style.adaptableColor(swatch.colorKey)
         context.append(element)
