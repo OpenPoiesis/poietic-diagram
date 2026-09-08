@@ -31,11 +31,11 @@ public struct TraitsToDiagramObjectsSystem: System {
         let notation: Notation = world.singleton() ?? Notation.DefaultNotation
         let rules: NotationRules = world.singleton() ?? NotationRules()
 
-        for object in frame.filter(trait: .DiagramBlock) {
+        for object in frame.filter(trait: DiagramDomain.Traits.DiagramBlock) {
             try updateBlock(object: object, notation: notation, rules: rules, in: world)
         }
         
-        for object in frame.filter(trait: .DiagramConnector) {
+        for object in frame.filter(trait: DiagramDomain.Traits.DiagramConnector) {
             guard let edge = DesignObjectEdge(object, in: frame) else { continue }
             updateConnector(edge: edge, notation: notation, rules: rules, in: world)
         }
