@@ -32,7 +32,7 @@ public struct TraitsToDiagramObjectsSystem: System {
         let rules: NotationRules = world.singleton() ?? NotationRules()
 
         for object in frame.filter(trait: DiagramDomain.Traits.DiagramBlock) {
-            try updateBlock(object: object, notation: notation, rules: rules, in: world)
+            updateBlock(object: object, notation: notation, rules: rules, in: world)
         }
         
         for object in frame.filter(trait: DiagramDomain.Traits.DiagramConnector) {

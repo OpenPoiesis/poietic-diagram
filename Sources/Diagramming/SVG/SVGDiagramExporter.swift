@@ -67,7 +67,6 @@ public class SVGDiagramSceneRendererContext: RenderingContextProtocol {
         if let symbol = symbols[pictogramID] {
             return symbol.id! // We always have symbol ID set
         }
-        print("Registering symbol \(pictogram.name) -> \(pictogramID)")
         
         let name = pictogram.name
         let id = pictogramSymbolIDPrefix + name
