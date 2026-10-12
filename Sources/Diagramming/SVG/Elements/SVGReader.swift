@@ -23,12 +23,14 @@ public class SVGReader: NSObject {
     private var elementStack: [SVGElement] = []
     private var currentElement: SVGElement?
     private var rootElement: SVGElement?
-    
+    private var skippedDepth = 0
+
     /// Parse SVG data and return the root element
     public func read(data: Data) throws -> SVGElement {
         elementStack.removeAll()
         currentElement = nil
         rootElement = nil
+        skippedDepth = 0
         
         let parser = XMLParser(data: data)
         parser.delegate = self
@@ -57,7 +59,7 @@ public class SVGReader: NSObject {
     }
     
     /// Create SVG element from XML element name and attributes
-    private func createElement(name: String, attributes: [String: String], parent: SVGElement?) throws -> SVGElement {
+    private func createElement(name: String, attributes: [String: String], parent: SVGElement?) -> SVGElement? {
         switch name {
         case "svg":
             return SVGImage(parent: parent, attributes: attributes)
@@ -84,8 +86,8 @@ public class SVGReader: NSObject {
         case "text":
             return SVGText(parent: parent, attributes: attributes)
         default:
-            // TODO: Add clipPath
-            throw SVGReaderError.unsupportedElement("Unsupported SVG element: \(name)")
+            // Unsupported element
+            return nil
         }
     }
 }
@@ -95,38 +97,44 @@ public class SVGReader: NSObject {
 extension SVGReader: XMLParserDelegate {
     
     public func parser(_ parser: XMLParser, didStartElement elementName: String, namespaceURI: String?, qualifiedName qName: String?, attributes attributeDict: [String : String] = [:]) {
-        
-        do {
-            let element = try createElement(name: elementName, attributes: attributeDict, parent: currentElement)
-            
-            // Set as root if this is the first element
-            if rootElement == nil {
-                rootElement = element
-            }
-            
-            // Add to parent if there is one
-            if let parent = currentElement {
-                if let group = parent as? SVGGroup {
-                    group.addChild(element)
-                } else if let image = parent as? SVGImage {
-                    image.addChild(element)
-                } else if let symbol = parent as? SVGSymbol {
-                    symbol.addChild(element)
-                }
-            }
-            
-            // Push to stack and set as current
-            elementStack.append(element)
-            currentElement = element
-            
-        } catch {
-            // Let the parser continue but stop processing
-            parser.abortParsing()
+        if skippedDepth > 0 {
+            skippedDepth += 1
+            return
         }
+
+        guard let element = createElement(name: elementName,
+                                          attributes: attributeDict,
+                                          parent: currentElement)
+        else {
+            skippedDepth = 1
+            return
+        }
+        
+        if rootElement == nil {
+            rootElement = element
+        }
+        
+        // Add to parent if there is one
+        if let parent = currentElement {
+            if let group = parent as? SVGGroup {
+                group.addChild(element)
+            } else if let image = parent as? SVGImage {
+                image.addChild(element)
+            } else if let symbol = parent as? SVGSymbol {
+                symbol.addChild(element)
+            }
+        }
+        
+        // Push to stack and set as current
+        elementStack.append(element)
+        currentElement = element
     }
     
     public func parser(_ parser: XMLParser, didEndElement elementName: String, namespaceURI: String?, qualifiedName qName: String?) {
-        // Pop from stack
+        if skippedDepth > 0 {
+            skippedDepth -= 1
+            return
+        }
         if !elementStack.isEmpty {
             elementStack.removeLast()
             currentElement = elementStack.last
