@@ -29,24 +29,24 @@ public struct TraitsToDiagramObjectsSystem: System {
     public static func update(_ world: World) throws (InternalSystemError) {
         guard let frame = world.plane else { return }
         let notation: Notation = world.singleton() ?? Notation.DefaultNotation
-        let rules: NotationRules = world.singleton() ?? NotationRules()
 
         for object in frame.filter(trait: DiagramDomain.Traits.DiagramBlock) {
-            updateBlock(object: object, notation: notation, rules: rules, in: world)
+            updateBlock(object: object, notation: notation, in: world)
         }
         
         for object in frame.filter(trait: DiagramDomain.Traits.DiagramConnector) {
             guard let edge = DesignObjectEdge(object, in: frame) else { continue }
-            updateConnector(edge: edge, notation: notation, rules: rules, in: world)
+            updateConnector(edge: edge, notation: notation, in: world)
         }
     }
     
     public static func updateBlock(object: ObjectSnapshot,
                             notation: Notation,
-                            rules: NotationRules,
                             in world: World)
     {
-        guard let entity = world.entity(object.objectID) else { return }
+        guard let plane = world.plane,
+              let entity = world.entity(object.objectID)
+        else { return }
        
         let accentColor: AdaptableColorKey?
         if let colorComponent: AdaptableColor = entity.component() {
@@ -55,8 +55,8 @@ public struct TraitsToDiagramObjectsSystem: System {
         else {
             accentColor = nil
         }
-        let pictogramName = rules.pictogramName(for: object.type)
-        let pictogram = notation.pictogram(pictogramName)
+
+        let pictogram = notation.pictogram(for: object, in: plane)
         let block = DiagramBlock(
             position: object.position ?? .zero,
             pictogram: pictogram,
@@ -73,24 +73,27 @@ public struct TraitsToDiagramObjectsSystem: System {
     
     public static func updateConnector(edge: DesignObjectEdge,
                                 notation: Notation,
-                                rules: NotationRules,
                                 in world: World)
     {
-        guard let entity = world.entity(edge.id),
-              let originEntity = world.entity(edge.origin)?.runtimeID,
-              let targetEntity = world.entity(edge.target)?.runtimeID else
-        {
-            return
-        }
+        guard let plane = world.plane,
+              let entity = world.entity(edge.id),
+              let originEntity = world.entity(edge.origin),
+              let targetEntity = world.entity(edge.target),
+              let origin = originEntity.designObject,
+              let target = targetEntity.designObject
+        else { return }
+        
         let midpoints: [Vector2D] = edge.object["midpoints", default: []]
 
-        let glyphName = rules.connectorGlyphName(for: edge.object.type)
-        let connectorGlyph = notation.connectorGlyph(glyphName)
+        let glyph = notation.connectorGlyph(for: edge.object,
+                                            origin: origin,
+                                            target: target,
+                                            in: plane)
 
         let connector = DiagramConnector(
-            originID: originEntity,
-            targetID: targetEntity,
-            glyph: connectorGlyph,
+            originID: originEntity.runtimeID,
+            targetID: targetEntity.runtimeID,
+            glyph: glyph,
             midpoints: midpoints
         )
         entity.setComponent(connector)

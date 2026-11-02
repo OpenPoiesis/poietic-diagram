@@ -51,7 +51,14 @@ public final class Notation: Component, Sendable {
     internal let _connectorGlyphLookup: [String:ConnectorGlyph]
     public let connectorGlyphs: [ConnectorGlyph]
     public let defaultConnectorGlyph: ConnectorGlyph
-    
+   
+    /// Mapping between object type name and connector glyph name.
+    ///
+    /// - SeeAlso: ``Notation``, ``ConnectorGlyph``
+    ///
+    public let connectorRules: [ConnectorGlyphRule]
+    public let pictogramRules: [PictogramRule]
+
     
     /// Very basic notation with a circle for any kind of block and a stick arrow for any kind
     /// of connector.
@@ -60,43 +67,46 @@ public final class Notation: Component, Sendable {
     ///
     public static let DefaultNotation = Notation(
         pictograms: [Notation.ReplacementPictogram],
-        defaultPictogram: Notation.ReplacementPictogram,
-        connectorGlyphs: [Notation.ReplacementConnectorGlyph],
-        defaultConnectorGlyph:Notation.ReplacementConnectorGlyph
+        connectorGlyphs: [Notation.ReplacementConnectorGlyph]
     )
     
     public init(pictograms: [Pictogram] = [],
-                defaultPictogram: Pictogram,
+                defaultPictogramName: String? = nil,
                 connectorGlyphs: [ConnectorGlyph] = [],
-                defaultConnectorGlyph: ConnectorGlyph)
+                defaultConnectorGlyphName: String? = nil,
+                pictogramRules: [PictogramRule] = [],
+                connectorRules: [ConnectorGlyphRule] = [])
     {
         self._pictogramLookup = Dictionary(uniqueKeysWithValues: pictograms.map { ($0.name, $0) })
         self._connectorGlyphLookup = Dictionary(uniqueKeysWithValues: connectorGlyphs.map { ($0.name, $0) })
 
         self.pictograms = pictograms
-        self.defaultPictogram = defaultPictogram
+        let pictogram: Pictogram?
+        if let defaultPictogramName {
+            pictogram = _pictogramLookup[defaultPictogramName]
+        }
+        else {
+            pictogram = nil
+        }
         
-        self.connectorGlyphs = connectorGlyphs
-        self.defaultConnectorGlyph = defaultConnectorGlyph
-    }
-
-    public init(pictograms: [Pictogram] = [],
-                defaultPictogramName: String,
-                connectorGlyphs: [ConnectorGlyph] = [],
-                defaultConnectorGlyphName: String)
-    {
-        self._pictogramLookup = Dictionary(uniqueKeysWithValues: pictograms.map { ($0.name, $0) })
-        self._connectorGlyphLookup = Dictionary(uniqueKeysWithValues: connectorGlyphs.map { ($0.name, $0) })
-
-        self.pictograms = pictograms
-        self.defaultPictogram = _pictogramLookup[defaultPictogramName]
+        self.defaultPictogram = pictogram
                                 ?? pictograms.first
                                 ?? Notation.ReplacementPictogram
 
         self.connectorGlyphs = connectorGlyphs
-        self.defaultConnectorGlyph = _connectorGlyphLookup[defaultConnectorGlyphName]
+        let glyph: ConnectorGlyph?
+        if let defaultConnectorGlyphName {
+            glyph = _connectorGlyphLookup[defaultConnectorGlyphName]
+        }
+        else {
+            glyph = nil
+        }
+        self.defaultConnectorGlyph = glyph
                                     ?? connectorGlyphs.first
                                     ?? Notation.ReplacementConnectorGlyph
+
+        self.pictogramRules = pictogramRules
+        self.connectorRules = connectorRules
     }
 
     /// Get a pictogram by name. If there is no pictogram with given name, then returns default
@@ -108,6 +118,14 @@ public final class Notation: Component, Sendable {
         _pictogramLookup[name] ?? defaultPictogram
     }
 
+    public func pictogram(for object: ObjectSnapshot, in plane: DesignPlane) -> Pictogram {
+        let first = pictogramRules.first {
+            $0.match(object, in: plane)
+        }
+        let name = first?.pictogramName ?? object.type.name
+        return pictogram(name)
+    }
+
     /// Get connector style by name. If there is no connector style with given name, returns
     /// default connector style.
     ///
@@ -116,50 +134,12 @@ public final class Notation: Component, Sendable {
     public func connectorGlyph(_ name: String) -> ConnectorGlyph {
         _connectorGlyphLookup[name] ?? defaultConnectorGlyph
     }
-}
 
-/// Rules for mapping between object types and notation elements.
-///
-/// - SeeAlso: ``Notation``, ``Pictogram``, ``ConnectorGlyph``
-///
-public struct NotationRules: Component {
-    // TODO: Extend with Trait rules when needed
-
-    /// Mapping between object type name and pictogram name.
-    ///
-    /// - SeeAlso: ``Notation``, ``Pictogram``
-    ///
-    public let typeToPictogram: [String:String]
-
-    /// Mapping between object type name and connector glyph name.
-    ///
-    /// - SeeAlso: ``Notation``, ``ConnectorGlyph``
-    ///
-    public let typeToConnectorGlyph: [String:String]
-    
-    public init(typeToPictogram: [String : String] = [:],
-                typeToConnectorGlyph: [String : String] = [:])
-    {
-        self.typeToPictogram = typeToPictogram
-        self.typeToConnectorGlyph = typeToConnectorGlyph
+    public func connectorGlyph(for object: ObjectSnapshot, origin: ObjectSnapshot, target: ObjectSnapshot, in plane: DesignPlane) -> ConnectorGlyph {
+        let first = connectorRules.first {
+            $0.match(object.type, origin: origin, target: target, in: plane)
+        }
+        let name = first?.glyphName ?? object.type.name
+        return connectorGlyph(name)
     }
-
-    /// Look-up a pictogram name for given object type. If there is no specific name for the object
-    /// type, then use the object type name itself.
-    ///
-    /// - SeeAlso: ``Notation/pictogram(_:)``, ``Notation/defaultPictogram``
-    ///
-    public func pictogramName(for objectType: ObjectType) -> String {
-        return typeToPictogram[objectType.name] ?? objectType.name
-    }
-    
-    /// Look-up a connector glyph name for given object type. If there is no specific name for the
-    /// object type, then use the object type name itself.
-    ///
-    /// - SeeAlso: ``Notation/connectorGlyph(_:)``, ``Notation/defaultConnectorGlyph``
-    ///
-    public func connectorGlyphName(for objectType: ObjectType) -> String {
-        return typeToConnectorGlyph[objectType.name] ?? objectType.name
-    }
-
 }

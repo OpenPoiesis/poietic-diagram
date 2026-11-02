@@ -36,5 +36,16 @@ public let DefaultStockFlowConnectorGlyphs: [ConnectorGlyph] = [
         tailSize: 0.0,
         lineType: .straight
     ),
+    ConnectorGlyph(
+        name: "Drain",
+        kind: .fat(ConnectorGlyph.Fat(
+                headType: .none,
+                tailType: .none,
+                width: 10.0,
+                joinType: .round)),
+        headSize: 20.0,
+        tailSize: 0.0,
+        lineType: .straight
+    ),
 ]
 
