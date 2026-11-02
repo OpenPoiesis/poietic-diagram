@@ -13,8 +13,8 @@ Main features:
 - **Notation**: collection of pictograms and connector glyphs that define visual representation of a design.
   - **Pictograms**: visual symbol with geometry, collision shape, mask and other layout related metadata.
   - **Connector Glyphs**: visual description of a connector between two diagram blocks (objects).
-- **Scene** is the _concrete visual representation of a diagram_ — a structured entity tree that
-  contains everything needed for rendering and interaction. 
+- **Presentation** is the _concrete visual representation of a diagram_ — a disposable,
+  structured entity tree that contains everything needed for rendering and interaction. 
   It is a bridge between the abstract design model and a specific backend (Cairo surface, SVG image, etc.).
 - **Geometry**: collection of geometry functions with a special focus on computation of connector
   touch points, arrow-heads, and routing through mid-points.
@@ -51,32 +51,32 @@ Utility features:
 - ``FatArrowheadType``
 - ``Arrowhead``
 
-### Scene
+### Presentation
 
-- ``DiagramScene``
-- ``ViewportState``
+- ``DiagramPresentation``
+- ``Camera``
 
-- ``SceneNode``
-- ``BlockSceneNode``
-- ``ConnectorSceneNode``
-- ``PictogramSceneNode``
-- ``ColorSwatchSceneNode``
-- ``LabelSceneNode``
-- ``IssueIndicatorSceneNode``
-- ``ValueIndicatorSceneNode``
+- ``PresentationNode``
+- ``BlockNode``
+- ``ConnectorNode``
+- ``PictogramNode``
+- ``ColorSwatchNode``
+- ``LabelNode``
+- ``IssueIndicatorNode``
+- ``ValueIndicatorNode``
 - ``Visibility``
 - ``Interactivity``
-- ``TouchRegion``
+- ``HitRegion``
 - ``LayoutDirty``
 - ``ViewportDirty``
 - ``InteractionDirty``
 
-### Composer
+### Presentation Builder
 
-- ``DiagramSceneComposer``
+- ``PresentationBuilder``
 - ``DiagramLayoutMetric``
 - ``LayoutProvider``
-- ``SceneLayoutProvider``
+- ``LayoutProvider``
 
 ### Style
 
@@ -86,7 +86,7 @@ Utility features:
 
 ### Rendering
 
-- ``DiagramSceneRenderer``
+- ``DiagramPresenter``
 - ``RenderingOffset``
 
 ### Geometry
@@ -101,4 +101,4 @@ Utility features:
 
 - ``SVGDiagramStyle``
 - ``SVGShapeStyle``
-- ``SVGDiagramSceneRenderer``
+- ``SVGDiagramPresenter``

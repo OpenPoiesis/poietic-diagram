@@ -9,7 +9,7 @@ let DiagramTestNotation = Notation(
     defaultConnectorGlyph: Notation.ReplacementConnectorGlyph
 )
 
-@Suite struct DiagramSceneComposerTests {
+@Suite struct DiagramPresentationBuilderTests {
     let design: Design
     let world: World
     
@@ -59,8 +59,8 @@ let DiagramTestNotation = Notation(
     // MARK: - Tests
     
     @Test func createDiagramFromAll() throws {
-        let composer = DiagramSceneComposer(world: world)
-        let diagram = DiagramSceneComposer.createDiagramFromAll(world: world)
+        let builder = PresentationBuilder(world: world)
+        let diagram = PresentationBuilder.createDiagramFromAll(world: world)
 
         // Diagram entity has the Diagram component
         #expect(diagram.contains(Diagram.self))
@@ -74,16 +74,16 @@ let DiagramTestNotation = Notation(
         #expect(depictedIDs.contains(connectorAB.runtimeID))
     }
     
-    @Test func createDiagramScene() throws {
-        let composer = DiagramSceneComposer(world: world)
-        let diagram = DiagramSceneComposer.createDiagramFromAll(world: world)
-        let scene = composer.createScene(diagram: diagram)
+    @Test func createDiagramPresentation() throws {
+        let builder = PresentationBuilder(world: world)
+        let diagram = PresentationBuilder.createDiagramFromAll(world: world)
+        let presentation = builder.createPresentation(diagram: diagram)
         
-        #expect(scene.children.count == 3)
-        let _: ViewportState = try #require(scene.component())
+        #expect(presentation.children.count == 3)
+        let _: Camera = try #require(presentation.component())
         
-        let blocks = scene.children.filter { $0.contains(BlockSceneNode.self) }
-        let connectors = scene.children.filter { $0.contains(ConnectorSceneNode.self) }
+        let blocks = presentation.children.filter { $0.contains(BlockNode.self) }
+        let connectors = presentation.children.filter { $0.contains(ConnectorNode.self) }
         
         #expect(blocks.count == 2)
         for entity in blocks {
@@ -96,53 +96,53 @@ let DiagramTestNotation = Notation(
     }
     
     @Test func createBlockNode() throws {
-        let composer = DiagramSceneComposer(world: world)
-        let diagram = DiagramSceneComposer.createDiagramFromAll(world: world)
-        let scene = composer.createScene(diagram: diagram)
+        let builder = PresentationBuilder(world: world)
+        let diagram = PresentationBuilder.createDiagramFromAll(world: world)
+        let presentation = builder.createPresentation(diagram: diagram)
         
         let node: RuntimeEntity = try #require(blockA.incoming(RepresentationOf.self).first)
         
-        #expect(node.contains(SceneNode.self))
-        #expect(node.contains(BlockSceneNode.self))
-        #expect(node.contains(PositionComponent.self))
+        #expect(node.contains(PresentationNode.self))
+        #expect(node.contains(BlockNode.self))
+        #expect(node.contains(LocalPosition.self))
         #expect(node.contains(CollisionShape.self))
 
-        let pictogramNode: RuntimeEntity = try #require(node.target(SceneNode.Pictogram.self))
+        let pictogramNode: RuntimeEntity = try #require(node.target(PresentationNode.Pictogram.self))
 
-        #expect(pictogramNode.contains(PictogramSceneNode.self))
+        #expect(pictogramNode.contains(PictogramNode.self))
     }
 
     @Test func createConnectorNode() throws {
-        // This test assumes only one scene per diagram
-        let composer = DiagramSceneComposer(world: world)
-        let diagram = DiagramSceneComposer.createDiagramFromAll(world: world)
-        let scene = composer.createScene(diagram: diagram)
+        // This test assumes only one presentation per diagram
+        let builder = PresentationBuilder(world: world)
+        let diagram = PresentationBuilder.createDiagramFromAll(world: world)
+        let _ = builder.createPresentation(diagram: diagram)
         
         let node: RuntimeEntity = try #require(connectorAB.incoming(RepresentationOf.self).first)
         
-        #expect(node.contains(SceneNode.self))
-        #expect(node.contains(ConnectorSceneNode.self))
+        #expect(node.contains(PresentationNode.self))
+        #expect(node.contains(ConnectorNode.self))
 
-        let sceneNodeA: RuntimeEntity = try #require(blockA.incoming(RepresentationOf.self).first)
-        let sceneNodeB: RuntimeEntity = try #require(blockB.incoming(RepresentationOf.self).first)
+        let nodeA: RuntimeEntity = try #require(blockA.incoming(RepresentationOf.self).first)
+        let nodeB: RuntimeEntity = try #require(blockB.incoming(RepresentationOf.self).first)
 
-        #expect(node.containsRelationship(ConnectorSceneNode.Origin.self, to: sceneNodeA.runtimeID))
-        #expect(node.containsRelationship(ConnectorSceneNode.Target.self, to: sceneNodeB.runtimeID))
+        #expect(node.containsRelationship(ConnectorNode.Origin.self, to: nodeA.runtimeID))
+        #expect(node.containsRelationship(ConnectorNode.Target.self, to: nodeB.runtimeID))
     }
 
-    @Test func despawnSceneWhenDiagramDespawns() throws {
+    @Test func despawnPresentationWhenDiagramDespawns() throws {
         // Tests whether relationships are correctly set
-        let composer = DiagramSceneComposer(world: world)
-        let diagram = DiagramSceneComposer.createDiagramFromAll(world: world)
-        let scene = composer.createScene(diagram: diagram)
+        let builder = PresentationBuilder(world: world)
+        let diagram = PresentationBuilder.createDiagramFromAll(world: world)
+        let presentation = builder.createPresentation(diagram: diagram)
         
-        let entities: [RuntimeEntity] = Array(world.query(SceneNode.self))
+        let entities: [RuntimeEntity] = Array(world.query(PresentationNode.self))
         #expect(!entities.isEmpty)
 
         world.despawn(diagram)
         
-        #expect(!world.contains(scene))
-        let noEntities: [RuntimeEntity] = Array(world.query(SceneNode.self))
+        #expect(!world.contains(presentation))
+        let noEntities: [RuntimeEntity] = Array(world.query(PresentationNode.self))
         #expect(noEntities.isEmpty)
     }
 }

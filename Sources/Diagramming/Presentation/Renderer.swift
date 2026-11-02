@@ -20,21 +20,21 @@ public protocol RenderingContextProtocol {
 }
 
 
-/// Protocol for renderers of diagram scene.
+/// Protocol for renderers of diagram presentation.
 ///
-public protocol DiagramSceneRenderer {
+public protocol DiagramRenderer {
     associatedtype Context: RenderingContextProtocol
     
     /// Renders a diagram entity and its children.
     ///
     func render(_ entity: RuntimeEntity, context: Context)
-    /// Render a diagram canvas node.
+    /// Render a diagram presentation node.
     ///
-    /// The `entity` is guaranteed to have the ``BlockCanvasNode`` component.
+    /// The `entity` is guaranteed to have the ``BlockNode`` component.
     func renderBlock(_ entity: RuntimeEntity, context: Context)
     /// Render a diagram connector node.
     ///
-    /// The `entity` is guaranteed to have the ``ConnectorCanvasNodeNode`` component.
+    /// The `entity` is guaranteed to have the ``ConnectorNodeNode`` component.
     func renderConnector(_ entity: RuntimeEntity, context: Context)
     func renderPictogram(_ entity: RuntimeEntity, context: Context)
     func renderLabel(_ entity: RuntimeEntity, context: Context)
@@ -56,31 +56,31 @@ public protocol DiagramSceneRenderer {
     func renderNodeExtras(_ entity: RuntimeEntity, context: Context)
 }
 
-extension DiagramSceneRenderer {
+extension DiagramRenderer {
     public func render(_ entity: RuntimeEntity, context: Context) {
         context.save()
-        if let positionComp: PositionComponent = entity.component() {
-            let transform = context.transform.translated(positionComp.position)
+        if let localPosition: LocalPosition = entity.component() {
+            let transform = context.transform.translated(localPosition.position)
             context.setTransform(transform)
         }
         
-        if entity.contains(BlockSceneNode.self) { renderBlock(entity, context: context) }
-        else if entity.contains(ConnectorSceneNode.self) {
+        if entity.contains(BlockNode.self) { renderBlock(entity, context: context) }
+        else if entity.contains(ConnectorNode.self) {
             renderConnector(entity, context: context)
         }
-        else if entity.contains(PictogramSceneNode.self) {
+        else if entity.contains(PictogramNode.self) {
             renderPictogram(entity, context: context)
         }
-        else if entity.contains(LabelSceneNode.self) {
+        else if entity.contains(LabelNode.self) {
             renderLabel(entity, context: context)
         }
-        else if entity.contains(ValueIndicatorSceneNode.self) {
+        else if entity.contains(ValueIndicatorNode.self) {
             renderValueIndicator(entity, context: context)
         }
-        else if entity.contains(IssueIndicatorSceneNode.self) {
+        else if entity.contains(IssueIndicatorNode.self) {
             renderIssueIndicator(entity, context: context)
         }
-        else if entity.contains(ColorSwatchSceneNode.self) {
+        else if entity.contains(ColorSwatchNode.self) {
             renderColorSwatch(entity, context: context)
         }
         else {

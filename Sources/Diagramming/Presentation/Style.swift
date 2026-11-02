@@ -16,8 +16,8 @@ import PoieticCore
 /// 2. Override colour of the element using adaptable colour, if provided.
 /// 3. Apply style of modifiers.
 ///
-public struct CanvasNodeStyle: Component {
-    /// Style class of the diagram scene node.
+public struct NodeStyle: Component {
+    /// Style class of the diagram presentation node.
     public var `class`: StyleClass
     public var modifiers: StyleModifierSet
 
@@ -170,7 +170,7 @@ public enum DiagramLayoutMetric: CaseIterable, Sendable {
 
 /// Provider of a diagram layout geometry.
 ///
-/// Part of diagram rendering backend, related to ``DiagramSceneRenderer`` and its rendering context.
+/// Part of diagram rendering backend, related to ``PresentationBuilder`` and its rendering context.
 ///
 /// - Note: It is assumed that the metric do not change between layout and render.
 ///
@@ -178,7 +178,7 @@ public protocol LayoutProvider {
     func metric(_ metric: DiagramLayoutMetric, default defaultValue: Double) -> Double
     /// Compute text extents for a text with given style class (semantic role).
     ///
-    /// Used to compute label bounding box and for ``TouchRegion``.
+    /// Used to compute label bounding box and for ``HitRegion``.
     func textExtents(_ text: String, class styleClass: StyleClass) -> Rect2D
     /// Offset for label rendering position relative to label node position.
     ///
@@ -189,8 +189,8 @@ public protocol LayoutProvider {
     ///
     /// Default implementation returns nil – default backend behaviour.
     ///
-    /// The return value is used by the ``DiagramSceneComposer`` during layout phase to create
-    /// ``RenderingOffset`` component on ``LabelSceneNode``.
+    /// The return value is used by the ``PresentationBuilder`` during layout phase to create
+    /// ``RenderingOffset`` component on ``LabelNode``.
     ///
     func labelRenderingOffset(extents: Rect2D, anchor: Vector2D) -> Vector2D
 }
@@ -203,11 +203,11 @@ public extension LayoutProvider {
 }
 
 
-/// Component set on diagram scene.
+/// Component set on diagram presentation.
 ///
-/// Required by ``SceneCompositionSystem`` to preform scene layout.
+/// Required by ``PresentationUpdateSystem`` to preform presentation layout.
 ///
-public struct SceneLayoutProvider: Component {
+public struct LayoutEnvironment: Component {
     public let provider: any LayoutProvider
     public init(provider: any LayoutProvider) {
         self.provider = provider

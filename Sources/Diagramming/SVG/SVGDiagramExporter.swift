@@ -7,7 +7,7 @@
 
 import PoieticCore
 
-public class SVGDiagramSceneRendererContext: RenderingContextProtocol {
+public class SVGDiagramRenderingContext: RenderingContextProtocol {
     /// Prefix for `id` attribute of SVG symbols representing a pictogram.
     ///
     public var pictogramSymbolIDPrefix = "pictogram-"
@@ -90,32 +90,32 @@ public class SVGDiagramSceneRendererContext: RenderingContextProtocol {
 
 }
 
-public class SVGDiagramSceneRenderer: DiagramSceneRenderer {
-    public typealias Context = SVGDiagramSceneRendererContext
+public class SVGDiagramRenderer: DiagramRenderer {
+    public typealias Context = SVGDiagramRenderingContext
 
     let world: World
-    let viewport: ViewportState
+    let camera: Camera
 
     let style: SVGDiagramStyle
     
     public init(world: World,
-                viewport: ViewportState = ViewportState(offset: .zero, zoom: 1.0),
+                camera: Camera = Camera(offset: .zero, zoom: 1.0),
                 style: SVGDiagramStyle? = nil)
     {
         self.world = world
-        self.viewport = viewport
+        self.camera = camera
         self.style = style ?? SVGDiagramStyle.Default
     }
     
-    public func render(_ scene: RuntimeEntity, style: SVGDiagramStyle, to path: String) throws {
-        let image = render(scene, style: style)
+    public func render(_ presentation: RuntimeEntity, style: SVGDiagramStyle, to path: String) throws {
+        let image = render(presentation, style: style)
         let writer = SVGWriter()
         try writer.writeToFile(image, path: path)
     }
 
-    public func render(_ scene: RuntimeEntity, style: SVGDiagramStyle) -> SVGImage {
-        let context = SVGDiagramSceneRendererContext(style: style)
-        self.render(scene, context: context)
+    public func render(_ presentation: RuntimeEntity, style: SVGDiagramStyle) -> SVGImage {
+        let context = SVGDiagramRenderingContext(style: style)
+        self.render(presentation, context: context)
         
         let image = SVGImage()
         
@@ -135,8 +135,8 @@ public class SVGDiagramSceneRenderer: DiagramSceneRenderer {
     
     public func renderBlock(_ entity: PoieticCore.RuntimeEntity, context: Context) {
         // TODO: [REFACTORING] Separate pictogram rendering into renderPictogram(...)
-        guard let pictogramNode: RuntimeEntity = entity.target(SceneNode.Pictogram.self),
-              let pictComp: PictogramSceneNode = pictogramNode.component()
+        guard let pictogramNode: RuntimeEntity = entity.target(PresentationNode.Pictogram.self),
+              let pictComp: PictogramNode = pictogramNode.component()
         else { return }
 
         // TODO: Color
@@ -152,7 +152,7 @@ public class SVGDiagramSceneRenderer: DiagramSceneRenderer {
         }
         
         let styleClass: StyleClass
-        if let nodeStyle: CanvasNodeStyle = entity.component() {
+        if let nodeStyle: NodeStyle = entity.component() {
             styleClass = nodeStyle.class
         }
         else {
@@ -182,7 +182,7 @@ public class SVGDiagramSceneRenderer: DiagramSceneRenderer {
         }
 
         let styleClass: StyleClass
-        if let nodeStyle: CanvasNodeStyle = entity.component() {
+        if let nodeStyle: NodeStyle = entity.component() {
             styleClass = nodeStyle.class
         }
         else {
@@ -224,11 +224,11 @@ public class SVGDiagramSceneRenderer: DiagramSceneRenderer {
     }
 
     public func renderLabel(_ entity: PoieticCore.RuntimeEntity, context: Context) {
-        guard let label: LabelSceneNode = entity.component()
+        guard let label: LabelNode = entity.component()
         else { return }
         
         let styleClass: StyleClass
-        if let nodeStyle: CanvasNodeStyle = entity.component() {
+        if let nodeStyle: NodeStyle = entity.component() {
             styleClass = nodeStyle.class
         }
         else {
@@ -260,17 +260,17 @@ public class SVGDiagramSceneRenderer: DiagramSceneRenderer {
     }
 
     public func renderColorSwatch(_ entity: RuntimeEntity, context: Context) {
-        guard let swatch: ColorSwatchSceneNode = entity.component()
+        guard let swatch: ColorSwatchNode = entity.component()
         else { return }
         let styleClass: StyleClass
-        if let nodeStyle: CanvasNodeStyle = entity.component() {
+        if let nodeStyle: NodeStyle = entity.component() {
             styleClass = nodeStyle.class
         }
         else {
             styleClass = .colorSwatch
         }
 
-        let length = style.metric(.colorSwatchSize, default: ColorSwatchSceneNode.DefaultSize)
+        let length = style.metric(.colorSwatchSize, default: ColorSwatchNode.DefaultSize)
         let size = Vector2D(x: length, y: length)
         
         let element = SVGRectangle(rect: Rect2D(center: context.currentTransform.origin, size: size))

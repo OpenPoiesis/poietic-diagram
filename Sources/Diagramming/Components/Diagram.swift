@@ -13,8 +13,8 @@ import PoieticCore
 ///
 /// - **Set by:**
 ///     - Custom diagram creation methods.
-///     - ``DiagramSceneComposer`` on ``DiagramSceneComposer/createDiagramFromAll(world:diagram:)``.
-/// - **Read by:** ``DiagramSceneComposer/createScene(diagram:viewport:)``
+///     - ``PresentationBuilder`` on ``PresentationBuilder/createDiagramFromAll(world:diagram:)``.
+/// - **Read by:** ``PresentationBuilder/createPresentation(diagram:camera:)``
 ///
 ///
 /// ## Entity Situation
@@ -37,14 +37,14 @@ import PoieticCore
 ///     ^                                  |
 ///     | Representation Of                |
 ///     |                                  |
-/// +--------------+                       |
-/// | DiagramScene |                       |
-/// +--------------+                       |
+/// +---------------------+                |
+/// | DiagramPresentation |                |
+/// +---------------------+                |
 ///     ^                                  |
 ///     | ChildOf                          |
 ///     | *                                |
 /// +------------------+ RepresentationOf  |
-/// | DiagramSceneNode |-------------------+
+/// | PresentationNode |-------------------+
 /// +------------------+
 /// ```
 ///
@@ -56,7 +56,7 @@ public struct Diagram: Component {
 /// Which content of a diagram entity is dirty.
 ///
 /// - **Set by:** Custom: application, interactive tools (canvas tools).
-/// - **Read by:** ``SceneCompositionSystem``
+/// - **Read by:** ``PresentationUpdateSystem``
 /// - **Removed by:** Custom clean-up systems.
 ///
 /// - Note: (Developer's reasoning) The dirty content structure is here not to pollute the

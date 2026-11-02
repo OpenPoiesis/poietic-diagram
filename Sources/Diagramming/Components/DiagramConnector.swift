@@ -27,21 +27,21 @@ import PoieticCore
 /// ## Derived Components and Entities
 ///
 /// Diagram connector is a logical component. Its visual representation are entities with
-/// ``ConnectorSceneNode`` that are related to the diagram connector via ``/PoieticCore/RepresentationOf``
+/// ``ConnectorNode`` that are related to the diagram connector via ``/PoieticCore/RepresentationOf``
 /// relationship. The following components are derived from the diagram connector: ``ConnectorGeometry``,
 /// ``ConnectorWire`` and ``ConnectorStroke``.
 ///
 /// ## Interaction
 ///
 /// During interactive session, such as dragging, the temporary state of midpoints of a connector
-/// are stored on the same entity as the connector in the ``PreviewMidpointsComponent``.
+/// are stored on the same entity as the connector in the ``PreviewMidpoints``.
 ///
 ///
 /// ## Related components
 ///
-/// - ``PreviewMidpointsComponent`` on same entity: Preview of midpoints during interactive session.
+/// - ``PreviewMidpoints`` on same entity: Preview of midpoints during interactive session.
 ///   Midpoints are in design coordinates.
-/// - ``ConnectorSceneNode`` visual representation of the connector entity, specific for a viewport.
+/// - ``ConnectorNode`` visual representation of the connector entity, specific for a viewport.
 ///    Relates to the original diagram connector through ``RepresentationOf`` relationship.
 ///
 /// - Note: This is not a relationship component. From modelling perspective it is a visual
@@ -84,7 +84,7 @@ public struct DiagramConnector: Component {
 
 /// Primary geometry of a connector, regardless of connector glyph.
 ///
-/// Attached to entities with ``ConnectorSceneNode`` by ``DiagramSceneComposer``.
+/// Attached to entities with ``ConnectorNode`` by ``PresentationBuilder``.
 ///
 /// - SeeAlso: ``ConnectorWire`` – used for hit testing and outlines,
 ///   ``ConnectorStroke`` – visual representation of a connector.
@@ -130,10 +130,10 @@ public struct ConnectorGeometry: Component {
 /// Computed from ``ConnectorGeometry``.
 ///
 /// - **Set By:**
-///     - ``DiagramSceneComposer`` computes and sets the entity during
-///       ``DiagramSceneComposer/updateGeometry(scene:)`` on ``ConnectorSceneNode``
+///     - ``PresentationBuilder`` computes and sets the entity during
+///       ``PresentationBuilder/updateGeometry(presentation:)`` on ``ConnectorNode``
 /// - **Used by:**
-///     - ``SceneInteractionSystem`` to compute ``TouchRegion`` for a connector.
+///     - ``HitRegionSystem`` to compute ``HitRegion`` for a connector.
 ///     - renderers to produce selection highlight.
 ///
 /// - SeeAlso: ``ConnectorGeometry``, ``ConnectorStroke``.
@@ -154,8 +154,8 @@ public struct ConnectorWire: Component {
 
 /// Visual representation of a connector.
 ///
-/// Attached to entities with ``ConnectorSceneNode`` by ``DiagramSceneComposer``.
-/// Typically used by ``DiagramSceneRenderer``.
+/// Attached to entities with ``ConnectorNode`` by ``PresentationBuilder``.
+/// Typically used by ``DiagramRenderer``.
 ///
 /// The connector stroke is created from ``ConnectorWire``, which describes basic connector
 /// geometry and from ``ConnectorGlyph`` which defines actual shape and visual features of the
